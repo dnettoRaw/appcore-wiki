@@ -105,7 +105,13 @@ Avoid AppCore when a plain web server and one managed database are enough. It in
 
 Those omissions are design boundaries. They keep runtime infrastructure reusable by applications that do not share a business domain.
 
+## Limitations
+
+- AppCore gives application code runtime contracts; it does not write the business model for the application.
+- It makes local-first and distributed infrastructure explicit, but each deployment still needs correct provider, storage, secret, and process-manager choices.
+- It validates runtime envelopes and manifests; it does not prove that domain handlers are correct.
+- The 1.0 release-candidate line intentionally favors conservative behavior over broad automatic compatibility with old config shapes.
+
 ## Read next
 
 Continue with [the three-artifact contract](/en/architecture/three-artifact-contract).
-

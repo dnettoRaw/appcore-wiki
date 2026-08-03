@@ -7,7 +7,9 @@ sidebar_position: 11
 
 This tutorial follows the maintained backend template shape. The goal is not to build a product. The goal is to see where AppCore ends and the application begins.
 
-## 1. Create the business implementation
+The mental model is simple: business code declares behavior, manifests declare the contract, and deployment chooses the runtime environment.
+
+## 1. What is the smallest useful business implementation?
 
 The smallest useful application declares a command and registers a handler:
 
@@ -46,7 +48,7 @@ impl CommandHandler for PingHandler {
 }
 ```
 
-## 2. Keep `main` small
+## 2. Why should `main` stay small?
 
 ```rust
 fn main() {
@@ -59,7 +61,7 @@ fn main() {
 
 If `main` starts HTTP servers, opens storage roots, or creates token providers, the application has crossed the runtime boundary.
 
-## 3. Declare the command in the Application Manifest
+## 3. Why must the manifest declare the command too?
 
 ```toml
 [[capabilities]]
@@ -73,7 +75,7 @@ idempotency_required = true
 
 Because idempotency is required, a command request without an idempotency key is rejected before handler execution.
 
-## 4. Select local deployment policy
+## 4. What does the first deployment choose?
 
 ```toml
 manifest_version = 1
@@ -96,7 +98,7 @@ command_transport = "http"
 
 The deployment selects the file storage provider and listener address. The application code does not change if a later deployment selects cluster mode and a different provider set.
 
-## 5. Run and inspect
+## 5. What should you inspect after it boots?
 
 Set a local secret through the environment, then run the application. The runtime exposes health and status endpoints when the deployment enables a listener.
 
@@ -107,7 +109,7 @@ curl -s http://127.0.0.1:39300/health
 curl -s http://127.0.0.1:39300/status
 ```
 
-## What to test next
+## What should you test next?
 
 - manifest mismatch fails bootstrap;
 - undeclared command is rejected;
@@ -116,3 +118,9 @@ curl -s http://127.0.0.1:39300/status
 - shutdown moves lifecycle to stopped;
 - enabling automatic updates without the managed supervisor path is rejected.
 
+## Limitations
+
+- This tutorial intentionally uses a tiny command; it does not model a full domain workflow.
+- It assumes the backend template shape and public `appcore_bin::application` facade.
+- It demonstrates standalone local deployment, not a complete clustered installation.
+- It does not cover custom provider authoring or production secret management.

@@ -22,3 +22,6 @@ This manual is written as a technical book. Read the chapters in order if you ar
 
 Current runtime line: `1.0.1-rc.8`. Minimum Rust toolchain: `1.89`.
 
+## Limitations
+
+This index is a reading map, not an API reference. Use the chapter pages for operational behavior, trade-offs, and unsupported cases.

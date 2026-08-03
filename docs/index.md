@@ -27,3 +27,7 @@ Other languages:
 
 - [Português](/pt/)
 - [Français](/fr/)
+
+## Limitations
+
+This root page is a language and reading entry point. It does not replace the technical chapters.

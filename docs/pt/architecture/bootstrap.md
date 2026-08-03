@@ -29,9 +29,12 @@ O runtime deriva `RuntimeConfig`: IDs de node/core/instance pertencem ao runtime
 
 Commands continuam protegidos pelo manifest. Capability ausente falha. Command que exige idempotency key falha antes do handler se a chave não vier.
 
-## Limites
+## Limitations
 
-Bootstrap não infere providers, não converte config antiga, não inicia tasks fora do scheduler e não aceita commands não declarados. Update automático exige o caminho supervisionado; execução direta não gerenciada rejeita esse modo.
+- Bootstrap não infere providers nem aplica fallback silencioso.
+- Config antiga sem versão não é convertida.
+- Tasks de negócio não são iniciadas fora do scheduler do runtime.
+- Commands não declarados no manifest são rejeitados.
+- Update automático exige caminho supervisionado; execução direta não gerenciada rejeita esse modo.
 
 Próximo: [storage](/pt/architecture/storage).
-

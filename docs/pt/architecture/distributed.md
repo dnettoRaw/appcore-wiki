@@ -5,6 +5,8 @@ sidebar_position: 6
 
 # Operação distribuída
 
+Imagine um core que perdeu rede e acorda atrasado ainda acreditando ser líder. Outro core já renovou o lease. O problema não é ele "achar" que é líder; é impedir que ele ainda consiga gravar.
+
 Distribuição no AppCore combina control plane, leases, discovery, Peer RPC, gateway mesh relay e providers de coordenação explícitos.
 
 ## Control plane
@@ -38,5 +40,12 @@ O envelope valida request ID, trace, protocolo, source/target core, tenant, clus
 
 Gateway existe para cores com conexão outbound mas sem porta inbound estável. Tokens de conexão são curtos, single-use e bound ao hash da conexão. Mesh relay valida que metadata externa combina com o envelope Peer RPC interno. O gateway nunca interpreta payload de negócio.
 
-Próximo: [supervisor](/pt/architecture/supervisor).
+## Limitations
 
+- O file control plane é referência para diretório compartilhado, não consenso global.
+- Leases exigem TTLs e relógios configurados de forma conservadora.
+- Peer RPC autentica envelope de runtime; autorização de domínio pertence à aplicação.
+- Gateway relaya payload opaco e não resolve conflitos.
+- Provider ausente falha startup; AppCore não cai para opção mais fraca.
+
+Próximo: [supervisor](/pt/architecture/supervisor).

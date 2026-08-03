@@ -7,6 +7,12 @@ sidebar_position: 2
 
 O objetivo mensurável do AppCore 1.0 é: uma aplicação roda fornecendo apenas `application.toml`, `deployment.toml` e código de negócio que implementa `appcore_bin::application::Application`.
 
+Esse contrato existe para impedir que identidade de aplicação, política de instalação e composição de runtime se misturem no mesmo arquivo. Quando isso acontece, cada instalação vira um fork implícito.
+
+## Por que três artefatos?
+
+Porque existem três donos diferentes. O autor da aplicação sabe quais commands existem. O operador sabe onde a aplicação roda. O runtime sabe como compor providers, lifecycle e serviços.
+
 ## Application Manifest
 
 É portável e pertence ao autor da aplicação. Declara identidade, versão, vendor, service ID, runtime mínimo, protocolo, capabilities, idempotência, liderança, storage, scheduler, jobs, health e update policy.
@@ -69,5 +75,12 @@ fn main() {
 
 Um quarto artefato, como `RuntimeBuilder` customizado ou configuração sem versão, viola o contrato 1.0.
 
-Próximo: [bootstrap](/pt/architecture/bootstrap).
+## Limitations
 
+- O contrato não elimina trabalho de deployment; operators ainda escolhem providers, paths, listeners e secret refs.
+- O Application Manifest declara capabilities vistas pelo runtime, não todo o schema de domínio.
+- O Deployment Manifest não é portável quando contém paths e choices locais.
+- Handlers continuam responsáveis por idempotência correta quando o manifest exige idempotency.
+- Caminhos privados de `RuntimeBuilder` ficam fora do contrato de aplicação.
+
+Próximo: [bootstrap](/pt/architecture/bootstrap).
