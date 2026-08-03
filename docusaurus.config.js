@@ -52,16 +52,12 @@ const config = {
     footer: {
       style: 'dark',
       links: [
-        {title: 'Documentation', items: [
-          {label: 'English', to: '/en/'},
-          {label: 'Português', to: '/pt/'},
-          {label: 'Français', to: '/fr/'},
-        ]},
-        {title: 'Project', items: [
-          {label: 'Runtime Contract', to: '/en/architecture/three-artifact-contract'},
-          {label: 'First Application', to: '/en/tutorials/first-application'},
-          {label: 'Crate Map', to: '/en/architecture/crate-map'},
-        ]},
+        {label: 'English', to: '/en/'},
+        {label: 'Português', to: '/pt/'},
+        {label: 'Français', to: '/fr/'},
+        {label: 'Architecture', to: '/en/architecture/bootstrap'},
+        {label: 'Security', to: '/en/security/security-model'},
+        {label: 'GitHub', href: 'https://github.com/dnettoraw/appcore-wiki'},
       ],
       copyright: `feito com &lt;3 por <a class="dnettoraw-footer-credit" href="https://www.dnettoraw.com" target="_blank" rel="noopener noreferrer"><img src="/img/dnettoraw-logo.svg" alt="" width="18" height="18" loading="lazy" />dnettoraw</a>`,
     },
