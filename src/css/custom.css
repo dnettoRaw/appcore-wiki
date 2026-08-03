@@ -24,3 +24,15 @@ html[data-theme='dark'] {
   display: table;
   width: 100%;
 }
+
+.dnettoraw-footer-credit {
+  align-items: center;
+  display: inline-flex;
+  gap: 0.35rem;
+}
+
+.dnettoraw-footer-credit img {
+  display: inline-block;
+  height: 18px;
+  width: 18px;
+}

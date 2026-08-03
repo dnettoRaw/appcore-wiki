@@ -23,7 +23,7 @@ const config = {
         docs: {
           routeBasePath: '/',
           sidebarPath: require.resolve('./sidebars.js'),
-          editUrl: 'https://github.com/appcore/appcore-wiki/tree/main/',
+          editUrl: 'https://github.com/dnettoraw/appcore-wiki/tree/main/',
         },
         blog: false,
         theme: {
@@ -41,7 +41,7 @@ const config = {
         {to: '/fr/', label: 'Français', position: 'left'},
         {to: '/en/architecture/bootstrap', label: 'Architecture', position: 'left'},
         {to: '/en/security/security-model', label: 'Security', position: 'left'},
-        {href: 'https://github.com/appcore/appcore-wiki', label: 'GitHub', position: 'right'},
+        {href: 'https://github.com/dnettoraw/appcore-wiki', label: 'GitHub', position: 'right'},
       ],
     },
     footer: {
@@ -58,7 +58,7 @@ const config = {
           {label: 'Crate Map', to: '/en/architecture/crate-map'},
         ]},
       ],
-      copyright: `Copyright ${new Date().getFullYear()} AppCore contributors.`,
+      copyright: `feito com &lt;3 por <a class="dnettoraw-footer-credit" href="https://www.dnettoraw.com" target="_blank" rel="noopener noreferrer"><img src="/img/dnettoraw-logo.svg" alt="" width="18" height="18" loading="lazy" />dnettoraw</a>`,
     },
     prism: {
       additionalLanguages: ['rust', 'toml'],
