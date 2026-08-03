@@ -1,47 +1,46 @@
 ---
-title: Qu'est-ce qu'AppCore
+title: Ce qu'est AppCore
 sidebar_position: 1
 ---
 
-# Qu'est-ce qu'AppCore
+# Ce qu'est AppCore
 
-## Introduction
+Imaginez la même application installée dans deux contextes. Dans une boutique, elle tourne sur un notebook et doit continuer sans Internet. Dans une autre installation, elle tourne en cluster avec control plane, leases, Peer RPC et update supervisé. Le code métier ne devrait pas avoir deux architectures.
 
-AppCore est un runtime manifest-first pour les applications Rust qui doivent rendre le comportement d'infrastructure explicite et testable.
+AppCore existe pour cette frontière.
 
-Version candidate actuelle : `1.0.1-rc.8`. Toolchain Rust minimale : `1.89`.
+Ce n'est pas un framework web, une base de données, un ERP ou une plateforme métier. C'est un runtime host qui rend les décisions d'infrastructure explicites, versionnées et testables.
 
-## Modèle de lecture
+## Le problème
 
-Lisez AppCore comme un ensemble de contrats plutôt que comme un monolithe. `appcore-contracts` définit les manifests et les structures de politique, `appcore-bin` compose l'hôte, les crates de bas niveau fournissent une infrastructure bornée et les dépôts applicatifs fournissent le comportement de domaine.
+Les backends ordinaires accumulent de l'infrastructure cachée : configuration mélangée avec identité, chemins, secrets et endpoints ; retries dans les handlers ; jobs hors cycle de vie ; update avant preuve de health ; leadership distribué sans fencing.
 
-## À utiliser quand
+AppCore sépare l'ownership :
 
-- L'application doit s'exécuter à partir de manifests portables.
-- Les choix d'installation ne doivent pas se retrouver dans le code métier.
-- Commands, queries, audit, stockage, sync, scheduling et supervision doivent partager un même modèle de runtime.
-- Vous avez besoin d'un fonctionnement local-first ou distribué avec des choix de provider explicites.
-
-## À éviter quand
-
-- Un handler HTTP stateless suffit.
-- Vous avez besoin d'un ORM ou d'une abstraction de base de données gérée.
-- Vous attendez des workflows métier intégrés.
-- Vous avez besoin d'une sémantique de consensus multi-master.
+| Contrat | Propriétaire | Contient | Ne contient pas |
+| --- | --- | --- | --- |
+| Application Manifest | application | identité, compatibilité, capabilities, exigences | chemins, provider IDs, endpoints, secrets |
+| Deployment Manifest | installation | mode, providers, réseau, chemins, secret refs, watchdog | règles métier, schémas, source |
+| Runtime Manifest | runtime | version observée, node/core, health, plateforme | overrides utilisateur |
+| Code métier | application | commands, queries, handlers, state, decisions | composition du runtime |
 
 ```mermaid
-flowchart LR
-    A[application.toml] --> H[Runtime host]
-    D[deployment.toml] --> H
-    B[Business Application] --> H
-    H --> P[Provider registry]
-    H --> S[Supervisor]
-    H --> API[Command and query API]
-    H --> O[Operations signals]
+flowchart TB
+    App[Application externe] --> Host[appcore-bin host]
+    Manifest[application.toml] --> Host
+    Deployment[deployment.toml] --> Host
+    Host --> Providers[Providers sélectionnés]
+    Host --> Services[Services supervisés]
+    Host --> API[API command/query]
 ```
 
-## Pages liées
+## Quand l'utiliser
 
-- [Installation](/fr/getting-started/installation)
-- [Vue d'ensemble de l'architecture](/fr/architecture/overview)
-- [Statut du projet](/fr/introduction/project-status)
+Utilisez AppCore pour local-first, cluster, commands/queries explicites, storage durable, backup/restore, health/status, services supervisés, sync avec checkpoints, Peer RPC, gateway ou updates avec staging, health gate et rollback.
+
+## Quand l'éviter
+
+Évitez-le lorsqu'un serveur HTTP stateless et une base managée suffisent. AppCore ne fournit pas ORM, OAuth, vault managé, terminaison TLS universelle, RAFT, consensus multi-master ou résolution automatique de conflits métier.
+
+Chapitre suivant : [contrat à trois artefacts](/fr/architecture/three-artifact-contract).
+

@@ -1,31 +1,24 @@
 ---
 title: AppCore Runtime
-sidebar_position: 0
+sidebar_position: 1
 ---
 
 # AppCore Runtime
 
-AppCore Runtime est un runtime Rust distribué, modulaire et local-first pour héberger des applications. Il prend en charge l'infrastructure réutilisable : cycle de vie, manifests, commands, queries, audit, contrats de stockage, sécurité, scheduling, synchronisation, capability routing, Peer RPC, coordination du control plane, observabilité, supervision et updates.
+AppCore est un runtime Rust pour les applications dont l'infrastructure doit être explicite : manifests, cycle de vie, dispatch des commands, storage, synchronisation, providers, Peer RPC, gateway, supervision et updates appartiennent au runtime, pas au boilerplate applicatif.
 
-Version candidate actuelle : `1.0.1-rc.8`. Toolchain Rust minimale : `1.89`.
+Lire ce manuel comme un livre technique :
 
-Ce n'est pas un ERP, une application métier, un framework web généraliste, OAuth, un coffre géré, un moteur de base de données ou un système de consensus.
+1. [Ce qu'est AppCore](/fr/introduction/what-is-appcore)
+2. [Le contrat à trois artefacts](/fr/architecture/three-artifact-contract)
+3. [Bootstrap et runtime host](/fr/architecture/bootstrap)
+4. [Storage, DNT, backup et restore](/fr/architecture/storage)
+5. [Sync, logs, checkpoints et replay](/fr/architecture/synchronization)
+6. [Fonctionnement distribué](/fr/architecture/distributed)
+7. [Supervisor et cycle de vie](/fr/architecture/supervisor)
+8. [Updates](/fr/architecture/updates)
+9. [Modèle de sécurité](/fr/security/security-model)
+10. [Première application](/fr/tutorials/first-application)
 
-## Start here
+Ligne actuelle : `1.0.1-rc.8`. Toolchain Rust minimale : `1.89`.
 
-- [What Is AppCore](/fr/introduction/what-is-appcore)
-- [Installation](/fr/getting-started/installation)
-- [Vue d'ensemble de l'architecture](/fr/architecture/overview)
-- [Statut du projet](/fr/introduction/project-status)
-- [Roadmap](/fr/development/roadmap)
-
-```mermaid
-flowchart LR
-    A[application.toml] --> H[Runtime host]
-    D[deployment.toml] --> H
-    B[Business Application] --> H
-    H --> P[Provider registry]
-    H --> S[Supervisor]
-    H --> API[Command and query API]
-    H --> O[Operations signals]
-```

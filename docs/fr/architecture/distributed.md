@@ -1,0 +1,30 @@
+---
+title: Fonctionnement distribué
+sidebar_position: 6
+---
+
+# Fonctionnement distribué
+
+Le distribué AppCore combine control plane, leases, discovery, Peer RPC, gateway mesh relay et providers de coordination explicites.
+
+Le file control plane prend un lock, recharge un état validé et borné, supprime les enregistrements expirés, applique une opération et persiste atomiquement.
+
+Leadership est scoped par `service_id`. Un lease contient service, tenant, cluster, holder core, expiry et epoch. L'epoch est le fencing token.
+
+```mermaid
+sequenceDiagram
+    participant Core
+    participant CP as Control plane
+    participant Guard
+    participant Store
+    Core->>CP: acquire_or_renew_service_lease
+    CP-->>Core: lease(epoch=8)
+    Core->>Guard: check write permission(min_epoch=8)
+    Guard-->>Core: Allowed
+    Core->>Store: écriture protégée
+```
+
+Peer RPC valide request ID, trace, protocole, source/target core, tenant, cluster, timestamp, expiry, nonce, capability, body hash et idempotency key optionnelle. Gateway existe pour les cores sans port entrant stable. Il relaie et route, mais n'interprète jamais le payload métier opaque.
+
+Suivant : [supervisor](/fr/architecture/supervisor).
+
