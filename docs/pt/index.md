@@ -1,31 +1,24 @@
 ---
 title: AppCore Runtime
-sidebar_position: 0
+sidebar_position: 1
 ---
 
 # AppCore Runtime
 
-AppCore Runtime é um runtime Rust distribuído, modular e local-first para hospedar aplicações. Ele concentra infraestrutura reutilizável: ciclo de vida, manifests, commands, queries, auditoria, contratos de storage, segurança, scheduling, sincronização, capability routing, Peer RPC, coordenação de control plane, observabilidade, supervisão e updates.
+AppCore é um runtime Rust para aplicações cuja infraestrutura precisa ser explícita: manifests, ciclo de vida, dispatch de commands, storage, sincronização, providers, Peer RPC, gateway, supervisão e updates pertencem ao runtime, não ao boilerplate da aplicação.
 
-Candidato atual: `1.0.1-rc.8`. Toolchain Rust mínima: `1.89`.
+Leia como um livro técnico:
 
-Ele não é ERP, aplicação de negócio, web framework genérico, OAuth, cofre gerenciado, mecanismo de banco de dados ou sistema de consenso.
+1. [O que é AppCore](/pt/introduction/what-is-appcore)
+2. [Contrato de três artefatos](/pt/architecture/three-artifact-contract)
+3. [Bootstrap e runtime host](/pt/architecture/bootstrap)
+4. [Storage, DNT, backup e restore](/pt/architecture/storage)
+5. [Sync, logs, checkpoints e replay](/pt/architecture/synchronization)
+6. [Operação distribuída](/pt/architecture/distributed)
+7. [Supervisor e ciclo de vida](/pt/architecture/supervisor)
+8. [Updates](/pt/architecture/updates)
+9. [Modelo de segurança](/pt/security/security-model)
+10. [Primeira aplicação](/pt/tutorials/first-application)
 
-## Start here
+Linha atual: `1.0.1-rc.8`. Toolchain Rust mínima: `1.89`.
 
-- [What Is AppCore](/pt/introduction/what-is-appcore)
-- [Instalação](/pt/getting-started/installation)
-- [Visão geral da arquitetura](/pt/architecture/overview)
-- [Status do projeto](/pt/introduction/project-status)
-- [Roadmap](/pt/development/roadmap)
-
-```mermaid
-flowchart LR
-    A[application.toml] --> H[Runtime host]
-    D[deployment.toml] --> H
-    B[Business Application] --> H
-    H --> P[Provider registry]
-    H --> S[Supervisor]
-    H --> API[Command and query API]
-    H --> O[Operations signals]
-```

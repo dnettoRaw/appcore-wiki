@@ -1,94 +1,97 @@
 ---
-title: Synchronization
-sidebar_position: 9
+title: Synchronization, Logs, Checkpoints, and Replay
+sidebar_position: 5
 ---
 
-# Synchronization
+# Synchronization, Logs, Checkpoints, and Replay
 
-## Introduction
+AppCore synchronization is conservative leader-to-follower replication. It is not RAFT, not multi-master consensus, and not a domain conflict resolver.
 
-Synchronization is conservative leader-to-follower replication with sequence and hash-chain validation.
+That limitation is the point. The runtime can validate identity, protocol, sequence, hash chains, payload bounds, and checkpoints. It cannot decide whether two business edits are semantically compatible.
 
-## Contract boundary
+## The shop loses internet
 
-The architecture keeps portable application requirements separate from installation-owned providers. Business code implements application behavior. Runtime crates own reusable infrastructure and reject implicit fallbacks when a required provider is missing.
+Suppose a shop records work while offline. Local commands can still update local runtime/application state according to the deployment's storage and command policy. Sync does not pretend the network is present. It records durable progress locally and resumes exchange when a peer is reachable again.
 
-## Operational consequences
+When connectivity returns, the receiver does not trust the incoming batch merely because it came from a known peer. It checks:
 
-| Concern | Runtime behavior | Owner outside the runtime |
-| --- | --- | --- |
-| Manifest validation | Fails before handlers start | Application author and installer |
-| Secret references | Resolved after validation | Secret provider and operator |
-| HTTP command/query API | Bounded DTOs and auth checks | TLS termination and edge policy |
-| Sync | Sequence and hash-chain validation | Domain conflict policy |
-| Supervision | Service restart/degrade/shutdown | OS process manager |
+- source identity compatibility;
+- sequence range;
+- declared event count;
+- payload size;
+- SHA-256 event hash;
+- previous batch hash;
+- replayed sequences;
+- checkpoint state.
 
-## Internal flow
+## The sync message
+
+A replication batch carries:
+
+- `batch_id`, used as idempotency identity for the batch;
+- source node ID;
+- inclusive `sequence_start` and `sequence_end`;
+- declared event count;
+- event hash over metadata and size-prefixed payloads;
+- creation time;
+- optional previous batch hash;
+- opaque event payloads.
+
+The hash includes metadata and payload lengths. This prevents a receiver from accepting the same bytes under different sequence metadata.
 
 ```mermaid
-flowchart TD
-    CP[Control plane] --> P[Presence and discovery]
-    CP --> L[Service-scoped leases]
-    L --> F[Fencing token]
-    F --> W[Protected write]
-    P --> RPC[Peer RPC]
-    RPC --> SYNC[Sync receiver]
-    SYNC --> C[Checkpoint]
+flowchart LR
+    LeaderLog[Leader replication log] --> Batch[SyncMessage]
+    Batch --> Hash[Metadata + payload hash]
+    Hash --> Transport[Transport]
+    Transport --> Receiver[Receiver validation]
+    Receiver --> FollowerLog[Follower replication log]
+    FollowerLog --> Checkpoint[Per-peer checkpoint]
 ```
 
-## Examples
+## Replication log
 
-```rust
-use serde::{Deserialize, Serialize};
-use std::collections::BTreeMap;
+The replication log has in-memory and file-backed implementations.
 
-#[derive(Debug, Clone, Serialize, Deserialize)]
-pub struct Command {
-    pub tenant_id: String,
-    pub idempotency_key: String,
-    pub key: String,
-    pub value: String,
-}
+The file-backed log:
 
-#[derive(Debug, Clone, Serialize, Deserialize)]
-pub enum Event {
-    Recorded { key: String, value: String },
-}
+- uses a stable format marker: `# appcore-replication-log-v1`;
+- bounds total log bytes;
+- bounds individual record bytes;
+- stores records with sequence and hash-chain metadata;
+- reloads and validates durable records before appending;
+- uses process locks and atomic writes for persistence;
+- can recover a valid prefix if a tail was interrupted.
 
-#[derive(Default)]
-pub struct Service {
-    accepted: BTreeMap<String, Event>,
-    projection: BTreeMap<String, String>,
-}
+Appending with a source sequence is idempotent. If the same sequence already exists with the same payload, the append returns the original index. If the same sequence exists with different payload bytes, the log reports a sequence conflict.
 
-impl Service {
-    pub fn handle(&mut self, command: Command) -> Event {
-        if let Some(event) = self.accepted.get(&command.idempotency_key) {
-            return event.clone();
-        }
-        let event = Event::Recorded { key: command.key.clone(), value: command.value.clone() };
-        self.projection.insert(command.key, command.value);
-        self.accepted.insert(command.idempotency_key, event.clone());
-        event
-    }
-}
+## Checkpoints
+
+A checkpoint stores the last accepted sequence and batch hash per peer.
+
+The file checkpoint store is intentionally small and line based:
+
+```text
+# appcore-sync-checkpoint-v1
+peer-a=42,2f4c...
+peer-b=17,
 ```
 
-## Failure modes to test
+Peer IDs are bounded and restricted to ASCII alphanumeric plus `.`, `_`, `:`, and `-`. Hashes are either empty or 64 hex characters. The checkpoint file is bounded and atomically replaced.
 
-- Missing provider ID.
-- Unavailable secret reference.
-- Duplicate or malformed authorization header.
-- Exhausted lease epoch or stale fencing token.
-- Oversized HTTP body, file log, snapshot, or backup.
+Checkpoints answer a recovery question: "where did this receiver stop accepting a given peer's stream?" Without them, recovery would need to replay everything or guess from projected state.
 
-## Limitations
+## Replay
 
-AppCore gives structure for runtime infrastructure. It does not operate your external provider, prove domain correctness, terminate TLS by default, or replace process-level supervision.
+Replay is safe only if handlers and logs are idempotent at the right layer.
 
-## Related pages
+AppCore handles runtime replay by storing sequence and checkpoint state. If a peer resends a batch that has already been accepted, the receiver can recognize the sequence and hash. If bytes differ at the same sequence, that is not a retry; it is a conflict.
 
-- [Storage Model](/en/architecture/storage-model)
-- [Security Model](/en/architecture/security-model)
-- [Distributed Model](/en/architecture/distributed-model)
-- [Supervisor Crate](/en/crates/appcore-supervisor)
+Application command idempotency is separate. A command may require an idempotency key before it is accepted by the runtime. Sync batch idempotency prevents duplicate replication. Both are needed because client retries and peer retries happen at different boundaries.
+
+## Why there is no multi-master
+
+Multi-master replication requires a domain conflict model. AppCore cannot know whether "reserve stock", "edit note", "approve quote", and "rotate secret" have the same conflict semantics. The runtime therefore keeps sync conservative and asks application code to own domain conflict policy.
+
+Continue with [distributed operation](/en/architecture/distributed).
+

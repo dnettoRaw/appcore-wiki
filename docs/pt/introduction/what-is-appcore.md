@@ -5,43 +5,42 @@ sidebar_position: 1
 
 # O que é AppCore
 
-## Introdução
+Imagine a mesma aplicação instalada em dois lugares. Em uma loja ela roda em um notebook e precisa continuar funcionando sem internet. Em outra instalação ela roda em cluster, com control plane, leases, Peer RPC e update supervisionado. O código de negócio não deveria ter duas arquiteturas.
 
-AppCore é um runtime manifest-first para aplicações Rust que precisam tornar o comportamento de infraestrutura explícito e testável.
+AppCore existe para essa fronteira.
 
-Candidato atual: `1.0.1-rc.8`. Toolchain Rust mínima: `1.89`.
+Ele não é web framework, banco de dados, ERP ou plataforma de negócio. Ele é um runtime host que torna decisões de infraestrutura explícitas, versionadas e testáveis.
 
-## Modelo de leitura
+## O problema
 
-Leia AppCore como um conjunto de contratos, não como um monólito. `appcore-contracts` define manifests e estruturas de política, `appcore-bin` compõe o host, crates de baixo nível fornecem infraestrutura limitada e repositórios de aplicação fornecem comportamento de domínio.
+Backends comuns acumulam infraestrutura escondida: configuração mistura identidade, paths, secrets e endpoints; retries entram nos handlers; jobs rodam fora do ciclo de vida; update troca arquivos antes de provar health; liderança distribuída vira um booleano sem fencing.
 
-## Use quando
+AppCore separa ownership:
 
-- A aplicação precisa rodar a partir de manifests portáveis.
-- Escolhas de instalação não podem vazar para o código de negócio.
-- Commands, queries, auditoria, storage, sync, scheduling e supervisão precisam de um único modelo de runtime.
-- Você precisa de operação local-first ou distribuída com escolhas explícitas de provider.
-
-## Evite quando
-
-- Um handler HTTP stateless é suficiente.
-- Você precisa de ORM ou abstração de banco de dados gerenciado.
-- Você espera workflows de negócio embutidos.
-- Você precisa de semântica de consenso multi-master.
+| Contrato | Dono | Contém | Não contém |
+| --- | --- | --- | --- |
+| Application Manifest | aplicação | identidade, compatibilidade, capabilities, requisitos | paths, provider IDs, endpoints, secrets |
+| Deployment Manifest | instalação | modo, providers, rede, paths, secret refs, watchdog | regras de negócio, schemas, source |
+| Runtime Manifest | runtime | versão observada, node/core, health, plataforma | overrides do usuário |
+| Código de negócio | aplicação | commands, queries, handlers, state, decisions | composição do runtime |
 
 ```mermaid
-flowchart LR
-    A[application.toml] --> H[Runtime host]
-    D[deployment.toml] --> H
-    B[Business Application] --> H
-    H --> P[Provider registry]
-    H --> S[Supervisor]
-    H --> API[Command and query API]
-    H --> O[Operations signals]
+flowchart TB
+    App[Aplicação externa] --> Host[appcore-bin host]
+    Manifest[application.toml] --> Host
+    Deployment[deployment.toml] --> Host
+    Host --> Providers[Providers selecionados]
+    Host --> Services[Serviços supervisionados]
+    Host --> API[API command/query]
 ```
 
-## Páginas relacionadas
+## Quando usar
 
-- [Instalação](/pt/getting-started/installation)
-- [Visão geral da arquitetura](/pt/architecture/overview)
-- [Status do projeto](/pt/introduction/project-status)
+Use AppCore quando a aplicação precisa de local-first, cluster, commands/queries explícitos, storage durável, backup/restore, health/status, serviços supervisionados, sync com checkpoints, Peer RPC, gateway ou updates com staging, health gate e rollback.
+
+## Quando não usar
+
+Evite quando um servidor HTTP stateless e um banco gerenciado bastam. AppCore não fornece ORM, OAuth, vault gerenciado, terminação TLS universal, RAFT, consenso multi-master ou resolução automática de conflitos de domínio.
+
+Próximo capítulo: [contrato de três artefatos](/pt/architecture/three-artifact-contract).
+
