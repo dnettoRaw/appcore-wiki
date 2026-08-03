@@ -42,5 +42,11 @@ Use AppCore quando a aplicação precisa de local-first, cluster, commands/queri
 
 Evite quando um servidor HTTP stateless e um banco gerenciado bastam. AppCore não fornece ORM, OAuth, vault gerenciado, terminação TLS universal, RAFT, consenso multi-master ou resolução automática de conflitos de domínio.
 
-Próximo capítulo: [contrato de três artefatos](/pt/architecture/three-artifact-contract).
+## Limitations
 
+- AppCore oferece contratos de runtime; ele não escreve o modelo de negócio.
+- Deployments ainda precisam escolher providers, paths, secrets e process manager corretamente.
+- O runtime valida envelopes e manifests, mas não prova que handlers de domínio estão corretos.
+- A linha 1.0 RC prefere falha explícita a compatibilidade automática com formatos antigos.
+
+Próximo capítulo: [contrato de três artefatos](/pt/architecture/three-artifact-contract).

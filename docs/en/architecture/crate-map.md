@@ -5,7 +5,7 @@ sidebar_position: 12
 
 # Crate Map
 
-AppCore crates are split by ownership boundary, not by convenience.
+When a runtime grows, crate boundaries either explain the architecture or hide it. AppCore crates are split by ownership boundary, not by convenience.
 
 | Layer | Crates | Why it exists |
 | --- | --- | --- |
@@ -20,3 +20,14 @@ AppCore crates are split by ownership boundary, not by convenience.
 
 The architecture rule is acyclic dependency direction. Contracts do not depend on implementations. Business code depends on the public application facade, not private host modules.
 
+## How should you read this map?
+
+Start from the host and move downward. `appcore-bin` composes concrete runtime infrastructure. It depends on contracts, providers, core services, and lifecycle tools. Application code should stop at the public facade instead of importing private host internals.
+
+If a crate owns a wire format or manifest type, treat it as compatibility-sensitive. If it owns a provider implementation, treat it as deployment-sensitive. If it owns business registration facades, treat it as application-facing.
+
+## Limitations
+
+- This map explains ownership boundaries; it is not an exhaustive API reference.
+- Crate names can expose experimental or certification tooling that is not part of the stable application surface.
+- Internal modules may change even when public manifest and application contracts remain compatible.

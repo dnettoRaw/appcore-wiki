@@ -159,5 +159,12 @@ An AppCore 1.0 application should not need a hand-built `RuntimeBuilder`, a priv
 
 The same business code can move from local standalone mode to a cluster by changing deployment policy. That is the primary compatibility story of AppCore.
 
-Continue with [bootstrap and runtime host](/en/architecture/bootstrap).
+## Limitations
 
+- The contract does not eliminate deployment work; operators still choose providers, paths, listeners, and secret references.
+- The Application Manifest declares runtime-facing capabilities, not a complete business schema.
+- The Deployment Manifest is not portable between machines when it contains local paths or environment-specific provider choices.
+- Business code must still implement correct idempotent handlers where the manifest requires idempotency.
+- Private runtime builder paths are intentionally outside the application contract.
+
+Continue with [bootstrap and runtime host](/en/architecture/bootstrap).

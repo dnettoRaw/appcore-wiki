@@ -5,11 +5,13 @@ sidebar_position: 6
 
 # Distributed Operation
 
-Distributed AppCore is built from explicit pieces: control plane, leases, discovery, peer RPC, optional gateway mesh relay, and provider-selected coordination.
+Imagine two runtime cores after a network pause. One core still believes it is allowed to run a scheduled service. Another core has already renewed the lease and continued work. If both can write, the cluster corrupts its own state.
+
+Distributed AppCore is built to make that situation explicit. The pieces are control plane, leases, discovery, Peer RPC, optional gateway mesh relay, and provider-selected coordination.
 
 Private networking is not authentication. A node must still validate tenant, cluster, protocol, target core, nonce, expiry, payload hash, and credential binding.
 
-## Control plane
+## What problem does the control plane solve?
 
 The control plane records runtime presence, heartbeats, peer discovery, and service-scoped leadership. The file control-plane provider is a crash-consistent reference implementation for a shared deployment directory.
 
@@ -23,7 +25,9 @@ Every file-control-plane operation:
 
 The durable state envelope has a format version and a maximum size. Unsupported versions fail with the same update-wall language used elsewhere: old state is not guessed into a new shape.
 
-## Service leases and fencing
+The control plane is not a business database. It answers runtime coordination questions: who is present, which peers are discoverable, and which core currently holds a service lease.
+
+## Why is election not enough without fencing?
 
 Leadership is scoped by service ID, not global runtime identity. A lease includes service, tenant, cluster, holder core, expiry, and epoch. The epoch is the fencing token.
 
@@ -50,13 +54,15 @@ A stale leader fails when:
 
 That is why AppCore documents "leader election" together with "fencing". Election chooses a holder. Fencing protects writes after leadership changes or delayed messages.
 
-## Provider composition
+If a delayed old leader wakes up and attempts a protected write with an old epoch, the guard can reject it. This is the difference between "we elected someone" and "old work cannot still commit".
+
+## Why are providers selected explicitly?
 
 Deployment manifests select providers explicitly. The provider plan extracts storage, control plane, coordination store, secret provider, job provider, peer discovery, update provider, database provider, peer transport, command transport, and named adapters.
 
 Provider factories are registered by role and provider ID. If the selected role/provider pair is unavailable, provider creation fails. There is no automatic fallback from remote to local, cluster to standalone, or secure to insecure.
 
-## Peer RPC
+## What does Peer RPC validate before dispatch?
 
 Peer RPC envelopes bind:
 
@@ -77,7 +83,7 @@ Validation checks payload size, tenant, cluster, target core, protocol compatibi
 
 The peer token can also bind a request hash. That hash covers routing metadata and payload integrity so a bearer token cannot be replayed for a different peer request.
 
-## Gateway mesh relay
+## Why does the gateway exist?
 
 The gateway exists for Cores that can make outbound connections but cannot expose stable inbound ports. It is a relay, not a business API.
 
@@ -93,5 +99,12 @@ flowchart LR
 
 The gateway never interprets opaque business payloads. It routes by tenant/core/capability and enforces bounded message sizes, timeouts, queue limits, and credential checks.
 
-Continue with [supervisor and lifecycle](/en/architecture/supervisor).
+## Limitations
 
+- The file control-plane provider is a reference implementation for a shared deployment directory, not a globally distributed consensus system.
+- Service leases require clocks and TTLs to be configured conservatively for the deployment.
+- Peer RPC authenticates and bounds runtime envelopes; it does not define business authorization rules.
+- The gateway relays opaque peer traffic and cannot resolve application-level conflicts.
+- Provider selection is strict. A missing provider fails startup instead of falling back to a weaker local option.
+
+Continue with [supervisor and lifecycle](/en/architecture/supervisor).

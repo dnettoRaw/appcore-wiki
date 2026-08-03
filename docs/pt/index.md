@@ -22,3 +22,6 @@ Leia como um livro técnico:
 
 Linha atual: `1.0.1-rc.8`. Toolchain Rust mínima: `1.89`.
 
+## Limitations
+
+Este índice é mapa de leitura, não referência completa de API. Use os capítulos para comportamento operacional, decisões e limites.

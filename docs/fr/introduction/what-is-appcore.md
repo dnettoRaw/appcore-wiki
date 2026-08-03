@@ -42,5 +42,11 @@ Utilisez AppCore pour local-first, cluster, commands/queries explicites, storage
 
 Évitez-le lorsqu'un serveur HTTP stateless et une base managée suffisent. AppCore ne fournit pas ORM, OAuth, vault managé, terminaison TLS universelle, RAFT, consensus multi-master ou résolution automatique de conflits métier.
 
-Chapitre suivant : [contrat à trois artefacts](/fr/architecture/three-artifact-contract).
+## Limitations
 
+- AppCore fournit des contrats runtime ; il n'écrit pas le modèle métier.
+- Chaque deployment doit encore choisir correctement providers, chemins, secrets et process manager.
+- Le runtime valide manifests et enveloppes ; il ne prouve pas que les handlers métier sont corrects.
+- La ligne 1.0 RC préfère l'échec explicite à la compatibilité automatique avec les anciens formats.
+
+Chapitre suivant : [contrat à trois artefacts](/fr/architecture/three-artifact-contract).

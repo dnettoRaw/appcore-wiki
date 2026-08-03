@@ -5,6 +5,8 @@ sidebar_position: 11
 
 # Première application
 
+Le but n'est pas de créer un produit complet. Le but est de voir la frontière : le code métier déclare le comportement, les manifests déclarent le contrat, le deployment choisit l'environnement.
+
 Le template minimal enregistre une command et un handler. L'entrée reste petite :
 
 ```rust
@@ -42,3 +44,9 @@ listen_addresses = ["127.0.0.1:39300"]
 
 Tests suivants : mismatch de manifest, command non déclarée, idempotency absente, path traversal dans storage et shutdown coopératif.
 
+## Limitations
+
+- L'exemple utilise une command minimale et ne modélise pas un workflow métier.
+- Il suppose la facade publique `appcore_bin::application`.
+- Il démontre un deployment local standalone, pas un cluster complet.
+- Il ne couvre pas provider custom ni gestion de secrets en production.
