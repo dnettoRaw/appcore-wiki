@@ -25,6 +25,21 @@ html[data-theme='dark'] {
   width: 100%;
 }
 
+.theme-doc-sidebar-container,
+.theme-doc-sidebar-container * {
+  overflow-anchor: none;
+}
+
+@media (min-width: 997px) {
+  .theme-doc-sidebar-container .menu {
+    scroll-behavior: auto;
+  }
+
+  .theme-doc-sidebar-container .menu__list {
+    transition: none !important;
+  }
+}
+
 .dnettoraw-footer-credit {
   align-items: center;
   display: inline-flex;

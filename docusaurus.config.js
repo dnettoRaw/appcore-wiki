@@ -33,6 +33,11 @@ const config = {
     ],
   ],
   themeConfig: {
+    docs: {
+      sidebar: {
+        autoCollapseCategories: true,
+      },
+    },
     navbar: {
       title: 'AppCore Runtime',
       items: [
