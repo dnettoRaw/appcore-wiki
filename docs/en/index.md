@@ -19,8 +19,12 @@ This manual is written as a technical book. Read the chapters in order if you ar
 8. [Updates](/en/architecture/updates)
 9. [Security model](/en/security/security-model)
 10. [Build the first application](/en/tutorials/first-application)
+11. [Examples from basic to intermediate](/en/tutorials/examples/)
+12. [Reference for all 21 published crates](/en/crates/)
 
-Current runtime line: `1.0.1-rc.8`. Minimum Rust toolchain: `1.89`.
+Current runtime line: `1.0.1-rc.8`. Minimum Rust toolchain: `1.89`. All 21
+Runtime crates are published; applications should normally depend on
+`appcore-bin` and use its `application` facade.
 
 ## Limitations
 

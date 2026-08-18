@@ -19,8 +19,12 @@ Lire ce manuel comme un livre technique :
 8. [Updates](/fr/architecture/updates)
 9. [Modèle de sécurité](/fr/security/security-model)
 10. [Première application](/fr/tutorials/first-application)
+11. [Exemples du niveau débutant à intermédiaire](/fr/tutorials/examples/)
+12. [Référence des 21 crates publiés](/fr/crates/)
 
-Ligne actuelle : `1.0.1-rc.8`. Toolchain Rust minimale : `1.89`.
+Ligne actuelle : `1.0.1-rc.8`. Toolchain Rust minimale : `1.89`. Les 21 crates
+Runtime sont publiés ; une application doit normalement dépendre de
+`appcore-bin` et utiliser sa façade `application`.
 
 ## Limitations
 
