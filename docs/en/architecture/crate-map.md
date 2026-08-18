@@ -7,6 +7,10 @@ sidebar_position: 12
 
 When a runtime grows, crate boundaries either explain the architecture or hide it. AppCore crates are split by ownership boundary, not by convenience.
 
+The current `1.0.1-rc.8` workspace contains 21 Runtime crates, and all 21 are
+published on crates.io. The complete per-crate reference is available in the
+[crate catalog](/en/crates/).
+
 | Layer | Crates | Why it exists |
 | --- | --- | --- |
 | Foundation | `appcore-contracts`, `appcore-types`, `appcore-transport`, `appcore-dnt` | reusable contracts, validated IDs, bounded transport, and encrypted file envelopes without concrete runtime composition |
@@ -14,9 +18,11 @@ When a runtime grows, crate boundaries either explain the architecture or hide i
 | Core | `appcore-core` | command/event/state/decision registries, runtime identity, lifecycle, audit, idempotency |
 | Runtime services | `appcore-api`, `appcore-storage`, `appcore-security`, `appcore-ops`, `appcore-scheduler`, `appcore-sync` | one infrastructure responsibility per crate |
 | Distributed | `appcore-distributed-contracts`, `appcore-control-plane`, `appcore-capabilities`, `appcore-peer-rpc`, `appcore-gateway` | wire contracts, presence, discovery, leases, capability routing, peer transport, and gateway relay |
-| Composition | `appcore-provider`, `appcore-update`, provider adapters | provider factories, deployment plans, coordination stores, update lifecycle |
+| Composition | `appcore-provider`, `appcore-update`, `appcore-provider-vercel-neon` | provider factories, deployment plans, official adapters, update lifecycle |
 | Host | `appcore-bin` | the only crate allowed to compose concrete runtime infrastructure for applications |
 | Tools | `runtime-console`, certification tools | operator and release evidence workflows |
+
+Tools are workspace utilities and are not part of the 21-crate Runtime count.
 
 The architecture rule is acyclic dependency direction. Contracts do not depend on implementations. Business code depends on the public application facade, not private host modules.
 
@@ -28,6 +34,7 @@ If a crate owns a wire format or manifest type, treat it as compatibility-sensit
 
 ## Limitations
 
-- This map explains ownership boundaries; it is not an exhaustive API reference.
+- This map explains ownership boundaries; use the [crate catalog](/en/crates/)
+  for APIs, limits, maturity, and registry links.
 - Crate names can expose experimental or certification tooling that is not part of the stable application surface.
 - Internal modules may change even when public manifest and application contracts remain compatible.
