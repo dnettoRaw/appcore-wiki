@@ -7,6 +7,16 @@ sidebar_position: 11
 
 O objetivo deste tutorial não é criar um produto. É enxergar a fronteira: código de negócio declara comportamento, manifests declaram contrato e deployment escolhe ambiente.
 
+## Instale a facade publicada
+
+```bash
+cargo add appcore-bin@1.0.1-rc.8
+```
+
+Esse é o ponto de entrada manifest-first. Os outros 20 crates estão disponíveis
+para consumidores de baixo nível e adapters de provider; consulte o
+[catálogo de crates](/pt/crates/) antes de depender deles diretamente.
+
 O template mínimo registra um command e um handler. A entrada deve continuar pequena:
 
 ```rust

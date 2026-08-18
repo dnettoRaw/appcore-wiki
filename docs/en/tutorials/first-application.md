@@ -9,7 +9,17 @@ This tutorial follows the maintained backend template shape. The goal is not to 
 
 The mental model is simple: business code declares behavior, manifests declare the contract, and deployment chooses the runtime environment.
 
-## 1. What is the smallest useful business implementation?
+## 1. Install the published application facade
+
+```bash
+cargo add appcore-bin@1.0.1-rc.8
+```
+
+This selects the public manifest-first facade. The other 20 Runtime crates are
+available for low-level consumers and provider adapters; see the
+[crate catalog](/en/crates/) before depending on them directly.
+
+## 2. What is the smallest useful business implementation?
 
 The smallest useful application declares a command and registers a handler:
 
@@ -48,7 +58,7 @@ impl CommandHandler for PingHandler {
 }
 ```
 
-## 2. Why should `main` stay small?
+## 3. Why should `main` stay small?
 
 ```rust
 fn main() {
@@ -61,7 +71,7 @@ fn main() {
 
 If `main` starts HTTP servers, opens storage roots, or creates token providers, the application has crossed the runtime boundary.
 
-## 3. Why must the manifest declare the command too?
+## 4. Why must the manifest declare the command too?
 
 ```toml
 [[capabilities]]
@@ -75,7 +85,7 @@ idempotency_required = true
 
 Because idempotency is required, a command request without an idempotency key is rejected before handler execution.
 
-## 4. What does the first deployment choose?
+## 5. What does the first deployment choose?
 
 ```toml
 manifest_version = 1
@@ -98,15 +108,15 @@ command_transport = "http"
 
 The deployment selects the file storage provider and listener address. The application code does not change if a later deployment selects cluster mode and a different provider set.
 
-## 5. What should you inspect after it boots?
+## 6. What should you inspect after it boots?
 
 Set a local secret through the environment, then run the application. The runtime exposes health and status endpoints when the deployment enables a listener.
 
 ```bash
 export APPCORE_BACKEND_TEMPLATE_SECRET="$(openssl rand -hex 32)"
 cargo run --manifest-path templates/appcore-backend/Cargo.toml
-curl -s http://127.0.0.1:39300/health
-curl -s http://127.0.0.1:39300/status
+curl -s http://127.0.0.1:39300/v1/health
+curl -s http://127.0.0.1:39300/v1/status/public
 ```
 
 ## What should you test next?

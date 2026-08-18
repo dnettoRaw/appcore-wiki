@@ -1,0 +1,34 @@
+---
+title: appcore-sync
+sidebar_position: 11
+---
+
+# appcore-sync
+
+:::info Published package
+Version **`1.0.1-rc.8`** · MSRV **Rust `1.89`** · [crates.io](https://crates.io/crates/appcore-sync/1.0.1-rc.8) · [docs.rs](https://docs.rs/crate/appcore-sync/1.0.1-rc.8) · [source](https://github.com/dnettoRaw/AppCore-Runtime/tree/ba8cfd5b915a087c28f08e65f6d898868989eeda/crates/appcore-sync)
+:::
+
+
+**Responsibility:** conservative leader-to-follower replication contracts and
+local durability helpers.
+
+**Direct AppCore dependencies:** `appcore-core`, `appcore-distributed-contracts`, `appcore-ops`, `appcore-transport`.
+
+**Primary API:** node role/status/peer/heartbeat and `SyncMessage`; V1 wire
+codec; replication logs and snapshots; in-memory/file checkpoints and outbox;
+receiver state/acknowledgement; follower client; HTTP transport; peer discovery;
+retry policy, push metrics and `SyncError`.
+Opaque content-envelope transport contracts are reexported for DNT-backed sync
+packages without exposing plaintext to routing code.
+
+Use it for compatible, ordered, hash-chained replication. Do not bypass
+identity/protocol checks or reinterpret it as RAFT, multi-master consensus or a
+business conflict resolver.
+
+The file log is capped at 256 MiB and the outbox at 64 MiB. Checkpoint peer IDs
+and hashes are validated on write and load. A receiver validates the complete
+batch, sequence arithmetic and every record bound before any log or checkpoint
+mutation, so a late invalid event cannot leave a partial append.
+
+**Maturity:** stable conservative RC profile with strict V1 decoding.

@@ -7,6 +7,16 @@ sidebar_position: 11
 
 Le but n'est pas de créer un produit complet. Le but est de voir la frontière : le code métier déclare le comportement, les manifests déclarent le contrat, le deployment choisit l'environnement.
 
+## Installer la façade publiée
+
+```bash
+cargo add appcore-bin@1.0.1-rc.8
+```
+
+C'est le point d'entrée manifest-first. Les 20 autres crates sont disponibles
+pour les consommateurs bas niveau et adapters provider ; consulter le
+[catalogue des crates](/fr/crates/) avant d'en dépendre directement.
+
 Le template minimal enregistre une command et un handler. L'entrée reste petite :
 
 ```rust
