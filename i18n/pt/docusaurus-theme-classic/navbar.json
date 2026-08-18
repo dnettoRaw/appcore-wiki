@@ -1,0 +1,22 @@
+{
+  "title": {
+    "message": "AppCore Runtime",
+    "description": "The title in the navbar"
+  },
+  "item.label.Architecture": {
+    "message": "Arquitetura",
+    "description": "Navbar item with label Architecture"
+  },
+  "item.label.Security": {
+    "message": "Segurança",
+    "description": "Navbar item with label Security"
+  },
+  "item.label.Crates": {
+    "message": "Crates",
+    "description": "Navbar item with label Crates"
+  },
+  "item.label.GitHub": {
+    "message": "GitHub",
+    "description": "Navbar item with label GitHub"
+  }
+}

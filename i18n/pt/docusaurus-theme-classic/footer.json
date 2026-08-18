@@ -1,0 +1,22 @@
+{
+  "link.item.label.Architecture": {
+    "message": "Arquitetura",
+    "description": "The label of footer link with label=Architecture linking to /architecture/bootstrap"
+  },
+  "link.item.label.Security": {
+    "message": "Segurança",
+    "description": "The label of footer link with label=Security linking to /security/security-model"
+  },
+  "link.item.label.Crates": {
+    "message": "Crates",
+    "description": "The label of footer link with label=Crates linking to /crates/"
+  },
+  "link.item.label.GitHub": {
+    "message": "GitHub",
+    "description": "The label of footer link with label=GitHub linking to https://github.com/dnettoraw/appcore-wiki"
+  },
+  "copyright": {
+    "message": "feito com &lt;3 por <a class=\"dnettoraw-footer-credit\" href=\"https://www.dnettoraw.com\" target=\"_blank\" rel=\"noopener noreferrer\"><img src=\"/img/dnettoraw-logo.svg\" alt=\"\" width=\"18\" height=\"18\" loading=\"lazy\" />dnettoraw</a>",
+    "description": "The footer copyright"
+  }
+}
