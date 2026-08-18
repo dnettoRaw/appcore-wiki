@@ -46,51 +46,22 @@ const crates = [
   'appcore-bin',
 ];
 
-const crateLabels = {
-  en: 'Crate reference (21)',
-  pt: 'Referência dos crates (21)',
-  fr: 'Référence des crates (21)',
-};
-
-const exampleLabels = {
-  en: 'Examples — basic to intermediate',
-  pt: 'Exemplos — básico ao intermediário',
-  fr: 'Exemples — débutant à intermédiaire',
-};
-
-const languageCategory = (language, label) => ({
-  type: 'category',
-  label,
-  collapsed: language !== 'en',
-  items: [
-    `${language}/index`,
-    ...chapters.map((chapter) => `${language}/${chapter}`),
-    {
-      type: 'category',
-      label: exampleLabels[language],
-      collapsed: true,
-      items: examples.map(
-        (example) => `${language}/tutorials/examples/${example}`,
-      ),
-    },
-    `${language}/architecture/crate-map`,
-    {
-      type: 'category',
-      label: crateLabels[language],
-      collapsed: true,
-      items: [
-        `${language}/crates/index`,
-        ...crates.map((crate) => `${language}/crates/${crate}`),
-      ],
-    },
-  ],
-});
-
 module.exports = {
   tutorialSidebar: [
     'index',
-    languageCategory('en', 'English'),
-    languageCategory('pt', 'Português'),
-    languageCategory('fr', 'Français'),
+    ...chapters,
+    {
+      type: 'category',
+      label: 'Examples — basic to intermediate',
+      collapsed: true,
+      items: examples.map((example) => `tutorials/examples/${example}`),
+    },
+    'architecture/crate-map',
+    {
+      type: 'category',
+      label: 'Crate reference (21)',
+      collapsed: true,
+      items: ['crates/index', ...crates.map((crate) => `crates/${crate}`)],
+    },
   ],
 };

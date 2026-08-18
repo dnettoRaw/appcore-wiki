@@ -8,6 +8,15 @@ const config = {
   baseUrl: '/',
   organizationName: 'appcore',
   projectName: 'appcore-wiki',
+  i18n: {
+    defaultLocale: 'en',
+    locales: ['en', 'pt', 'fr'],
+    localeConfigs: {
+      en: {label: 'English', htmlLang: 'en'},
+      pt: {label: 'Português', htmlLang: 'pt-BR'},
+      fr: {label: 'Français', htmlLang: 'fr'},
+    },
+  },
   onBrokenLinks: 'throw',
   markdown: {
     mermaid: true,
@@ -16,6 +25,20 @@ const config = {
     },
   },
   themes: ['@docusaurus/theme-mermaid'],
+  plugins: [
+    [
+      '@docusaurus/plugin-client-redirects',
+      {
+        createRedirects(existingPath) {
+          if (process.env.DOCUSAURUS_CURRENT_LOCALE !== 'en') {
+            return undefined;
+          }
+
+          return existingPath === '/' ? '/en/' : `/en${existingPath}`;
+        },
+      },
+    ],
+  ],
   presets: [
     [
       'classic',
@@ -41,24 +64,19 @@ const config = {
     navbar: {
       title: 'AppCore Runtime',
       items: [
-        {to: '/en/', label: 'English', position: 'left'},
-        {to: '/pt/', label: 'Português', position: 'left'},
-        {to: '/fr/', label: 'Français', position: 'left'},
-        {to: '/en/architecture/bootstrap', label: 'Architecture', position: 'left'},
-        {to: '/en/security/security-model', label: 'Security', position: 'left'},
-        {to: '/en/crates/', label: 'Crates', position: 'left'},
+        {to: '/architecture/bootstrap', label: 'Architecture', position: 'left'},
+        {to: '/security/security-model', label: 'Security', position: 'left'},
+        {to: '/crates/', label: 'Crates', position: 'left'},
+        {type: 'localeDropdown', position: 'right'},
         {href: 'https://github.com/dnettoraw/appcore-wiki', label: 'GitHub', position: 'right'},
       ],
     },
     footer: {
       style: 'dark',
       links: [
-        {label: 'English', to: '/en/'},
-        {label: 'Português', to: '/pt/'},
-        {label: 'Français', to: '/fr/'},
-        {label: 'Architecture', to: '/en/architecture/bootstrap'},
-        {label: 'Security', to: '/en/security/security-model'},
-        {label: 'Crates', to: '/en/crates/'},
+        {label: 'Architecture', to: '/architecture/bootstrap'},
+        {label: 'Security', to: '/security/security-model'},
+        {label: 'Crates', to: '/crates/'},
         {label: 'GitHub', href: 'https://github.com/dnettoraw/appcore-wiki'},
       ],
       copyright: `feito com &lt;3 por <a class="dnettoraw-footer-credit" href="https://www.dnettoraw.com" target="_blank" rel="noopener noreferrer"><img src="/img/dnettoraw-logo.svg" alt="" width="18" height="18" loading="lazy" />dnettoraw</a>`,
