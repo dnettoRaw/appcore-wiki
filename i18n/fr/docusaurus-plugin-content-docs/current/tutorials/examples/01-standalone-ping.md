@@ -29,11 +29,10 @@ edition = "2021"
 rust-version = "1.89"
 
 [dependencies]
-appcore-bin = { version = "=1.0.1-rc.8", default-features = false }
+appcore-bin = { version = "=1.0.0", default-features = false }
 ```
 
-Le pin exact rend ce tutoriel reproductible pendant que la ligne 1.0 reste une
-release candidate.
+Le pin exact garde ce tutoriel reproductible avec le contrat stable 1.0.
 
 ## Application Manifest
 
@@ -51,7 +50,7 @@ feature_flags = {}
 metadata = {}
 
 [runtime]
-minimum_runtime_version = "1.0.1-rc.8"
+minimum_runtime_version = "1.0.0"
 protocol_version = "1"
 required_features = []
 

@@ -47,6 +47,6 @@ Utilisez AppCore pour local-first, cluster, commands/queries explicites, storage
 - AppCore fournit des contrats runtime ; il n'écrit pas le modèle métier.
 - Chaque deployment doit encore choisir correctement providers, chemins, secrets et process manager.
 - Le runtime valide manifests et enveloppes ; il ne prouve pas que les handlers métier sont corrects.
-- La ligne 1.0 RC préfère l'échec explicite à la compatibilité automatique avec les anciens formats.
+- La ligne stable 1.0 préfère l'échec explicite à la compatibilité automatique avec les anciens formats.
 
 Chapitre suivant : [contrat à trois artefacts](/architecture/three-artifact-contract).

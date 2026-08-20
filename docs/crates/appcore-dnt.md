@@ -6,12 +6,12 @@ sidebar_position: 7
 # appcore-dnt
 
 :::info Published package
-Published **`1.0.1-rc.8`** · current Runtime workspace **`1.0.1-rc.9`** · MSRV **Rust `1.89`** · [crates.io](https://crates.io/crates/appcore-dnt/1.0.1-rc.8) · [docs.rs](https://docs.rs/crate/appcore-dnt/1.0.1-rc.8) · [source](https://github.com/dnettoRaw/AppCore-Runtime/tree/main/crates/appcore-dnt)
+Stable **`1.0.0`** · MSRV **Rust `1.89`** · [crates.io](https://crates.io/crates/appcore-dnt/1.0.0) · [docs.rs](https://docs.rs/crate/appcore-dnt/1.0.0) · [source](https://github.com/dnettoRaw/AppCore-Runtime/tree/v1.0.0/crates/appcore-dnt)
 :::
 
 ## Crate-owned guide and examples
 
-The Runtime repository maintains the detailed [guide](https://github.com/dnettoRaw/AppCore-Runtime/blob/main/crates/appcore-dnt/wiki/guide.en.md), [basic example](https://github.com/dnettoRaw/AppCore-Runtime/blob/main/crates/appcore-dnt/wiki/examples/basic.en.md), and [intermediate example](https://github.com/dnettoRaw/AppCore-Runtime/blob/main/crates/appcore-dnt/wiki/examples/intermediate.en.md). The wiki summarizes the public boundary; API and executable details live beside the crate code.
+The Runtime repository maintains the detailed [guide](https://github.com/dnettoRaw/AppCore-Runtime/blob/v1.0.0/crates/appcore-dnt/wiki/guide.en.md), [basic example](https://github.com/dnettoRaw/AppCore-Runtime/blob/v1.0.0/crates/appcore-dnt/wiki/examples/basic.en.md), and [intermediate example](https://github.com/dnettoRaw/AppCore-Runtime/blob/v1.0.0/crates/appcore-dnt/wiki/examples/intermediate.en.md). The wiki summarizes the public boundary; API and executable details live beside the crate code.
 
 **Responsibility:** generic DNT encrypted container contracts and helpers.
 
@@ -148,7 +148,7 @@ Interpretation:
   their baseline does not include encryption, authentication, key rotation,
   context binding or tamper detection.
 
-The [complete measured report](https://github.com/dnettoRaw/AppCore-Runtime/blob/main/crates/appcore-dnt/wiki/benchmarks/dnt-2026-08-02-m1.en.md) records
+The [complete measured report](https://github.com/dnettoRaw/AppCore-Runtime/blob/v1.0.0/crates/appcore-dnt/wiki/benchmarks/dnt-2026-08-02-m1.en.md) records
 hardware, APFS/SSD, AC power, Rust/profile, warm-up, sample counts, mean,
 deviation, p95, p99, maximum, throughput, seal/rekey results and unmeasured
 memory/CPU evidence. Regenerate it on the deployment class that matters. DNT is
@@ -174,5 +174,5 @@ Threat model: DNT protects confidentiality and integrity of stored bytes
 against offline file inspection or tampering without the key. It does not
 protect against a process that is legitimately holding the key in memory.
 
-**Maturity:** additive post-RC contract. Manifest V1 is unchanged; deployments
+**Maturity:** stable additive contract. Manifest V1 is unchanged; deployments
 select DNT through existing provider/capability configuration.

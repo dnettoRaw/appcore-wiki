@@ -27,7 +27,7 @@ DNT autentica contexto e cifra payload. Peer RPC valida tenant, cluster, core, p
 - AppCore não fornece OAuth.
 - Não fornece TLS termination universal para todos os deployments.
 - Não opera vault gerenciado de produção.
-- Hardware-backed keys não são garantia da linha 1.0 RC.
+- Hardware-backed keys não fazem parte do contrato estável 1.0.
 - Autorização de domínio pertence à aplicação.
 - Um host comprometido pode atacar arquivos locais fora do processo AppCore.
 

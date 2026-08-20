@@ -6,12 +6,12 @@ sidebar_position: 22
 # appcore-bin
 
 :::info Paquet publié
-Publié **`1.0.1-rc.8`** · workspace Runtime actuel **`1.0.1-rc.9`** · MSRV **Rust `1.89`** · [crates.io](https://crates.io/crates/appcore-bin/1.0.1-rc.8) · [docs.rs](https://docs.rs/crate/appcore-bin/1.0.1-rc.8) · [code source](https://github.com/dnettoRaw/AppCore-Runtime/tree/main/crates/appcore-bin)
+Stable **`1.0.0`** · MSRV **Rust `1.89`** · [crates.io](https://crates.io/crates/appcore-bin/1.0.0) · [docs.rs](https://docs.rs/crate/appcore-bin/1.0.0) · [code source](https://github.com/dnettoRaw/AppCore-Runtime/tree/v1.0.0/crates/appcore-bin)
 :::
 
 ## Guide et exemples maintenus par le crate
 
-Le dépôt Runtime maintient le [guide détaillé](https://github.com/dnettoRaw/AppCore-Runtime/blob/main/crates/appcore-bin/wiki/guide.fr.md), [exemple débutant](https://github.com/dnettoRaw/AppCore-Runtime/blob/main/crates/appcore-bin/wiki/examples/basic.fr.md) et [exemple intermédiaire](https://github.com/dnettoRaw/AppCore-Runtime/blob/main/crates/appcore-bin/wiki/examples/intermediate.fr.md). Le wiki résume la frontière publique ; les détails d’API et d’exécution restent avec le code du crate.
+Le dépôt Runtime maintient le [guide détaillé](https://github.com/dnettoRaw/AppCore-Runtime/blob/v1.0.0/crates/appcore-bin/wiki/guide.fr.md), [exemple débutant](https://github.com/dnettoRaw/AppCore-Runtime/blob/v1.0.0/crates/appcore-bin/wiki/examples/basic.fr.md) et [exemple intermédiaire](https://github.com/dnettoRaw/AppCore-Runtime/blob/v1.0.0/crates/appcore-bin/wiki/examples/intermediate.fr.md). Le wiki résume la frontière publique ; les détails d’API et d’exécution restent avec le code du crate.
 
 **Responsabilité :** façade manifest-first, CLI et composition root.
 
@@ -34,10 +34,21 @@ applicatif et le peer RPC utilisent le même owner pour l'enforcement de
 déclaration, mode, idempotence, écriture opérationnelle et leadership. Les
 queries de statut Runtime restent un comportement explicite du host.
 
+Selectionner `[adapters.gateway]` avec le provider `appcore-gateway` est la
+frontiere declarative d'activation du Gateway. Le bootstrap parse la
+configuration dans la crate owner, ajoute et autorise `runtime.gateway` dans le
+catalogue partage, reutilise la securite du Runtime et enregistre le service
+dans le Supervisor. Une erreur de configuration ou de bind arrete le startup;
+l'absence ne cree aucun listener ni task Gateway. `ApplicationServiceReport`
+expose les champs surs started, state et bind, et le shutdown du host joint
+tout le travail possede par le Gateway. Le replay store est sur entre
+processus; cluster exige `paths.gateway_replay` absolu sur un volume partage et
+inscriptible. Le shutdown ferme les connexions incompletes avant son delai.
+
 C'est la dépendance recommandée des applications. Il possède chargement des
 manifests, providers, lifecycle, HTTP, sync, peer RPC, control plane,
-scheduling, supervision, updates et shutdown.
+Gateway, scheduling, supervision, updates et shutdown.
 
 Les applications utilisent le module public `application` et évitent internals.
 
-**Maturité :** façade manifest-first RC stable; internals restent détails.
+**Maturité :** façade manifest-first stable; internals restent détails.

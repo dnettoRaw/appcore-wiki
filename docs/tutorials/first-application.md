@@ -14,7 +14,7 @@ The mental model is simple: business code declares behavior, manifests declare t
 ## 1. Install the published application facade
 
 ```bash
-cargo add appcore-bin@1.0.1-rc.8
+cargo add appcore-bin@1.0.0
 ```
 
 This selects the published manifest-first facade. The other public crates are

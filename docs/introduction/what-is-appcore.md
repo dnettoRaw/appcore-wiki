@@ -110,7 +110,7 @@ Those omissions are design boundaries. They keep runtime infrastructure reusable
 - AppCore gives application code runtime contracts; it does not write the business model for the application.
 - It makes local-first and distributed infrastructure explicit, but each deployment still needs correct provider, storage, secret, and process-manager choices.
 - It validates runtime envelopes and manifests; it does not prove that domain handlers are correct.
-- The 1.0 release-candidate line intentionally favors conservative behavior over broad automatic compatibility with old config shapes.
+- The stable 1.0 line intentionally favors conservative behavior over broad automatic compatibility with old config shapes.
 
 ## Read next
 

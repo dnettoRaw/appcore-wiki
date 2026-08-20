@@ -22,11 +22,9 @@ This manual is written as a technical book. Read the chapters in order if you ar
 11. [Examples from basic to intermediate](/tutorials/examples/)
 12. [Reference for all 22 public crates](/crates/)
 
-Published application facade: `appcore-bin@1.0.1-rc.8`. Current Runtime
-workspace: `1.0.1-rc.9`. Minimum Rust toolchain: `1.89`. Applications should
-normally depend on `appcore-bin` and use its `application` facade. The 22nd
-public crate, independently versioned `appcore-args`, is published as
-`1.0.1-rc.9`.
+Stable release: `1.0.0`. All 22 public crates are available on crates.io.
+Minimum Rust toolchain: `1.89`. Applications should normally depend on
+`appcore-bin@1.0.0` and use its `application` facade.
 
 ## Limitations
 

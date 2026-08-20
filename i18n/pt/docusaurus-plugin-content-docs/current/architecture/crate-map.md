@@ -7,11 +7,10 @@ sidebar_position: 12
 
 Quando um runtime cresce, os limites entre crates precisam explicar a arquitetura. No AppCore eles seguem ownership, não conveniência.
 
-O workspace atual contém 22 crates públicos. Os 21 originais estão sendo
-preparados como `1.0.1-rc.9`, enquanto a última versão deles no crates.io segue
-em `1.0.1-rc.8`. O `appcore-args`, versionado de forma independente, está
-publicado como `1.0.1-rc.9` e está em `1.0.1-rc.10` no workspace. A referência
-individual está no [catálogo de crates](/crates/).
+A release estável `1.0.0` contém 22 crates públicos, todos publicados no
+crates.io. As fundações standalone mantêm SemVer independente mesmo quando
+seus números de versão coincidem com o Runtime. A referência individual está
+no [catálogo de crates](/crates/).
 
 | Camada | Crates | Por que existe |
 | --- | --- | --- |

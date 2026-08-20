@@ -87,6 +87,23 @@ The peer token can also bind a request hash. That hash covers routing metadata a
 
 The gateway exists for Cores that can make outbound connections but cannot expose stable inbound ports. It is a relay, not a business API.
 
+Gateway activation is declarative. Selecting the owned adapter in the
+Deployment Manifest makes `appcore-bin` parse the bounded configuration, add
+and authorize `runtime.gateway` in the shared capability catalog, reuse Runtime
+security, and register the instance as a critical Supervisor-managed service:
+
+```toml
+[adapters.gateway]
+provider_id = "appcore-gateway"
+settings = { bind_address = "127.0.0.1:8080", domain_suffix = "gateway.example.com", heartbeat_interval_ms = "30000", heartbeat_timeout_ms = "90000" }
+secret_refs = {}
+```
+
+Only those four non-secret settings are accepted. Unknown settings, endpoints,
+secret references, and authentication overrides fail closed. If the adapter is
+absent, no Gateway listener or task is created. Invalid configuration or bind
+failure aborts startup rather than leaving a partially active host.
+
 Worker and client connection tokens are short-lived, single-use, and bound to a request hash. Worker hashes bind tenant, cluster, installation, core, and advertised capabilities. Client hashes bind tenant, cluster, and device. Gateway mesh requests validate that the outer relay metadata matches the inner Peer RPC envelope.
 
 ```mermaid
@@ -99,12 +116,20 @@ flowchart LR
 
 The gateway never interprets opaque business payloads. It routes by tenant/core/capability and enforces bounded message sizes, timeouts, queue limits, and credential checks.
 
+The host uses a durable process-safe replay store. Standalone mode places it in
+private Runtime storage; cluster mode requires absolute
+`paths.gateway_replay` pointing to a writable file shared by every Gateway
+instance. Active sockets expire within 60 seconds. Bounded shutdown
+force-closes incomplete connections before joining all Gateway-owned work.
+
 ## Limitations
 
 - The file control-plane provider is a reference implementation for a shared deployment directory, not a globally distributed consensus system.
 - Service leases require clocks and TTLs to be configured conservatively for the deployment.
 - Peer RPC authenticates and bounds runtime envelopes; it does not define business authorization rules.
 - The gateway relays opaque peer traffic and cannot resolve application-level conflicts.
+- Cluster Gateway operation fails closed without an explicit shared replay
+  file; the Runtime does not silently fall back to process-local replay state.
 - Provider selection is strict. A missing provider fails startup instead of falling back to a weaker local option.
 
 Continue with [supervisor and lifecycle](/architecture/supervisor).

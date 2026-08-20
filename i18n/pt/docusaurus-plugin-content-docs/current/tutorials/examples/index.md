@@ -21,7 +21,7 @@ dentro de `appcore-bin`.
 ## Antes de começar
 
 - Instale Rust `1.89` ou mais recente.
-- Use AppCore `1.0.1-rc.8`.
+- Use AppCore `1.0.0`.
 - Mantenha secrets fora dos manifests.
 - Execute cada exemplo a partir da raiz do projeto.
 
