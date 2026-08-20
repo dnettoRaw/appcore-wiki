@@ -1,19 +1,22 @@
 ---
 title: appcore-control-plane
-sidebar_position: 14
+sidebar_position: 15
 ---
 
 # appcore-control-plane
 
 :::info Paquet publié
-Version **`1.0.1-rc.8`** · MSRV **Rust `1.89`** · [crates.io](https://crates.io/crates/appcore-control-plane/1.0.1-rc.8) · [docs.rs](https://docs.rs/crate/appcore-control-plane/1.0.1-rc.8) · [code source](https://github.com/dnettoRaw/AppCore-Runtime/tree/ba8cfd5b915a087c28f08e65f6d898868989eeda/crates/appcore-control-plane)
+Publié **`1.0.1-rc.8`** · workspace Runtime actuel **`1.0.1-rc.9`** · MSRV **Rust `1.89`** · [crates.io](https://crates.io/crates/appcore-control-plane/1.0.1-rc.8) · [docs.rs](https://docs.rs/crate/appcore-control-plane/1.0.1-rc.8) · [code source](https://github.com/dnettoRaw/AppCore-Runtime/tree/main/crates/appcore-control-plane)
 :::
 
+## Guide et exemples maintenus par le crate
+
+Le dépôt Runtime maintient le [guide détaillé](https://github.com/dnettoRaw/AppCore-Runtime/blob/main/crates/appcore-control-plane/wiki/guide.fr.md), [exemple débutant](https://github.com/dnettoRaw/AppCore-Runtime/blob/main/crates/appcore-control-plane/wiki/examples/basic.fr.md) et [exemple intermédiaire](https://github.com/dnettoRaw/AppCore-Runtime/blob/main/crates/appcore-control-plane/wiki/examples/intermediate.fr.md). Le wiki résume la frontière publique ; les détails d’API et d’exécution restent avec le code du crate.
 
 **Responsabilité :** implémentations génériques présence, heartbeat, discovery
 et leases.
 
-**Dépendances AppCore directes :** `appcore-contracts`, `appcore-core`, `appcore-distributed-contracts`, `appcore-transport`.
+**Dépendances internes :** contracts, core, distributed contracts et transport.
 
 **API principale :** clients in-memory, file et offline; configuration HTTP,
 retry policy et trait transport; transports standard/bearer; coordinator et

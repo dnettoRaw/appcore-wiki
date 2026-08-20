@@ -1,19 +1,22 @@
 ---
 title: appcore-peer-rpc
-sidebar_position: 16
+sidebar_position: 17
 ---
 
 # appcore-peer-rpc
 
 :::info Paquet publié
-Version **`1.0.1-rc.8`** · MSRV **Rust `1.89`** · [crates.io](https://crates.io/crates/appcore-peer-rpc/1.0.1-rc.8) · [docs.rs](https://docs.rs/crate/appcore-peer-rpc/1.0.1-rc.8) · [code source](https://github.com/dnettoRaw/AppCore-Runtime/tree/ba8cfd5b915a087c28f08e65f6d898868989eeda/crates/appcore-peer-rpc)
+Publié **`1.0.1-rc.8`** · workspace Runtime actuel **`1.0.1-rc.9`** · MSRV **Rust `1.89`** · [crates.io](https://crates.io/crates/appcore-peer-rpc/1.0.1-rc.8) · [docs.rs](https://docs.rs/crate/appcore-peer-rpc/1.0.1-rc.8) · [code source](https://github.com/dnettoRaw/AppCore-Runtime/tree/main/crates/appcore-peer-rpc)
 :::
 
+## Guide et exemples maintenus par le crate
+
+Le dépôt Runtime maintient le [guide détaillé](https://github.com/dnettoRaw/AppCore-Runtime/blob/main/crates/appcore-peer-rpc/wiki/guide.fr.md), [exemple débutant](https://github.com/dnettoRaw/AppCore-Runtime/blob/main/crates/appcore-peer-rpc/wiki/examples/basic.fr.md) et [exemple intermédiaire](https://github.com/dnettoRaw/AppCore-Runtime/blob/main/crates/appcore-peer-rpc/wiki/examples/intermediate.fr.md). Le wiki résume la frontière publique ; les détails d’API et d’exécution restent avec le code du crate.
 
 **Responsabilité :** client peer authentifié, host HTTP, validation et replay
 protection.
 
-**Dépendances AppCore directes :** `appcore-core`, `appcore-distributed-contracts`, `appcore-security`, `appcore-transport`.
+**Dépendances internes :** core, distributed contracts, security et transport.
 
 **API principale :** traits token issuer/authenticator/dispatcher et
 implémentations HashToken/static; nonce stores mémoire/fichier; config,

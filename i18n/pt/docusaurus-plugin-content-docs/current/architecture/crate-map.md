@@ -7,22 +7,24 @@ sidebar_position: 12
 
 Quando um runtime cresce, os limites entre crates precisam explicar a arquitetura. No AppCore eles seguem ownership, não conveniência.
 
-O workspace `1.0.1-rc.8` atual contém 21 crates de Runtime, todos publicados no
-crates.io. A referência individual está no [catálogo de crates](/crates/).
+O workspace atual contém 22 crates públicos. Os 21 originais estão sendo
+preparados como `1.0.1-rc.9`, enquanto a última versão deles no crates.io segue
+em `1.0.1-rc.8`. O `appcore-args`, versionado de forma independente, está
+publicado como `1.0.1-rc.9` e está em `1.0.1-rc.10` no workspace. A referência
+individual está no [catálogo de crates](/crates/).
 
 | Camada | Crates | Por que existe |
 | --- | --- | --- |
-| Base | `appcore-contracts`, `appcore-types`, `appcore-transport`, `appcore-dnt` | contratos reutilizáveis, IDs validados, transporte limitado e envelopes cifrados sem composição concreta |
-| Lifecycle | `appcore-supervisor` | grafo de serviços, restart policy, watchdog e quarentena independentes do dispatch |
-| Core | `appcore-core` | registries de command/event/state/decision, identidade, lifecycle, audit e idempotência |
-| Serviços do Runtime | `appcore-api`, `appcore-storage`, `appcore-security`, `appcore-ops`, `appcore-scheduler`, `appcore-sync` | uma responsabilidade de infraestrutura por crate |
-| Distribuição | `appcore-distributed-contracts`, `appcore-control-plane`, `appcore-capabilities`, `appcore-peer-rpc`, `appcore-gateway` | contratos wire, presença, discovery, leases, roteamento de capabilities, peer transport e relay Gateway |
-| Composição | `appcore-provider`, `appcore-update`, `appcore-provider-vercel-neon` | factories de provider, planos de deployment, adapters oficiais e lifecycle de update |
-| Host | `appcore-bin` | único crate autorizado a compor infraestrutura concreta para aplicações |
-| Tools | `runtime-console`, ferramentas de certificação | workflows de operador e evidência de release |
+| Fundações standalone | `appcore-args`, `appcore-supervisor`, `appcore-transport` | componentes reutilizáveis e versionados independentemente, sem dependências AppCore |
+| Contratos | `appcore-contracts`, `appcore-types`, `appcore-distributed-contracts`, `appcore-provider` | manifests, identidades validadas, contratos wire e composição de providers |
+| Runtime | `appcore-core`, `appcore-dnt`, `appcore-security`, `appcore-storage`, `appcore-sync`, `appcore-ops`, `appcore-scheduler`, `appcore-control-plane`, `appcore-capabilities`, `appcore-peer-rpc`, `appcore-api`, `appcore-update` | comportamento e infraestrutura do Runtime com fronteiras explícitas |
+| Integrações | `appcore-gateway`, `appcore-provider-vercel-neon` | integrações de transport e provider operadas externamente |
+| Composição | `appcore-bin` | único crate autorizado a compor infraestrutura concreta para aplicações |
+| Ferramentas | `appcore-dev`, `runtime-console`, ferramentas de certificação | desenvolvimento, operação e evidência de release; não são crates públicos |
 
-As tools são utilitários do workspace e não entram na contagem dos 21 crates do
-Runtime.
+As fundações standalone continuam reutilizáveis e versionadas separadamente.
+`appcore-supervisor` gerencia serviços em processo sem depender do dispatch de
+commands; `appcore-args` faz parsing de CLI sem executar comandos do Runtime.
 
 `appcore-bin` é o único composition root concreto para aplicações. Contratos não dependem de implementações, e código de negócio não deve importar módulos privados do host.
 

@@ -5,7 +5,9 @@ sidebar_position: 11
 
 # Build the First Application
 
-This tutorial follows the maintained backend template shape. The goal is not to build a product. The goal is to see where AppCore ends and the application begins.
+The goal is not to build a product. It is to see where AppCore ends and the
+application begins. The old in-repository backend template was removed; a new
+application now follows the public three-artifact contract directly.
 
 The mental model is simple: business code declares behavior, manifests declare the contract, and deployment chooses the runtime environment.
 
@@ -15,8 +17,8 @@ The mental model is simple: business code declares behavior, manifests declare t
 cargo add appcore-bin@1.0.1-rc.8
 ```
 
-This selects the public manifest-first facade. The other 20 Runtime crates are
-available for low-level consumers and provider adapters; see the
+This selects the published manifest-first facade. The other public crates are
+available for low-level consumers, CLI integrations, and provider adapters; see the
 [crate catalog](/crates/) before depending on them directly.
 
 ## 2. What is the smallest useful business implementation?
@@ -89,10 +91,10 @@ Because idempotency is required, a command request without an idempotency key is
 
 ```toml
 manifest_version = 1
-installation_id = "backend-template-local"
-application_id = "backend-template"
+installation_id = "example-local"
+application_id = "example-app"
 mode = "standalone"
-secrets = { runtime_security = "env:APPCORE_BACKEND_TEMPLATE_SECRET" }
+secrets = { runtime_security = "env:APPCORE_EXAMPLE_SECRET" }
 paths = { storage = "target/runtime/storage", backup = "target/runtime/backups" }
 
 [storage]
@@ -110,11 +112,16 @@ The deployment selects the file storage provider and listener address. The appli
 
 ## 6. What should you inspect after it boots?
 
-Set a local secret through the environment, then run the application. The runtime exposes health and status endpoints when the deployment enables a listener.
+Set a structured local key record through the environment, then run the command
+from the external application's project root. The Runtime exposes health and
+status endpoints when the deployment enables a listener.
 
 ```bash
-export APPCORE_BACKEND_TEMPLATE_SECRET="$(openssl rand -hex 32)"
-cargo run --manifest-path templates/appcore-backend/Cargo.toml
+now_ms="$(($(date +%s) * 1000))"
+export APPCORE_EXAMPLE_SECRET="$(printf \
+  'key_id=local-%s\ncreated_at_ms=%s\nexpires_at_ms=none\nstatus=active\nsecret=hex:%s\n' \
+  "$now_ms" "$now_ms" "$(openssl rand -hex 32)")"
+cargo run
 curl -s http://127.0.0.1:39300/v1/health
 curl -s http://127.0.0.1:39300/v1/status/public
 ```
@@ -131,6 +138,7 @@ curl -s http://127.0.0.1:39300/v1/status/public
 ## Limitations
 
 - This tutorial intentionally uses a tiny command; it does not model a full domain workflow.
-- It assumes the backend template shape and public `appcore_bin::application` facade.
+- It assumes the public `appcore_bin::application` facade and the standard
+  `application.toml`/`deployment.toml` paths.
 - It demonstrates standalone local deployment, not a complete clustered installation.
 - It does not cover custom provider authoring or production secret management.

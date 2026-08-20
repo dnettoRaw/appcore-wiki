@@ -1,18 +1,21 @@
 ---
 title: appcore-dnt
-sidebar_position: 6
+sidebar_position: 7
 ---
 
 # appcore-dnt
 
 :::info Pacote publicado
-Versão **`1.0.1-rc.8`** · MSRV **Rust `1.89`** · [crates.io](https://crates.io/crates/appcore-dnt/1.0.1-rc.8) · [docs.rs](https://docs.rs/crate/appcore-dnt/1.0.1-rc.8) · [código-fonte](https://github.com/dnettoRaw/AppCore-Runtime/tree/ba8cfd5b915a087c28f08e65f6d898868989eeda/crates/appcore-dnt)
+Publicado **`1.0.1-rc.8`** · workspace atual do Runtime **`1.0.1-rc.9`** · MSRV **Rust `1.89`** · [crates.io](https://crates.io/crates/appcore-dnt/1.0.1-rc.8) · [docs.rs](https://docs.rs/crate/appcore-dnt/1.0.1-rc.8) · [código-fonte](https://github.com/dnettoRaw/AppCore-Runtime/tree/main/crates/appcore-dnt)
 :::
 
+## Guia e exemplos mantidos pelo crate
+
+O repositório do Runtime mantém o [guia detalhado](https://github.com/dnettoRaw/AppCore-Runtime/blob/main/crates/appcore-dnt/wiki/guide.pt.md), [exemplo básico](https://github.com/dnettoRaw/AppCore-Runtime/blob/main/crates/appcore-dnt/wiki/examples/basic.pt.md) e [exemplo intermediário](https://github.com/dnettoRaw/AppCore-Runtime/blob/main/crates/appcore-dnt/wiki/examples/intermediate.pt.md). O wiki resume a fronteira pública; detalhes de API e execução ficam junto ao código do crate.
 
 **Responsabilidade:** contratos e helpers do contêiner cifrado genérico DNT.
 
-**Dependências AppCore diretas:** `appcore-contracts`, `appcore-types`.
+**Dependências internas:** `appcore-contracts`, `appcore-types`.
 
 **API principal:** `seal`, `open`, `open_owned`, `inspect_header`, `verify`,
 `write_atomic`, `read_verified`, `rekey`, `migrate_envelope`,
@@ -146,7 +149,7 @@ Interpretação:
   autenticação, rotação de chave, vinculação de contexto nem detecção de
   adulteração.
 
-O [relatório medido completo](https://github.com/dnettoRaw/AppCore-Runtime/blob/ba8cfd5b915a087c28f08e65f6d898868989eeda/benchmarks/dnt-2026-08-02-m1.md) registra
+O [relatório medido completo](https://github.com/dnettoRaw/AppCore-Runtime/blob/main/crates/appcore-dnt/wiki/benchmarks/dnt-2026-08-02-m1.pt.md) registra
 hardware, APFS/SSD, energia AC, Rust/profile, warm-up, amostras, média, desvio,
 p95, p99, máximo, throughput, seal/rekey e evidências de memória/CPU não
 medidas. Regenere na classe de deployment relevante. DNT é um contêiner de

@@ -20,11 +20,13 @@ Lire ce manuel comme un livre technique :
 9. [Modèle de sécurité](/security/security-model)
 10. [Première application](/tutorials/first-application)
 11. [Exemples du niveau débutant à intermédiaire](/tutorials/examples/)
-12. [Référence des 21 crates publiés](/crates/)
+12. [Référence des 22 crates publics](/crates/)
 
-Ligne actuelle : `1.0.1-rc.8`. Toolchain Rust minimale : `1.89`. Les 21 crates
-Runtime sont publiés ; une application doit normalement dépendre de
-`appcore-bin` et utiliser sa façade `application`.
+Façade application publiée : `appcore-bin@1.0.1-rc.8`. Workspace Runtime
+actuel : `1.0.1-rc.9`. Toolchain Rust minimale : `1.89`. Une application doit
+normalement dépendre de `appcore-bin` et utiliser sa façade `application`. Le
+22e crate public, `appcore-args`, est versionné séparément et publié en
+`1.0.1-rc.9`.
 
 ## Limitations
 

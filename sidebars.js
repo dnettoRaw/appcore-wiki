@@ -23,6 +23,7 @@ const examples = [
 ];
 
 const crates = [
+  'appcore-args',
   'appcore-contracts',
   'appcore-types',
   'appcore-transport',
@@ -59,7 +60,7 @@ module.exports = {
     'architecture/crate-map',
     {
       type: 'category',
-      label: 'Crate reference (21)',
+      label: 'Crate reference (22)',
       collapsed: true,
       items: ['crates/index', ...crates.map((crate) => `crates/${crate}`)],
     },

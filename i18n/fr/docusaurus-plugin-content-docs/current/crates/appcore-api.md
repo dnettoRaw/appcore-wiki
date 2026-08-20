@@ -1,31 +1,46 @@
 ---
 title: appcore-api
-sidebar_position: 8
+sidebar_position: 9
 ---
 
 # appcore-api
 
 :::info Paquet publié
-Version **`1.0.1-rc.8`** · MSRV **Rust `1.89`** · [crates.io](https://crates.io/crates/appcore-api/1.0.1-rc.8) · [docs.rs](https://docs.rs/crate/appcore-api/1.0.1-rc.8) · [code source](https://github.com/dnettoRaw/AppCore-Runtime/tree/ba8cfd5b915a087c28f08e65f6d898868989eeda/crates/appcore-api)
+Publié **`1.0.1-rc.8`** · workspace Runtime actuel **`1.0.1-rc.9`** · MSRV **Rust `1.89`** · [crates.io](https://crates.io/crates/appcore-api/1.0.1-rc.8) · [docs.rs](https://docs.rs/crate/appcore-api/1.0.1-rc.8) · [code source](https://github.com/dnettoRaw/AppCore-Runtime/tree/main/crates/appcore-api)
 :::
 
+## Guide et exemples maintenus par le crate
+
+Le dépôt Runtime maintient le [guide détaillé](https://github.com/dnettoRaw/AppCore-Runtime/blob/main/crates/appcore-api/wiki/guide.fr.md), [exemple débutant](https://github.com/dnettoRaw/AppCore-Runtime/blob/main/crates/appcore-api/wiki/examples/basic.fr.md) et [exemple intermédiaire](https://github.com/dnettoRaw/AppCore-Runtime/blob/main/crates/appcore-api/wiki/examples/intermediate.fr.md). Le wiki résume la frontière publique ; les détails d’API et d’exécution restent avec le code du crate.
 
 **Responsabilité :** host HTTP command/query/status et DTOs de transport.
 
-**Dépendances AppCore directes :** `appcore-core`, `appcore-security`, `appcore-supervisor`.
+**Dépendances internes :** `appcore-core`, `appcore-security` et
+`appcore-supervisor`.
 
 **API principale :** `CommandRequest`/`CommandResponse`,
 `QueryRequest`/`QueryResponse`, erreurs de validation, `CommandEndpoint`,
 `QueryEndpoint`, `ApiRouter`, `ApiRequest`/`ApiResponse`, `RuntimeHttpHost`,
-`HttpApiConfig`, statut statique, policy capability, vérification token et vue
-du sync log.
+`HttpApiConfig`, statut statique, policy capability pour commands et queries
+applicatives, vérification token et vue du sync log.
 
 À utiliser pour les routes Runtime et queries applicatives enregistrées. Ne pas
 ajouter resources REST produit ou schémas métier. Le nouveau host l'utilise via
 `appcore-bin`.
 
+Les queries applicatives sont autorisées par la policy capability composée
+avant le router. Les queries de statut Runtime restent hors du catalogue
+applicatif.
+
 La limite configurée s'applique au corps HTTP complet avant la
 désérialisation JSON par Axum. Les routes protégées acceptent exactement un
 header bearer `Authorization` bien formé; les doublons échouent fermés.
+
+`HttpCommandAuth::default()` exige l'authentification et échoue fermé tant
+qu'aucun vérificateur de token n'est configuré. Seul
+`insecure_local_for_testing()` désactive explicitement l'authentification
+command/query pour des tests locaux contrôlés. `/v1/health` reste public par
+contrat. Les refus d'autorisation command sont audités avec des métadonnées
+normalisées, sans credentials, payload ni clé d'idempotence.
 
 **Maturité :** surface HTTP V1 RC stricte et stable.

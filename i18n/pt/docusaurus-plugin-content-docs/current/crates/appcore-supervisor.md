@@ -1,19 +1,25 @@
 ---
 title: appcore-supervisor
-sidebar_position: 4
+sidebar_position: 5
 ---
 
 # appcore-supervisor
 
 :::info Pacote publicado
-Versão **`1.0.1-rc.8`** · MSRV **Rust `1.89`** · [crates.io](https://crates.io/crates/appcore-supervisor/1.0.1-rc.8) · [docs.rs](https://docs.rs/crate/appcore-supervisor/1.0.1-rc.8) · [código-fonte](https://github.com/dnettoRaw/AppCore-Runtime/tree/ba8cfd5b915a087c28f08e65f6d898868989eeda/crates/appcore-supervisor)
+Publicado **`1.0.1-rc.8`** · workspace atual do Runtime **`1.0.1-rc.9`** · MSRV **Rust `1.89`** · [crates.io](https://crates.io/crates/appcore-supervisor/1.0.1-rc.8) · [docs.rs](https://docs.rs/crate/appcore-supervisor/1.0.1-rc.8) · [código-fonte](https://github.com/dnettoRaw/AppCore-Runtime/tree/main/crates/appcore-supervisor)
 :::
 
+## Guia e exemplos mantidos pelo crate
+
+O repositório do Runtime mantém o [guia detalhado](https://github.com/dnettoRaw/AppCore-Runtime/blob/main/crates/appcore-supervisor/wiki/guide.pt.md), [exemplo básico](https://github.com/dnettoRaw/AppCore-Runtime/blob/main/crates/appcore-supervisor/wiki/examples/basic.pt.md) e [exemplo intermediário](https://github.com/dnettoRaw/AppCore-Runtime/blob/main/crates/appcore-supervisor/wiki/examples/intermediate.pt.md). O wiki resume a fronteira pública; detalhes de API e execução ficam junto ao código do crate.
 
 **Responsabilidade:** lifecycle com dependências, health, orçamento de restart
 e shutdown dos managed services pertencentes ao Runtime.
 
-**Dependências AppCore diretas:** Nenhuma.
+**Dependências internas:** nenhuma.
+
+**Versionamento:** SemVer independente. O crate pode ser consumido sem qualquer
+outro pacote AppCore.
 
 **API principal:** `ManagedService`, `ServiceDescriptor`, `ServiceDependency`,
 `DependencyRequirement`, `Supervisor`, `SupervisorWatchdog`, `RestartPolicy`,

@@ -42,6 +42,11 @@ sequenceDiagram
 
 Alguns formatos precisam ser lidos inteiros para validação: DNT, checkpoint, backup manifest, update artifact, nonce store e estado do control plane. AppCore rejeita arquivo grande antes de alocar memória sem bound.
 
+Housekeeping e traversal de backup são iterativos e limitados; nunca seguem
+symlinks nem reparse points do Windows. A abertura final usa no-follow da
+plataforma e é revalidada com o lock do processo. Listagens de backup preferem
+o timestamp persistido no manifest do snapshot.
+
 ## O que acontece num backup snapshot?
 
 Backup snapshot usa formato `appcore-storage-backup-v1`, inventário ordenado, tamanho e SHA-256 por arquivo. A criação é staged em diretório temporário e só depois renomeada para o backup final.
@@ -73,6 +78,9 @@ flowchart LR
 
 - O file provider não é banco distribuído multi-writer.
 - AppCore não compensa filesystem que não honra locks, flush ou rename atômico.
+- O perfil de um processo pressupõe uma raiz protegida pelo proprietário; um
+  processo hostil da mesma conta trocando um diretório ancestral durante a
+  operação fica fora desta fronteira portátil.
 - Backup cobre a raiz de storage do runtime, não bancos externos ou efeitos colaterais de negócio.
 - DNT protege bytes e contexto autenticado; não define autorização de domínio.
 - Restore não desfaz ações externas executadas por handlers da aplicação.

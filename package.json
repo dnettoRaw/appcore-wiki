@@ -6,6 +6,8 @@
     "start": "docusaurus start",
     "build": "docusaurus build",
     "build:all": "docusaurus build",
+    "docs:drift": "node scripts/check-appcore-doc-drift.mjs",
+    "docs:drift:accept": "node scripts/check-appcore-doc-drift.mjs --accept",
     "serve": "docusaurus serve",
     "clear": "docusaurus clear"
   },

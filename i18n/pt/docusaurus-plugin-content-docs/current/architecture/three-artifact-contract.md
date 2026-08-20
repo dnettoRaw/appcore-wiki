@@ -21,7 +21,7 @@ Não contém provider IDs, paths, endpoints, TLS, tokens, senhas ou chaves.
 
 ```toml
 manifest_version = 1
-application_id = "backend-template"
+application_id = "example-app"
 application_version = "0.1.0"
 service_id = "app.ping"
 
@@ -43,10 +43,10 @@ Pertence ao instalador/operador. Seleciona modo, providers, paths, rede, secret 
 
 ```toml
 manifest_version = 1
-installation_id = "backend-template-local"
-application_id = "backend-template"
+installation_id = "example-local"
+application_id = "example-app"
 mode = "standalone"
-secrets = { runtime_security = "env:APPCORE_BACKEND_TEMPLATE_SECRET" }
+secrets = { runtime_security = "env:APPCORE_EXAMPLE_SECRET" }
 paths = { storage = "target/runtime/storage", backup = "target/runtime/backups" }
 
 [storage]

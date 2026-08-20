@@ -1,19 +1,22 @@
 ---
 title: appcore-security
-sidebar_position: 9
+sidebar_position: 10
 ---
 
 # appcore-security
 
 :::info Published package
-Version **`1.0.1-rc.8`** · MSRV **Rust `1.89`** · [crates.io](https://crates.io/crates/appcore-security/1.0.1-rc.8) · [docs.rs](https://docs.rs/crate/appcore-security/1.0.1-rc.8) · [source](https://github.com/dnettoRaw/AppCore-Runtime/tree/ba8cfd5b915a087c28f08e65f6d898868989eeda/crates/appcore-security)
+Published **`1.0.1-rc.8`** · current Runtime workspace **`1.0.1-rc.9`** · MSRV **Rust `1.89`** · [crates.io](https://crates.io/crates/appcore-security/1.0.1-rc.8) · [docs.rs](https://docs.rs/crate/appcore-security/1.0.1-rc.8) · [source](https://github.com/dnettoRaw/AppCore-Runtime/tree/main/crates/appcore-security)
 :::
 
+## Crate-owned guide and examples
+
+The Runtime repository maintains the detailed [guide](https://github.com/dnettoRaw/AppCore-Runtime/blob/main/crates/appcore-security/wiki/guide.en.md), [basic example](https://github.com/dnettoRaw/AppCore-Runtime/blob/main/crates/appcore-security/wiki/examples/basic.en.md), and [intermediate example](https://github.com/dnettoRaw/AppCore-Runtime/blob/main/crates/appcore-security/wiki/examples/intermediate.en.md). The wiki summarizes the public boundary; API and executable details live beside the crate code.
 
 **Responsibility:** reusable Runtime authentication, token, secret and policy
 contracts.
 
-**Direct AppCore dependencies:** `appcore-core`, `appcore-dnt`.
+**Internal dependencies:** `appcore-core`, `appcore-dnt`.
 
 **Primary API:** HashToken provider, claims, command token factory/validator,
 request hashing, `SecurityError`; secret references, resolvers, stores,
@@ -23,6 +26,13 @@ peer credentials, DNT key-provider adapter, authentication and policy traits.
 Use it for infrastructure authentication and secret indirection. Tokens are
 signed, not encrypted. Do not place domain authorization, OAuth servers,
 inbound TLS or a managed vault implementation here.
+
+`HashTokenProvider::from_secret`, `with_secret` and `with_material` return a
+`SecurityResult` and enforce the same minimum secret and salt invariants.
+`compute_request_hash` emits a `v2:` SHA-256 value over domain-separated,
+length-framed fields with explicit optional-field presence. Earlier
+unversioned hashes are rejected, so issuers and validators must upgrade
+together.
 
 The 1.0 RC has no TPM or hardware-backed provider. ADR 0005 records an additive
 1.1 proposal with explicit fallback and physical-hardware evidence; the current

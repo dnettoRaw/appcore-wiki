@@ -51,7 +51,16 @@ Runtime nodes do not receive generic business database credentials through this 
 
 ## Why do manifests store secret references?
 
-Deployment manifests store references such as `env:APPCORE_BACKEND_TEMPLATE_SECRET`. Factories receive a secret provider and resolve references after manifest validation. This keeps secret material out of portable manifests and out of application-owned configuration.
+Deployment manifests store references such as `env:APPCORE_EXAMPLE_SECRET`. Factories receive a secret provider and resolve references after manifest validation. This keeps secret material out of portable manifests and out of application-owned configuration.
+
+## What does a filesystem lease prove?
+
+The reference shared-resource lease persists a versioned epoch high-water
+sidecar before publishing an active lease. Release, restart, and interrupted
+acquisition therefore cannot reuse an old epoch. The epoch is only a useful
+fencing token when every protected writer compares it before writing; a shared
+filesystem without reliable lock, rename, directory-sync, and cache-coherence
+semantics cannot provide strong split-brain protection by itself.
 
 ## What should a production provider document?
 

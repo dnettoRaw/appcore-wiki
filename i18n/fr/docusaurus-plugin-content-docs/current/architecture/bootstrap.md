@@ -27,6 +27,12 @@ Le runtime dérive `RuntimeConfig` : IDs node/core/instance appartiennent au run
 
 Les commands restent protégées par le manifest. Capability absente échoue. Command exigeant une idempotency key échoue avant le handler si la clé manque.
 
+Le manifest distribué final produit un seul `CapabilityCatalog` au bootstrap.
+La façade directe, le HTTP applicatif et le Peer RPC utilisent ce même
+catalogue pour contrôler déclaration, mode, idempotence, écriture
+opérationnelle et leadership. Un `CapabilityRegistry` n'existe qu'avec un vrai
+handler local ; les queries de statut Runtime restent explicites dans le host.
+
 ## Limitations
 
 - Bootstrap n'infère pas les providers et ne fait pas de fallback silencieux.

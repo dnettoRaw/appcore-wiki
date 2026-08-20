@@ -1,18 +1,21 @@
 ---
 title: appcore-scheduler
-sidebar_position: 13
+sidebar_position: 14
 ---
 
 # appcore-scheduler
 
 :::info Paquet publié
-Version **`1.0.1-rc.8`** · MSRV **Rust `1.89`** · [crates.io](https://crates.io/crates/appcore-scheduler/1.0.1-rc.8) · [docs.rs](https://docs.rs/crate/appcore-scheduler/1.0.1-rc.8) · [code source](https://github.com/dnettoRaw/AppCore-Runtime/tree/ba8cfd5b915a087c28f08e65f6d898868989eeda/crates/appcore-scheduler)
+Publié **`1.0.1-rc.8`** · workspace Runtime actuel **`1.0.1-rc.9`** · MSRV **Rust `1.89`** · [crates.io](https://crates.io/crates/appcore-scheduler/1.0.1-rc.8) · [docs.rs](https://docs.rs/crate/appcore-scheduler/1.0.1-rc.8) · [code source](https://github.com/dnettoRaw/AppCore-Runtime/tree/main/crates/appcore-scheduler)
 :::
 
+## Guide et exemples maintenus par le crate
+
+Le dépôt Runtime maintient le [guide détaillé](https://github.com/dnettoRaw/AppCore-Runtime/blob/main/crates/appcore-scheduler/wiki/guide.fr.md), [exemple débutant](https://github.com/dnettoRaw/AppCore-Runtime/blob/main/crates/appcore-scheduler/wiki/examples/basic.fr.md) et [exemple intermédiaire](https://github.com/dnettoRaw/AppCore-Runtime/blob/main/crates/appcore-scheduler/wiki/examples/intermediate.fr.md). Le wiki résume la frontière publique ; les détails d’API et d’exécution restent avec le code du crate.
 
 **Responsabilité :** exécution locale bornée et placement Core explicable.
 
-**Dépendances AppCore directes :** `appcore-contracts`, `appcore-core`.
+**Dépendances internes :** `appcore-contracts`, `appcore-core`.
 
 **API principale :** `Scheduler`, `SchedulerConfig`, `ScheduledTask`,
 `TaskSchedule`, callback/context/result, retry policy, handle et snapshots;

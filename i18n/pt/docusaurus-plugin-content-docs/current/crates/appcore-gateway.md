@@ -1,19 +1,23 @@
 ---
 title: appcore-gateway
-sidebar_position: 17
+sidebar_position: 18
 ---
 
 # appcore-gateway
 
 :::info Pacote publicado
-Versão **`1.0.1-rc.8`** · MSRV **Rust `1.89`** · [crates.io](https://crates.io/crates/appcore-gateway/1.0.1-rc.8) · [docs.rs](https://docs.rs/crate/appcore-gateway/1.0.1-rc.8) · [código-fonte](https://github.com/dnettoRaw/AppCore-Runtime/tree/ba8cfd5b915a087c28f08e65f6d898868989eeda/crates/appcore-gateway)
+Publicado **`1.0.1-rc.8`** · workspace atual do Runtime **`1.0.1-rc.9`** · MSRV **Rust `1.89`** · [crates.io](https://crates.io/crates/appcore-gateway/1.0.1-rc.8) · [docs.rs](https://docs.rs/crate/appcore-gateway/1.0.1-rc.8) · [código-fonte](https://github.com/dnettoRaw/AppCore-Runtime/tree/main/crates/appcore-gateway)
 :::
 
+## Guia e exemplos mantidos pelo crate
+
+O repositório do Runtime mantém o [guia detalhado](https://github.com/dnettoRaw/AppCore-Runtime/blob/main/crates/appcore-gateway/wiki/guide.pt.md), [exemplo básico](https://github.com/dnettoRaw/AppCore-Runtime/blob/main/crates/appcore-gateway/wiki/examples/basic.pt.md) e [exemplo intermediário](https://github.com/dnettoRaw/AppCore-Runtime/blob/main/crates/appcore-gateway/wiki/examples/intermediate.pt.md). O wiki resume a fronteira pública; detalhes de API e execução ficam junto ao código do crate.
 
 **Responsabilidade:** relay WebSocket isolado por tenant para conexoes Gateway
 entre clients externos e workers AppCore.
 
-**Dependências AppCore diretas:** `appcore-contracts`, `appcore-core`, `appcore-distributed-contracts`, `appcore-peer-rpc`, `appcore-security`, `appcore-transport`, `appcore-types`.
+**Dependencias internas:** contracts, types, security, distributed
+contracts e peer RPC.
 
 **API principal:** `GatewayConfig`, `GatewayState`, estado por tenant, registry
 e resolver de capability, conexoes bounded de worker/client,
@@ -51,6 +55,12 @@ do Peer RPC.
 Estado de replay e sessao e local ao processo. Estado compartilhado de
 revogacao/sessao para Gateways multi-instancia permanece trabalho futuro de
 provider. Rate limit por IP de origem e terminacao TLS ficam no deployment.
-`require_auth = false` e um modo inseguro explicito.
+`GatewayConfig::new` habilita autenticação. A única saída é
+`insecure_local_for_testing()`, que rejeita listeners fora de loopback, e
+`GatewayState::new` valida a configuração antes de construir o estado.
+
+Hashes de conexão de worker e client usam framing binário canônico V2 e levam
+o marcador `v2:`. Hashes anteriores sem versão não são intercambiáveis;
+emissores de token e consumidores Gateway devem ser atualizados juntos.
 
 **Maturidade:** perfil RC de peer transport para a superficie distribuida V1.
