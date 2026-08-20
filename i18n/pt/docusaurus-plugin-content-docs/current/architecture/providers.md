@@ -25,6 +25,13 @@ Factory é registrada por role e provider ID. Se o par selecionado não existe, 
 
 Provider de coordenação é runtime-owned e não banco de negócio. Secret provider resolve referências depois da validação, mantendo valores fora dos manifests.
 
+O lease de recurso compartilhado em filesystem persiste um sidecar versionado
+com o maior epoch antes de publicar o lease ativo. Release, restart e aquisição
+interrompida não reutilizam epochs. O epoch só funciona como fencing token se
+todo writer protegido o comparar antes da escrita; filesystems sem lock,
+rename, sync de diretório e coerência de cache confiáveis não evitam split-brain
+sozinhos.
+
 ## Limitations
 
 - Providers não tornam standalone e cluster equivalentes; cada modo tem requisitos próprios.

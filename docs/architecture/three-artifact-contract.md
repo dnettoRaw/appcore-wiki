@@ -31,9 +31,9 @@ It must not contain provider IDs, machine paths, listener addresses, TLS files, 
 
 ```toml
 manifest_version = 1
-application_id = "backend-template"
+application_id = "example-app"
 application_version = "0.1.0"
-display_name = "AppCore Backend Template"
+display_name = "Example App"
 vendor = "Example Vendor"
 service_id = "app.ping"
 
@@ -70,10 +70,10 @@ It must not contain business rules, domain schemas, or application source code.
 
 ```toml
 manifest_version = 1
-installation_id = "backend-template-local"
-application_id = "backend-template"
+installation_id = "example-local"
+application_id = "example-app"
 mode = "standalone"
-secrets = { runtime_security = "env:APPCORE_BACKEND_TEMPLATE_SECRET" }
+secrets = { runtime_security = "env:APPCORE_EXAMPLE_SECRET" }
 paths = { storage = "target/runtime/storage", backup = "target/runtime/backups" }
 
 [storage]
@@ -105,7 +105,7 @@ Application code implements the public `Application` trait. The runtime calls it
 - `register_queries` registers side-effect-free query endpoints;
 - `register_tasks` registers bounded background task definitions.
 
-The template shows the intended shape:
+The public contract has this intended shape:
 
 ```rust
 use appcore_bin::application::{

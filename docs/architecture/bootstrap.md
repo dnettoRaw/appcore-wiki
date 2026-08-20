@@ -57,6 +57,12 @@ Command dispatch is still guarded by the manifest. If the request names a capabi
 
 That order is important. Application code can register commands, queries, handlers, states, decisions, and tasks, but it does not choose undeclared capabilities after deployment validation. The manifest remains the contract that outside tools can inspect.
 
+The final distributed manifest produces one `CapabilityCatalog` during
+bootstrap. Direct facade calls, application HTTP, and Peer RPC use this same
+catalog for declaration, mode, idempotency, operational-write, and leadership
+checks. A `CapabilityRegistry` is created only for a real local handler;
+Runtime-owned status queries remain explicit host behavior.
+
 ## When do runtime services start?
 
 The host may start HTTP, sync receiver, peer RPC, control-plane worker, scheduler, update service, and other infrastructure depending on deployment mode and manifest requirements. These services are registered with the supervisor rather than started as detached threads.

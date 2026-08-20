@@ -1,28 +1,31 @@
 ---
 title: appcore-ops
-sidebar_position: 12
+sidebar_position: 13
 ---
 
 # appcore-ops
 
 :::info Paquet publié
-Version **`1.0.1-rc.8`** · MSRV **Rust `1.89`** · [crates.io](https://crates.io/crates/appcore-ops/1.0.1-rc.8) · [docs.rs](https://docs.rs/crate/appcore-ops/1.0.1-rc.8) · [code source](https://github.com/dnettoRaw/AppCore-Runtime/tree/ba8cfd5b915a087c28f08e65f6d898868989eeda/crates/appcore-ops)
+Publié **`1.0.1-rc.8`** · workspace Runtime actuel **`1.0.1-rc.9`** · MSRV **Rust `1.89`** · [crates.io](https://crates.io/crates/appcore-ops/1.0.1-rc.8) · [docs.rs](https://docs.rs/crate/appcore-ops/1.0.1-rc.8) · [code source](https://github.com/dnettoRaw/AppCore-Runtime/tree/main/crates/appcore-ops)
 :::
 
+## Guide et exemples maintenus par le crate
+
+Le dépôt Runtime maintient le [guide détaillé](https://github.com/dnettoRaw/AppCore-Runtime/blob/main/crates/appcore-ops/wiki/guide.fr.md), [exemple débutant](https://github.com/dnettoRaw/AppCore-Runtime/blob/main/crates/appcore-ops/wiki/examples/basic.fr.md) et [exemple intermédiaire](https://github.com/dnettoRaw/AppCore-Runtime/blob/main/crates/appcore-ops/wiki/examples/intermediate.fr.md). Le wiki résume la frontière publique ; les détails d’API et d’exécution restent avec le code du crate.
 
 **Responsabilité :** health, logs, métriques, observations, heartbeat et
 availability sans vendor.
 
-**Dépendance AppCore directe :** `appcore-core`.
+**Dépendances internes :** `appcore-core`, `appcore-supervisor`.
 
 **API principale :** health status/report/checks, heartbeat sources, loggers,
-metric counters, `ObservationEvent`/`ObservationSink`, file sink borné et
-rapports d'availability.
+metric counters, `ObservationEvent`/`ObservationSink`, file sink borné,
+availability report et reexports de compatibilité pour
+`appcore-supervisor::managed_services`.
 
-À utiliser pour les signaux génériques. Le lifecycle des services appartient à
-`appcore-supervisor` ; `appcore-ops` n'expose plus de second Supervisor ni
-d'aliases de compatibilité. Ne pas ajouter de SDK vendor ni de métriques métier
-applicatives au crate.
+À utiliser pour signaux génériques. Le nouveau code lifecycle utilise
+`appcore-supervisor` directement. Ne pas ajouter de SDK vendor ni métriques
+métier applicatives au crate.
 
 **Maturité :** primitives RC stables; export/collection production appartient
 au déploiement.

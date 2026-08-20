@@ -1,19 +1,22 @@
 ---
 title: appcore-contracts
-sidebar_position: 1
+sidebar_position: 2
 ---
 
 # appcore-contracts
 
 :::info Pacote publicado
-Versão **`1.0.1-rc.8`** · MSRV **Rust `1.89`** · [crates.io](https://crates.io/crates/appcore-contracts/1.0.1-rc.8) · [docs.rs](https://docs.rs/crate/appcore-contracts/1.0.1-rc.8) · [código-fonte](https://github.com/dnettoRaw/AppCore-Runtime/tree/ba8cfd5b915a087c28f08e65f6d898868989eeda/crates/appcore-contracts)
+Publicado **`1.0.1-rc.8`** · workspace atual do Runtime **`1.0.1-rc.9`** · MSRV **Rust `1.89`** · [crates.io](https://crates.io/crates/appcore-contracts/1.0.1-rc.8) · [docs.rs](https://docs.rs/crate/appcore-contracts/1.0.1-rc.8) · [código-fonte](https://github.com/dnettoRaw/AppCore-Runtime/tree/main/crates/appcore-contracts)
 :::
 
+## Guia e exemplos mantidos pelo crate
+
+O repositório do Runtime mantém o [guia detalhado](https://github.com/dnettoRaw/AppCore-Runtime/blob/main/crates/appcore-contracts/wiki/guide.pt.md), [exemplo básico](https://github.com/dnettoRaw/AppCore-Runtime/blob/main/crates/appcore-contracts/wiki/examples/basic.pt.md) e [exemplo intermediário](https://github.com/dnettoRaw/AppCore-Runtime/blob/main/crates/appcore-contracts/wiki/examples/intermediate.pt.md). O wiki resume a fronteira pública; detalhes de API e execução ficam junto ao código do crate.
 
 **Responsabilidade:** manifests e policies estáveis, independentes de
 implementação.
 
-**Dependências AppCore diretas:** Nenhuma.
+**Dependências internas:** nenhuma.
 
 **API principal:** `ApplicationManifestV1`, `DeploymentManifestV1`,
 `DeploymentManifestBuilder`, `RuntimeManifestV1`, `RuntimeMode`,

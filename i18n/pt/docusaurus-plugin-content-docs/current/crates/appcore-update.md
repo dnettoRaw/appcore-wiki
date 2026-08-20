@@ -1,19 +1,22 @@
 ---
 title: appcore-update
-sidebar_position: 20
+sidebar_position: 21
 ---
 
 # appcore-update
 
 :::info Pacote publicado
-Versão **`1.0.1-rc.8`** · MSRV **Rust `1.89`** · [crates.io](https://crates.io/crates/appcore-update/1.0.1-rc.8) · [docs.rs](https://docs.rs/crate/appcore-update/1.0.1-rc.8) · [código-fonte](https://github.com/dnettoRaw/AppCore-Runtime/tree/ba8cfd5b915a087c28f08e65f6d898868989eeda/crates/appcore-update)
+Publicado **`1.0.1-rc.8`** · workspace atual do Runtime **`1.0.1-rc.9`** · MSRV **Rust `1.89`** · [crates.io](https://crates.io/crates/appcore-update/1.0.1-rc.8) · [docs.rs](https://docs.rs/crate/appcore-update/1.0.1-rc.8) · [código-fonte](https://github.com/dnettoRaw/AppCore-Runtime/tree/main/crates/appcore-update)
 :::
 
+## Guia e exemplos mantidos pelo crate
+
+O repositório do Runtime mantém o [guia detalhado](https://github.com/dnettoRaw/AppCore-Runtime/blob/main/crates/appcore-update/wiki/guide.pt.md), [exemplo básico](https://github.com/dnettoRaw/AppCore-Runtime/blob/main/crates/appcore-update/wiki/examples/basic.pt.md) e [exemplo intermediário](https://github.com/dnettoRaw/AppCore-Runtime/blob/main/crates/appcore-update/wiki/examples/intermediate.pt.md). O wiki resume a fronteira pública; detalhes de API e execução ficam junto ao código do crate.
 
 **Responsabilidade:** seleção, autenticidade, stage, ativação, health gate e
 rollback de artefato opaco.
 
-**Dependências AppCore diretas:** `appcore-contracts`, `appcore-provider`.
+**Dependências internas:** contracts e provider.
 
 **API principal:** artifact descriptor/signing payload; verifier,
 unsigned-local protegido por feature/Ed25519, trust policy/key status; update request/provider e file

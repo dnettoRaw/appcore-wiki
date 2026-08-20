@@ -1,19 +1,22 @@
 ---
 title: appcore-security
-sidebar_position: 9
+sidebar_position: 10
 ---
 
 # appcore-security
 
 :::info Pacote publicado
-Versão **`1.0.1-rc.8`** · MSRV **Rust `1.89`** · [crates.io](https://crates.io/crates/appcore-security/1.0.1-rc.8) · [docs.rs](https://docs.rs/crate/appcore-security/1.0.1-rc.8) · [código-fonte](https://github.com/dnettoRaw/AppCore-Runtime/tree/ba8cfd5b915a087c28f08e65f6d898868989eeda/crates/appcore-security)
+Publicado **`1.0.1-rc.8`** · workspace atual do Runtime **`1.0.1-rc.9`** · MSRV **Rust `1.89`** · [crates.io](https://crates.io/crates/appcore-security/1.0.1-rc.8) · [docs.rs](https://docs.rs/crate/appcore-security/1.0.1-rc.8) · [código-fonte](https://github.com/dnettoRaw/AppCore-Runtime/tree/main/crates/appcore-security)
 :::
 
+## Guia e exemplos mantidos pelo crate
+
+O repositório do Runtime mantém o [guia detalhado](https://github.com/dnettoRaw/AppCore-Runtime/blob/main/crates/appcore-security/wiki/guide.pt.md), [exemplo básico](https://github.com/dnettoRaw/AppCore-Runtime/blob/main/crates/appcore-security/wiki/examples/basic.pt.md) e [exemplo intermediário](https://github.com/dnettoRaw/AppCore-Runtime/blob/main/crates/appcore-security/wiki/examples/intermediate.pt.md). O wiki resume a fronteira pública; detalhes de API e execução ficam junto ao código do crate.
 
 **Responsabilidade:** contratos reutilizáveis de autenticação, token, segredo e
 policy.
 
-**Dependências AppCore diretas:** `appcore-core`, `appcore-dnt`.
+**Dependências internas:** `appcore-core`, `appcore-dnt`.
 
 **API principal:** provider HashToken, claims, factory/validator de command
 token, request hash, `SecurityError`; referências, resolvers, stores, bytes
@@ -23,6 +26,13 @@ adapter de key provider DNT, traits de autenticação e policy.
 Use para autenticação de infraestrutura e indireção de segredo. Tokens são
 assinados, não criptografados. Não coloque autorização de domínio, OAuth,
 inbound TLS ou vault gerenciado aqui.
+
+`HashTokenProvider::from_secret`, `with_secret` e `with_material` retornam
+`SecurityResult` e aplicam as mesmas invariantes mínimas de secret e salts.
+`compute_request_hash` produz um SHA-256 com marcador `v2:` sobre campos
+separados por domínio, com tamanho e presença de opcionais explícitos. Hashes
+anteriores sem versão são rejeitados; emissores e validadores devem ser
+atualizados juntos.
 
 A RC 1.0 não possui provider TPM ou hardware-backed. O ADR 0005 registra uma
 proposta aditiva para 1.1, com fallback explícito e evidência em hardware real;

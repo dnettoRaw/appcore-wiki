@@ -2,10 +2,12 @@
 
 Public Docusaurus documentation for AppCore Runtime.
 
-The wiki tracks AppCore Runtime `1.0.1-rc.8` (MSRV Rust `1.89`) and includes a
-dedicated reference page for each of the 21 Runtime crates published on
-crates.io, plus a progressive example path from standalone command handling to
-scheduled work and cluster composition.
+The wiki documents the 22 public AppCore crates (MSRV Rust `1.89`). The Runtime
+workspace currently develops `1.0.1-rc.9`; the published application facade is
+still `appcore-bin@1.0.1-rc.8`, while the independently versioned
+`appcore-args@1.0.1-rc.9` is also available on crates.io. The site includes a
+progressive example path from standalone command handling to scheduled work
+and cluster composition.
 
 English is the source locale; Portuguese and French use Docusaurus native
 localization:
@@ -41,3 +43,22 @@ a translation locally.
 ```bash
 npm run build:all
 ```
+
+## Detect Runtime documentation drift
+
+The Node.js checker fingerprints Runtime-owned documentation and the public
+crate graph. It does not modify either repository:
+
+```bash
+npm run docs:drift -- --runtime /path/to/AppCore-Runtime
+```
+
+After reviewing and integrating a reported Runtime change, update the checked-in
+baseline explicitly:
+
+```bash
+npm run docs:drift:accept -- --runtime /path/to/AppCore-Runtime
+```
+
+The command exits with `0` when the wiki baseline matches, `1` when it detects
+drift, and `2` for configuration or execution errors. Use `--json` for CI.

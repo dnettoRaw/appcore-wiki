@@ -15,6 +15,13 @@ Runtime tokens use signed claims. A token proves integrity and issuer policy; it
 
 Gateway and Peer RPC credentials are scoped to `peer` purpose. Gateway connection credentials are short-lived, single-use, and bound to connection identity. Peer RPC request tokens can be bound to the hash of an envelope.
 
+Request-bound hashes use the `v2:` canonical SHA-256 format with domain
+separation, length framing, and explicit optional-field presence. Earlier
+unversioned hashes are rejected, so token issuers and validators must be
+upgraded together. Runtime HTTP command/query authentication fails closed by
+default; only the explicit local-test constructor disables it, and
+`/v1/health` remains public by contract.
+
 ## Where is replay blocked?
 
 Replay protection appears in multiple layers:

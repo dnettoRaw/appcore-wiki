@@ -1,19 +1,22 @@
 ---
 title: appcore-distributed-contracts
-sidebar_position: 5
+sidebar_position: 6
 ---
 
 # appcore-distributed-contracts
 
 :::info Paquet publié
-Version **`1.0.1-rc.8`** · MSRV **Rust `1.89`** · [crates.io](https://crates.io/crates/appcore-distributed-contracts/1.0.1-rc.8) · [docs.rs](https://docs.rs/crate/appcore-distributed-contracts/1.0.1-rc.8) · [code source](https://github.com/dnettoRaw/AppCore-Runtime/tree/ba8cfd5b915a087c28f08e65f6d898868989eeda/crates/appcore-distributed-contracts)
+Publié **`1.0.1-rc.8`** · workspace Runtime actuel **`1.0.1-rc.9`** · MSRV **Rust `1.89`** · [crates.io](https://crates.io/crates/appcore-distributed-contracts/1.0.1-rc.8) · [docs.rs](https://docs.rs/crate/appcore-distributed-contracts/1.0.1-rc.8) · [code source](https://github.com/dnettoRaw/AppCore-Runtime/tree/main/crates/appcore-distributed-contracts)
 :::
 
+## Guide et exemples maintenus par le crate
+
+Le dépôt Runtime maintient le [guide détaillé](https://github.com/dnettoRaw/AppCore-Runtime/blob/main/crates/appcore-distributed-contracts/wiki/guide.fr.md), [exemple débutant](https://github.com/dnettoRaw/AppCore-Runtime/blob/main/crates/appcore-distributed-contracts/wiki/examples/basic.fr.md) et [exemple intermédiaire](https://github.com/dnettoRaw/AppCore-Runtime/blob/main/crates/appcore-distributed-contracts/wiki/examples/intermediate.fr.md). Le wiki résume la frontière publique ; les détails d’API et d’exécution restent avec le code du crate.
 
 **Responsabilité :** contrats wire/provider versionnés control plane et peer
 RPC.
 
-**Dépendances AppCore directes :** `appcore-contracts`, `appcore-types`.
+**Dépendances internes :** `appcore-contracts`, `appcore-types`.
 
 **API principale :** constantes et paths protocole, registration, presence,
 heartbeat, peer directory, leases de compatibilité, leases par service,

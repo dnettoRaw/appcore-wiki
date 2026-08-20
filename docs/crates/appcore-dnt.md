@@ -1,18 +1,21 @@
 ---
 title: appcore-dnt
-sidebar_position: 6
+sidebar_position: 7
 ---
 
 # appcore-dnt
 
 :::info Published package
-Version **`1.0.1-rc.8`** · MSRV **Rust `1.89`** · [crates.io](https://crates.io/crates/appcore-dnt/1.0.1-rc.8) · [docs.rs](https://docs.rs/crate/appcore-dnt/1.0.1-rc.8) · [source](https://github.com/dnettoRaw/AppCore-Runtime/tree/ba8cfd5b915a087c28f08e65f6d898868989eeda/crates/appcore-dnt)
+Published **`1.0.1-rc.8`** · current Runtime workspace **`1.0.1-rc.9`** · MSRV **Rust `1.89`** · [crates.io](https://crates.io/crates/appcore-dnt/1.0.1-rc.8) · [docs.rs](https://docs.rs/crate/appcore-dnt/1.0.1-rc.8) · [source](https://github.com/dnettoRaw/AppCore-Runtime/tree/main/crates/appcore-dnt)
 :::
 
+## Crate-owned guide and examples
+
+The Runtime repository maintains the detailed [guide](https://github.com/dnettoRaw/AppCore-Runtime/blob/main/crates/appcore-dnt/wiki/guide.en.md), [basic example](https://github.com/dnettoRaw/AppCore-Runtime/blob/main/crates/appcore-dnt/wiki/examples/basic.en.md), and [intermediate example](https://github.com/dnettoRaw/AppCore-Runtime/blob/main/crates/appcore-dnt/wiki/examples/intermediate.en.md). The wiki summarizes the public boundary; API and executable details live beside the crate code.
 
 **Responsibility:** generic DNT encrypted container contracts and helpers.
 
-**Direct AppCore dependencies:** `appcore-contracts`, `appcore-types`.
+**Internal dependencies:** `appcore-contracts`, `appcore-types`.
 
 **Primary API:** `seal`, `open`, `open_owned`, `inspect_header`, `verify`,
 `write_atomic`, `read_verified`, `rekey`, `migrate_envelope`,
@@ -145,7 +148,7 @@ Interpretation:
   their baseline does not include encryption, authentication, key rotation,
   context binding or tamper detection.
 
-The [complete measured report](https://github.com/dnettoRaw/AppCore-Runtime/blob/ba8cfd5b915a087c28f08e65f6d898868989eeda/benchmarks/dnt-2026-08-02-m1.md) records
+The [complete measured report](https://github.com/dnettoRaw/AppCore-Runtime/blob/main/crates/appcore-dnt/wiki/benchmarks/dnt-2026-08-02-m1.en.md) records
 hardware, APFS/SSD, AC power, Rust/profile, warm-up, sample counts, mean,
 deviation, p95, p99, maximum, throughput, seal/rekey results and unmeasured
 memory/CPU evidence. Regenerate it on the deployment class that matters. DNT is

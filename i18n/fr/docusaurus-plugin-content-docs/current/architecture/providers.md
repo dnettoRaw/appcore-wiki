@@ -25,6 +25,13 @@ Une factory est enregistrée par role et provider ID. Si la paire sélectionnée
 
 Le coordination store est runtime-owned, pas une base métier. Le secret provider résout les références après validation afin que les valeurs ne vivent pas dans les manifests.
 
+Le lease de ressource partagée sur filesystem persiste un sidecar versionné du
+plus grand epoch avant de publier le lease actif. Release, restart et
+acquisition interrompue ne réutilisent donc pas d'epoch. Celui-ci ne sert de
+fencing token que si chaque writer protégé le compare avant l'écriture ; un
+filesystem sans lock, rename, sync de répertoire et cohérence de cache fiables
+n'empêche pas seul le split-brain.
+
 ## Limitations
 
 - Providers ne rendent pas standalone et cluster équivalents ; chaque mode a ses exigences.

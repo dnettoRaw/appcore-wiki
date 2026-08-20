@@ -11,6 +11,13 @@ La sécurité AppCore est un ensemble de frontières : manifests versionnés, to
 
 Les tokens sont signés, pas chiffrés. Ne placez pas de secrets dans manifests, URLs, logs ou debug output.
 
+Les hashes liés aux requests utilisent le format SHA-256 canonique `v2:`, avec
+séparation de domaine, framing par longueur et présence explicite des champs
+optionnels. Les anciens hashes sans version sont rejetés ; émetteurs et
+validateurs doivent évoluer ensemble. L'authentification HTTP command/query
+échoue fermée par défaut ; seul le constructeur explicite de test local la
+désactive, et `/v1/health` reste public par contrat.
+
 Le replay est traité par couches : idempotency key pour commands, séquence/checkpoint pour sync, nonces pour Peer RPC, `jti` single-use pour gateway et checks build/version pour updates.
 
 DNT authentifie le contexte et chiffre le payload. Peer RPC valide tenant, cluster, core, protocole, expiry, nonce, hash et token bound. Gateway valide connexion et mesh request. Update valide policy, signature, checksum et health gate.

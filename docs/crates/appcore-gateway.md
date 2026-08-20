@@ -1,19 +1,23 @@
 ---
 title: appcore-gateway
-sidebar_position: 17
+sidebar_position: 18
 ---
 
 # appcore-gateway
 
 :::info Published package
-Version **`1.0.1-rc.8`** · MSRV **Rust `1.89`** · [crates.io](https://crates.io/crates/appcore-gateway/1.0.1-rc.8) · [docs.rs](https://docs.rs/crate/appcore-gateway/1.0.1-rc.8) · [source](https://github.com/dnettoRaw/AppCore-Runtime/tree/ba8cfd5b915a087c28f08e65f6d898868989eeda/crates/appcore-gateway)
+Published **`1.0.1-rc.8`** · current Runtime workspace **`1.0.1-rc.9`** · MSRV **Rust `1.89`** · [crates.io](https://crates.io/crates/appcore-gateway/1.0.1-rc.8) · [docs.rs](https://docs.rs/crate/appcore-gateway/1.0.1-rc.8) · [source](https://github.com/dnettoRaw/AppCore-Runtime/tree/main/crates/appcore-gateway)
 :::
 
+## Crate-owned guide and examples
+
+The Runtime repository maintains the detailed [guide](https://github.com/dnettoRaw/AppCore-Runtime/blob/main/crates/appcore-gateway/wiki/guide.en.md), [basic example](https://github.com/dnettoRaw/AppCore-Runtime/blob/main/crates/appcore-gateway/wiki/examples/basic.en.md), and [intermediate example](https://github.com/dnettoRaw/AppCore-Runtime/blob/main/crates/appcore-gateway/wiki/examples/intermediate.en.md). The wiki summarizes the public boundary; API and executable details live beside the crate code.
 
 **Responsibility:** tenant-isolated WebSocket relay for Gateway connections
 between external clients and AppCore workers.
 
-**Direct AppCore dependencies:** `appcore-contracts`, `appcore-core`, `appcore-distributed-contracts`, `appcore-peer-rpc`, `appcore-security`, `appcore-transport`, `appcore-types`.
+**Internal dependencies:** contracts, types, security, distributed
+contracts and peer RPC.
 
 **Primary API:** `GatewayConfig`, `GatewayState`, tenant state, capability
 registry and resolver, bounded worker/client connection handles,
@@ -49,7 +53,13 @@ must not weaken Peer RPC authentication, expiry, nonce or replay protections.
 
 Replay/session state is process-local. Shared revocation/session state for
 multi-instance Gateways is future provider work. Source-IP rate limiting and
-TLS termination remain deployment controls. `require_auth = false` is an
-explicit insecure mode.
+TLS termination remain deployment controls. `GatewayConfig::new` enables
+authentication. The only opt-out is `insecure_local_for_testing()`, which
+rejects non-loopback listeners, and `GatewayState::new` validates the
+configuration before constructing state.
+
+Worker and client connection hashes use canonical V2 binary framing and carry
+a `v2:` marker. Earlier unversioned hashes are not interchangeable; token
+issuers and Gateway consumers must be upgraded together.
 
 **Maturity:** RC peer transport profile for the V1 distributed surface.

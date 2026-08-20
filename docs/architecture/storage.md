@@ -61,6 +61,12 @@ The same principle appears in sync logs, checkpoints, DNT files, backup manifest
 
 This rule shows up repeatedly: sync logs, checkpoints, DNT files, backup manifests, update artifacts, peer nonce stores, and control-plane state all have explicit byte ceilings. AppCore assumes corrupted or hostile local files are possible.
 
+Housekeeping and backup traversal are iterative and bounded; they never follow
+symbolic links or Windows reparse points. Final file opens use platform
+no-follow semantics and are revalidated while the process lock is held. Backup
+listings prefer the timestamp persisted in the snapshot manifest instead of
+silently redefining creation time from directory metadata.
+
 ## What happens during a snapshot backup?
 
 Suppose an operator starts a backup while the store is closing for the day. A backup directory should either be absent or complete. It should not be published under its final name before the manifest and copied files agree.
@@ -146,6 +152,9 @@ The alternative would be to require a database for every AppCore installation. T
 
 - The file provider is not safe as a general multi-writer database across unrelated processes.
 - AppCore cannot compensate for a filesystem that lies about locks, flushes, or atomic rename.
+- The one-process profile assumes an owner-protected root. A hostile process
+  running as the same account and replacing an ancestor directory during an
+  operation remains outside this portable boundary.
 - Backups are runtime storage snapshots, not domain-aware consistency points across external databases.
 - DNT protects bytes and authenticated context; it does not define business authorization policy.
 - Restore protects the storage root it owns. It does not roll back external side effects performed by application code.

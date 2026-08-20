@@ -1,19 +1,23 @@
 ---
 title: appcore-gateway
-sidebar_position: 17
+sidebar_position: 18
 ---
 
 # appcore-gateway
 
 :::info Paquet publié
-Version **`1.0.1-rc.8`** · MSRV **Rust `1.89`** · [crates.io](https://crates.io/crates/appcore-gateway/1.0.1-rc.8) · [docs.rs](https://docs.rs/crate/appcore-gateway/1.0.1-rc.8) · [code source](https://github.com/dnettoRaw/AppCore-Runtime/tree/ba8cfd5b915a087c28f08e65f6d898868989eeda/crates/appcore-gateway)
+Publié **`1.0.1-rc.8`** · workspace Runtime actuel **`1.0.1-rc.9`** · MSRV **Rust `1.89`** · [crates.io](https://crates.io/crates/appcore-gateway/1.0.1-rc.8) · [docs.rs](https://docs.rs/crate/appcore-gateway/1.0.1-rc.8) · [code source](https://github.com/dnettoRaw/AppCore-Runtime/tree/main/crates/appcore-gateway)
 :::
 
+## Guide et exemples maintenus par le crate
+
+Le dépôt Runtime maintient le [guide détaillé](https://github.com/dnettoRaw/AppCore-Runtime/blob/main/crates/appcore-gateway/wiki/guide.fr.md), [exemple débutant](https://github.com/dnettoRaw/AppCore-Runtime/blob/main/crates/appcore-gateway/wiki/examples/basic.fr.md) et [exemple intermédiaire](https://github.com/dnettoRaw/AppCore-Runtime/blob/main/crates/appcore-gateway/wiki/examples/intermediate.fr.md). Le wiki résume la frontière publique ; les détails d’API et d’exécution restent avec le code du crate.
 
 **Responsabilité :** relay WebSocket isolé par tenant pour les connexions
 Gateway entre clients externes et workers AppCore.
 
-**Dépendances AppCore directes :** `appcore-contracts`, `appcore-core`, `appcore-distributed-contracts`, `appcore-peer-rpc`, `appcore-security`, `appcore-transport`, `appcore-types`.
+**Dépendances internes :** contracts, types, security, distributed
+contracts et peer RPC.
 
 **API principale :** `GatewayConfig`, `GatewayState`, état par tenant, registry
 et resolver de capability, connexions worker/client bornées,
@@ -52,6 +56,13 @@ expiry, nonce ou replay protection de Peer RPC.
 L'etat replay/session reste local au processus. Un etat partage de
 revocation/session pour Gateway multi-instance reste un futur provider. Le rate
 limit par IP source et la terminaison TLS restent au deployment.
-`require_auth = false` est un mode insecure explicite.
+`GatewayConfig::new` active l'authentification. La seule désactivation est
+`insecure_local_for_testing()`, qui refuse les listeners hors loopback, et
+`GatewayState::new` valide la configuration avant de construire l'état.
+
+Les hashes de connexion worker et client utilisent un framing binaire
+canonique V2 avec le marqueur `v2:`. Les anciens hashes sans version ne sont
+pas interchangeables; émetteurs de token et consommateurs Gateway doivent être
+mis à jour ensemble.
 
 **Maturité :** profil RC de peer transport pour la surface distribuee V1.
