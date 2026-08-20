@@ -6,17 +6,17 @@ sidebar_position: 1
 # appcore-args
 
 :::info Pacote publicado de forma independente
-Publicado **`1.0.1-rc.9`** · workspace atual **`1.0.1-rc.10`** · MSRV
-**Rust `1.89`** · [crates.io](https://crates.io/crates/appcore-args/1.0.1-rc.9) ·
-[docs.rs](https://docs.rs/crate/appcore-args/1.0.1-rc.9) ·
-[código-fonte](https://github.com/dnettoRaw/AppCore-Runtime/tree/main/crates/appcore-args)
+Estável **`1.0.0`** · MSRV
+**Rust `1.89`** · [crates.io](https://crates.io/crates/appcore-args/1.0.0) ·
+[docs.rs](https://docs.rs/crate/appcore-args/1.0.0) ·
+[código-fonte](https://github.com/dnettoRaw/AppCore-Runtime/tree/v1.0.0/crates/appcore-args)
 :::
 
 ## Guia e exemplos mantidos pelo crate
 
-O repositório do Runtime mantém o [guia detalhado](https://github.com/dnettoRaw/AppCore-Runtime/blob/main/crates/appcore-args/wiki/guide.pt.md),
-o [exemplo básico](https://github.com/dnettoRaw/AppCore-Runtime/blob/main/crates/appcore-args/wiki/examples/basic.pt.md)
-e o [exemplo intermediário](https://github.com/dnettoRaw/AppCore-Runtime/blob/main/crates/appcore-args/wiki/examples/intermediate.pt.md).
+O repositório do Runtime mantém o [guia detalhado](https://github.com/dnettoRaw/AppCore-Runtime/blob/v1.0.0/crates/appcore-args/wiki/guide.pt.md),
+o [exemplo básico](https://github.com/dnettoRaw/AppCore-Runtime/blob/v1.0.0/crates/appcore-args/wiki/examples/basic.pt.md)
+e o [exemplo intermediário](https://github.com/dnettoRaw/AppCore-Runtime/blob/v1.0.0/crates/appcore-args/wiki/examples/intermediate.pt.md).
 
 **Responsabilidade:** especificações declarativas de CLI, ingestão limitada de
 argumentos, parsing determinístico, help e completion de shell.

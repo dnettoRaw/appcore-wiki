@@ -21,7 +21,7 @@ L'infrastructure reste dans `appcore-bin`.
 ## Avant de commencer
 
 - Installer Rust `1.89` ou plus récent.
-- Utiliser AppCore `1.0.1-rc.8`.
+- Utiliser AppCore `1.0.0`.
 - Garder les secrets hors des manifests.
 - Exécuter chaque exemple depuis la racine du projet.
 

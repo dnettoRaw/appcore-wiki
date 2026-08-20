@@ -53,7 +53,7 @@ Unsigned local artifacts are not a production default. They require a dedicated 
 - AppCore does not provide OAuth.
 - It does not provide production TLS termination for every deployment shape.
 - It does not provide a managed production vault.
-- Hardware-backed keys are not a 1.0 release-candidate guarantee.
+- Hardware-backed keys are not part of the stable 1.0 contract.
 - AppCore does not define domain authorization policy.
 - It cannot protect local files from a compromised host operating system account.
 

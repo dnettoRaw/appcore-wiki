@@ -6,12 +6,12 @@ sidebar_position: 10
 # appcore-security
 
 :::info Pacote publicado
-Publicado **`1.0.1-rc.8`** · workspace atual do Runtime **`1.0.1-rc.9`** · MSRV **Rust `1.89`** · [crates.io](https://crates.io/crates/appcore-security/1.0.1-rc.8) · [docs.rs](https://docs.rs/crate/appcore-security/1.0.1-rc.8) · [código-fonte](https://github.com/dnettoRaw/AppCore-Runtime/tree/main/crates/appcore-security)
+Estável **`1.0.0`** · MSRV **Rust `1.89`** · [crates.io](https://crates.io/crates/appcore-security/1.0.0) · [docs.rs](https://docs.rs/crate/appcore-security/1.0.0) · [código-fonte](https://github.com/dnettoRaw/AppCore-Runtime/tree/v1.0.0/crates/appcore-security)
 :::
 
 ## Guia e exemplos mantidos pelo crate
 
-O repositório do Runtime mantém o [guia detalhado](https://github.com/dnettoRaw/AppCore-Runtime/blob/main/crates/appcore-security/wiki/guide.pt.md), [exemplo básico](https://github.com/dnettoRaw/AppCore-Runtime/blob/main/crates/appcore-security/wiki/examples/basic.pt.md) e [exemplo intermediário](https://github.com/dnettoRaw/AppCore-Runtime/blob/main/crates/appcore-security/wiki/examples/intermediate.pt.md). O wiki resume a fronteira pública; detalhes de API e execução ficam junto ao código do crate.
+O repositório do Runtime mantém o [guia detalhado](https://github.com/dnettoRaw/AppCore-Runtime/blob/v1.0.0/crates/appcore-security/wiki/guide.pt.md), [exemplo básico](https://github.com/dnettoRaw/AppCore-Runtime/blob/v1.0.0/crates/appcore-security/wiki/examples/basic.pt.md) e [exemplo intermediário](https://github.com/dnettoRaw/AppCore-Runtime/blob/v1.0.0/crates/appcore-security/wiki/examples/intermediate.pt.md). O wiki resume a fronteira pública; detalhes de API e execução ficam junto ao código do crate.
 
 **Responsabilidade:** contratos reutilizáveis de autenticação, token, segredo e
 policy.
@@ -34,9 +34,9 @@ separados por domínio, com tamanho e presença de opcionais explícitos. Hashes
 anteriores sem versão são rejeitados; emissores e validadores devem ser
 atualizados juntos.
 
-A RC 1.0 não possui provider TPM ou hardware-backed. O ADR 0005 registra uma
+O AppCore 1.0 não possui provider TPM ou hardware-backed. O ADR 0005 registra uma
 proposta aditiva para 1.1, com fallback explícito e evidência em hardware real;
 o Runtime atual não alega proteção por hardware.
 
-**Maturidade:** contratos RC estáveis; produção depende do backend de segredo e
+**Maturidade:** contratos estáveis; produção depende do backend de segredo e
 controles do deployment.

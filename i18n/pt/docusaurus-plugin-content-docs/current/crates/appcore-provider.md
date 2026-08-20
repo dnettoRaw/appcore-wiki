@@ -6,12 +6,12 @@ sidebar_position: 19
 # appcore-provider
 
 :::info Pacote publicado
-Publicado **`1.0.1-rc.8`** · workspace atual do Runtime **`1.0.1-rc.9`** · MSRV **Rust `1.89`** · [crates.io](https://crates.io/crates/appcore-provider/1.0.1-rc.8) · [docs.rs](https://docs.rs/crate/appcore-provider/1.0.1-rc.8) · [código-fonte](https://github.com/dnettoRaw/AppCore-Runtime/tree/main/crates/appcore-provider)
+Estável **`1.0.0`** · MSRV **Rust `1.89`** · [crates.io](https://crates.io/crates/appcore-provider/1.0.0) · [docs.rs](https://docs.rs/crate/appcore-provider/1.0.0) · [código-fonte](https://github.com/dnettoRaw/AppCore-Runtime/tree/v1.0.0/crates/appcore-provider)
 :::
 
 ## Guia e exemplos mantidos pelo crate
 
-O repositório do Runtime mantém o [guia detalhado](https://github.com/dnettoRaw/AppCore-Runtime/blob/main/crates/appcore-provider/wiki/guide.pt.md), [exemplo básico](https://github.com/dnettoRaw/AppCore-Runtime/blob/main/crates/appcore-provider/wiki/examples/basic.pt.md) e [exemplo intermediário](https://github.com/dnettoRaw/AppCore-Runtime/blob/main/crates/appcore-provider/wiki/examples/intermediate.pt.md). O wiki resume a fronteira pública; detalhes de API e execução ficam junto ao código do crate.
+O repositório do Runtime mantém o [guia detalhado](https://github.com/dnettoRaw/AppCore-Runtime/blob/v1.0.0/crates/appcore-provider/wiki/guide.pt.md), [exemplo básico](https://github.com/dnettoRaw/AppCore-Runtime/blob/v1.0.0/crates/appcore-provider/wiki/examples/basic.pt.md) e [exemplo intermediário](https://github.com/dnettoRaw/AppCore-Runtime/blob/v1.0.0/crates/appcore-provider/wiki/examples/intermediate.pt.md). O wiki resume a fronteira pública; detalhes de API e execução ficam junto ao código do crate.
 
 **Responsabilidade:** factories, registry, deployment plans, contratos de
 coordenação/job e resolução de segredo independentes de implementação.
@@ -34,5 +34,5 @@ proteção forte contra split brain por este adapter sozinho.
 Use para compor providers explícitos. Não registre fallback silencioso nem SDK
 específico de provider neste crate.
 
-**Maturidade:** superfície de composição RC estável; jobs distribuídos estão
+**Maturidade:** superfície de composição estável; jobs distribuídos estão
 fora do primeiro perfil 1.0.

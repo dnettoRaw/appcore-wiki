@@ -1,17 +1,17 @@
 {
   "schemaVersion": 1,
-  "acceptedAt": "2026-08-20T14:55:24.942Z",
-  "runtimeCommit": "e02d69c290e7937b24f3964d21ecc3a8418fb860",
+  "acceptedAt": "2026-08-20T17:53:18.780Z",
+  "runtimeCommit": "786b0e94c0f37e17639cdcdfd7caac63f34090c8",
   "runtimeRemote": "git@github.com:dnettoRaw/AppCore-Runtime.git",
-  "relevantDigest": "c070736c22b1f70d1a8ce8f1762938ad46b826fc5dd8c48e54e7825a88a2e6de",
-  "publicCrateGraphDigest": "3f58ac5eee79ff7bb6a138777633c893b6e52f4a7b5cde071bb6664b7c1b84c1",
+  "relevantDigest": "3ee53e8c482c94c9c18f8236fda6e382cbc7beff4c82ece21c6d68c9e18076fa",
+  "publicCrateGraphDigest": "a3a30161f1a2a91f1963f95d9b3fb8f6329a73b357e7d3d535d8635c203e97c7",
   "files": {
     "AGENTS.md": "068d190b6fd7830833c400d0ba97aa6a44959a8465591245d609dcb49fa25bf4",
-    "CHANGELOG.md": "f79a0bbb548c2d9e52b19e361d3d56081f6caf0f08ff4716b10f7a4c6aab7826",
+    "CHANGELOG.md": "bbe73aeeddd3cb557c68e67dd05f46625d77dd039ab277ef9d8528a824073154",
     "CONTRIBUTING.md": "5bd3e5268b49f1817b4f92577bf31b5dccd7ef0afef18984e2a51873448c3c85",
-    "Cargo.lock": "eed9ea58c8c87b3191b5b34484582859e5b801bb163d7008fe434d51915260b3",
-    "Cargo.toml": "a54e89d91e4ef012dd117a97f441091c7c176153db90b81a565a73dcd142d426",
-    "README.md": "308a810759c5c15d96cea82d6225b05285ffdc5a3b2c15fc70a52c7ea666e70a",
+    "Cargo.lock": "b8239f5235d056c41117b8a2f675d40b62e4cbaffbcaf52f82e937c39bfc9184",
+    "Cargo.toml": "f69773c2fb98defceb4215a61a32ddecde566bf62bd8dd6e29776644613b5925",
+    "README.md": "b7c62dfe9f1b8026fef683a8d0cea05cc5098909a13351b8a25e9c24a37872d0",
     "SECURITY.md": "c76cff437ff942e9fa35f3bb66ef1efb6c5f67e1d62b3a5d5e89b91b6c6ca4b1",
     "crates/appcore-api/Cargo.toml": "70648fe6a96bcd54d0b3f085577184e294528705e977d9dbaa699199681c01c9",
     "crates/appcore-api/README.en.md": "fcedf95c4efcbe334340b265f40b103013d4f0d23f799636abe4ee2cae8b1026",
@@ -27,7 +27,7 @@
     "crates/appcore-api/wiki/guide.en.md": "3a5338d9464c83b8f28a2964eb97bd50c669fc702b29512d2fd3e9d5e36b0ace",
     "crates/appcore-api/wiki/guide.fr.md": "61ec5bd3320a048eb3a06e7813c5ca746bc3713b4ff9c6ab56548054be0ff528",
     "crates/appcore-api/wiki/guide.pt.md": "de9747a5e3daed3e7ec1e4351cf28f38b259cf8580c9eda2c7ef59df0668fb48",
-    "crates/appcore-args/Cargo.toml": "e2d61d48abc47ef27a6c10b659e506b19d8881d980ed183d6c4290ff100ae482",
+    "crates/appcore-args/Cargo.toml": "beeaaa0e41b5551a08ed1b996e40aeefd59393e0f0924f7f9a9c1db5d264d651",
     "crates/appcore-args/README.en.md": "3d7a74f2709b847a41d5a637eab18866ce392018715174a7a26d05864f2742f9",
     "crates/appcore-args/README.fr.md": "722fec88a041f90069f1e530faff5e5771b2cadaaeda2718199627b1d74b9ea5",
     "crates/appcore-args/README.pt.md": "a476aa2d583cd783c647d5df4aef629f410ac547f6e3c6b88cddd455d10dbc18",
@@ -41,20 +41,20 @@
     "crates/appcore-args/wiki/guide.en.md": "073d9c37ce4ba024fe1e6968618ad52c6c93340d2d9a4abc452eb46ec0277c90",
     "crates/appcore-args/wiki/guide.fr.md": "f27cdba23fcaea87386a890543ba5c5548566aec38ebd8e501c2d6359eea0dd0",
     "crates/appcore-args/wiki/guide.pt.md": "8e3c761889cd7f43c1b506b6091129ae870549dbd3257112e66d1f9f53ab65c7",
-    "crates/appcore-bin/Cargo.toml": "5a89505dc51c2ae87cba33e550f546d378345a57167939f97185969c9adb956c",
-    "crates/appcore-bin/README.en.md": "53bc20036afe5e6d7e7677cd20acccd6a3bf591b1456b72244af650b51ba07f5",
-    "crates/appcore-bin/README.fr.md": "f7225711de350ecaec6e4e8a74eee3e150dcd3eccc0be902fe7abcab6668e776",
-    "crates/appcore-bin/README.pt.md": "5c967a3cd990f306605a1cfddb8b4e51de6a2d725ab1f8ec0e1428505f362f25",
-    "crates/appcore-bin/src/lib.rs": "9d9401350ffceb29852ad4fcb1d78fe25b72bfb4ecb5d6721beea656433e35a1",
-    "crates/appcore-bin/wiki/examples/basic.en.md": "b73d78e3096c7e1d377985c758f029deea8ee60ad9fb551f3f85f075b0b2dbaa",
-    "crates/appcore-bin/wiki/examples/basic.fr.md": "007e8fe76d249548e80b628b4b8f5c435ad7923e4985d50ad78cd21487f92074",
-    "crates/appcore-bin/wiki/examples/basic.pt.md": "20cb3e37915219370b2e5f21d8470c1f2ea1d500421c7f8df71a74469fe3bb19",
+    "crates/appcore-bin/Cargo.toml": "d68a38577362e9c5f5aa3ecf5c49e6522dbc6508517d6c071f0b72ead50eaa31",
+    "crates/appcore-bin/README.en.md": "8e7f71e71ca24f1d67ddfca41297f891ceba991944cf5ad8cf2bcf5388a4063d",
+    "crates/appcore-bin/README.fr.md": "06d7435558cae60c8007238f07aee22329d60faaa197fc1e37610d05bf22cb27",
+    "crates/appcore-bin/README.pt.md": "755e6d3c00e7183158cbf181908a2b1d9e5285b74a69c500cc51090f35af2c4e",
+    "crates/appcore-bin/src/lib.rs": "073a3adf6d2feb275ac1026f12ae1971ec9978dc1e28bdf49b12fb27585e700d",
+    "crates/appcore-bin/wiki/examples/basic.en.md": "1a96fb7edb6078245b0dc7cc991800da53477d6d916996300b2e65630f3fbdd9",
+    "crates/appcore-bin/wiki/examples/basic.fr.md": "f108d17ed118d383a34298c3ed125662804bdf35fb6228d70be587e94c474b9b",
+    "crates/appcore-bin/wiki/examples/basic.pt.md": "0365ca57ae51e2771e59b6b0c1ad9cc28a661cb4cf9dc8c9a475fef7c5f3fab7",
     "crates/appcore-bin/wiki/examples/intermediate.en.md": "91d70f74882321f16116a6232890018843057c72ac829746e983a6312eda8a8b",
     "crates/appcore-bin/wiki/examples/intermediate.fr.md": "04f15e87931e10f5f6b5cd68e7b0ebe47d583ffa781b2a5104226d3f5427540c",
     "crates/appcore-bin/wiki/examples/intermediate.pt.md": "305f83efe493e9574044c73588e6511d046b568151bedab2f1ce0aad7e699490",
-    "crates/appcore-bin/wiki/guide.en.md": "39f69d4b3908bbfc22923c98b1b533edb1e1e6a39190902f2f53ff14b4adfb04",
-    "crates/appcore-bin/wiki/guide.fr.md": "91f99f48fbf3f2cef4fa5ff66f89cb9b64d0b45bafa5dfafbd29cf25f1775fe3",
-    "crates/appcore-bin/wiki/guide.pt.md": "2a770a24ca2e799f0dd40db6a7ffbb66ad7c3ac47eaa4d2ef70e0f6304430dd5",
+    "crates/appcore-bin/wiki/guide.en.md": "a3d022d73e91b77338ba44970d945ac6996eaaa5f1cc664d643bc5d1cc6ea7ad",
+    "crates/appcore-bin/wiki/guide.fr.md": "c3b360b0c1c77437fc3d77b25c54d6036a662e0f16c2a7f627a331be1fb00eea",
+    "crates/appcore-bin/wiki/guide.pt.md": "7a43dd03ede8ff5ba6735bc7665123218b988abfe9419bf54731aa0f3f02d62d",
     "crates/appcore-capabilities/Cargo.toml": "293c9a2afbb711d62d15a2275132e05ed3da7cab714d8f867647856c72bdce1a",
     "crates/appcore-capabilities/README.en.md": "8a542fd5606f86fb264415aeaf485623629c0f02583aae771e093a4b2eba58b2",
     "crates/appcore-capabilities/README.fr.md": "0f67a891b03cf6413346ac74c2885c36dfed4b1c4cc4bdf9189f5864db5f926f",
@@ -142,20 +142,20 @@
     "crates/appcore-dnt/wiki/guide.en.md": "aa276e4ad9203bc09838f92c3be9a4650be62a1d0b953acfce14b79e446b0506",
     "crates/appcore-dnt/wiki/guide.fr.md": "3361d2858b3ad05e1daa1e489efac777642162a2160d4a6f54915738dc909b8b",
     "crates/appcore-dnt/wiki/guide.pt.md": "99726c08d5782f30551099ea10c049017380e8b095bdc03adc4216aa283e4814",
-    "crates/appcore-gateway/Cargo.toml": "4561981ee7620abdeb9e94a568f55a3bdd91822658027117cc4ab10c04e9786c",
-    "crates/appcore-gateway/README.en.md": "a29d187c4ef92c9eb4b284cd6854d5cc9e49d34283693074a7a11b0a008b66f9",
-    "crates/appcore-gateway/README.fr.md": "a62f79f6991848221c1a97e4e32de86e1ded28e2aec0f37329db984c1cb635ae",
-    "crates/appcore-gateway/README.pt.md": "10b918c26f4c7df3d5ff453a87fecfabf599360421e9a0f25023ab08abf98904",
-    "crates/appcore-gateway/src/lib.rs": "e0b92add0435b38ee47451ac5c1d941f75e6065329d1271c81cd97caed7a857e",
-    "crates/appcore-gateway/wiki/examples/basic.en.md": "ac3123626c51f59235d4cfddfebda6c5c577f0f37e7c1043267b94ca55502d9c",
-    "crates/appcore-gateway/wiki/examples/basic.fr.md": "7434b21dd24d6d49045c76e8a827502aac72de27fc0522ba2e5e0e69984b8f06",
-    "crates/appcore-gateway/wiki/examples/basic.pt.md": "7d0107fdf09bed827038ef79d332df009337c1cf103abfcbfb59c6bb3cc059e9",
+    "crates/appcore-gateway/Cargo.toml": "adda13fbfcdd1c79de872f9698ef99111af3d16af7b9b85ebb2b693923ca9768",
+    "crates/appcore-gateway/README.en.md": "d71a787895b665da78c38702d6e375a0679661a24cfe380654c09c72813e3c6d",
+    "crates/appcore-gateway/README.fr.md": "8e29fefce7bf015e7e30d9f980c80e17b979635b05e90b5fe4aa851aae491dce",
+    "crates/appcore-gateway/README.pt.md": "7a2b743bc6eef3836516b86d907ecfc3d847894afd78732397a2f34fb8737718",
+    "crates/appcore-gateway/src/lib.rs": "ea46cb218e55394cb7d54b48bd27240cdf48bd3d7b31e0b546cddf1310e7e726",
+    "crates/appcore-gateway/wiki/examples/basic.en.md": "b4eae5a487c66e5d4d54d0b92496af0e76879c0742be8b37f0a5e8aecdb6cf4a",
+    "crates/appcore-gateway/wiki/examples/basic.fr.md": "96b3d7079e8af9b8b4df7b1dfa0dd180823008ad679ccccfc8e372ee6333c257",
+    "crates/appcore-gateway/wiki/examples/basic.pt.md": "e121474b100ed55c4885e2e2beb6e043d725aa8e274d17a606f3a4bf3dd293d0",
     "crates/appcore-gateway/wiki/examples/intermediate.en.md": "2f3129659cfc471b6cbdc7f6d4388825df7ae7d73c2693ff9e403a9a454c79ae",
     "crates/appcore-gateway/wiki/examples/intermediate.fr.md": "0afd870b74da5765f279a5818c58985e27d4728577e8c5cee33d5b59f7302fb9",
     "crates/appcore-gateway/wiki/examples/intermediate.pt.md": "3eb56bd5dd9e5af0400cf41bca9dbb6ddaaf50e0b79244150c7e63de00098d81",
-    "crates/appcore-gateway/wiki/guide.en.md": "f7d87af148eafcb74431c2ce9751dd7a2bac1c3b423d90475b1303f428182928",
-    "crates/appcore-gateway/wiki/guide.fr.md": "254108ae190f2efe9f60a81478da4a8b936d9e5a2e2aa72d87f377b5bbb737d0",
-    "crates/appcore-gateway/wiki/guide.pt.md": "045c72b9191bdd90a99cc461af872f3e6618e5e258c0f536c6756a12af3dacce",
+    "crates/appcore-gateway/wiki/guide.en.md": "a95c177cc42685746d3b1b8b4742a4c3c96c7a95f5a797f002edb32579ff1478",
+    "crates/appcore-gateway/wiki/guide.fr.md": "964421acdab81170ea4a02858423fe16efab3d0792bfa55793e1d859add2b492",
+    "crates/appcore-gateway/wiki/guide.pt.md": "81265d279f957c58a1962d938d7e9abb8b532283bcedb56f46b4c9aa417f8557",
     "crates/appcore-ops/Cargo.toml": "aab1f08e7c38b1d12f038451e07ac114f260bdfc7a4748a3b653c8071552d91a",
     "crates/appcore-ops/README.en.md": "ecf8e74fab23919f3861d104a09d916ce7b5f1a38e3a72e6bd2baa8d5a7baae7",
     "crates/appcore-ops/README.fr.md": "e559d3bd4682a733e169e3319ea0495936f06e3738ecb1c0d6c3ef7ab94798e9",
@@ -254,7 +254,7 @@
     "crates/appcore-storage/wiki/guide.en.md": "09ecf72183e211c22f58fda8850a5ba6a8989f2384c61179b0c2785de876cdbb",
     "crates/appcore-storage/wiki/guide.fr.md": "53b82c52c05e0556c18fc7c37219a04330dc5647ed8657a8b6546784cee5c556",
     "crates/appcore-storage/wiki/guide.pt.md": "3f76faf41a42c5043507c95e3fbd6da62aff739cae8928716d794e1a645929b4",
-    "crates/appcore-supervisor/Cargo.toml": "1411f9535e4c52aa35d161fff5e468f8288df9b2bb6a85cc635411688e51bbcb",
+    "crates/appcore-supervisor/Cargo.toml": "78ec05e24da045676481eba750045940a71b776a21b92a8014c6ad1eaac0ee7f",
     "crates/appcore-supervisor/README.en.md": "303f39c4c2300d955f5b8aec2e10e22fce686f1696f70aa8826ffee4c2262e17",
     "crates/appcore-supervisor/README.fr.md": "edb84b03e2d80161ea498c91f4e192959966fe4633ff0bb773f66f4a452dea03",
     "crates/appcore-supervisor/README.pt.md": "bcee2da7f30f50830794bb16f0917208c071553c92ce3f76dbda3a4b7d1240bd",
@@ -282,7 +282,7 @@
     "crates/appcore-sync/wiki/guide.en.md": "ec34b29e928f6d1d8d2a900995dee44538ea1d58f5594edab1523eb2493dc0ac",
     "crates/appcore-sync/wiki/guide.fr.md": "8cdb485b689487e0679c299fbb400bc6f3810680230f0aa7cc9ef0e40c624737",
     "crates/appcore-sync/wiki/guide.pt.md": "b68ab15c12ee966f90597c38e14b2d9c95ac898cf017c3d477c87cc1797818bc",
-    "crates/appcore-transport/Cargo.toml": "07d4ed0d217503ce201f3aff16dca2c36403c0709e63e21ee474866a2ea20dbd",
+    "crates/appcore-transport/Cargo.toml": "9222cba92521b8e8eb527d8bd99bd36e52e21dc39e2348dd3b0680bc7a6394d4",
     "crates/appcore-transport/README.en.md": "f6c7aa7600991bf5d978868d7275ac462890c659d0bb2a5aee300ac313cc3e32",
     "crates/appcore-transport/README.fr.md": "523d308d7391c1b9685a8e6c53baed0c0d19e64ffe2ea41fabea41959ebf5666",
     "crates/appcore-transport/README.pt.md": "7cacd73bdf7f1f67a6ee56ef1a3039d8615f6550cde1600aed6c2068ac2819c8",
@@ -315,21 +315,21 @@
     "crates/appcore-update/README.fr.md": "7389b8021fac5df9eb03d0d318766853a2698c1f273fdb3247336b129e953921",
     "crates/appcore-update/README.pt.md": "ef2dfff9e53f4835a968a76bb2f20d07d99aaa3c874a8d69fbd5aa055e5325c5",
     "crates/appcore-update/src/lib.rs": "cfb59d9caa4b709d0c63e6b3569a0c582fd9b2a175f95467f21ec0b927f6be39",
-    "crates/appcore-update/wiki/examples/basic.en.md": "aa4232a39f35fc0354d13f82c081885b421a83a32f632ce5c667ffb2670807b6",
-    "crates/appcore-update/wiki/examples/basic.fr.md": "40c75de7a6c8d3b425e4a33437b108afcac5855ed9e91a70778c6d6789b60a9f",
-    "crates/appcore-update/wiki/examples/basic.pt.md": "614f5b1c68e90e47f293d97577094b268c47ef22922f7824e5a39961c8106d50",
-    "crates/appcore-update/wiki/examples/intermediate.en.md": "e91ca93cd212a6f42f30cc91489ec8de21f897cfad23fbccd8e6848221144117",
-    "crates/appcore-update/wiki/examples/intermediate.fr.md": "c231623bcbc876e7d957be13e6090be80c996df0f11e3352ba9eb2fd8c43a56c",
-    "crates/appcore-update/wiki/examples/intermediate.pt.md": "687dbaba27e36198f6637a2bb033b8d96a780b02d5f467f94dfa0b718274fdc1",
+    "crates/appcore-update/wiki/examples/basic.en.md": "39d47787ef399a5f3acf4de981313d4b985efc950bac7d5911cc80662f0c9478",
+    "crates/appcore-update/wiki/examples/basic.fr.md": "6e99cb8f03b7088e55cc2241ecdc0ee60636eab2f48eb99b05d662071243128c",
+    "crates/appcore-update/wiki/examples/basic.pt.md": "a01206c27a756c61e70a1c5f518cbebcb260831b4fe289293945424f26b20043",
+    "crates/appcore-update/wiki/examples/intermediate.en.md": "f439997a60a215aef2f9b727e9d054be238889b274d1a8b817f6ef870be3daaa",
+    "crates/appcore-update/wiki/examples/intermediate.fr.md": "6e08eafef7b768f43006e08e42c91c461db6127fba0c755df926b472ed100b35",
+    "crates/appcore-update/wiki/examples/intermediate.pt.md": "31f6e8f350108dee51719fede6ac3ae2cee61b9dbd158a95707e1ff4c8807da0",
     "crates/appcore-update/wiki/guide.en.md": "16b1329171a2c172d369acf74d8794977c4051221268df26ae91db5f6c125878",
     "crates/appcore-update/wiki/guide.fr.md": "230af1ba8481ed8c1a9f508a7a5015c99e2bd74cb841f63d1217b7e4bce9ea2e",
     "crates/appcore-update/wiki/guide.pt.md": "63d6ca389dc365eb7413b62a9ce63001a710a1f3cacf8a38b49e09471039ce03",
-    "release/1.0-ga-checklist.md": "151003e91e4ec13af3cf539fe97ef30b22b983f475b8d479aea66b5943fdbff5",
+    "release/1.0-ga-checklist.md": "5bc283c71d9259f0f2115e0d9a8600c7c97a3bc5ac543cec01665937216d923a",
     "release/1.0-rc.md": "9f5f1928b281ac47b39294781db9eb55fd721d7b3895272061a1f67832b2d016",
     "release/evidence/README.md": "48df626a00b78e996dd640fac9c12d65cde22c4ac28ba4161b331a1310d5fabb",
     "tests/three-artifact-app/Cargo.toml": "392c1794b65c01687b7202fc3ad32c222de567a50dc98e088528026060ba1b23",
     "tests/three-artifact-app/README.md": "0f6e70cafaf00e35a0be4d28ec39892e062db1910ec991781f59d3c78898419c",
-    "tests/three-artifact-app/application.toml": "5555248f0ec52f963d5f2c1b6d17b727b3af6e695bacae6a5dcbfcdecfd99d5c",
+    "tests/three-artifact-app/application.toml": "820047dc7b1a1cc0c64bceff153792b0ce4505d40b4a1c9a765f0c1d4fd36f4a",
     "tests/three-artifact-app/deployment.cluster.toml": "176715d0e21e3eb0197a30d3c9cf83241468918c6a7b304a664ea4c6d920e255",
     "tests/three-artifact-app/deployment.standalone.toml": "79aa9316508a4fca56e923fa6b5e9ab3f4d2025ab4c9e0280f3611dc6970ea31",
     "tests/three-artifact-app/src/business.rs": "b9265e6ca3ec75baca1f010f62f7dfd3633a02404c94246254f0c6da6c4351ad"
@@ -337,7 +337,7 @@
   "crates": [
     {
       "name": "appcore-api",
-      "version": "1.0.1-rc.9",
+      "version": "1.0.0",
       "rustVersion": "1.89",
       "appcoreDependencies": [
         "appcore-contracts",
@@ -348,13 +348,13 @@
     },
     {
       "name": "appcore-args",
-      "version": "1.0.1-rc.10",
+      "version": "1.0.0",
       "rustVersion": "1.89",
       "appcoreDependencies": []
     },
     {
       "name": "appcore-bin",
-      "version": "1.0.1-rc.9",
+      "version": "1.0.0",
       "rustVersion": "1.89",
       "appcoreDependencies": [
         "appcore-api",
@@ -363,6 +363,7 @@
         "appcore-contracts",
         "appcore-control-plane",
         "appcore-core",
+        "appcore-gateway",
         "appcore-ops",
         "appcore-peer-rpc",
         "appcore-provider",
@@ -377,7 +378,7 @@
     },
     {
       "name": "appcore-capabilities",
-      "version": "1.0.1-rc.9",
+      "version": "1.0.0",
       "rustVersion": "1.89",
       "appcoreDependencies": [
         "appcore-contracts",
@@ -389,13 +390,13 @@
     },
     {
       "name": "appcore-contracts",
-      "version": "1.0.1-rc.9",
+      "version": "1.0.0",
       "rustVersion": "1.89",
       "appcoreDependencies": []
     },
     {
       "name": "appcore-control-plane",
-      "version": "1.0.1-rc.9",
+      "version": "1.0.0",
       "rustVersion": "1.89",
       "appcoreDependencies": [
         "appcore-contracts",
@@ -406,7 +407,7 @@
     },
     {
       "name": "appcore-core",
-      "version": "1.0.1-rc.9",
+      "version": "1.0.0",
       "rustVersion": "1.89",
       "appcoreDependencies": [
         "appcore-contracts",
@@ -415,7 +416,7 @@
     },
     {
       "name": "appcore-distributed-contracts",
-      "version": "1.0.1-rc.9",
+      "version": "1.0.0",
       "rustVersion": "1.89",
       "appcoreDependencies": [
         "appcore-contracts",
@@ -424,7 +425,7 @@
     },
     {
       "name": "appcore-dnt",
-      "version": "1.0.1-rc.9",
+      "version": "1.0.0",
       "rustVersion": "1.89",
       "appcoreDependencies": [
         "appcore-contracts",
@@ -433,7 +434,7 @@
     },
     {
       "name": "appcore-gateway",
-      "version": "1.0.1-rc.9",
+      "version": "1.0.0",
       "rustVersion": "1.89",
       "appcoreDependencies": [
         "appcore-contracts",
@@ -446,7 +447,7 @@
     },
     {
       "name": "appcore-ops",
-      "version": "1.0.1-rc.9",
+      "version": "1.0.0",
       "rustVersion": "1.89",
       "appcoreDependencies": [
         "appcore-core"
@@ -454,7 +455,7 @@
     },
     {
       "name": "appcore-peer-rpc",
-      "version": "1.0.1-rc.9",
+      "version": "1.0.0",
       "rustVersion": "1.89",
       "appcoreDependencies": [
         "appcore-core",
@@ -465,7 +466,7 @@
     },
     {
       "name": "appcore-provider",
-      "version": "1.0.1-rc.9",
+      "version": "1.0.0",
       "rustVersion": "1.89",
       "appcoreDependencies": [
         "appcore-contracts"
@@ -473,7 +474,7 @@
     },
     {
       "name": "appcore-provider-vercel-neon",
-      "version": "1.0.1-rc.9",
+      "version": "1.0.0",
       "rustVersion": "1.89",
       "appcoreDependencies": [
         "appcore-contracts",
@@ -483,7 +484,7 @@
     },
     {
       "name": "appcore-scheduler",
-      "version": "1.0.1-rc.9",
+      "version": "1.0.0",
       "rustVersion": "1.89",
       "appcoreDependencies": [
         "appcore-contracts",
@@ -492,7 +493,7 @@
     },
     {
       "name": "appcore-security",
-      "version": "1.0.1-rc.9",
+      "version": "1.0.0",
       "rustVersion": "1.89",
       "appcoreDependencies": [
         "appcore-contracts",
@@ -503,7 +504,7 @@
     },
     {
       "name": "appcore-storage",
-      "version": "1.0.1-rc.9",
+      "version": "1.0.0",
       "rustVersion": "1.89",
       "appcoreDependencies": [
         "appcore-contracts",
@@ -514,13 +515,13 @@
     },
     {
       "name": "appcore-supervisor",
-      "version": "1.0.1-rc.9",
+      "version": "1.0.0",
       "rustVersion": "1.89",
       "appcoreDependencies": []
     },
     {
       "name": "appcore-sync",
-      "version": "1.0.1-rc.9",
+      "version": "1.0.0",
       "rustVersion": "1.89",
       "appcoreDependencies": [
         "appcore-core",
@@ -531,13 +532,13 @@
     },
     {
       "name": "appcore-transport",
-      "version": "1.0.1-rc.9",
+      "version": "1.0.0",
       "rustVersion": "1.89",
       "appcoreDependencies": []
     },
     {
       "name": "appcore-types",
-      "version": "1.0.1-rc.9",
+      "version": "1.0.0",
       "rustVersion": "1.89",
       "appcoreDependencies": [
         "appcore-contracts"
@@ -545,7 +546,7 @@
     },
     {
       "name": "appcore-update",
-      "version": "1.0.1-rc.9",
+      "version": "1.0.0",
       "rustVersion": "1.89",
       "appcoreDependencies": [
         "appcore-contracts",

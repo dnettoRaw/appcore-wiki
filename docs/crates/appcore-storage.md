@@ -6,12 +6,12 @@ sidebar_position: 11
 # appcore-storage
 
 :::info Published package
-Published **`1.0.1-rc.8`** · current Runtime workspace **`1.0.1-rc.9`** · MSRV **Rust `1.89`** · [crates.io](https://crates.io/crates/appcore-storage/1.0.1-rc.8) · [docs.rs](https://docs.rs/crate/appcore-storage/1.0.1-rc.8) · [source](https://github.com/dnettoRaw/AppCore-Runtime/tree/main/crates/appcore-storage)
+Stable **`1.0.0`** · MSRV **Rust `1.89`** · [crates.io](https://crates.io/crates/appcore-storage/1.0.0) · [docs.rs](https://docs.rs/crate/appcore-storage/1.0.0) · [source](https://github.com/dnettoRaw/AppCore-Runtime/tree/v1.0.0/crates/appcore-storage)
 :::
 
 ## Crate-owned guide and examples
 
-The Runtime repository maintains the detailed [guide](https://github.com/dnettoRaw/AppCore-Runtime/blob/main/crates/appcore-storage/wiki/guide.en.md), [basic example](https://github.com/dnettoRaw/AppCore-Runtime/blob/main/crates/appcore-storage/wiki/examples/basic.en.md), and [intermediate example](https://github.com/dnettoRaw/AppCore-Runtime/blob/main/crates/appcore-storage/wiki/examples/intermediate.en.md). The wiki summarizes the public boundary; API and executable details live beside the crate code.
+The Runtime repository maintains the detailed [guide](https://github.com/dnettoRaw/AppCore-Runtime/blob/v1.0.0/crates/appcore-storage/wiki/guide.en.md), [basic example](https://github.com/dnettoRaw/AppCore-Runtime/blob/v1.0.0/crates/appcore-storage/wiki/examples/basic.en.md), and [intermediate example](https://github.com/dnettoRaw/AppCore-Runtime/blob/v1.0.0/crates/appcore-storage/wiki/examples/intermediate.en.md). The wiki summarizes the public boundary; API and executable details live beside the crate code.
 
 **Responsibility:** generic storage contracts and the bounded local file
 provider.
@@ -44,5 +44,5 @@ revalidated under the process lock. The one-process profile still assumes an
 owner-protected root: a hostile same-account process replacing an ancestor
 directory during an operation remains outside this portable boundary.
 
-**Maturity:** stable RC contracts; file provider certified for one local process
+**Maturity:** stable contracts; file provider certified for one local process
 and a filesystem with required lock/sync/rename semantics.

@@ -47,6 +47,6 @@ Evite quando um servidor HTTP stateless e um banco gerenciado bastam. AppCore n�
 - AppCore oferece contratos de runtime; ele não escreve o modelo de negócio.
 - Deployments ainda precisam escolher providers, paths, secrets e process manager corretamente.
 - O runtime valida envelopes e manifests, mas não prova que handlers de domínio estão corretos.
-- A linha 1.0 RC prefere falha explícita a compatibilidade automática com formatos antigos.
+- A linha estável 1.0 prefere falha explícita a compatibilidade automática com formatos antigos.
 
 Próximo capítulo: [contrato de três artefatos](/architecture/three-artifact-contract).

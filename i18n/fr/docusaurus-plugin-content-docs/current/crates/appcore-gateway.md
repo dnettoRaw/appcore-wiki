@@ -6,12 +6,12 @@ sidebar_position: 18
 # appcore-gateway
 
 :::info Paquet publié
-Publié **`1.0.1-rc.8`** · workspace Runtime actuel **`1.0.1-rc.9`** · MSRV **Rust `1.89`** · [crates.io](https://crates.io/crates/appcore-gateway/1.0.1-rc.8) · [docs.rs](https://docs.rs/crate/appcore-gateway/1.0.1-rc.8) · [code source](https://github.com/dnettoRaw/AppCore-Runtime/tree/main/crates/appcore-gateway)
+Stable **`1.0.0`** · MSRV **Rust `1.89`** · [crates.io](https://crates.io/crates/appcore-gateway/1.0.0) · [docs.rs](https://docs.rs/crate/appcore-gateway/1.0.0) · [code source](https://github.com/dnettoRaw/AppCore-Runtime/tree/v1.0.0/crates/appcore-gateway)
 :::
 
 ## Guide et exemples maintenus par le crate
 
-Le dépôt Runtime maintient le [guide détaillé](https://github.com/dnettoRaw/AppCore-Runtime/blob/main/crates/appcore-gateway/wiki/guide.fr.md), [exemple débutant](https://github.com/dnettoRaw/AppCore-Runtime/blob/main/crates/appcore-gateway/wiki/examples/basic.fr.md) et [exemple intermédiaire](https://github.com/dnettoRaw/AppCore-Runtime/blob/main/crates/appcore-gateway/wiki/examples/intermediate.fr.md). Le wiki résume la frontière publique ; les détails d’API et d’exécution restent avec le code du crate.
+Le dépôt Runtime maintient le [guide détaillé](https://github.com/dnettoRaw/AppCore-Runtime/blob/v1.0.0/crates/appcore-gateway/wiki/guide.fr.md), [exemple débutant](https://github.com/dnettoRaw/AppCore-Runtime/blob/v1.0.0/crates/appcore-gateway/wiki/examples/basic.fr.md) et [exemple intermédiaire](https://github.com/dnettoRaw/AppCore-Runtime/blob/v1.0.0/crates/appcore-gateway/wiki/examples/intermediate.fr.md). Le wiki résume la frontière publique ; les détails d’API et d’exécution restent avec le code du crate.
 
 **Responsabilité :** relay WebSocket isolé par tenant pour les connexions
 Gateway entre clients externes et workers AppCore.
@@ -30,6 +30,26 @@ deployment ou depuis un paramètre de query réservé aux tests locaux, authenti
 les connexions lorsque configuré, route les enveloppes Peer RPC et les requests
 HTTP Peer RPC via mesh relay uniquement dans la partition du tenant et retire
 les workers stale avec des files de sortie bornées.
+
+Le chemin normal d'activation du Runtime utilise la map d'adapters du
+Deployment Manifest :
+
+```toml
+[adapters.gateway]
+provider_id = "appcore-gateway"
+settings = { bind_address = "127.0.0.1:8080", domain_suffix = "gateway.example.com", heartbeat_interval_ms = "30000", heartbeat_timeout_ms = "90000" }
+secret_refs = {}
+```
+
+Le mode cluster exige aussi `paths.gateway_replay` absolu, un fichier sur un volume
+partage et inscriptible par toutes les instances Gateway.
+
+Le parser accepte uniquement ces quatre settings non secretes. Les endpoints,
+references de secret, settings inconnues et overrides d'authentification
+echouent fermes. `appcore-bin` ajoute et autorise le descriptor owner
+`runtime.gateway` dans le catalogue partage, reutilise la securite du Runtime
+et enregistre l'instance comme service critique du Supervisor. Sans
+`adapters.gateway`, aucun runtime, listener ou task Gateway n'existe.
 
 Les upgrades authentifies acceptent les credentials uniquement dans le header
 `Authorization` ; les credentials en query sont rejetes. Les tokens worker
@@ -53,16 +73,25 @@ secrets de production. HA du gateway, federation edge relay et transports
 alternatifs restent futurs et ne doivent pas affaiblir l'authentification,
 expiry, nonce ou replay protection de Peer RPC.
 
-L'etat replay/session reste local au processus. Un etat partage de
-revocation/session pour Gateway multi-instance reste un futur provider. Le rate
-limit par IP source et la terminaison TLS restent au deployment.
-`GatewayConfig::new` active l'authentification. La seule désactivation est
-`insecure_local_for_testing()`, qui refuse les listeners hors loopback, et
-`GatewayState::new` valide la configuration avant de construire l'état.
+Le host utilise un `FilePeerNonceStore` durable et sur entre processus :
+standalone le garde dans le storage prive, tandis que cluster echoue ferme sans
+`paths.gateway_replay` absolu sur un fichier partage et inscriptible. Les sockets
+expirent apres 60 secondes maximum. Les embedders peuvent injecter un autre
+`PeerNonceStore`; leur defaut reste local et borne. Le rate limit par IP source
+et la terminaison TLS restent au deployment.
+
+`GatewayRuntime` possede le listener, le runtime Tokio current-thread, le
+router, le pruner heartbeat et la thread. Le startup bind synchronement : une
+adresse invalide ou occupee arrete donc le host. Le shutdown cooperatif borne
+joint tout le travail. Avant le delai, il abandonne le future serveur et ferme
+les connexions lentes ou incompletes avant de joindre la thread. `Orphaned`
+reste seulement une quarantaine defensive de panne thread. Les snapshots surs
+contiennent uniquement lifecycle, adresses de bind et compteurs. Les utilisateurs directs de `spawn_heartbeat_pruner` doivent
+conserver et attendre le join handle retourne.
 
 Les hashes de connexion worker et client utilisent un framing binaire
 canonique V2 avec le marqueur `v2:`. Les anciens hashes sans version ne sont
 pas interchangeables; émetteurs de token et consommateurs Gateway doivent être
 mis à jour ensemble.
 
-**Maturité :** profil RC de peer transport pour la surface distribuee V1.
+**Maturité :** profil stable de peer transport pour la surface distribuée V1.

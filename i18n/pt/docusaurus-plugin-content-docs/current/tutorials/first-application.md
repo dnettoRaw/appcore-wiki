@@ -13,7 +13,7 @@ aplicação agora segue diretamente o contrato público de três artefatos.
 ## Instale a facade publicada
 
 ```bash
-cargo add appcore-bin@1.0.1-rc.8
+cargo add appcore-bin@1.0.0
 ```
 
 Esse é o ponto de entrada manifest-first publicado. Os outros crates públicos

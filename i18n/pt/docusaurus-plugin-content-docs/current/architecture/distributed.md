@@ -40,12 +40,35 @@ O envelope valida request ID, trace, protocolo, source/target core, tenant, clus
 
 Gateway existe para cores com conexão outbound mas sem porta inbound estável. Tokens de conexão são curtos, single-use e bound ao hash da conexão. Mesh relay valida que metadata externa combina com o envelope Peer RPC interno. O gateway nunca interpreta payload de negócio.
 
+A ativação é declarativa. Ao selecionar o adapter no Deployment Manifest, o
+`appcore-bin` valida a configuração, inclui e autoriza `runtime.gateway` no
+catálogo compartilhado, reutiliza a segurança do Runtime e registra o Gateway
+como serviço crítico do Supervisor:
+
+```toml
+[adapters.gateway]
+provider_id = "appcore-gateway"
+settings = { bind_address = "127.0.0.1:8080", domain_suffix = "gateway.example.com", heartbeat_interval_ms = "30000", heartbeat_timeout_ms = "90000" }
+secret_refs = {}
+```
+
+Somente essas quatro settings sem segredo são aceitas. Settings desconhecidas,
+endpoints, referências de segredo e overrides de autenticação falham fechados.
+Sem o adapter não existe listener nem task de Gateway; configuração ou bind
+inválido aborta o startup.
+
+O host usa replay store durável e seguro entre processos. Standalone o mantém
+no storage privado; cluster exige `paths.gateway_replay` absoluto apontando
+para um arquivo gravável e compartilhado por todas as instâncias. Sockets
+expiram em até 60 segundos e o shutdown limitado fecha conexões incompletas.
+
 ## Limitations
 
 - O file control plane é referência para diretório compartilhado, não consenso global.
 - Leases exigem TTLs e relógios configurados de forma conservadora.
 - Peer RPC autentica envelope de runtime; autorização de domínio pertence à aplicação.
 - Gateway relaya payload opaco e não resolve conflitos.
+- Gateway em cluster falha fechado sem replay file compartilhado explícito.
 - Provider ausente falha startup; AppCore não cai para opção mais fraca.
 
 Próximo: [supervisor](/architecture/supervisor).

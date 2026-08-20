@@ -6,17 +6,17 @@ slug: /crates/
 
 # Crate Catalog
 
-AppCore exposes **22 public crates**, all with MSRV Rust `1.89`. The Runtime
-workspace is preparing `1.0.1-rc.9` for the original 21 crates; their latest
-published release remains `1.0.1-rc.8`. The standalone `appcore-args` has its
-own SemVer line: `1.0.1-rc.9` is published and the workspace is on
-`1.0.1-rc.10`. Workspace tools such as `appcore-certification`, `appcore-dev`,
-and `runtime-console` are not public Runtime crates.
+AppCore `1.0.0` exposes **22 public crates**, all published on crates.io and all
+declaring MSRV Rust `1.89`. The standalone crates `appcore-args`,
+`appcore-supervisor`, and `appcore-transport` keep independent SemVer even
+though their current stable release is also `1.0.0`. Workspace tools such as
+`appcore-certification`, `appcore-dev`, and `runtime-console` are not public
+Runtime crates.
 
 For a new application, depend on the high-level facade:
 
 ```bash
-cargo add appcore-bin@1.0.1-rc.8
+cargo add appcore-bin@1.0.0
 ```
 
 Depend directly on another crate only when building a low-level consumer or a
@@ -47,7 +47,7 @@ intermediate examples.
 | 19 | [appcore-provider](./appcore-provider) | Provider composition and shared leases | contracts |
 | 20 | [appcore-provider-vercel-neon](./appcore-provider-vercel-neon) | Official isolated Vercel/Neon adapter | contracts, control plane, provider |
 | 21 | [appcore-update](./appcore-update) | Artifact verification, activation, and rollback | contracts, provider |
-| 22 | [appcore-bin](./appcore-bin) | Application facade, CLI, and composition root | 16 AppCore crates |
+| 22 | [appcore-bin](./appcore-bin) | Application facade, CLI, and composition root | 17 AppCore crates |
 
 The dependency graph is acyclic. Public application code should normally stop
 at `appcore_bin::application`; a published crate is not automatically the

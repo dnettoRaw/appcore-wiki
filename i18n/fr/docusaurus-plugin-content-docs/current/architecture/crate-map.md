@@ -7,11 +7,10 @@ sidebar_position: 12
 
 Quand un runtime grandit, les limites entre crates doivent expliquer l'architecture. Dans AppCore elles suivent l'ownership, pas la convenance.
 
-Le workspace actuel comprend 22 crates publics. Les 21 crates d'origine sont
-préparés en `1.0.1-rc.9`, tandis que leur dernière version crates.io reste
-`1.0.1-rc.8`. `appcore-args`, versionné indépendamment, est publié en
-`1.0.1-rc.9` et se trouve en `1.0.1-rc.10` dans le workspace. La référence
-détaillée se trouve dans le [catalogue des crates](/crates/).
+La version stable `1.0.0` contient 22 crates publics, tous publiés sur
+crates.io. Les fondations autonomes gardent un SemVer indépendant même lorsque
+leurs numéros de version correspondent au Runtime. La référence détaillée se
+trouve dans le [catalogue des crates](/crates/).
 
 | Couche | Crates | Raison |
 | --- | --- | --- |

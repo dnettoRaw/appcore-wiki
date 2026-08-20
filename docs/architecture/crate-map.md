@@ -7,11 +7,10 @@ sidebar_position: 12
 
 When a runtime grows, crate boundaries either explain the architecture or hide it. AppCore crates are split by ownership boundary, not by convenience.
 
-The current workspace contains 22 public crates. The original 21 are being
-prepared as `1.0.1-rc.9` while their latest crates.io release remains
-`1.0.1-rc.8`. The independently versioned `appcore-args` is published as
-`1.0.1-rc.9` and is `1.0.1-rc.10` in the workspace. The complete reference is
-available in the [crate catalog](/crates/).
+The stable `1.0.0` release contains 22 public crates, all published on
+crates.io. Standalone foundations retain independent SemVer even when their
+release numbers align with the Runtime. The complete reference is available in
+the [crate catalog](/crates/).
 
 | Layer | Crates | Why it exists |
 | --- | --- | --- |

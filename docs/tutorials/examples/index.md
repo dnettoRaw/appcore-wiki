@@ -21,7 +21,7 @@ Manifest, and business code. Runtime infrastructure remains inside
 ## Before starting
 
 - Install Rust `1.89` or newer.
-- Use AppCore `1.0.1-rc.8`.
+- Use AppCore `1.0.0`.
 - Keep secrets outside manifests.
 - Run each example from its project root.
 

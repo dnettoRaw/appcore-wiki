@@ -38,7 +38,7 @@ vendor = "Example Vendor"
 service_id = "app.ping"
 
 [runtime]
-minimum_runtime_version = "1.0.0-rc.3"
+minimum_runtime_version = "1.0.0"
 protocol_version = "1"
 required_features = []
 
