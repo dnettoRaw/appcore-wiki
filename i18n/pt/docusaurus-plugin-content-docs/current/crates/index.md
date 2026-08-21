@@ -52,9 +52,15 @@ intermediário mantidos pelo crate.
 ## Em breve
 
 O [`appcore-ai`](./appcore-ai) é o crate planejado para suporte a IA no
+AppCore. Ele aparece aqui como prévia e **ainda não foi publicado**. A página
+documenta a fronteira de runtime planejada, o modelo de providers, expectativas
+de segurança e a forma de uso; API final, versão e MSRV continuam provisórias
+até a release.
+
+O [`appcore-ui`](./appcore-ui) é o crate planejado para UI e page builder no
 AppCore. Ele aparece aqui como prévia e **ainda não foi publicado**. A API
-pública, as dependências, a versão e a MSRV serão documentadas quando a release
-estiver pronta.
+pública, os contratos de renderização, as dependências, a versão e a MSRV serão
+documentados quando a release estiver pronta.
 
 O grafo de dependências é acíclico. Código público de aplicação normalmente
 deve parar em `appcore_bin::application`; estar publicado não torna um crate

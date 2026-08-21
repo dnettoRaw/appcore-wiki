@@ -46,6 +46,7 @@ const crates = [
   'appcore-update',
   'appcore-bin',
   'appcore-ai',
+  'appcore-ui',
 ];
 
 module.exports = {
@@ -61,7 +62,7 @@ module.exports = {
     'architecture/crate-map',
     {
       type: 'category',
-      label: 'Crate reference (22 stable + preview)',
+      label: 'Crate reference (22 stable + previews)',
       collapsed: true,
       items: ['crates/index', ...crates.map((crate) => `crates/${crate}`)],
     },
