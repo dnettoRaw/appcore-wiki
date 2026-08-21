@@ -1,257 +1,217 @@
 ---
-title: appcore-ai — Bientôt disponible
+title: appcore-ai — 0.1 alpha
 sidebar_position: 23
 ---
 
 # appcore-ai
 
-:::caution Bientôt disponible
-`appcore-ai` est en cours de développement et **n'est pas encore publié**. Il
-n'est actuellement disponible ni sur crates.io ni sur docs.rs et ne doit pas
-être utilisé comme dépendance.
+:::caution Alpha disponible dans les sources
+`appcore-ai` est implémenté dans le workspace AppCore Runtime en
+`0.1.0-alpha`, mais n'est pas encore publié sur crates.io ou docs.rs. L'API peut
+changer pendant l'alpha et n'ajoute aucun champ aux manifests V1 gelés.
 :::
 
-`appcore-ai` est le crate prévu pour la prise en charge de l'IA dans AppCore. Il
-vise à intégrer l'accès aux modèles, l'exécution de prompts, les appels d'outils,
-les frontières de mémoire et l'observabilité runtime dans le même modèle
-manifest-first que le reste d'AppCore.
+`appcore-ai` est le core d'exécution IA borné et indépendant du backend. Il
+choisit une route à partir de modèles, backends, devices, ressources et policy
+de confidentialité explicites. L'application reste propriétaire des prompts,
+de la validation métier et de toute décision d'appliquer un résultat généré.
 
-Le crate ne doit pas rendre le comportement IA magique ou implicite. Le code
-applicatif reste propriétaire des décisions produit, des règles métier et de
-l'expérience utilisateur. `appcore-ai` possède la frontière runtime autour du
-travail IA : ce qui peut s'exécuter, quel provider est sélectionné, comment les
-secrets sont résolus, comment les appels sont tracés et quelles capabilities un
-modèle peut invoquer.
+## Ce qui est implémenté
 
-## Responsabilité
+| Zone | Comportement actuel |
+| --- | --- |
+| API centrale | requêtes/réponses typées, texte/chat/image/document, qualité et confidentialité |
+| Chemin rapide | transformations et règles lightweight déterministes, sans ML |
+| Routage | coût local/distant, escalade bornée, load single-flight par modèle/backend |
+| Ressources | admission CPU/RAM/VRAM, file équitable bornée, planners batching/résidence |
+| Artefacts | taille + SHA-256, cache atomique, provenance et ranges vérifiés |
+| Génératif | chat avec rôles, sampling, tools/tool calls et data URLs image opt-in |
+| ML local | Candle CPU et entraînement du classificateur data-only `NativeLinearV1` |
+| Opérations | annulation, deadlines, health et télémétrie sans payload |
+| Distribué | contrats Swarm expérimentaux, aucun adapter Peer RPC production revendiqué |
 
-`appcore-ai` est prévu pour couvrir :
+La compilation par défaut n'inclut ni framework ML ni adapter HTTP.
 
-- contrats de providers pour chat, completion, embeddings et génération structurée ;
-- enveloppes de prompt et de request avec entrée bornée, métadonnées et trace context ;
-- sélection de provider par configuration de deployment ;
-- intégration des tool calls avec `appcore-capabilities` ;
-- contrôles de policy pour l'accès modèle, les écritures et les contextes sensibles ;
-- adapters locaux et distants sans coupler l'application à un SDK vendor ;
-- frontières optionnelles de mémoire et retrieval en gardant les données métier côté application ;
-- événements d'observabilité pour cycle de vie de request, latence, usage, échecs et décisions de policy.
+## Backends et modèles acceptés
 
-Il ne doit pas posséder les prompts métier, les agents propres à une
-application, les modèles de données client, les flux UI ou les règles
-d'automatisation produit. Ces éléments restent dans le code applicatif.
-
-## Frontière Runtime
-
-La frontière prévue suit la même séparation que le reste d'AppCore :
-
-| Propriétaire | Possède | Ne possède pas |
+| Feature | Moteur/format | Portée réelle |
 | --- | --- | --- |
-| Application manifest | déclare les capabilities IA nécessaires | provider IDs, API keys, endpoints |
-| Deployment manifest | choisit provider, famille de modèle, limites et secret refs | prompts métier ou policy de domaine |
-| Code applicatif | construit les prompts, valide l'intention métier, traite les réponses | wiring provider, chargement des secrets, fallback |
-| `appcore-ai` | valide les requests, appelle les providers, enregistre les traces, applique la policy IA | décisions applicatives ou effets de bord cachés |
+| aucune | resolver lightweight | normalisation, matching, extraction et règles |
+| `backend-candle` | `NativeLinearV1` | classification CPU in-process |
+| `training-candle` | `NativeLinearV1` | SGD reproductible, checkpoint et reprise |
+| `backend-openai-compatible` | llama.cpp, MLX-LM, vLLM, SGLang, TensorRT-LLM, OpenVINO, TabbyAPI, generic | chat-completions borné sans streaming |
+| `swarm` | bridge fournie par le host | contrat authentifié expérimental |
 
-La règle importante est l'explicite. Un deployment qui veut un provider distant
-compatible OpenAI, un runtime de modèle local, une gateway privée ou un fake de
-test doit choisir ce provider délibérément. Les providers absents ou
-incompatibles doivent échouer au startup ou à la validation de request, sans
-fallback silencieux.
+L'adapter OpenAI-compatible reconnaît GGUF pour llama.cpp, ONNX pour OpenVINO
+et SafeTensors pour les autres profils. Le serveur externe interprète et
+exécute ces formats. Enregistrer un format n'installe jamais un moteur et ne
+télécharge jamais un modèle silencieusement.
 
-## Concepts Prévus
+## Exécuter un LLM local
 
-### Providers IA
+Démarrez séparément un serveur compatible. Exemple de listener loopback
+llama.cpp :
 
-Les providers doivent exposer un petit contrat runtime plutôt qu'un SDK propre à
-un vendor. Un provider peut prendre en charge une ou plusieurs opérations :
+```bash
+llama-server -m /chemin/absolu/modele.gguf --host 127.0.0.1 --port 8080
+```
 
-- génération conversationnelle ;
-- completion de prompt unique ;
-- sortie JSON structurée ;
-- embeddings ;
-- ranking ou reranking ;
-- modération ou classification de sécurité ;
-- réponses en streaming.
+Puis exécutez l'exemple avec l'identité exacte de l'artefact :
 
-Chaque provider doit documenter authentification, timeouts, retries, limites de
-payload, modèles supportés, garanties de streaming, persistance et règles de
-redaction.
+```bash
+APPCORE_AI_ENGINE=llama.cpp \
+APPCORE_AI_FORMAT=gguf \
+APPCORE_AI_BASE_URL=http://127.0.0.1:8080 \
+APPCORE_AI_MODEL=nom-exact-du-serveur \
+APPCORE_AI_MODEL_SHA256=<digest-hexadecimal-64-caracteres> \
+APPCORE_AI_MODEL_BYTES=<taille-exacte-du-fichier> \
+cargo run -p appcore-ai --example openai_compatible \
+  --features backend-openai-compatible
+```
 
-### Profils de modèle
+Valeurs moteur acceptées : `llama.cpp`, `mlx-lm`, `vllm`, `sglang`,
+`tensorrt-llm`, `openvino`, `tabbyapi` et `generic`. Chaque configuration lie
+un `ModelId` AppCore au nom exact compris par le serveur. Tools, vision, seed et
+stop restent désactivés tant que le déploiement exact ne les déclare pas.
 
-Un profil de modèle est la description, côté deployment, du choix de modèle. Il
-peut représenter un modèle distant hébergé, un serveur local d'inférence, une
-gateway spécifique à un tenant ou un fake utilisé en tests.
+`OpenAiCompatibleConfig::local` refuse les endpoints hors loopback. Un
+déploiement distant emploie `OpenAiCompatibleConfig::remote` et un transport
+personnalisé fondé sur les références de secrets et la policy AppCore. Le
+transport intégré refuse les credentials.
 
-Les profils sont prévus pour garder le choix du modèle hors du code métier. Le
-code applicatif doit demander une capability déclarée, comme résumé, extraction,
-classification ou planification assistée par outils. Le deployment décide quel
-modèle concret satisfait cette capability.
+## Modèle d'exécution adaptatif
 
-### Enveloppes de prompt
-
-L'exécution de prompt doit passer par une enveloppe contenant :
-
-- application ID, installation ID et trace ID ;
-- capability demandée ;
-- payload d'entrée et forme de sortie déclarée ;
-- métadonnées de sécurité et de classification des données ;
-- timeout, taille et préférences de streaming ;
-- idempotency ou mode d'opération quand la request peut déclencher des outils.
-
-Cela donne au runtime assez de contexte pour rejeter les entrées trop grandes,
-attacher l'observabilité, appliquer la policy et éviter les écritures
-opérationnelles accidentelles.
-
-### Tool calls
-
-Les tool calls doivent utiliser le modèle existant de capabilities au lieu de
-donner au modèle un accès direct aux internals arbitraires de l'application. Un
-modèle peut proposer un appel d'outil, mais AppCore doit le router via des
-descriptors déclarés, l'autorisation et les contrôles de mode d'écriture.
-
-Le flux prévu est :
-
-1. Le code applicatif soumet une request IA avec un ensemble d'outils autorisés.
-2. `appcore-ai` envoie la request au provider sélectionné.
-3. Le provider retourne du texte, des données structurées ou une proposition de tool call.
-4. `appcore-ai` valide la tool call proposée contre le catalogue de capabilities.
-5. L'application ou le runtime exécute seulement les capabilities autorisées.
-6. Les résultats retournent au modèle ou au code applicatif selon le flux déclaré.
-
-Une sortie IA n'est jamais une autorité en soi. Le code métier valide encore les
-actions proposées avant de modifier l'état métier.
-
-### Mémoire et retrieval
-
-`appcore-ai` peut fournir des contrats runtime pour retrieval et mémoire, mais
-ne doit pas transformer le storage AppCore en base vectorielle générique. La
-frontière prévue est :
-
-- embeddings et requests de retrieval passent par des contrats provider ;
-- le code applicatif possède les données indexées ;
-- le deployment choisit où les index vivent ;
-- secrets et credentials restent dans la configuration provider ;
-- la mémoire persistée doit être scopée par application, tenant et policy.
-
-La mémoire long terme doit être explicite et inspectable. Le crate doit éviter
-la mémoire cachée entre tenants, l'accumulation non bornée de prompts et les
-canaux provider qui contournent le storage et la policy de sécurité AppCore.
-
-## Modèle de Sécurité
-
-Les appels IA traversent une frontière à haut risque parce que les prompts
-peuvent contenir contenu utilisateur, données privées, instructions générées et
-résultats d'outils. `appcore-ai` est prévu pour traiter cette frontière comme
-infrastructure runtime.
-
-Le crate doit appliquer ou exposer des hooks pour :
-
-- secret refs au lieu d'API keys inline ;
-- logs compatibles avec la redaction ;
-- limites de taille request et response ;
-- limites de timeout et retry ;
-- scope tenant et installation ;
-- contrôles de policy avant les appels distants ;
-- allowlists explicites pour les tool calls ;
-- contrôles write-mode et leadership avant les actions opérationnelles ;
-- raisons auditables lorsqu'une request est rejetée.
-
-Les applications ont encore besoin de leurs propres règles de sécurité produit.
-Le runtime peut appliquer des frontières mécaniques, mais il ne peut pas décider
-si une réponse générée est correcte pour un domaine métier spécifique.
-
-## Observabilité
-
-Le comportement IA a besoin de visibilité opérationnelle sans fuite de prompts
-par défaut. La surface d'observabilité prévue doit enregistrer :
-
-- provider et profil de modèle sélectionnés ;
-- début de request, progression de stream et completion ;
-- latence, timeout et nombre de retries ;
-- tokens, unités ou coûts quand le provider les expose ;
-- décisions de policy acceptées ou rejetées ;
-- propositions de tool call et résultats d'exécution ;
-- classes d'erreur redigées.
-
-Le logging brut des prompts et completions doit être opt-in et contrôlé par
-policy. Les diagnostics par défaut doivent aider les opérations sans stocker du
-contenu sensible par accident.
-
-## Forme D'utilisation
-
-L'API Rust publique n'est pas finale, mais la forme d'utilisation prévue est :
+La forme conceptuelle côté application est :
 
 ```rust
-// Forme conceptuelle uniquement. appcore-ai n'est pas encore publié.
-let answer = app.ai()
-    .capability("notes.summarize")
-    .input(note_text)
-    .expect_json::<Summary>()
-    .run()
-    .await?;
+let output = app.ai().resolve(request).await?;
 ```
 
-Pour les flux assistés par outils, l'application déclarerait quelles
-capabilities peuvent être utilisées :
+Sous cette façade, `appcore-ai` garde la sélection de modèle explicite. Un model
+registry relie identité du modèle, provenance d'artefact, support backend,
+modalité, qualité, confidentialité et exigences de ressources. Les backends
+décident comment exécuter la request, mais le runtime possède encore admission,
+annulation, health, observabilité et policy.
+
+L'exécution peut être locale, distante ou déléguée à un swarm expérimental :
 
 ```rust
-// Forme conceptuelle uniquement. appcore-ai n'est pas encore publié.
-let plan = app.ai()
-    .capability("orders.assistant")
-    .allow_tool("orders.quote.read")
-    .allow_tool("orders.quote.propose_update")
-    .input(user_request)
-    .run()
-    .await?;
+enum AiExecutionMode {
+    Local,
+    Swarm,
+    Auto,
+}
 ```
 
-Ces exemples décrivent l'orientation, pas une API stable.
+`Auto` peut router ou escalader entre options autorisées, mais seulement dans la
+policy déclarée. Il ne doit jamais déplacer silencieusement une request
+local-only vers du compute distant.
 
-## Forme De Deployment
+Les profils de ressources décrivent la marge volontaire AppCore :
 
-Un futur deployment manifest pourra sélectionner l'infrastructure IA comme les
-autres providers :
+- `Eco` : préférer énergie et mémoire plus basses ;
+- `Balanced` : compromis par défaut entre throughput et latence ;
+- `Performance` : admettre une exécution locale ou distante plus agressive ;
+- `Unrestricted` : retire les limites volontaires AppCore, mais respecte encore
+  les protections matériel, firmware, driver et système d'exploitation.
 
-```toml
-# Forme conceptuelle uniquement. appcore-ai n'est pas encore publié.
-[providers.ai]
-provider_id = "openai-compatible"
-model_profile = "business-assistant"
-api_key = "env:APPCORE_AI_API_KEY"
+Compute et storage sont séparés :
 
-[ai.profiles.business-assistant]
-chat_model = "configured-by-deployment"
-embedding_model = "configured-by-deployment"
-timeout_ms = 30000
-max_input_bytes = 65536
+```text
+COMPUTE: CPU / GPU / NPU / remote
+STORAGE: VRAM / RAM / NVMe / peer
 ```
 
-Les clés exactes du manifest ne sont pas stables. L'objectif de design est
-stable : les artifacts applicatifs déclarent les besoins IA, les deployments
-choisissent l'infrastructure concrète.
+Un node peut contribuer compute, storage, les deux ou aucun. Le design swarm a
+donc besoin de contribution policy, contrôles d'intégrité, health, failover et
+accounting clair avant de devenir un comportement production.
 
-## Tests
+## Chat, tools, images et PDF
 
-Le crate doit permettre des tests déterministes sans appels réseau distants. Les
-surfaces de test prévues incluent :
+```rust
+let request = AiRequest::chat(
+    [
+        AiMessage::new(AiMessageRole::System, "Répondez brièvement.")?,
+        AiMessage::new(AiMessageRole::User, "Expliquez l'IA local-first.")?,
+    ],
+    AiLimits::default(),
+)?;
+let response = runtime.resolve(request).await?;
+```
 
-- providers fake avec réponses scriptées ;
-- fixtures de validation de sortie structurée ;
-- tests d'autorisation de tool call ;
-- tests de timeout et retry ;
-- assertions de redaction et d'observabilité ;
-- rejets de policy pour opérations non sûres ou non déclarées.
+Un tool possède un nom, une description et un JSON Schema bornés.
+`AiOutput::ToolCalls` n'est qu'une proposition : l'application valide les
+arguments et route le travail autorisé via `appcore-capabilities`. Le texte
+généré n'est jamais une autorité d'écriture.
 
-Les applications doivent tester le comportement métier autour des sorties IA
-comme de la logique métier ordinaire. Une réponse de modèle doit être traitée
-comme une entrée qui doit encore être validée.
+Une image n'est transportée que si backend et modèle déclarent ce support. PDF
+est une modalité document pour le routage, mais l'alpha n'embarque ni parseur,
+rasterizer ni OCR universel. L'application choisit un processor borné en pages,
+pixels, octets décompressés, temps et sortie.
 
-## Limites
+## Configurer ou entraîner
 
-- `appcore-ai` ne remplace pas le design produit ni les règles métier.
-- Il ne doit pas cacher le choix provider dans le code applicatif.
-- Il ne doit pas faire de fallback silencieux vers un modèle plus faible ou moins cher.
-- Il ne doit pas stocker prompts, completions ou mémoire sans policy explicite.
-- Il ne doit pas donner aux modèles un accès direct en écriture à l'état applicatif.
-- Il ne doit pas rendre un contenu généré fiable sans validation.
-- L'API, la frontière des dépendances, les clés de manifest, la version, le MSRV et les exemples restent provisoires jusqu'à publication du crate.
+Les LLM génératifs sont configurés, pas entraînés, par ce crate : exécutez le
+moteur, enregistrez métadonnées et identité exactes, déclarez les capabilities,
+puis laissez `AiRuntime` router. Fine-tuning et conversion appartiennent au
+moteur.
+
+Le trainer implémenté est volontairement plus petit : classification locale
+`NativeLinearV1` :
+
+```bash
+cargo run -p appcore-ai --example candle_training \
+  --features training-candle
+```
+
+Le job borne labels, dimensions, dataset, epochs, steps, batch, learning rate,
+seed, CPU/RAM et checkpoints. Le résultat contient les octets, le SHA-256 et un
+`ModelDescriptor` prêt pour le registry. Ce n'est pas du fine-tuning LLM.
+
+## Intégration application AppCore
+
+La feature `appcore-bin/ai-alpha` enveloppe un `AiRuntime` configuré dans
+`AppCoreAiComponent`. Le Supervisor existant possède démarrage
+required/optional, health, arrêt des admissions, annulation et shutdown borné :
+
+```rust
+let component = Arc::new(AppCoreAiComponent::new(Arc::new(ai_runtime), false)?);
+let ai = component.facade();
+let business = MonApplication::new(ai);
+ManifestApplicationHost::load("application.toml", "deployment.toml", &business)?
+    .with_ai(component)
+    .run()?;
+```
+
+`required = true` fait échouer le démarrage sans modèle/backend utilisable.
+Exposer `appcore.ai.resolve` via `appcore-capabilities` exige un
+`AiCapabilityCodec` explicite et borné. La sélection déclarative attend un
+contrat versionné post-1.0.
+
+## Choisir un moteur
+
+- llama.cpp : GGUF portable et exécution CPU/GPU hybride ;
+- MLX-LM : Apple Silicon ;
+- TabbyAPI/ExLlama : GPU NVIDIA grand public, faible concurrence ;
+- vLLM ou SGLang : serving à forte concurrence ;
+- TensorRT-LLM : déploiements NVIDIA optimisés ;
+- OpenVINO : Intel CPU/GPU/NPU ;
+- Candle : uniquement le petit classificateur inclus, pas un LLM génératif.
+
+Mesurez ensemble version moteur, révision, quantification, contexte, batch et
+device. Conservez cold start, TTFT, tokens/s, requests/s, RAM, VRAM, file et
+échecs. Aucun moteur n'est universellement le plus rapide.
+
+## Sécurité, limites et état
+
+- prompts, outputs, endpoints et credentials sont expurgés des diagnostics ;
+- LocalOnly refuse les permissions distantes, qui exigent des grants tenant ;
+- files, tentatives, peers, payloads, metadata, tools et artefacts sont bornés ;
+- l'annulation est coopérative ; HTTP bloquant vérifie avant/après l'échange ;
+- le modèle exige taille exacte et SHA-256 avant activation ;
+- `Unrestricted` ne désactive pas les protections OS ou matérielles.
+
+Streaming de tokens, PDF/OCR, installation/sandbox automatique du moteur,
+Swarm production et manifests déclaratifs ne sont pas livrés dans
+`0.1.0-alpha`. Consultez `crates/appcore-ai/wiki` dans le dépôt Runtime pour les
+API, exemples, modèles, benchmarks, threat model et gates complets.

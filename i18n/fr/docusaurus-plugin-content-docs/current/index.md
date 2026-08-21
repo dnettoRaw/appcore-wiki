@@ -21,11 +21,20 @@ Lire ce manuel comme un livre technique :
 10. [Première application](/tutorials/first-application)
 11. [Exemples du niveau débutant à intermédiaire](/tutorials/examples/)
 12. [Référence des 22 crates publics](/crates/)
+13. [Roadmap future](/roadmap/)
 
 Version stable : `1.0.0`. Les 22 crates publics sont disponibles sur crates.io.
 Toolchain Rust minimale : `1.89`. Une application doit normalement dépendre de
 `appcore-bin@1.0.0` et utiliser sa façade `application`.
 
-## Limitations
+## Et Ensuite
+
+La roadmap future suit le travail prévu sans le mélanger à la référence stable
+du Runtime. Les aperçus en design sont [appcore-ai](/crates/appcore-ai) et
+[appcore-ui](/crates/appcore-ui). Les zones planifiées en haute priorité
+incluent `appcore-test`, `appcore-jobs`, `appcore-search`,
+`appcore-automation` et `appcore-plugin` ; voir la [roadmap future](/roadmap/).
+
+## Limites
 
 Cette page est une carte de lecture, pas une référence API complète. Les chapitres décrivent le comportement opérationnel, les décisions et les limites.

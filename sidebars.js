@@ -22,7 +22,7 @@ const examples = [
   'standalone-to-cluster',
 ];
 
-const crates = [
+const stableCrates = [
   'appcore-args',
   'appcore-contracts',
   'appcore-types',
@@ -45,8 +45,13 @@ const crates = [
   'appcore-provider-vercel-neon',
   'appcore-update',
   'appcore-bin',
-  'appcore-ai',
-  'appcore-ui',
+];
+
+const futureRoadmap = [
+  'roadmap/index',
+  'architecture/future-architecture',
+  'crates/appcore-ai',
+  'crates/appcore-ui',
 ];
 
 module.exports = {
@@ -62,9 +67,15 @@ module.exports = {
     'architecture/crate-map',
     {
       type: 'category',
-      label: 'Crate reference (22 stable + previews)',
+      label: 'Crate reference — 22 stable',
       collapsed: true,
-      items: ['crates/index', ...crates.map((crate) => `crates/${crate}`)],
+      items: ['crates/index', ...stableCrates.map((crate) => `crates/${crate}`)],
+    },
+    {
+      type: 'category',
+      label: 'Coming Soon / Future Roadmap',
+      collapsed: true,
+      items: futureRoadmap,
     },
   ],
 };

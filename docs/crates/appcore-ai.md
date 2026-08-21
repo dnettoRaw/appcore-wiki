@@ -1,256 +1,236 @@
 ---
-title: appcore-ai — Coming soon
+title: appcore-ai — 0.1 alpha
 sidebar_position: 23
 ---
 
 # appcore-ai
 
-:::caution Coming soon
-`appcore-ai` is under development and **has not been published yet**. It is not
-currently available on crates.io or docs.rs and should not be used as a
-dependency.
+:::caution Source-only alpha
+`appcore-ai` is implemented in the AppCore Runtime workspace as
+`0.1.0-alpha`, but is not yet published on crates.io or docs.rs. Its API may
+change during the alpha line. It does not add fields to frozen V1 manifests.
 :::
 
-`appcore-ai` is the planned AI support crate for AppCore. It is intended to
-bring model access, prompt execution, tool calls, memory boundaries and runtime
-observability into the same manifest-first model used by the rest of AppCore.
+`appcore-ai` is the bounded, backend-neutral AI execution core for AppCore. It
+chooses a route from explicit models, backends, devices, resource policy and
+privacy constraints. Applications still own prompts, domain validation and the
+decision to apply any generated result.
 
-The crate is not meant to make AI behavior magical or implicit. Application code
-still owns product decisions, domain rules and user experience. `appcore-ai`
-owns the runtime boundary around AI work: what is allowed to run, which provider
-is selected, how secrets are resolved, how calls are traced, and which
-capabilities a model may invoke.
+## What is implemented
 
-## Responsibility
+| Area | Current behavior |
+| --- | --- |
+| Core API | typed requests/responses, text/chat/image/document modalities, quality and privacy policy |
+| Fast path | deterministic lightweight transformations and rules, with no ML dependency |
+| Routing | cost-aware local/remote planning, bounded escalation and per-model/backend single-flight load |
+| Resources | CPU/RAM/VRAM admission, fair bounded execution queue, batching and residency planners |
+| Artifacts | exact size + SHA-256, atomic local cache, provenance boundary and verified segment range reads |
+| Generative | role-aware chat, sampling, tool definitions/calls and opt-in image data URLs |
+| Local ML | optional Candle CPU inference and training for the data-only `NativeLinearV1` classifier |
+| Operations | cancellation, deadlines, health summaries and payload-free metrics/observations |
+| Distributed | experimental Swarm contracts; no production Peer RPC adapter is claimed |
 
-`appcore-ai` is planned to cover:
+The default feature set contains no ML framework or HTTP adapter.
 
-- model provider contracts for chat, completion, embeddings and structured
-  generation;
-- prompt and request envelopes with bounded input, metadata and trace context;
-- provider selection through deployment-owned configuration;
-- tool-call integration with `appcore-capabilities`;
-- policy checks for model access, write operations and sensitive contexts;
-- local and remote provider adapters without coupling application code to one
-  vendor SDK;
-- optional memory and retrieval boundaries that keep business data
-  application-owned;
-- observability events for request lifecycle, latency, token or unit usage,
-  failures and policy decisions.
+## Backend and model support
 
-It should not own business prompts, application-specific agents, customer data
-models, UI flows or product-level automation rules. Those remain application
-code.
-
-## Runtime Boundary
-
-The planned boundary follows the same split used across AppCore:
-
-| Owner | Owns | Does not own |
+| Feature | Engines or format | Actual scope |
 | --- | --- | --- |
-| Application manifest | declares which AI capabilities the app needs | provider IDs, API keys, endpoints |
-| Deployment manifest | selects provider, model family, limits and secret references | business prompts or domain policy |
-| Application code | builds prompts, validates domain intent, handles responses | provider wiring, secret loading, fallback |
-| `appcore-ai` | validates requests, calls providers, records traces, enforces AI policy | application decisions or hidden side effects |
+| none | lightweight resolver | normalization, matching, extraction and rule-driven answers |
+| `backend-candle` | `NativeLinearV1` | in-process CPU classification |
+| `training-candle` | `NativeLinearV1` | reproducible bounded SGD, checkpoint and resume |
+| `backend-openai-compatible` | llama.cpp, MLX-LM, vLLM, SGLang, TensorRT-LLM, OpenVINO, TabbyAPI, generic server | bounded non-streaming chat-completions transport |
+| `swarm` | host-supplied bridge | authenticated planning/execution contract, experimental |
 
-The important rule is explicitness. A deployment that wants an OpenAI-compatible
-remote provider, a local model runtime, a private gateway, or a test fake should
-select that provider deliberately. Missing or incompatible providers should fail
-startup or request validation instead of silently falling back to another model.
+The OpenAI-compatible adapter recognizes GGUF for llama.cpp, ONNX for
+OpenVINO, and SafeTensors for the other listed profiles. The external server,
+not `appcore-ai`, parses and executes those formats. Registering a format never
+silently installs an engine or downloads a model.
 
-## Planned Concepts
+## Run a local generative model
 
-### AI providers
+First start a compatible server separately. A llama.cpp deployment commonly
+uses a loopback listener like this:
 
-Providers are expected to expose a small runtime contract rather than a
-vendor-specific SDK. A provider may support one or more operations:
+```bash
+llama-server -m /absolute/path/model.gguf --host 127.0.0.1 --port 8080
+```
 
-- conversational generation;
-- single prompt completion;
-- structured JSON output;
-- embeddings;
-- ranking or reranking;
-- moderation or safety classification;
-- streaming responses.
+Then run the executable AppCore example with the real artifact identity:
 
-Each provider should document authentication, timeout behavior, retry policy,
-payload limits, supported model IDs, streaming guarantees, persistence behavior
-and redaction rules.
+```bash
+APPCORE_AI_ENGINE=llama.cpp \
+APPCORE_AI_FORMAT=gguf \
+APPCORE_AI_BASE_URL=http://127.0.0.1:8080 \
+APPCORE_AI_MODEL=my-server-model-name \
+APPCORE_AI_MODEL_SHA256=<64-hex-digest> \
+APPCORE_AI_MODEL_BYTES=<exact-file-size> \
+cargo run -p appcore-ai --example openai_compatible \
+  --features backend-openai-compatible
+```
 
-### Model profiles
+Accepted engine values are `llama.cpp`, `mlx-lm`, `vllm`, `sglang`,
+`tensorrt-llm`, `openvino`, `tabbyapi`, and `generic`. Each
+`OpenAiCompatibleConfig` binds one AppCore `ModelId` to the exact model name
+understood by that server. Tools, vision, seed and stop support are disabled
+until the exact deployment declares them.
 
-A model profile is the deployment-facing description of a model choice. It can
-represent a remote hosted model, a local inference server, a tenant-specific
-gateway, or a fake provider used in tests.
+`OpenAiCompatibleConfig::local` rejects non-loopback endpoints. A remote
+deployment must use `OpenAiCompatibleConfig::remote` and a custom
+`OpenAiCompatibleTransport` backed by AppCore secret references and policy.
+The built-in unauthenticated transport rejects credentials.
 
-Profiles are planned to keep model choice out of business code. Application code
-should ask for a declared AI capability such as summarization, extraction,
-classification or tool-assisted planning. The deployment decides which concrete
-model satisfies that capability.
+## Adaptive execution model
 
-### Prompt envelopes
-
-Prompt execution should travel through an envelope that carries:
-
-- application ID, installation ID and trace ID;
-- requested capability;
-- input payload and declared output shape;
-- safety and data-classification metadata;
-- timeout, size and streaming preferences;
-- idempotency or operation mode when a request may trigger tools.
-
-This gives the runtime enough context to reject oversized input, attach
-observability, apply policy and prevent accidental operational writes.
-
-### Tool calls
-
-Tool calls should use the existing capability model instead of giving the model
-direct access to arbitrary application internals. A model may propose a tool
-call, but AppCore should route it through declared capability descriptors,
-authorization and write-mode checks.
-
-The intended flow is:
-
-1. Application code submits an AI request with an allowed tool set.
-2. `appcore-ai` sends the request to the selected provider.
-3. The provider returns text, structured data or a tool-call proposal.
-4. `appcore-ai` validates the proposed tool call against the capability catalog.
-5. The application or runtime executes only authorized capabilities.
-6. Results return to the model or to application code according to the declared
-   flow.
-
-AI output is never authority by itself. Domain code still validates proposed
-actions before committing business state.
-
-### Memory and retrieval
-
-`appcore-ai` may provide runtime contracts for retrieval and memory, but it
-should not turn AppCore storage into a generic vector database. The planned
-boundary is:
-
-- embeddings and retrieval requests pass through provider contracts;
-- application code owns what data is indexed;
-- deployment chooses where indexes live;
-- secrets and credentials stay in provider-owned configuration;
-- stored memory must be scoped by application, tenant and policy.
-
-Long-term memory should be explicit and inspectable. The crate should avoid
-hidden cross-tenant memory, unbounded prompt accumulation and provider-owned
-side channels that bypass AppCore storage and security policy.
-
-## Security Model
-
-AI calls cross a high-risk boundary because prompts may contain user content,
-private data, generated instructions and tool results. `appcore-ai` is planned
-to treat that boundary as runtime infrastructure.
-
-The crate should enforce or expose hooks for:
-
-- secret references instead of inline API keys;
-- redaction-safe logging;
-- bounded request and response sizes;
-- timeout and retry limits;
-- tenant and installation scoping;
-- policy checks before remote model calls;
-- explicit allowlists for tool calls;
-- write-mode and leadership checks before operational actions;
-- auditable failure reasons when a request is rejected.
-
-Applications still need their own product safety rules. The runtime can enforce
-mechanical boundaries, but it cannot decide whether a generated answer is
-correct for a specific business domain.
-
-## Observability
-
-AI behavior needs operational visibility without leaking prompts by default.
-The planned observability surface should record:
-
-- provider and model profile selected;
-- request start, stream progress and completion;
-- latency, timeout and retry counts;
-- token, unit or cost counters when a provider exposes them;
-- policy accept/reject decisions;
-- tool-call proposals and execution outcomes;
-- redacted error classes.
-
-Raw prompt and completion logging should be opt-in and policy-controlled.
-Default diagnostics should be useful for operations while avoiding accidental
-storage of sensitive content.
-
-## Example Shape
-
-The public Rust API is not final, but the intended usage shape is:
+The conceptual application-facing shape is:
 
 ```rust
-// Conceptual shape only. appcore-ai is not published yet.
-let answer = app.ai()
-    .capability("notes.summarize")
-    .input(note_text)
-    .expect_json::<Summary>()
-    .run()
-    .await?;
+let output = app.ai().resolve(request).await?;
 ```
 
-For tool-assisted flows, the application would declare which capabilities may be
-used:
+Under that facade, `appcore-ai` keeps model selection explicit. A model registry
+binds model identity, artifact provenance, backend support, modality, quality,
+privacy and resource requirements. Backend SPI implementations decide how to
+execute a request, but the runtime still owns admission, cancellation, health,
+observability and policy.
+
+Execution can be local, remote or delegated to an experimental swarm:
 
 ```rust
-// Conceptual shape only. appcore-ai is not published yet.
-let plan = app.ai()
-    .capability("orders.assistant")
-    .allow_tool("orders.quote.read")
-    .allow_tool("orders.quote.propose_update")
-    .input(user_request)
-    .run()
-    .await?;
+enum AiExecutionMode {
+    Local,
+    Swarm,
+    Auto,
+}
 ```
 
-Those examples describe the direction, not a stable API.
+`Auto` may route or escalate across allowed options, but only inside declared
+policy. It should never silently move a local-only request to remote compute.
 
-## Deployment Shape
+Resource profiles are intended to describe voluntary AppCore headroom:
 
-A future deployment manifest may select AI infrastructure the same way it
-selects other providers:
+- `Eco`: prefer lower energy and smaller memory footprint;
+- `Balanced`: default throughput and latency trade-off;
+- `Performance`: admit more aggressive local or remote execution;
+- `Unrestricted`: remove voluntary AppCore limits while still respecting
+  hardware, firmware, driver and operating-system protections.
 
-```toml
-# Conceptual shape only. appcore-ai is not published yet.
-[providers.ai]
-provider_id = "openai-compatible"
-model_profile = "business-assistant"
-api_key = "env:APPCORE_AI_API_KEY"
+Compute and storage are separate concerns:
 
-[ai.profiles.business-assistant]
-chat_model = "configured-by-deployment"
-embedding_model = "configured-by-deployment"
-timeout_ms = 30000
-max_input_bytes = 65536
+```text
+COMPUTE: CPU / GPU / NPU / remote
+STORAGE: VRAM / RAM / NVMe / peer
 ```
 
-The exact manifest keys are not stable. The design goal is stable: application
-artifacts declare AI needs, deployments select concrete AI infrastructure.
+A node may contribute compute, storage, both or neither. Swarm design therefore
+needs contribution policy, integrity checks, health reporting, failover and
+clear accounting before it can be production behavior.
 
-## Testing
+## Chat and tool calls
 
-The crate should support deterministic tests without remote network calls.
-Planned test surfaces include:
+```rust
+let request = AiRequest::chat(
+    [
+        AiMessage::new(AiMessageRole::System, "Answer briefly.")?,
+        AiMessage::new(AiMessageRole::User, "Explain local-first AI.")?,
+    ],
+    AiLimits::default(),
+)?;
+let response = runtime.resolve(request).await?;
+```
 
-- fake providers with scripted responses;
-- structured-output validation fixtures;
-- tool-call authorization tests;
-- timeout and retry tests;
-- redaction and observability assertions;
-- policy rejection cases for unsafe or undeclared operations.
+Tool declarations carry a bounded name, description and JSON Schema. A returned
+`AiOutput::ToolCalls` value is only a proposal: application code must validate
+the JSON arguments and route authorized work through `appcore-capabilities`.
+Generated text is never authority for a write.
 
-Applications should test domain behavior around AI output as ordinary business
-logic. A model response should be treated as input that still needs validation.
+## Images and documents
 
-## Limitations
+Image input is transported only when both backend and model declare image
+support. The current compatible adapter encodes admitted `image/*` bytes as a
+data URL and enforces request limits.
 
-- `appcore-ai` is not a replacement for product design or domain rules.
-- It should not hide provider choice inside application code.
-- It should not silently fall back to a weaker or cheaper model.
-- It should not store prompts, completions or memory without explicit policy.
-- It should not give models direct write access to application state.
-- It should not make generated content trusted without validation.
-- The API, dependency boundary, manifest keys, version, MSRV and examples remain
-  provisional until the crate is published.
+PDF is a first-class document modality for routing, but this alpha deliberately
+does not embed a universal PDF parser, rasterizer or OCR stack. Applications
+must select a bounded document backend that caps pages, pixels, expanded bytes,
+time and output. Do not send arbitrary PDFs to the chat adapter and assume they
+were parsed.
+
+## Configure or train a model
+
+Generative LLM weights are configured, not trained, by this crate: run the
+chosen engine, register exact model metadata and artifact identity, declare its
+capabilities, then let `AiRuntime` route requests. Fine-tuning and model
+conversion remain engine-owned.
+
+The implemented trainer is intentionally narrower: local text classification
+for `NativeLinearV1`. Run its reproducible example:
+
+```bash
+cargo run -p appcore-ai --example candle_training \
+  --features training-candle
+```
+
+The job explicitly bounds labels, hashed input dimensions, dataset size,
+epochs, optimizer steps, batch, learning rate, seed, CPU/RAM, checkpoint
+frequency and retained checkpoints. Its output contains artifact bytes,
+SHA-256 identity and a registry-ready `ModelDescriptor`. This is not LLM
+fine-tuning.
+
+## AppCore application integration
+
+The `appcore-bin/ai-alpha` feature wraps an already configured `AiRuntime` in
+`AppCoreAiComponent`. The existing Supervisor owns required/optional startup,
+health, admission stop, cancellation and bounded shutdown:
+
+```rust
+let component = Arc::new(AppCoreAiComponent::new(Arc::new(ai_runtime), false)?);
+let ai = component.facade();
+let business = MyApplication::new(ai);
+ManifestApplicationHost::load("application.toml", "deployment.toml", &business)?
+    .with_ai(component)
+    .run()?;
+```
+
+Set `required` to `true` to fail startup when no model/backend is usable. A
+caller exposing `appcore.ai.resolve` through `appcore-capabilities` must supply
+an explicit bounded `AiCapabilityCodec`; Rust types are not an implicit wire
+format. Declarative provider/model selection requires a future versioned
+post-1.0 manifest contract.
+
+## Choosing an engine
+
+Measure the complete tuple of engine version, model revision, quantization,
+context, batch and device. A practical starting point is:
+
+- llama.cpp for portable GGUF and CPU/GPU hybrid execution;
+- MLX-LM for Apple Silicon;
+- TabbyAPI/ExLlama for low-concurrency consumer NVIDIA GPUs;
+- vLLM or SGLang for high-concurrency accelerator serving;
+- TensorRT-LLM for tuned NVIDIA deployments;
+- OpenVINO for Intel CPU/GPU/NPU deployments;
+- Candle only for the small built-in classifier, not generative LLMs.
+
+Record cold start, time to first token, prompt/decode throughput, requests per
+second, RAM, VRAM, queue depth and failures. There is no universally fastest
+engine.
+
+## Security and operational limits
+
+- prompts, outputs, endpoints and credentials are redacted from `Debug` and
+  low-cardinality observations;
+- local-only requests reject remote compute and storage permissions;
+- remote routes require explicit tenant grants;
+- queues, attempts, peers, payloads, metadata, tools and artifacts are bounded;
+- cancellation is cooperative; the current blocking HTTP transport observes it
+  before and after the bounded exchange;
+- model bytes require exact size and SHA-256 before activation;
+- `Unrestricted` removes voluntary AppCore headroom, not OS or hardware safety.
+
+Token streaming, PDF/OCR, automatic engine installation/process sandboxing,
+production Swarm integration and declarative manifests are not delivered in
+`0.1.0-alpha`. Those exclusions are release gates, not hidden fallbacks.
+
+For complete API examples, model limits, recipes, benchmarks and the threat
+model, use the crate-owned documentation under
+`crates/appcore-ai/wiki` in the AppCore Runtime repository.

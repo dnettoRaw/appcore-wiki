@@ -10,6 +10,8 @@ import { fileURLToPath } from 'node:url';
 const scriptDirectory = path.dirname(fileURLToPath(import.meta.url));
 const wikiRoot = path.resolve(scriptDirectory, '..');
 const defaultBaseline = path.join(wikiRoot, '.appcore-doc-sync.json');
+const futureComponentsPath = path.join(wikiRoot, 'data', 'future-components.json');
+const validFutureStatuses = new Set(['Research', 'Planned', 'In Design', 'Experimental', 'Alpha', 'Beta', 'RC', 'Stable', 'Deferred']);
 
 function usage() {
   return `Usage: node scripts/check-appcore-doc-drift.mjs [options]
@@ -214,6 +216,81 @@ function wikiCoverage(crates) {
   return issues;
 }
 
+function readFutureComponents() {
+  if (!fs.existsSync(futureComponentsPath)) {
+    return { components: [], errors: [`missing future component data: ${path.relative(wikiRoot, futureComponentsPath)}`], warnings: [] };
+  }
+
+  const data = JSON.parse(fs.readFileSync(futureComponentsPath, 'utf8'));
+  const components = Array.isArray(data.components) ? data.components : [];
+  const errors = [];
+  const warnings = [];
+
+  if (data.schemaVersion !== 1) errors.push(`unsupported future component schema: ${data.schemaVersion}`);
+
+  const names = new Set();
+  const slugs = new Set();
+  for (const component of components) {
+    if (!component.name || !component.slug || !component.status || !component.category || !component.summary || !component.horizon) {
+      errors.push(`future component is missing required fields: ${JSON.stringify(component)}`);
+      continue;
+    }
+    if (names.has(component.name)) errors.push(`duplicate future component name: ${component.name}`);
+    if (slugs.has(component.slug)) errors.push(`duplicate future component slug: ${component.slug}`);
+    if (!validFutureStatuses.has(component.status)) errors.push(`invalid future component status for ${component.name}: ${component.status}`);
+    names.add(component.name);
+    slugs.add(component.slug);
+  }
+
+  return { components, errors, warnings };
+}
+
+function validateFutureRoadmap(crates) {
+  const { components, errors, warnings } = readFutureComponents();
+  const crateNames = new Set(crates.map((crate) => crate.name));
+
+  if (crates.length !== 22) {
+    errors.push(`stable public crate count is ${crates.length}, expected 22 until the Runtime baseline is intentionally promoted`);
+  }
+
+  for (const component of components) {
+    if (component.status === 'Stable' && !crateNames.has(component.name)) {
+      errors.push(`future component ${component.name} is marked Stable but is absent from the public crate graph`);
+    }
+    if (component.status !== 'Stable' && crateNames.has(component.name)) {
+      warnings.push(`future component ${component.name} appears in the public crate graph with status ${component.status}; review promotion manually`);
+    }
+  }
+
+  const requiredPages = [
+    ['en', path.join(wikiRoot, 'docs', 'roadmap', 'index.md'), 'Future components'],
+    ['pt', path.join(wikiRoot, 'i18n', 'pt', 'docusaurus-plugin-content-docs', 'current', 'roadmap', 'index.md'), 'Componentes futuros'],
+    ['fr', path.join(wikiRoot, 'i18n', 'fr', 'docusaurus-plugin-content-docs', 'current', 'roadmap', 'index.md'), 'Composants futurs'],
+    ['en', path.join(wikiRoot, 'docs', 'architecture', 'future-architecture.md'), 'Conceptual roadmap'],
+    ['pt', path.join(wikiRoot, 'i18n', 'pt', 'docusaurus-plugin-content-docs', 'current', 'architecture', 'future-architecture.md'), 'Roadmap conceitual'],
+    ['fr', path.join(wikiRoot, 'i18n', 'fr', 'docusaurus-plugin-content-docs', 'current', 'architecture', 'future-architecture.md'), 'Roadmap conceptuelle'],
+    ['en', path.join(wikiRoot, 'docs', 'crates', 'appcore-ai.md'), 'not yet published'],
+    ['pt', path.join(wikiRoot, 'i18n', 'pt', 'docusaurus-plugin-content-docs', 'current', 'crates', 'appcore-ai.md'), 'ainda não foi publicado'],
+    ['fr', path.join(wikiRoot, 'i18n', 'fr', 'docusaurus-plugin-content-docs', 'current', 'crates', 'appcore-ai.md'), "n'est pas encore publié"],
+    ['en', path.join(wikiRoot, 'docs', 'crates', 'appcore-ui.md'), 'has not been published yet'],
+    ['pt', path.join(wikiRoot, 'i18n', 'pt', 'docusaurus-plugin-content-docs', 'current', 'crates', 'appcore-ui.md'), 'ainda não foi publicado'],
+    ['fr', path.join(wikiRoot, 'i18n', 'fr', 'docusaurus-plugin-content-docs', 'current', 'crates', 'appcore-ui.md'), "n'est pas encore publié"],
+  ];
+
+  for (const [locale, file, requiredText] of requiredPages) {
+    if (!fs.existsSync(file)) {
+      errors.push(`${locale}: missing future roadmap page ${path.relative(wikiRoot, file)}`);
+      continue;
+    }
+    const content = fs.readFileSync(file, 'utf8');
+    if (!content.includes(requiredText)) {
+      errors.push(`${locale}: ${path.relative(wikiRoot, file)} is missing future disclaimer text "${requiredText}"`);
+    }
+  }
+
+  return { componentCount: components.length, errors, warnings };
+}
+
 function hasChanges(group) {
   return Object.values(group).some((items) => items.length > 0);
 }
@@ -237,7 +314,8 @@ function writeResult(options, result) {
 
   if (result.status === 'in-sync') {
     console.log(`AppCore documentation is in sync (${result.runtimeCommit}).`);
-    console.log(`Checked ${result.fileCount} relevant files, ${result.crateCount} public crates, and 3 wiki locales.`);
+    console.log(`Checked ${result.fileCount} relevant files, ${result.crateCount} public crates, ${result.futureComponentCount} future components, and 3 wiki locales.`);
+    for (const warning of result.roadmapWarnings) console.log(`Roadmap warning: ${warning}`);
     return;
   }
 
@@ -253,6 +331,8 @@ function writeResult(options, result) {
     ...humanList('Removed public crates', result.crates.removed),
     ...humanList('Relevant uncommitted source paths', result.dirtyPaths),
     ...humanList('Wiki coverage issues', result.coverageIssues),
+    ...humanList('Future roadmap issues', result.roadmapIssues),
+    ...humanList('Future roadmap warnings', result.roadmapWarnings),
     '',
     'Integrate these changes in all three wiki locales, then run the checker with --accept.',
   ];
@@ -283,9 +363,13 @@ try {
 
   const current = buildSnapshot(runtimeRoot);
   const coverageIssues = wikiCoverage(current.crates);
+  const roadmap = validateFutureRoadmap(current.crates);
   const dirtyPaths = relevantDirtyPaths(runtimeRoot);
 
   if (options.accept) {
+    if (roadmap.errors.length > 0) {
+      throw new Error(`cannot accept baseline with future roadmap issues:\n${roadmap.errors.join('\n')}`);
+    }
     if (coverageIssues.length > 0) {
       throw new Error(`cannot accept baseline with wiki coverage issues:\n${coverageIssues.join('\n')}`);
     }
@@ -298,6 +382,7 @@ try {
       runtimeCommit: current.runtimeCommit,
       fileCount: Object.keys(current.files).length,
       crateCount: current.crates.length,
+      futureComponentCount: roadmap.componentCount,
     });
     process.exit(0);
   }
@@ -310,7 +395,7 @@ try {
 
   const files = compareFiles(baseline.files, current.files);
   const crates = compareCrates(baseline.crates, current.crates);
-  const drift = hasChanges(files) || hasChanges(crates) || dirtyPaths.length > 0 || coverageIssues.length > 0;
+  const drift = hasChanges(files) || hasChanges(crates) || dirtyPaths.length > 0 || coverageIssues.length > 0 || roadmap.errors.length > 0;
   const result = {
     status: drift ? 'drift' : 'in-sync',
     baselineCommit: baseline.runtimeCommit,
@@ -321,6 +406,9 @@ try {
     crates,
     dirtyPaths,
     coverageIssues,
+    futureComponentCount: roadmap.componentCount,
+    roadmapIssues: roadmap.errors,
+    roadmapWarnings: roadmap.warnings,
   };
   writeResult(options, result);
   process.exit(drift ? 1 : 0);

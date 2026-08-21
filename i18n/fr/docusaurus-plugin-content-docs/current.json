@@ -7,8 +7,12 @@
     "message": "Exemples — débutant à intermédiaire",
     "description": "The label for category 'Examples — basic to intermediate' in sidebar 'tutorialSidebar'"
   },
-  "sidebar.tutorialSidebar.category.Crate reference (22 stable + previews)": {
-    "message": "Référence des crates (22 stables + avant-premières)",
-    "description": "The label for category 'Crate reference (22 stable + previews)' in sidebar 'tutorialSidebar'"
+  "sidebar.tutorialSidebar.category.Crate reference — 22 stable": {
+    "message": "Référence des crates — 22 stables",
+    "description": "The label for category 'Crate reference — 22 stable' in sidebar 'tutorialSidebar'"
+  },
+  "sidebar.tutorialSidebar.category.Coming Soon / Future Roadmap": {
+    "message": "Bientôt disponible / Roadmap future",
+    "description": "The label for category 'Coming Soon / Future Roadmap' in sidebar 'tutorialSidebar'"
   }
 }

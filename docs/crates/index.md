@@ -49,21 +49,14 @@ intermediate examples.
 | 21 | [appcore-update](./appcore-update) | Artifact verification, activation, and rollback | contracts, provider |
 | 22 | [appcore-bin](./appcore-bin) | Application facade, CLI, and composition root | 17 AppCore crates |
 
-## Coming soon
-
-[`appcore-ai`](./appcore-ai) is the planned AI support crate for AppCore. It is
-listed here as a preview and is **not published yet**. The page documents the
-planned runtime boundary, provider model, security expectations and usage shape;
-the final API, version and MSRV remain provisional until release.
-
-[`appcore-ui`](./appcore-ui) is the planned UI and page-builder crate for
-AppCore. It is listed here as a preview and is **not published yet**. Its public
-API, rendering contracts, dependencies, version, and MSRV will be documented
-when the release is ready.
-
 The dependency graph is acyclic. Public application code should normally stop
 at `appcore_bin::application`; a published crate is not automatically the
 recommended application-level integration surface.
+
+Future components such as [appcore-ai](./appcore-ai) and
+[appcore-ui](./appcore-ui) are tracked separately in the
+[Future Roadmap](/roadmap/) so planned work is not confused with the stable
+crate graph.
 
 ## Documentation ownership
 
