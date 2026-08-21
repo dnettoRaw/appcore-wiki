@@ -51,4 +51,17 @@ Gateway, scheduling, supervision, updates et shutdown.
 
 Les applications utilisent le module public `application` et évitent internals.
 
+## Intégration AI alpha disponible dans les sources
+
+Le workspace de développement actuel contient la feature opt-in `ai-alpha`,
+qui **ne fait pas partie de l'artefact `appcore-bin 1.0.0` publié**. Elle
+rattache un `appcore_ai::AiRuntime` configuré via `AppCoreAiComponent` et
+`ManifestApplicationHost::with_ai`. Le Supervisor existant possède health
+required/optional, annulation et shutdown borné.
+
+Ce bridge programmatique ne modifie pas les manifests V1. Il appartient à la
+ligne indépendante [`appcore-ai 0.1.0-alpha`](./appcore-ai) ; la sélection
+déclarative exige un contrat versionné post-1.0 et une release AppCore
+publiable.
+
 **Maturité :** façade manifest-first stable; internals restent détails.

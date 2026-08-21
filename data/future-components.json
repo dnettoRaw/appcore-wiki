@@ -1,0 +1,215 @@
+{
+  "schemaVersion": 1,
+  "components": [
+    {
+      "name": "appcore-ai",
+      "slug": "appcore-ai",
+      "status": "In Design",
+      "category": "In Design",
+      "summary": "Adaptive AI runtime boundary for model routing, local or remote inference, resource governance, provenance, security and observable execution.",
+      "horizon": "Design preview",
+      "related_existing": ["appcore-capabilities", "appcore-security", "appcore-ops", "appcore-provider"],
+      "related_future": ["appcore-agent", "appcore-search", "appcore-jobs"]
+    },
+    {
+      "name": "appcore-ui",
+      "slug": "appcore-ui",
+      "status": "In Design",
+      "category": "In Design",
+      "summary": "UI surface boundary for HTML/TypeScript pages, native Rust-rendered views, window lifecycle, events, visual state and future page building.",
+      "horizon": "Design preview",
+      "related_existing": ["appcore-bin", "appcore-api", "appcore-capabilities"],
+      "related_future": ["appcore-render", "appcore-media", "appcore-device"]
+    },
+    {
+      "name": "appcore-test",
+      "slug": "appcore-test",
+      "status": "Planned",
+      "category": "High Priority",
+      "summary": "Deterministic test harness with fake clock, storage, transport, peers, providers, AI, device/UI surfaces, fault injection and network simulation.",
+      "horizon": "High priority",
+      "related_existing": ["appcore-core", "appcore-storage", "appcore-transport", "appcore-provider"],
+      "related_future": ["appcore-sim", "appcore-ai", "appcore-ui"]
+    },
+    {
+      "name": "appcore-jobs",
+      "slug": "appcore-jobs",
+      "status": "Planned",
+      "category": "High Priority",
+      "summary": "Durable job lifecycle from Created to Queued, Running, Completed, Failed or Retry, separate from scheduler placement.",
+      "horizon": "High priority",
+      "related_existing": ["appcore-scheduler", "appcore-provider", "appcore-control-plane"],
+      "related_future": ["appcore-automation", "appcore-ai"]
+    },
+    {
+      "name": "appcore-search",
+      "slug": "appcore-search",
+      "status": "Planned",
+      "category": "High Priority",
+      "summary": "Local-first search boundary for full text, metadata, filters, ranking and future lexical/vector/hybrid retrieval.",
+      "horizon": "High priority",
+      "related_existing": ["appcore-storage", "appcore-security"],
+      "related_future": ["appcore-ai", "appcore-data"]
+    },
+    {
+      "name": "appcore-automation",
+      "slug": "appcore-automation",
+      "status": "Planned",
+      "category": "High Priority",
+      "summary": "Deterministic Event to Condition to Action to Command automation with optional AI assistance and future visual editing.",
+      "horizon": "High priority",
+      "related_existing": ["appcore-core", "appcore-capabilities", "appcore-scheduler"],
+      "related_future": ["appcore-ui", "appcore-agent"]
+    },
+    {
+      "name": "appcore-plugin",
+      "slug": "appcore-plugin",
+      "status": "Planned",
+      "category": "High Priority",
+      "summary": "Static Rust composition boundary for providers, AI backends, UI components, device adapters and integrations.",
+      "horizon": "High priority",
+      "related_existing": ["appcore-provider", "appcore-capabilities"],
+      "related_future": ["appcore-ai", "appcore-ui", "appcore-device"]
+    },
+    {
+      "name": "appcore-media",
+      "slug": "appcore-media",
+      "status": "Planned",
+      "category": "Platform Expansion",
+      "summary": "Common boundary for audio, video, capture, playback, encode/decode and streaming without promising specific codecs.",
+      "horizon": "Platform expansion",
+      "related_existing": ["appcore-storage", "appcore-transport"],
+      "related_future": ["appcore-ui", "appcore-ai", "appcore-device"]
+    },
+    {
+      "name": "appcore-device",
+      "slug": "appcore-device",
+      "status": "Planned",
+      "category": "Platform Expansion",
+      "summary": "Capability-controlled access boundary for USB, Bluetooth, serial, HID, sensors, camera, microphone, displays and accelerator discovery.",
+      "horizon": "Platform expansion",
+      "related_existing": ["appcore-capabilities", "appcore-security"],
+      "related_future": ["appcore-media", "appcore-ai", "appcore-ui"]
+    },
+    {
+      "name": "appcore-agent",
+      "slug": "appcore-agent",
+      "status": "Planned",
+      "category": "Platform Expansion",
+      "summary": "Goal, planning, tools, memory and action orchestration built on top of AI rather than mixed into the inference crate.",
+      "horizon": "Platform expansion",
+      "related_existing": ["appcore-capabilities"],
+      "related_future": ["appcore-ai", "appcore-automation", "appcore-search"]
+    },
+    {
+      "name": "appcore-data",
+      "slug": "appcore-data",
+      "status": "Planned",
+      "category": "Platform Expansion",
+      "summary": "Source to Decode to Validate to Transform to Batch/Stream to Sink data flow boundary, not a default ORM or dataframe layer.",
+      "horizon": "Platform expansion",
+      "related_existing": ["appcore-storage", "appcore-transport"],
+      "related_future": ["appcore-search", "appcore-ai"]
+    },
+    {
+      "name": "appcore-cache",
+      "slug": "appcore-cache",
+      "status": "Planned",
+      "category": "Platform Expansion",
+      "summary": "Small bounded cache contract with TTL, eviction and metrics; not a Redis competitor.",
+      "horizon": "Platform expansion",
+      "related_existing": ["appcore-ops", "appcore-storage"],
+      "related_future": []
+    },
+    {
+      "name": "appcore-runtime-sdk",
+      "slug": "appcore-runtime-sdk",
+      "status": "Planned",
+      "category": "Platform Expansion",
+      "summary": "Ergonomic facade over existing runtime surfaces such as app.ai(), app.ui() and app.storage(), not a second runtime implementation.",
+      "horizon": "Platform expansion",
+      "related_existing": ["appcore-bin"],
+      "related_future": ["appcore-ai", "appcore-ui"]
+    },
+    {
+      "name": "appcore-events",
+      "slug": "appcore-events",
+      "status": "Research",
+      "category": "Under Evaluation",
+      "summary": "Event bus candidate only if further analysis proves event responsibility is dispersed enough to justify a separate crate.",
+      "horizon": "Under evaluation",
+      "related_existing": ["appcore-core", "appcore-sync"],
+      "related_future": ["appcore-automation"]
+    },
+    {
+      "name": "appcore-config",
+      "slug": "appcore-config",
+      "status": "Research",
+      "category": "Under Evaluation",
+      "summary": "Layering candidate for defaults, file, environment, CLI and deployment config while leaving CLI ownership with appcore-args.",
+      "horizon": "Under evaluation",
+      "related_existing": ["appcore-args", "appcore-contracts", "appcore-bin"],
+      "related_future": []
+    },
+    {
+      "name": "appcore-secrets",
+      "slug": "appcore-secrets",
+      "status": "Research",
+      "category": "Under Evaluation",
+      "summary": "Possible split from security only if secret resolution, rotation, scoping and audit need an independent owner.",
+      "horizon": "Under evaluation",
+      "related_existing": ["appcore-security", "appcore-provider"],
+      "related_future": []
+    },
+    {
+      "name": "appcore-sandbox",
+      "slug": "appcore-sandbox",
+      "status": "Research",
+      "category": "Under Evaluation",
+      "summary": "Isolation boundary candidate; no sandboxing guarantees are claimed until an implementation and threat model exist.",
+      "horizon": "Under evaluation",
+      "related_existing": ["appcore-security", "appcore-capabilities"],
+      "related_future": ["appcore-plugin", "appcore-agent"]
+    },
+    {
+      "name": "appcore-browser",
+      "slug": "appcore-browser",
+      "status": "Research",
+      "category": "Future Research",
+      "summary": "Controlled browser and web automation research area, not a commitment to become a browser engine.",
+      "horizon": "Future research",
+      "related_existing": ["appcore-transport", "appcore-security"],
+      "related_future": ["appcore-ui", "appcore-agent"]
+    },
+    {
+      "name": "appcore-spatial",
+      "slug": "appcore-spatial",
+      "status": "Research",
+      "category": "Future Research",
+      "summary": "Possible evolution of UI surfaces toward scene, XR, AR or VR concepts.",
+      "horizon": "Future research",
+      "related_existing": [],
+      "related_future": ["appcore-ui", "appcore-device", "appcore-media"]
+    },
+    {
+      "name": "appcore-sim",
+      "slug": "appcore-sim",
+      "status": "Research",
+      "category": "Future Research",
+      "summary": "Deterministic simulation for clusters, devices, networks and pressure scenarios, distinct from unit test helpers.",
+      "horizon": "Future research",
+      "related_existing": ["appcore-distributed-contracts", "appcore-control-plane"],
+      "related_future": ["appcore-test", "appcore-device"]
+    },
+    {
+      "name": "appcore-cloud",
+      "slug": "appcore-cloud",
+      "status": "Research",
+      "category": "Future Research",
+      "summary": "Deployment and orchestration abstraction research area, not a cloud provider and not a replacement for explicit providers.",
+      "horizon": "Future research",
+      "related_existing": ["appcore-provider", "appcore-update", "appcore-control-plane"],
+      "related_future": []
+    }
+  ]
+}

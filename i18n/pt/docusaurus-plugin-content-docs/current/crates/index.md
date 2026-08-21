@@ -49,22 +49,14 @@ intermediário mantidos pelo crate.
 | 21 | [appcore-update](./appcore-update) | Verificação, ativação e rollback de artifacts | contracts, provider |
 | 22 | [appcore-bin](./appcore-bin) | Facade de aplicação, CLI e composition root | 17 crates AppCore |
 
-## Em breve
-
-O [`appcore-ai`](./appcore-ai) é o crate planejado para suporte a IA no
-AppCore. Ele aparece aqui como prévia e **ainda não foi publicado**. A página
-documenta a fronteira de runtime planejada, o modelo de providers, expectativas
-de segurança e a forma de uso; API final, versão e MSRV continuam provisórias
-até a release.
-
-O [`appcore-ui`](./appcore-ui) é o crate planejado para UI e page builder no
-AppCore. Ele aparece aqui como prévia e **ainda não foi publicado**. A API
-pública, os contratos de renderização, as dependências, a versão e a MSRV serão
-documentados quando a release estiver pronta.
-
 O grafo de dependências é acíclico. Código público de aplicação normalmente
 deve parar em `appcore_bin::application`; estar publicado não torna um crate
 automaticamente uma superfície recomendada para aplicações.
+
+Componentes futuros como [appcore-ai](./appcore-ai) e
+[appcore-ui](./appcore-ui) são acompanhados separadamente no
+[Roadmap futuro](/roadmap/) para que trabalho planejado não seja confundido com
+o grafo estável de crates.
 
 ## Propriedade da documentação
 
