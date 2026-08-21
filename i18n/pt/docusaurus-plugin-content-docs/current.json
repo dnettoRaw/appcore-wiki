@@ -7,8 +7,8 @@
     "message": "Exemplos — básico ao intermediário",
     "description": "The label for category 'Examples — basic to intermediate' in sidebar 'tutorialSidebar'"
   },
-  "sidebar.tutorialSidebar.category.Crate reference (22)": {
-    "message": "Referência dos crates (22)",
-    "description": "The label for category 'Crate reference (22)' in sidebar 'tutorialSidebar'"
+  "sidebar.tutorialSidebar.category.Crate reference (22 stable + preview)": {
+    "message": "Referência dos crates (22 estáveis + prévia)",
+    "description": "The label for category 'Crate reference (22 stable + preview)' in sidebar 'tutorialSidebar'"
   }
 }

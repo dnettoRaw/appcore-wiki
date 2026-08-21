@@ -45,6 +45,7 @@ const crates = [
   'appcore-provider-vercel-neon',
   'appcore-update',
   'appcore-bin',
+  'appcore-ai',
 ];
 
 module.exports = {
@@ -60,7 +61,7 @@ module.exports = {
     'architecture/crate-map',
     {
       type: 'category',
-      label: 'Crate reference (22)',
+      label: 'Crate reference (22 stable + preview)',
       collapsed: true,
       items: ['crates/index', ...crates.map((crate) => `crates/${crate}`)],
     },
