@@ -52,8 +52,14 @@ intermediate examples.
 ## Coming soon
 
 [`appcore-ai`](./appcore-ai) is the planned AI support crate for AppCore. It is
-listed here as a preview and is **not published yet**. Its public API,
-dependencies, version, and MSRV will be documented when the release is ready.
+listed here as a preview and is **not published yet**. The page documents the
+planned runtime boundary, provider model, security expectations and usage shape;
+the final API, version and MSRV remain provisional until release.
+
+[`appcore-ui`](./appcore-ui) is the planned UI and page-builder crate for
+AppCore. It is listed here as a preview and is **not published yet**. Its public
+API, rendering contracts, dependencies, version, and MSRV will be documented
+when the release is ready.
 
 The dependency graph is acyclic. Public application code should normally stop
 at `appcore_bin::application`; a published crate is not automatically the
