@@ -22,11 +22,16 @@ Status promotion is manual. A component may keep its slug when it moves from
 Research to Planned, In Design, Alpha, Beta, RC or Stable, but no promotion is
 automatic just because a crate appears in the Runtime repository.
 
+## Beta
+
+| Component | Status | Boundary |
+| --- | --- | --- |
+| [appcore-ai](/crates/appcore-ai) | Beta | Published `0.1.0-beta.1` for bounded model routing, local or remote inference, resource governance, provenance, security and observable execution. |
+
 ## In Design
 
 | Component | Status | Boundary |
 | --- | --- | --- |
-| [appcore-ai](/crates/appcore-ai) | In Design | Adaptive AI runtime boundary for model routing, local or remote inference, resource governance, provenance, security and observable execution. |
 | [appcore-ui](/crates/appcore-ui) | In Design | UI surface boundary for HTML/TypeScript pages, native Rust-rendered views, window lifecycle, events, visual state and future page building. |
 
 ## High Priority

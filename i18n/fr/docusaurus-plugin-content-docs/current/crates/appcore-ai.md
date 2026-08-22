@@ -1,14 +1,14 @@
 ---
-title: appcore-ai — 0.1 alpha
+title: appcore-ai — 0.1 beta
 sidebar_position: 23
 ---
 
 # appcore-ai
 
-:::caution Alpha disponible dans les sources
-`appcore-ai` est implémenté dans le workspace AppCore Runtime en
-`0.1.0-alpha`, mais n'est pas encore publié sur crates.io ou docs.rs. L'API peut
-changer pendant l'alpha et n'ajoute aucun champ aux manifests V1 gelés.
+:::caution Beta publique
+`appcore-ai 0.1.0-beta.1` est publié sur crates.io. L'API peut changer pendant
+la beta et docs.rs peut prendre du temps pour terminer le build d'une nouvelle
+release. Elle n'ajoute aucun champ aux manifests V1 gelés.
 :::
 
 `appcore-ai` est le core d'exécution IA borné et indépendant du backend. Il
@@ -23,8 +23,8 @@ de la validation métier et de toute décision d'appliquer un résultat génér�
 | API centrale | requêtes/réponses typées, texte/chat/image/document, qualité et confidentialité |
 | Chemin rapide | transformations et règles lightweight déterministes, sans ML |
 | Routage | coût local/distant, escalade bornée, load single-flight par modèle/backend |
-| Ressources | admission CPU/RAM/VRAM, file équitable bornée, planners batching/résidence |
-| Artefacts | taille + SHA-256, cache atomique, provenance et ranges vérifiés |
+| Ressources | snapshots natifs CPU/RAM, topologie unifiée/dédiée, admission device exact, sampling single-flight, batching et résidence |
+| Artefacts | taille + SHA-256, cache atomique no-follow/revalidé, provenance et ranges vérifiés |
 | Génératif | chat avec rôles, sampling, tools/tool calls et data URLs image opt-in |
 | ML local | Candle CPU et entraînement du classificateur data-only `NativeLinearV1` |
 | Opérations | annulation, deadlines, health et télémétrie sans payload |
@@ -37,6 +37,7 @@ La compilation par défaut n'inclut ni framework ML ni adapter HTTP.
 | Feature | Moteur/format | Portée réelle |
 | --- | --- | --- |
 | aucune | resolver lightweight | normalisation, matching, extraction et règles |
+| `accelerator-nvidia` | NVIDIA NVML | découverte VRAM/utilisation optionnelle en lecture seule sous Linux/Windows ; aucun pilote installé/contrôlé |
 | `backend-candle` | `NativeLinearV1` | classification CPU in-process |
 | `training-candle` | `NativeLinearV1` | SGD reproductible, checkpoint et reprise |
 | `backend-openai-compatible` | llama.cpp, MLX-LM, vLLM, SGLang, TensorRT-LLM, OpenVINO, TabbyAPI, generic | chat-completions borné sans streaming |
@@ -126,6 +127,36 @@ Un node peut contribuer compute, storage, les deux ou aucun. Le design swarm a
 donc besoin de contribution policy, contrôles d'intégrité, health, failover et
 accounting clair avant de devenir un comportement production.
 
+## Ressources matérielles réelles
+
+```bash
+cargo run -p appcore-ai --example hardware_report
+cargo run -p appcore-ai --example hardware_report \
+  --features accelerator-nvidia
+```
+
+`SystemHardwareProbe::default()` utilise un cache à la demande d'une seconde en
+single-flight : aucun thread de polling lorsque AppCore AI est inactif. Il lit
+topologie/charge CPU, CPU du processus et RAM disponible via les API natives de
+macOS, Linux et Windows. Apple Silicon est un GPU intégré partageant le pool
+RAM. Linux offre une découverte DRM sysfs best-effort AMD/NVIDIA ; la feature
+optionnelle `accelerator-nvidia` charge dynamiquement la NVML système pour la
+VRAM totale/libre/utilisée et l'utilisation du GPU NVIDIA exact.
+
+Une métrique inconnue reste `None`, jamais zéro ou illimitée. Deux GPU ne sont
+pas additionnés pour loger un modèle : admission, charge et VRAM libre utilisent
+le `DeviceId` exact. La mémoire unifiée est débitée une fois, sans faux pools
+RAM + VRAM. `Eco`, `Balanced`, `Performance`, `Unrestricted` et `Custom`
+calculent leur marge volontaire depuis la disponibilité et appliquent une
+hystérésis sous pression. Le même budget borne batching, résidence,
+entraînement et contribution Swarm explicite.
+
+L'exécution de référence couvre macOS arm64 sur Apple M1. Les probes
+Linux/Windows, dont NVML optionnel, compilent et ont des tests déterministes,
+mais aucune certification physique dans cette passe. Sysfs AMD est partiel ;
+thermique/utilisation hors sources documentées et NPU restent indisponibles,
+non simulés.
+
 ## Chat, tools, images et PDF
 
 ```rust
@@ -145,7 +176,7 @@ arguments et route le travail autorisé via `appcore-capabilities`. Le texte
 généré n'est jamais une autorité d'écriture.
 
 Une image n'est transportée que si backend et modèle déclarent ce support. PDF
-est une modalité document pour le routage, mais l'alpha n'embarque ni parseur,
+est une modalité document pour le routage, mais la beta n'embarque ni parseur,
 rasterizer ni OCR universel. L'application choisit un processor borné en pages,
 pixels, octets décompressés, temps et sortie.
 
@@ -202,6 +233,21 @@ Mesurez ensemble version moteur, révision, quantification, contexte, batch et
 device. Conservez cold start, TTFT, tokens/s, requests/s, RAM, VRAM, file et
 échecs. Aucun moteur n'est universellement le plus rapide.
 
+## Performance et état beta
+
+Le benchmark répétable `perf_lab` produit une sortie humaine ou JSONL et couvre
+lightweight, routage, scaling registre/scheduler, batching, artefacts,
+Candle/training et 1–1 000 candidats Swarm. Sur l'Apple M1 documenté, resolve
+chaud à 32 routes passe de 96,417 us à 21,958 us p50 et batch Candle 32 de
+68,959 us à 31,041 us. Le rapport conserve aussi les régressions petit batch et le
+coût volontaire de la protection no-follow.
+
+Le verdict local est **READY FOR BETA** dans le périmètre documenté. Exécution
+physique Windows/Linux, soak réel sur accélérateurs et adapter Swarm Peer RPC
+production restent des preuves du programme beta. L'isolation processus relève
+du déploiement et la composition déclarative reste post-1.0 ; cette beta ne les
+revendique pas.
+
 ## Sécurité, limites et état
 
 - prompts, outputs, endpoints et credentials sont expurgés des diagnostics ;
@@ -213,5 +259,11 @@ device. Conservez cold start, TTFT, tokens/s, requests/s, RAM, VRAM, file et
 
 Streaming de tokens, PDF/OCR, installation/sandbox automatique du moteur,
 Swarm production et manifests déclaratifs ne sont pas livrés dans
-`0.1.0-alpha`. Consultez `crates/appcore-ai/wiki` dans le dépôt Runtime pour les
-API, exemples, modèles, benchmarks, threat model et gates complets.
+`0.1.0-beta.1`. Consultez [guide.fr.md](https://github.com/dnettoRaw/AppCore-Runtime/blob/main/crates/appcore-ai/wiki/guide.fr.md),
+[basic.fr.md](https://github.com/dnettoRaw/AppCore-Runtime/blob/main/crates/appcore-ai/wiki/examples/basic.fr.md) et
+[intermediate.fr.md](https://github.com/dnettoRaw/AppCore-Runtime/blob/main/crates/appcore-ai/wiki/examples/intermediate.fr.md)
+pour APIs et exemples. Le [guide exact des ressources](https://github.com/dnettoRaw/AppCore-Runtime/blob/main/crates/appcore-ai/wiki/resources.fr.md)
+documente matrice de plateforme, coût de dépendance, fit modèle et métriques
+opérationnelles. Le [rapport performance](https://github.com/dnettoRaw/AppCore-Runtime/blob/main/crates/appcore-ai/wiki/benchmarks.fr.md)
+et la [matrice beta](https://github.com/dnettoRaw/AppCore-Runtime/blob/main/crates/appcore-ai/wiki/release-readiness.fr.md)
+sont versionnés avec le crate.

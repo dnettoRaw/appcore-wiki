@@ -249,15 +249,19 @@ function validateFutureRoadmap(crates) {
   const { components, errors, warnings } = readFutureComponents();
   const crateNames = new Set(crates.map((crate) => crate.name));
 
-  if (crates.length !== 22) {
-    errors.push(`stable public crate count is ${crates.length}, expected 22 until the Runtime baseline is intentionally promoted`);
+  const prereleaseNames = new Set(
+    components.filter((component) => component.status !== 'Stable').map((component) => component.name),
+  );
+  const stableCrateCount = crates.filter((crate) => !prereleaseNames.has(crate.name)).length;
+  if (stableCrateCount !== 22) {
+    errors.push(`stable public crate count is ${stableCrateCount}, expected 22 until the Runtime baseline is intentionally promoted`);
   }
 
   for (const component of components) {
     if (component.status === 'Stable' && !crateNames.has(component.name)) {
       errors.push(`future component ${component.name} is marked Stable but is absent from the public crate graph`);
     }
-    if (component.status !== 'Stable' && crateNames.has(component.name)) {
+    if (['Research', 'Planned', 'In Design', 'Deferred'].includes(component.status) && crateNames.has(component.name)) {
       warnings.push(`future component ${component.name} appears in the public crate graph with status ${component.status}; review promotion manually`);
     }
   }
@@ -269,9 +273,9 @@ function validateFutureRoadmap(crates) {
     ['en', path.join(wikiRoot, 'docs', 'architecture', 'future-architecture.md'), 'Conceptual roadmap'],
     ['pt', path.join(wikiRoot, 'i18n', 'pt', 'docusaurus-plugin-content-docs', 'current', 'architecture', 'future-architecture.md'), 'Roadmap conceitual'],
     ['fr', path.join(wikiRoot, 'i18n', 'fr', 'docusaurus-plugin-content-docs', 'current', 'architecture', 'future-architecture.md'), 'Roadmap conceptuelle'],
-    ['en', path.join(wikiRoot, 'docs', 'crates', 'appcore-ai.md'), 'not yet published'],
-    ['pt', path.join(wikiRoot, 'i18n', 'pt', 'docusaurus-plugin-content-docs', 'current', 'crates', 'appcore-ai.md'), 'ainda não foi publicado'],
-    ['fr', path.join(wikiRoot, 'i18n', 'fr', 'docusaurus-plugin-content-docs', 'current', 'crates', 'appcore-ai.md'), "n'est pas encore publié"],
+    ['en', path.join(wikiRoot, 'docs', 'crates', 'appcore-ai.md'), 'published on crates.io'],
+    ['pt', path.join(wikiRoot, 'i18n', 'pt', 'docusaurus-plugin-content-docs', 'current', 'crates', 'appcore-ai.md'), 'publicado no crates.io'],
+    ['fr', path.join(wikiRoot, 'i18n', 'fr', 'docusaurus-plugin-content-docs', 'current', 'crates', 'appcore-ai.md'), 'publié sur crates.io'],
     ['en', path.join(wikiRoot, 'docs', 'crates', 'appcore-ui.md'), 'has not been published yet'],
     ['pt', path.join(wikiRoot, 'i18n', 'pt', 'docusaurus-plugin-content-docs', 'current', 'crates', 'appcore-ui.md'), 'ainda não foi publicado'],
     ['fr', path.join(wikiRoot, 'i18n', 'fr', 'docusaurus-plugin-content-docs', 'current', 'crates', 'appcore-ui.md'), "n'est pas encore publié"],

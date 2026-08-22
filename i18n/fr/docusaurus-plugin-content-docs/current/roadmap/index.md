@@ -22,11 +22,16 @@ La promotion de statut est manuelle. Un composant peut conserver son slug en
 passant de Research à Planned, In Design, Alpha, Beta, RC ou Stable, mais aucune
 promotion n'est automatique parce qu'un crate apparaît dans le dépôt Runtime.
 
+## Beta
+
+| Composant | Statut | Frontière |
+| --- | --- | --- |
+| [appcore-ai](/crates/appcore-ai) | Beta | `0.1.0-beta.1` publiée pour routage borné, inférence locale/distante, ressources, provenance, sécurité et exécution observable. |
+
 ## In Design
 
 | Composant | Statut | Frontière |
 | --- | --- | --- |
-| [appcore-ai](/crates/appcore-ai) | In Design | Frontière runtime IA adaptative pour routage de modèles, inférence locale ou distante, gouvernance des ressources, provenance, sécurité et exécution observable. |
 | [appcore-ui](/crates/appcore-ui) | In Design | Frontière de surfaces UI pour pages HTML/TypeScript, vues natives Rust, lifecycle de fenêtre, événements, état visuel et futur page builder. |
 
 ## Haute Priorité
