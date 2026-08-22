@@ -22,11 +22,16 @@ Research para Planned, In Design, Alpha, Beta, RC ou Stable, mas nenhuma
 promoção acontece automaticamente só porque um crate apareceu no repositório do
 Runtime.
 
+## Beta
+
+| Componente | Status | Fronteira |
+| --- | --- | --- |
+| [appcore-ai](/crates/appcore-ai) | Beta | `0.1.0-beta.1` publicada para routing limitado, inferência local/remota, recursos, provenance, segurança e execução observável. |
+
 ## In Design
 
 | Componente | Status | Fronteira |
 | --- | --- | --- |
-| [appcore-ai](/crates/appcore-ai) | In Design | Fronteira adaptativa de runtime de IA para roteamento de modelos, inferência local ou remota, governo de recursos, proveniência, segurança e execução observável. |
 | [appcore-ui](/crates/appcore-ui) | In Design | Fronteira de superfícies de UI para páginas HTML/TypeScript, views nativas Rust, lifecycle de janela, eventos, estado visual e futuro page builder. |
 
 ## Alta Prioridade

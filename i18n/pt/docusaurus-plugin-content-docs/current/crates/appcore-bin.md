@@ -50,7 +50,7 @@ supervision, updates e shutdown.
 
 Aplicações usam o módulo público `application` e evitam internals.
 
-## Integração AI alpha disponível no código-fonte
+## Integração AI experimental disponível no código-fonte
 
 O workspace de desenvolvimento atual possui a feature opt-in `ai-alpha`, que
 **não faz parte do artifact `appcore-bin 1.0.0` publicado**. Ela anexa um
@@ -59,7 +59,7 @@ O workspace de desenvolvimento atual possui a feature opt-in `ai-alpha`, que
 required/optional, cancelamento e shutdown limitado.
 
 Essa bridge programática não altera manifests V1. Ela pertence à linha de
-desenvolvimento independente [`appcore-ai 0.1.0-alpha`](./appcore-ai); seleção
+release beta independente [`appcore-ai 0.1.0-beta.1`](./appcore-ai); seleção
 declarativa exige contrato versionado pós-1.0 e uma release AppCore publicável.
 
 **Maturidade:** facade manifest-first estável; internals são detalhes.

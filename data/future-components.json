@@ -4,10 +4,10 @@
     {
       "name": "appcore-ai",
       "slug": "appcore-ai",
-      "status": "In Design",
-      "category": "In Design",
+      "status": "Beta",
+      "category": "Beta",
       "summary": "Adaptive AI runtime boundary for model routing, local or remote inference, resource governance, provenance, security and observable execution.",
-      "horizon": "Design preview",
+      "horizon": "0.1.0-beta.1 published",
       "related_existing": ["appcore-capabilities", "appcore-security", "appcore-ops", "appcore-provider"],
       "related_future": ["appcore-agent", "appcore-search", "appcore-jobs"]
     },

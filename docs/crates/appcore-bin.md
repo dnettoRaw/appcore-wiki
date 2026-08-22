@@ -52,7 +52,7 @@ control plane, Gateway, scheduling, supervision, updates and shutdown.
 Application code must use the public `application` module and avoid private host
 internals.
 
-## Source-only AI alpha integration
+## Experimental source-only AI integration
 
 The current Runtime development workspace contains an opt-in `ai-alpha`
 feature that is **not part of the published `appcore-bin 1.0.0` artifact**. It
@@ -61,7 +61,7 @@ attaches an already configured `appcore_ai::AiRuntime` through
 Supervisor owns required/optional health, cancellation and bounded shutdown.
 
 This programmatic bridge does not alter V1 manifests. It belongs to the
-independent [`appcore-ai 0.1.0-alpha`](./appcore-ai) development line;
+independent [`appcore-ai 0.1.0-beta.1`](./appcore-ai) beta release;
 declarative model/provider selection requires a future versioned post-1.0
 contract and a publishable AppCore release.
 
