@@ -20,18 +20,22 @@ Leia como um livro técnico:
 9. [Modelo de segurança](/security/security-model)
 10. [Primeira aplicação](/tutorials/first-application)
 11. [Exemplos do básico ao intermediário](/tutorials/examples/)
-12. [Referência dos 22 crates públicos](/crates/)
+12. [Referência dos 22 crates estáveis e da beta do appcore-ai](/crates/)
 13. [Roadmap futuro](/roadmap/)
 
 Release estável: `1.0.0`. Todos os 22 crates públicos estão disponíveis no
 crates.io. Toolchain Rust mínima: `1.89`. Aplicações normalmente devem depender
 de `appcore-bin@1.0.0` e usar sua facade `application`.
 
+Beta pública de IA: `appcore-ai 0.1.0-beta.1`, publicada separadamente do grafo
+estável de crates do Runtime.
+
 ## O Que Vem Depois
 
 O roadmap futuro acompanha trabalho planejado sem misturá-lo à referência
-estável do Runtime. As prévias em design são [appcore-ai](/crates/appcore-ai) e
-[appcore-ui](/crates/appcore-ui). Áreas planejadas de alta prioridade incluem
+estável do Runtime. A beta pública atual é [appcore-ai](/crates/appcore-ai), e a
+prévia em design atual é [appcore-ui](/crates/appcore-ui). Áreas planejadas de
+alta prioridade incluem
 `appcore-test`, `appcore-jobs`, `appcore-search`, `appcore-automation` e
 `appcore-plugin`; veja o [Roadmap futuro](/roadmap/).
 

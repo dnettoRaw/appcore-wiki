@@ -13,6 +13,10 @@ though their current stable release is also `1.0.0`. Workspace tools such as
 `appcore-certification`, `appcore-dev`, and `runtime-console` are not public
 Runtime crates.
 
+The separately versioned [`appcore-ai 0.1.0-beta.1`](./appcore-ai) public beta
+is also published on crates.io. It is not part of the stable `1.0.0` Runtime
+crate graph.
+
 For a new application, depend on the high-level facade:
 
 ```bash
@@ -53,10 +57,9 @@ The dependency graph is acyclic. Public application code should normally stop
 at `appcore_bin::application`; a published crate is not automatically the
 recommended application-level integration surface.
 
-Future components such as [appcore-ai](./appcore-ai) and
-[appcore-ui](./appcore-ui) are tracked separately in the
-[Future Roadmap](/roadmap/) so planned work is not confused with the stable
-crate graph.
+The `appcore-ai` beta, the [appcore-ui](./appcore-ui) design preview, and future
+components are tracked separately in the [Future Roadmap](/roadmap/) so
+pre-stable and planned work are not confused with the stable crate graph.
 
 ## Documentation ownership
 
