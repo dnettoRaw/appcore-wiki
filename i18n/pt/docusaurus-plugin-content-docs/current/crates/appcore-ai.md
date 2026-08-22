@@ -255,11 +255,11 @@ dois é anunciado por esta beta.
 
 Streaming de tokens, PDF/OCR, instalação/sandbox automático do engine, Swarm de
 produção e manifests declarativos não foram entregues em `0.1.0-beta.1`.
-Consulte [guide.pt.md](https://github.com/dnettoRaw/AppCore-Runtime/blob/main/crates/appcore-ai/wiki/guide.pt.md),
-[basic.pt.md](https://github.com/dnettoRaw/AppCore-Runtime/blob/main/crates/appcore-ai/wiki/examples/basic.pt.md) e
-[intermediate.pt.md](https://github.com/dnettoRaw/AppCore-Runtime/blob/main/crates/appcore-ai/wiki/examples/intermediate.pt.md)
-para APIs e exemplos. O [guia exato de recursos](https://github.com/dnettoRaw/AppCore-Runtime/blob/main/crates/appcore-ai/wiki/resources.pt.md)
+Consulte [guide.pt.md](https://github.com/dnettoRaw/AppCore-Runtime/blob/appcore-ai-v0.1.0-beta.1/crates/appcore-ai/wiki/guide.pt.md),
+[basic.pt.md](https://github.com/dnettoRaw/AppCore-Runtime/blob/appcore-ai-v0.1.0-beta.1/crates/appcore-ai/wiki/examples/basic.pt.md) e
+[intermediate.pt.md](https://github.com/dnettoRaw/AppCore-Runtime/blob/appcore-ai-v0.1.0-beta.1/crates/appcore-ai/wiki/examples/intermediate.pt.md)
+para APIs e exemplos. O [guia exato de recursos](https://github.com/dnettoRaw/AppCore-Runtime/blob/appcore-ai-v0.1.0-beta.1/crates/appcore-ai/wiki/resources.pt.md)
 documenta matriz de plataforma, custo da dependência, fit de modelo e métricas
-operacionais. O [relatório de performance](https://github.com/dnettoRaw/AppCore-Runtime/blob/main/crates/appcore-ai/wiki/benchmarks.pt.md)
-e a [matriz beta](https://github.com/dnettoRaw/AppCore-Runtime/blob/main/crates/appcore-ai/wiki/release-readiness.pt.md)
+operacionais. O [relatório de performance](https://github.com/dnettoRaw/AppCore-Runtime/blob/appcore-ai-v0.1.0-beta.1/crates/appcore-ai/wiki/benchmarks.pt.md)
+e a [matriz beta](https://github.com/dnettoRaw/AppCore-Runtime/blob/appcore-ai-v0.1.0-beta.1/crates/appcore-ai/wiki/release-readiness.pt.md)
 ficam versionados com o crate.

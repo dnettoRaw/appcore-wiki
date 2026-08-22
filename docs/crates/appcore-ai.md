@@ -280,12 +280,12 @@ production Swarm integration and declarative manifests are not delivered in
 
 For complete API examples, hardware semantics, model limits, recipes,
 benchmarks and the threat
-model, use the crate-owned [guide.en.md](https://github.com/dnettoRaw/AppCore-Runtime/blob/main/crates/appcore-ai/wiki/guide.en.md),
-[basic.en.md](https://github.com/dnettoRaw/AppCore-Runtime/blob/main/crates/appcore-ai/wiki/examples/basic.en.md), and
-[intermediate.en.md](https://github.com/dnettoRaw/AppCore-Runtime/blob/main/crates/appcore-ai/wiki/examples/intermediate.en.md).
-The exact [hardware resource guide](https://github.com/dnettoRaw/AppCore-Runtime/blob/main/crates/appcore-ai/wiki/resources.en.md)
+model, use the crate-owned [guide.en.md](https://github.com/dnettoRaw/AppCore-Runtime/blob/appcore-ai-v0.1.0-beta.1/crates/appcore-ai/wiki/guide.en.md),
+[basic.en.md](https://github.com/dnettoRaw/AppCore-Runtime/blob/appcore-ai-v0.1.0-beta.1/crates/appcore-ai/wiki/examples/basic.en.md), and
+[intermediate.en.md](https://github.com/dnettoRaw/AppCore-Runtime/blob/appcore-ai-v0.1.0-beta.1/crates/appcore-ai/wiki/examples/intermediate.en.md).
+The exact [hardware resource guide](https://github.com/dnettoRaw/AppCore-Runtime/blob/appcore-ai-v0.1.0-beta.1/crates/appcore-ai/wiki/resources.en.md)
 records the platform matrix, dependency rationale, model-fit examples and
 operational metrics.
-The exact [performance report](https://github.com/dnettoRaw/AppCore-Runtime/blob/main/crates/appcore-ai/wiki/benchmarks.en.md)
-and [beta matrix](https://github.com/dnettoRaw/AppCore-Runtime/blob/main/crates/appcore-ai/wiki/release-readiness.en.md)
+The exact [performance report](https://github.com/dnettoRaw/AppCore-Runtime/blob/appcore-ai-v0.1.0-beta.1/crates/appcore-ai/wiki/benchmarks.en.md)
+and [beta matrix](https://github.com/dnettoRaw/AppCore-Runtime/blob/appcore-ai-v0.1.0-beta.1/crates/appcore-ai/wiki/release-readiness.en.md)
 are versioned with the crate.
