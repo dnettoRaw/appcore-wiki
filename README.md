@@ -2,9 +2,10 @@
 
 Public Docusaurus documentation for AppCore Runtime.
 
-The wiki documents the stable AppCore Runtime `1.0.0` release and all 22 public
-crates (MSRV Rust `1.89`). Every crate, including the application facade
-`appcore-bin`, is available as `1.0.0` on crates.io. The site includes a
+The wiki documents the stable AppCore Runtime `1.0.0` release and all 22 stable
+public crates (MSRV Rust `1.89`), plus the separately versioned public beta
+`appcore-ai 0.1.0-beta.1`. Every stable Runtime crate, including the application
+facade `appcore-bin`, is available as `1.0.0` on crates.io. The site includes a
 progressive example path from standalone command handling to scheduled work,
 Gateway activation, and cluster composition.
 

@@ -12,6 +12,10 @@ MSRV Rust `1.89`. Les crates autonomes `appcore-args`, `appcore-supervisor` et
 actuelle est également `1.0.0`. Les outils comme `appcore-certification`,
 `appcore-dev` et `runtime-console` ne sont pas des crates Runtime publics.
 
+La bêta publique [`appcore-ai 0.1.0-beta.1`](./appcore-ai), versionnée
+séparément, est également publiée sur crates.io. Elle ne fait pas partie du
+graphe stable des crates Runtime `1.0.0`.
+
 Pour une nouvelle application, utiliser la façade de haut niveau :
 
 ```bash
@@ -52,10 +56,10 @@ Le graphe de dépendances est acyclique. Le code public d'une application doit
 normalement s'arrêter à `appcore_bin::application` ; être publié ne fait pas
 automatiquement d'un crate une surface d'intégration recommandée.
 
-Les composants futurs comme [appcore-ai](./appcore-ai) et
-[appcore-ui](./appcore-ui) sont suivis séparément dans la
-[roadmap future](/roadmap/) afin que le travail prévu ne soit pas confondu avec
-le graphe stable des crates.
+La bêta `appcore-ai`, l'aperçu en design [appcore-ui](./appcore-ui) et les
+composants futurs sont suivis séparément dans la [roadmap future](/roadmap/)
+afin que le travail pré-stable et prévu ne soit pas confondu avec le graphe
+stable des crates.
 
 ## Propriété de la documentation
 

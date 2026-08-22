@@ -13,6 +13,10 @@ versão estável atual deles também seja `1.0.0`. Ferramentas como
 `appcore-certification`, `appcore-dev` e `runtime-console` não são crates
 públicos do Runtime.
 
+A beta pública [`appcore-ai 0.1.0-beta.1`](./appcore-ai), versionada
+separadamente, também está publicada no crates.io. Ela não faz parte do grafo
+estável de crates do Runtime `1.0.0`.
+
 Para criar uma aplicação, use a facade de alto nível:
 
 ```bash
@@ -53,10 +57,10 @@ O grafo de dependências é acíclico. Código público de aplicação normalmen
 deve parar em `appcore_bin::application`; estar publicado não torna um crate
 automaticamente uma superfície recomendada para aplicações.
 
-Componentes futuros como [appcore-ai](./appcore-ai) e
-[appcore-ui](./appcore-ui) são acompanhados separadamente no
-[Roadmap futuro](/roadmap/) para que trabalho planejado não seja confundido com
-o grafo estável de crates.
+A beta do `appcore-ai`, a prévia em design do [appcore-ui](./appcore-ui) e os
+componentes futuros são acompanhados separadamente no
+[Roadmap futuro](/roadmap/) para que trabalho pré-estável e planejado não seja
+confundido com o grafo estável de crates.
 
 ## Propriedade da documentação
 
