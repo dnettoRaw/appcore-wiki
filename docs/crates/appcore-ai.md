@@ -6,7 +6,7 @@ sidebar_position: 23
 # appcore-ai
 
 :::caution Public beta
-`appcore-ai 0.1.0-beta.1` is published on crates.io. Its API may change during
+`appcore-ai 0.1.0-beta.2` is published on crates.io. Its API may change during
 the beta line, and docs.rs may take time to finish a new release build. It does
 not add fields to frozen V1 manifests.
 :::
@@ -25,7 +25,7 @@ decision to apply any generated result.
 | Routing | cost-aware local/remote planning, bounded escalation and per-model/backend single-flight load |
 | Resources | native CPU/RAM snapshots, unified/dedicated device topology, exact-device admission, single-flight sampling, adaptive batching and residency |
 | Artifacts | exact size + SHA-256, no-follow/revalidated atomic cache, provenance and verified ranges |
-| Generative | role-aware chat, sampling, tool definitions/calls and opt-in image data URLs |
+| Generative | role-aware chat, sampling, recoverable tool calls, JSON Schema output, streaming contracts and opt-in image data URLs |
 | Local ML | optional Candle CPU inference and training for the data-only `NativeLinearV1` classifier |
 | Operations | cancellation, deadlines, health summaries and payload-free metrics/observations |
 | Distributed | experimental Swarm contracts; no production Peer RPC adapter is claimed |
@@ -40,7 +40,7 @@ The default feature set contains no ML framework or HTTP adapter.
 | `accelerator-nvidia` | NVIDIA NVML | optional read-only VRAM/utilization discovery on Linux/Windows; no driver install or control |
 | `backend-candle` | `NativeLinearV1` | in-process CPU classification |
 | `training-candle` | `NativeLinearV1` | reproducible bounded SGD, checkpoint and resume |
-| `backend-openai-compatible` | llama.cpp, MLX-LM, vLLM, SGLang, TensorRT-LLM, OpenVINO, TabbyAPI, generic server | bounded non-streaming chat-completions transport |
+| `backend-openai-compatible` | llama.cpp, MLX-LM, vLLM, SGLang, TensorRT-LLM, OpenVINO, TabbyAPI, generic server | bounded chat completions; native SSE requires a streaming transport implementation |
 | `swarm` | host-supplied bridge | authenticated planning/execution contract, experimental |
 
 The OpenAI-compatible adapter recognizes GGUF for llama.cpp, ONNX for
@@ -80,6 +80,26 @@ until the exact deployment declares them.
 deployment must use `OpenAiCompatibleConfig::remote` and a custom
 `OpenAiCompatibleTransport` backed by AppCore secret references and policy.
 The built-in unauthenticated transport rejects credentials.
+
+### OpenAI-compatible changes in beta.2
+
+- non-2xx responses preserve the exact HTTP status and bounded `Retry-After`
+  delta, so routing retries only transient failures;
+- malformed tool-call arguments remain available as raw JSON together with
+  finish reason, usage and an invalid-argument count;
+- the transport SPI returns futures, while the built-in blocking HTTP client is
+  moved to a bounded worker gate instead of blocking an async executor;
+- explicit compatibility profiles can omit sampling fields, select the token
+  limit field and add bounded non-reserved provider parameters;
+- JSON Schema structured output supports either native `response_format` or an
+  explicit bounded JSON-text fallback;
+- `resolve_stream` provides cooperative cancellation and sink-driven
+  backpressure. Native SSE is enabled only when the selected deployment and its
+  custom transport both declare and implement streaming. After an event is
+  emitted, a transient failure is returned instead of mixing a fallback route's output.
+
+These changes are tracked publicly in
+[issue #1](https://github.com/dnettoRaw/app-core-public/issues/1).
 
 ## Adaptive execution model
 
@@ -269,23 +289,24 @@ post-1.0 work; neither is claimed by this beta.
 - local-only requests reject remote compute and storage permissions;
 - remote routes require explicit tenant grants;
 - queues, attempts, peers, payloads, metadata, tools and artifacts are bounded;
-- cancellation is cooperative; the current blocking HTTP transport observes it
-  before and after the bounded exchange;
+- cancellation is cooperative; the bounded blocking worker bridges it to the
+  HTTP exchange, while streaming transports must check it between chunks;
 - model bytes require exact size and SHA-256 before activation;
 - `Unrestricted` removes voluntary AppCore headroom, not OS or hardware safety.
 
-Token streaming, PDF/OCR, automatic engine installation/process sandboxing,
-production Swarm integration and declarative manifests are not delivered in
-`0.1.0-beta.1`. Those are deliberate beta limits, not hidden fallbacks.
+The beta.2 release defines streaming, but its built-in HTTP transport remains complete-response;
+a deployment transport must implement native SSE explicitly. PDF/OCR,
+automatic engine installation/process sandboxing, production Swarm integration
+and declarative manifests remain outside this beta scope.
 
 For complete API examples, hardware semantics, model limits, recipes,
 benchmarks and the threat
-model, use the crate-owned [guide.en.md](https://github.com/dnettoRaw/AppCore-Runtime/blob/appcore-ai-v0.1.0-beta.1/crates/appcore-ai/wiki/guide.en.md),
-[basic.en.md](https://github.com/dnettoRaw/AppCore-Runtime/blob/appcore-ai-v0.1.0-beta.1/crates/appcore-ai/wiki/examples/basic.en.md), and
-[intermediate.en.md](https://github.com/dnettoRaw/AppCore-Runtime/blob/appcore-ai-v0.1.0-beta.1/crates/appcore-ai/wiki/examples/intermediate.en.md).
-The exact [hardware resource guide](https://github.com/dnettoRaw/AppCore-Runtime/blob/appcore-ai-v0.1.0-beta.1/crates/appcore-ai/wiki/resources.en.md)
+model, use the crate-owned [guide.en.md](https://github.com/dnettoRaw/app-core-public/blob/beta/crates/appcore-ai/wiki/guide.en.md),
+[basic.en.md](https://github.com/dnettoRaw/app-core-public/blob/beta/crates/appcore-ai/wiki/examples/basic.en.md), and
+[intermediate.en.md](https://github.com/dnettoRaw/app-core-public/blob/beta/crates/appcore-ai/wiki/examples/intermediate.en.md).
+The exact [hardware resource guide](https://github.com/dnettoRaw/app-core-public/blob/beta/crates/appcore-ai/wiki/resources.en.md)
 records the platform matrix, dependency rationale, model-fit examples and
 operational metrics.
-The exact [performance report](https://github.com/dnettoRaw/AppCore-Runtime/blob/appcore-ai-v0.1.0-beta.1/crates/appcore-ai/wiki/benchmarks.en.md)
-and [beta matrix](https://github.com/dnettoRaw/AppCore-Runtime/blob/appcore-ai-v0.1.0-beta.1/crates/appcore-ai/wiki/release-readiness.en.md)
+The exact [performance report](https://github.com/dnettoRaw/app-core-public/blob/beta/crates/appcore-ai/wiki/benchmarks.en.md)
+and [beta matrix](https://github.com/dnettoRaw/app-core-public/blob/beta/crates/appcore-ai/wiki/release-readiness.en.md)
 are versioned with the crate.
