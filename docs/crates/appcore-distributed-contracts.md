@@ -32,3 +32,17 @@ implementations expose lengths and routing metadata instead of opaque payload
 bytes, nonce/idempotency values or remote error details.
 
 **Maturity:** stable V1 wire contract; serialized compatibility is strict.
+
+## Peer RPC V2 chunk frames
+
+The post-1.0 `peer_rpc::v2` module defines an explicit open/chunk/commit/cancel
+frame family. Open binds aggregate decoded bytes, chunk size/count and deadline;
+each chunk binds sequence, exact decoded length and digest; commit binds the
+complete decoded payload digest. V1 and V2 stay in separate modules and routes,
+with no detection, conversion or fallback.
+
+:::warning Development contract
+The V2 DTO and incremental codec are implemented, but signed HTTP session
+ownership and response streaming must pass AC-006 before V2 is publishable.
+Continue using explicit V1 routes until that release is announced.
+:::

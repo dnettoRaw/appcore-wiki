@@ -35,3 +35,16 @@ lengths and omits opaque bytes, credentials, nonce/idempotency values and remote
 error details.
 
 **Maturity:** stable peer protocol V1 surface.
+
+## Bounded V2 codec
+
+`PeerRpcChunkEncoder` and `PeerRpcChunkAssembler` process an explicitly selected
+V2 stream one bounded chunk at a time. Defaults cap decoded chunks at 64 KiB,
+encoded chunks at 96 KiB, the aggregate at 64 MiB and chunk count at 1,024.
+Sequence, exact decoded size, chunk and aggregate SHA-256, deadline,
+cancellation and quota after gzip decompression fail closed. A failed commit
+never exposes the partial sink as complete.
+
+This API does not negotiate a transport. `/v1/peer/*` parses only V1 and never
+infers V2. Signed host/client V2 session integration remains an AC-006 release
+gate.

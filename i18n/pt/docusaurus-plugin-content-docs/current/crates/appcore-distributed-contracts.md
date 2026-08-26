@@ -32,3 +32,18 @@ tamanhos e metadata de roteamento, sem bytes de payload opaco, valores de
 nonce/idempotencia ou detalhes de erro remoto.
 
 **Maturidade:** contrato wire V1 estável e compatibilidade estrita.
+
+## Frames chunked do Peer RPC V2
+
+O módulo pós-1.0 `peer_rpc::v2` define uma família explícita de frames
+open/chunk/commit/cancel. Open vincula bytes decodificados agregados,
+tamanho/quantidade de chunks e deadline; cada chunk vincula sequência, tamanho
+decodificado exato e digest; commit vincula o digest do payload decodificado
+completo. V1 e V2 permanecem em módulos e rotas separados, sem detecção,
+conversão ou fallback.
+
+:::warning Contrato em desenvolvimento
+Os DTOs V2 e o codec incremental estão implementados, mas ownership de sessão
+HTTP assinada e streaming de resposta ainda devem passar AC-006 antes da
+publicação. Continue usando rotas V1 explícitas até o anúncio dessa release.
+:::

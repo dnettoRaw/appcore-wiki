@@ -35,3 +35,16 @@ et omet bytes opaques, credentials, valeurs nonce/idempotence et details
 d'erreur distante.
 
 **Maturité :** surface peer V1 stable.
+
+## Codec V2 borné
+
+`PeerRpcChunkEncoder` et `PeerRpcChunkAssembler` traitent un stream V2
+explicitement sélectionné un chunk borné à la fois. Les limites par défaut sont
+64 KiB décodés par chunk, 96 KiB encodés, 64 MiB agrégés et 1 024 chunks.
+Séquence, taille décodée exacte, SHA-256 par chunk et total, deadline,
+annulation et quota après gzip échouent de manière fermée. Un commit échoué
+n'expose jamais le sink partiel comme complet.
+
+Cette API ne négocie pas le transport. `/v1/peer/*` analyse uniquement V1 et
+n'infère jamais V2. L'intégration de session V2 signée host/client reste un gate
+AC-006.
