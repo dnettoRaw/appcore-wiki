@@ -74,9 +74,9 @@ is accepted only from the selected connection generation.
 
 `mesh-relay` is a peer transport for Cores that keep outbound-only Gateway
 connections instead of exposing local ports or stable IPs. It is not a
-consensus system, public TLS terminator or production secret manager. Gateway
-HA, edge relay federation and alternative transports remain future work and
-must not weaken Peer RPC authentication, expiry, nonce or replay protections.
+consensus system, public TLS terminator or production secret manager. Edge
+relay federation and alternative transports must not weaken Peer RPC
+authentication, expiry, nonce or replay protections.
 
 The Runtime host uses a durable, process-safe `FilePeerNonceStore`: standalone
 places it in private Runtime storage, while cluster fails closed unless
@@ -103,6 +103,31 @@ Each tenant keeps bounded direct worker indexes by Core ID and by
 disconnect and heartbeat pruning update the primary map, capability registry
 and indexes under the same tenant lock. Saturating rebuild and inconsistency
 counters expose index health without unbounded labels.
+
+## 2.0 beta development: Redis HA registry
+
+This is development status, not functionality in the stable `1.0.0` package.
+The private Runtime beta at
+[`5429d92`](https://github.com/dnettoRaw/AppCore-Runtime/commit/5429d92)
+defines `GatewayRegistryProvider` and implements
+`RedisGatewayRegistryProvider`. It uses monotonic tenant-local instance epochs,
+exact instance/worker-generation fences, one Redis Cluster hash slot per
+tenant, bounded timeouts/concurrency and separately resolved zeroizing
+credentials. Plain Redis endpoints are loopback-only; remote endpoints require
+`rediss://`. An ambiguous mutation is never retried automatically.
+
+The provider caps each tenant at 1,024 workers, 4,096 sessions and 2,048
+pending requests. A real Redis 7.4 conformance run passed two-provider
+ownership, tenant isolation, schema rejection, stale/duplicate completion,
+all three capacity walls, connection kill, explicit reconnect and recovery
+with a higher epoch. Windows GNU cross-compilation passed; the macOS-hosted
+Linux cross-check lacked a Linux OpenSSL sysroot and is not Linux evidence.
+
+The authenticated V2 federation endpoint and the Runtime
+`Healthy`/`Isolated`/`Recovering` lifecycle are still pending. Until both are
+integrated and certified, this provider alone does not enable Gateway HA and
+must never fall back to the process-local directory. Track
+[public AC-013](https://github.com/dnettoRaw/app-core-public/issues/15).
 
 ## 2.0 alpha: bounded worker selection
 

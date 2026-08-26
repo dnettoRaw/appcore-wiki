@@ -76,10 +76,9 @@ da geracao de conexao selecionada.
 
 `mesh-relay` e um peer transport para Cores que mantem conexoes Gateway somente
 de saida em vez de expor portas locais ou IPs estaveis. Ele nao e sistema de
-consenso, terminador TLS publico ou gerenciador de segredos de producao. HA do
-gateway, federacao de edge relays e transports alternativos continuam trabalho
-futuro e nao podem enfraquecer autenticacao, expiry, nonce ou replay protection
-do Peer RPC.
+consenso, terminador TLS publico ou gerenciador de segredos de producao.
+Federacao de edge relays e transports alternativos nao podem enfraquecer
+autenticacao, expiry, nonce ou replay protection do Peer RPC.
 
 O host usa `FilePeerNonceStore` duravel e seguro entre processos: standalone o
 mantem no storage privado, enquanto cluster falha fechado sem
@@ -105,6 +104,31 @@ Cada tenant mantém índices diretos e limitados por Core ID e por
 disconnect e prune de heartbeat atualizam mapa primário, registry de
 capabilities e índices sob o mesmo lock do tenant. Contadores saturados de
 rebuild e inconsistência expõem saúde sem labels ilimitadas.
+
+## Desenvolvimento beta 2.0: registry HA Redis
+
+Este é o estado de desenvolvimento, não uma funcionalidade do pacote estável
+`1.0.0`. A beta privada do Runtime em
+[`5429d92`](https://github.com/dnettoRaw/AppCore-Runtime/commit/5429d92)
+define `GatewayRegistryProvider` e implementa
+`RedisGatewayRegistryProvider`. Ela usa epochs monotônicos por tenant, fences
+exatos de instância/geração de worker, um hash slot Redis Cluster por tenant,
+timeout/concurrency limitados e credentials zeroizing resolvidas separadamente.
+Redis sem TLS é restrito a loopback; endpoint remoto exige `rediss://`. Mutação
+ambígua nunca é repetida automaticamente.
+
+O provider limita cada tenant a 1.024 workers, 4.096 sessions e 2.048 requests
+pendentes. Conformance real com Redis 7.4 passou ownership entre dois
+providers, isolamento por tenant, rejeição de schema, completion stale/duplicada,
+os três limites de capacity, queda de conexão, reconnect explícito e recovery
+com epoch maior. Cross-compilation Windows GNU passou; o cross-check Linux no
+host macOS não tinha sysroot OpenSSL Linux e não é evidência Linux.
+
+Endpoint V2 de federação autenticado e lifecycle Runtime
+`Healthy`/`Isolated`/`Recovering` continuam pendentes. Até ambos serem
+integrados e certificados, o provider isolado não habilita HA e nunca pode
+usar o diretório local como fallback. Acompanhe a
+[AC-013 pública](https://github.com/dnettoRaw/app-core-public/issues/15).
 
 ## Alpha 2.0: seleção limitada de workers
 
