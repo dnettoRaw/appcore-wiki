@@ -28,7 +28,9 @@ reexportados para roteamento de payload cifrado.
 > **Migração do próximo major:** o acesso direto a
 > `GatewayState::tenants` foi removido para que tenants independentes não
 > compartilhem um único lock. Use `tenant_partition`,
-> `tenant_partition_or_insert`, `tenant_count` e `connection_count`. Esta
+> `tenant_partition_or_insert`, `tenant_count` e `connection_count`. Os mapas
+> de requests pendentes agora são privados; use `pending_request_count` para
+> observação e deixe o `EnvelopeRouter` controlar seu ciclo. Esta
 > mudança está reservada ao próximo major SemVer e não pode ser publicada como
 > 1.0.x.
 

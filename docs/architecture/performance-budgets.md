@@ -52,7 +52,14 @@ requiring another tenant's lock to remain available. Because keeping the old
 map would restore serialization or duplicate mutable state, this correction is
 reserved for the next SemVer major and the old field is removed.
 
+AC-004 removes the process-global pending metadata mutex. One bounded private
+map per tenant now stores the response channel, worker generation, deadline and
+response-size limit in the same entry. Deterministic tests require cleanup after
+response, invalid response, timeout, cancellation, shutdown, worker replacement
+and disconnect, while a stale generation must leave the current entry intact.
+
 Follow the benchmark in [public AC-022](https://github.com/dnettoRaw/app-core-public/issues/24)
 and the command correction in [public AC-001](https://github.com/dnettoRaw/app-core-public/issues/3).
 The query correction is tracked in [public AC-002](https://github.com/dnettoRaw/app-core-public/issues/4).
 The Gateway correction is tracked in [public AC-003](https://github.com/dnettoRaw/app-core-public/issues/5).
+Pending-request ownership is tracked in [public AC-004](https://github.com/dnettoRaw/app-core-public/issues/6).

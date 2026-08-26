@@ -28,7 +28,10 @@ pour router des payloads chiffrés.
 > **Migration du prochain major :** l'accès direct à
 > `GatewayState::tenants` a été supprimé afin que des tenants indépendants ne
 > partagent plus un verrou unique. Utilisez `tenant_partition`,
-> `tenant_partition_or_insert`, `tenant_count` et `connection_count`. Cette
+> `tenant_partition_or_insert`, `tenant_count` et `connection_count`. Les maps
+> de requests en attente sont désormais privées ; utilisez
+> `pending_request_count` pour l'observation et laissez `EnvelopeRouter` gérer
+> leur cycle de vie. Cette
 > modification est réservée au prochain major SemVer et ne doit pas être
 > publiée en 1.0.x.
 

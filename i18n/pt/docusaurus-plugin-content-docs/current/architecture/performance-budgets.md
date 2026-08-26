@@ -52,7 +52,15 @@ tenant enquanto exige que o lock de outro continue disponível. Como manter o
 mapa antigo restauraria a serialização ou duplicaria estado mutável, a correção
 fica reservada ao próximo major SemVer e o campo antigo foi removido.
 
+AC-004 remove o mutex global de metadata de requests pendentes. Um único mapa
+privado e limitado por tenant guarda channel de resposta, geração do worker,
+deadline e limite da resposta na mesma entrada. Testes determinísticos exigem
+cleanup após resposta, resposta inválida, timeout, cancelamento, shutdown,
+substituição e desconexão do worker; geração stale deve preservar a entrada
+atual.
+
 Veja o benchmark em [AC-022 pública](https://github.com/dnettoRaw/app-core-public/issues/24)
 e a correção de commands em [AC-001 pública](https://github.com/dnettoRaw/app-core-public/issues/3).
 A correção de queries está em [AC-002 pública](https://github.com/dnettoRaw/app-core-public/issues/4).
 A correção do Gateway está em [AC-003 pública](https://github.com/dnettoRaw/app-core-public/issues/5).
+O ownership de requests pendentes está em [AC-004 pública](https://github.com/dnettoRaw/app-core-public/issues/6).

@@ -54,7 +54,15 @@ disponible. Conserver l'ancienne map rétablirait la sérialisation ou dupliquer
 l'état mutable ; cette correction est donc réservée au prochain major SemVer et
 l'ancien champ est supprimé.
 
+AC-004 supprime le mutex global des métadonnées de requests en attente. Une map
+privée et bornée par tenant conserve le channel de réponse, la génération du
+worker, la deadline et la limite de réponse dans la même entrée. Les tests
+déterministes exigent le cleanup après réponse, réponse invalide, timeout,
+annulation, shutdown, remplacement et déconnexion du worker ; une génération
+stale doit préserver l'entrée actuelle.
+
 Suivez le benchmark dans [AC-022 public](https://github.com/dnettoRaw/app-core-public/issues/24)
 et la correction des commands dans [AC-001 public](https://github.com/dnettoRaw/app-core-public/issues/3).
 La correction des queries est suivie dans [AC-002 public](https://github.com/dnettoRaw/app-core-public/issues/4).
 La correction Gateway est suivie dans [AC-003 public](https://github.com/dnettoRaw/app-core-public/issues/5).
+L'ownership des requests en attente est suivi dans [AC-004 public](https://github.com/dnettoRaw/app-core-public/issues/6).
