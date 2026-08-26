@@ -22,6 +22,21 @@ Replay é tratado em camadas: idempotency key para commands, sequência/checkpoi
 
 DNT autentica contexto e cifra payload. Peer RPC valida tenant, cluster, core, protocolo, expiry, nonce, hash e token bound. Gateway valida conexão e mesh request. Update valida policy, assinatura, checksum e health gate.
 
+## Status do provider Windows DPAPI
+
+A AC-009 aceitou `windows-dpapi-user-v1` para a linha de desenvolvimento
+pós-1.0. O provider usa DPAPI não interativo no escopo do usuário: normalmente
+o mesmo usuário na mesma máquina é necessário para descriptografar. O escopo
+da máquina é excluído porque permitiria descriptografia por outros usuários
+locais. A seleção é opt-in e nunca faz fallback para `env-file`,
+`file-keyring-v1` ou escopo da máquina.
+
+O root persistido também deve pertencer ao SID do usuário atual, ter DACL
+protegida apenas para o owner e rejeitar links, junctions e outros reparse
+points. Backup e restore são limitados ao mesmo perfil e máquina. O provider
+não está certificado até a matriz real Windows multiusuário e multimáquina
+passar; cross-compilation e testes mockados não constituem essa evidência.
+
 ## Limitations
 
 - AppCore não fornece OAuth.

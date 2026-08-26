@@ -48,6 +48,21 @@ Update security combines descriptor policy, cryptographic authenticity, artifact
 
 Unsigned local artifacts are not a production default. They require a dedicated compile-time feature and strict local file validation.
 
+## Windows DPAPI provider status
+
+AC-009 has accepted `windows-dpapi-user-v1` for the post-1.0 development line.
+The provider uses non-interactive DPAPI user scope: normally the same user on
+the same computer is required to decrypt a record. Machine scope is explicitly
+excluded because it permits other local users to decrypt. Selection is opt-in
+and never falls back to `env-file`, `file-keyring-v1` or machine scope.
+
+The persisted root must also be owned by the current user SID, have an
+owner-only protected DACL and reject links, junctions and other reparse points.
+Backup and restore are deliberately limited to the same user profile and
+machine. The provider is not certified until the real Windows multi-user and
+multi-machine matrix passes; cross-compilation and mocked tests are not that
+evidence.
+
 ## Limitations
 
 - AppCore does not provide OAuth.
