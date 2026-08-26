@@ -43,6 +43,10 @@ listener antes de alterar o routing externo. Isso não vira reload in-place
 silenciosamente. Certificados inbound continuam como boundary de sidecar do
 deployment em AC-024; sua rotação não reinterpreta manifests do Runtime.
 
+Use o [perfil sidecar TLS de entrada](./inbound-tls-sidecar) para rotação de
+certificado. Ele mantém o listener do Runtime estável e não cria um segundo
+caminho de routing no Runtime.
+
 O source 2.0 atual implementa routing no mesmo listener e aceita um listener
 TCP pré-ligado. Composição com mudança de endereço e certificação externa
 multiplataforma permanecem pendentes. A API não está disponível no pacote

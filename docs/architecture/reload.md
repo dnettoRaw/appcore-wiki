@@ -45,6 +45,10 @@ silently treated as an in-place routing reload. Inbound certificates remain a
 deployment-sidecar boundary under AC-024; rotating a sidecar certificate does
 not reinterpret Runtime manifests.
 
+Use the [inbound TLS sidecar profile](./inbound-tls-sidecar) for certificate
+rotation. It keeps the Runtime listener stable and adds no second Runtime
+routing path.
+
 The current 2.0 source implements same-listener routing and accepts ownership
 of a pre-bound TCP listener. Address-changing composition and external
 cross-platform certification remain pending. This API is not available from
