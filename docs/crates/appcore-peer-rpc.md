@@ -45,6 +45,13 @@ Sequence, exact decoded size, chunk and aggregate SHA-256, deadline,
 cancellation and quota after gzip decompression fail closed. A failed commit
 never exposes the partial sink as complete.
 
+`PeerRpcStreamRegistry` owns partial sessions under exact session and decoded
+byte quotas. It writes request chunks to exclusive files in an existing
+owner-only spool directory, dispatches only verified commits and returns
+responses through explicit bounded pull frames. Error, cancellation, expiry
+and completion release the partial file and reservation. Snapshots expose
+active sessions, reserved bytes, saturation and cleanup counters.
+
 This API does not negotiate a transport. `/v1/peer/*` parses only V1 and never
-infers V2. Signed host/client V2 session integration remains an AC-006 release
-gate.
+infers V2. Signed HTTP frame transport and client integration remain AC-006
+release gates.

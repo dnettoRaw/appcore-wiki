@@ -45,6 +45,13 @@ são 64 KiB decodificados por chunk, 96 KiB codificados, 64 MiB agregados e
 deadline, cancelamento e quota após gzip falham fechados. Commit com falha nunca
 expõe o sink parcial como completo.
 
+`PeerRpcStreamRegistry` controla sessões parciais com quotas exatas de sessões
+e bytes decodificados. Chunks de requisição usam arquivos exclusivos em um
+diretório de spool existente acessível somente pelo proprietário; apenas
+commits verificados chegam ao dispatcher e respostas usam pulls explícitos e
+limitados. Erro, cancelamento, expiração e conclusão liberam arquivo e reserva.
+O snapshot expõe sessões, bytes reservados, saturações e limpezas.
+
 Essa API não negocia transporte. `/v1/peer/*` interpreta somente V1 e nunca
-infere V2. A integração assinada de sessão V2 no host/client permanece gate do
-AC-006.
+infere V2. Transporte HTTP assinado de frames e integração do client permanecem
+gates do AC-006.

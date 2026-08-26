@@ -45,6 +45,14 @@ Séquence, taille décodée exacte, SHA-256 par chunk et total, deadline,
 annulation et quota après gzip échouent de manière fermée. Un commit échoué
 n'expose jamais le sink partiel comme complet.
 
+`PeerRpcStreamRegistry` possède les sessions partielles sous des quotas exacts
+de sessions et d'octets décodés. Les chunks de requête utilisent des fichiers
+exclusifs dans un répertoire de spool existant réservé au propriétaire; seuls
+les commits vérifiés atteignent le dispatcher et les réponses utilisent des
+pulls explicites et bornés. Erreur, annulation, expiration et fin libèrent le
+fichier et la réservation. Le snapshot expose sessions, octets réservés,
+saturations et nettoyages.
+
 Cette API ne négocie pas le transport. `/v1/peer/*` analyse uniquement V1 et
-n'infère jamais V2. L'intégration de session V2 signée host/client reste un gate
-AC-006.
+n'infère jamais V2. Le transport HTTP signé des frames et l'intégration client
+restent des gates AC-006.
