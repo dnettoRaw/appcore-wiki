@@ -108,7 +108,7 @@ counters expose index health without unbounded labels.
 
 This is development status, not functionality in the stable `1.0.0` package.
 The private Runtime beta through
-[`583435b`](https://github.com/dnettoRaw/AppCore-Runtime/commit/583435b)
+[`ab0422b`](https://github.com/dnettoRaw/AppCore-Runtime/commit/ab0422b)
 defines `GatewayRegistryProvider`, implements `RedisGatewayRegistryProvider`
 and adds the bounded `GatewayHaCoordinator`. It uses monotonic tenant-local instance epochs,
 exact instance/worker-generation fences, one Redis Cluster hash slot per
@@ -140,9 +140,13 @@ timeout or shutdown. Owner-aborted futures leave only a 30-second TTL-bounded
 record. Fixed counters expose claims/completions/cancellations without request
 labels.
 
-The authenticated V2 federation endpoint is still pending. Until it is
-integrated and certified, this is not a deployable two-instance HA profile and
-must never fall back to the process-local directory. Track
+The authenticated V2 federation endpoint now binds the exact request body,
+source/target epochs and worker generation to a separate short-lived one-use
+credential. The target validates the shared claim before touching the socket,
+returns typed AC-021 errors, and the origin completes the fence before accepting
+the response. The E2E passes with two Gateway states and independent Redis 7.4
+connections. Deployment load-balancer certification is still pending, so this
+is not yet a deployable HA profile and must never fall back locally. Track
 [public AC-013](https://github.com/dnettoRaw/app-core-public/issues/15).
 
 ## 2.0 alpha: bounded worker selection

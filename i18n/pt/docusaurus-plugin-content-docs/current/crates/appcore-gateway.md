@@ -109,7 +109,7 @@ rebuild e inconsistência expõem saúde sem labels ilimitadas.
 
 Este é o estado de desenvolvimento, não uma funcionalidade do pacote estável
 `1.0.0`. A beta privada do Runtime até
-[`583435b`](https://github.com/dnettoRaw/AppCore-Runtime/commit/583435b)
+[`ab0422b`](https://github.com/dnettoRaw/AppCore-Runtime/commit/ab0422b)
 define `GatewayRegistryProvider`, implementa `RedisGatewayRegistryProvider` e
 adiciona o `GatewayHaCoordinator` limitado. Ela usa epochs monotônicos por tenant, fences
 exatos de instância/geração de worker, um hash slot Redis Cluster por tenant,
@@ -141,9 +141,13 @@ de fila, timeout ou shutdown. Future abortado pelo owner deixa somente record
 limitado por TTL de 30 segundos. Contadores fixos expõem
 claims/completions/cancellations sem labels de request.
 
-Endpoint V2 de federação autenticado continua pendente. Até ser integrado e
-certificado, isso não é um profile HA de duas instâncias pronto para deployment
-e nunca pode usar o diretório local como fallback. Acompanhe a
+O endpoint V2 de federação autenticado agora vincula body exato, epochs de
+source/target e geração do worker a uma credential separada, curta e de uso
+único. O target valida o claim compartilhado antes de tocar o socket, devolve
+erros AC-021 tipados e o origin completa o fence antes de aceitar a resposta. O
+E2E passa com dois estados Gateway e conexões independentes ao Redis 7.4. A
+certificação pelo load balancer de deployment ainda está pendente; portanto o
+profile HA ainda não está pronto e fallback local continua proibido. Acompanhe a
 [AC-013 pública](https://github.com/dnettoRaw/app-core-public/issues/15).
 
 ## Alpha 2.0: seleção limitada de workers
