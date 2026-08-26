@@ -48,3 +48,12 @@ la certification release clean-source à `8d26cc3` et sont publiés en
 `2.0.0-alpha.1`. Les applications stables continuent avec les routes V1
 explicites ; l'alpha reste une prerelease opt-in.
 :::
+
+## Erreurs typées Peer RPC V2
+
+`PeerRpcWireErrorV2` ajoute `code`, `phase`, `retryable`, des
+`retry_after_ms`/`correlation_id` bornés et un message expurgé contrôlé par le
+protocole à la famille V2 explicite. Les métadonnées connues sont validées comme
+une matrice unique. Un code inconnu devient `unknown` terminal sans conserver
+texte ou retry hint distant. `PeerRpcRemoteErrorV1` est un décodeur exact séparé
+du champ string V1 figé; il ne négocie ni ne crée de trafic V2.

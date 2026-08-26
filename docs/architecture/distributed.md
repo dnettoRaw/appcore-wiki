@@ -83,6 +83,13 @@ Validation checks payload size, tenant, cluster, target core, protocol compatibi
 
 The peer token can also bind a request hash. That hash covers routing metadata and payload integrity so a bearer token cannot be replayed for a different peer request.
 
+V2 rejections are typed and bounded. A fixed code determines phase and whether
+a higher-level idempotent operation may retry; the peer cannot independently
+assert retryability. Unknown or contradictory metadata fails conservatively.
+V1 retains its string field, but the client recognizes only exact controlled
+codes and never interprets substrings. Selecting V2 is an explicit coordinated
+deployment decision; V1 peers are not upgraded or redirected.
+
 ## Why does the gateway exist?
 
 The gateway exists for Cores that can make outbound connections but cannot expose stable inbound ports. It is a relay, not a business API.

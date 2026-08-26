@@ -36,6 +36,14 @@ Um líder antigo falha se lease expirou, holder mudou, tenant/cluster mudou ou o
 
 O envelope valida request ID, trace, protocolo, source/target core, tenant, cluster, timestamp, expiry, nonce, capability, body hash e idempotency key opcional. Nonces podem ser armazenados em memória ou arquivo privado com lock e atomic write.
 
+Rejeições V2 são tipadas e limitadas. Um code fixo determina phase e se uma
+operação idempotente de nível superior pode fazer retry; o peer não declara
+retryability de forma independente. Metadata desconhecida ou contraditória
+falha conservadoramente. V1 mantém o campo string, mas o client reconhece
+somente codes controlados exatos e nunca interpreta substrings. Selecionar V2 é
+uma decisão coordenada e explícita de deployment; peers V1 não são atualizados
+ou redirecionados.
+
 ## Gateway
 
 Gateway existe para cores com conexão outbound mas sem porta inbound estável. Tokens de conexão são curtos, single-use e bound ao hash da conexão. Mesh relay valida que metadata externa combina com o envelope Peer RPC interno. O gateway nunca interpreta payload de negócio.

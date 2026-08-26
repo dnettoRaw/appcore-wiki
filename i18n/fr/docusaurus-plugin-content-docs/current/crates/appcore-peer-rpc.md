@@ -65,6 +65,27 @@ vérifie tenant, cluster, cible, trace, deadline, idempotence command et nonce
 replay borné. Les frames ambiguës ne sont pas répétées; l'annulation best effort
 est soutenue par le nettoyage autoritaire de la deadline.
 
+## Rejets V2 typés
+
+La prochaine préversion 2.0 retourne `PeerRpcWireErrorV2` sur les endpoints V2
+explicites. Le code fixe phase et retryability; le délai est borné à 300
+secondes, la corrélation à 128 octets et le message expurgé contrôlé par le
+protocole à 256 octets. Le client rejette les métadonnées connues
+contradictoires. Un code inconnu abandonne message/hint distants et devient un
+unique résultat `unknown`, observable et terminal.
+
+Les réponses V1 figées conservent leur JSON. Le client mappe uniquement les
+codes exacts du host vers `PeerRpcError::RemoteRejected`; seuls les rejets
+exacts endpoint/capacité replay entrent dans le retry borné existant. Aucune
+sous-chaîne ou message libre ne contrôle le retry. L'ambiguïté d'un ACK V2
+interdit toujours le retry automatique d'une frame.
+
+:::warning Mettez à jour ensemble et gardez V1 explicite
+Mettez à jour caller et target avant de sélectionner l'endpoint V2. V1 stable
+reste supporté pour les deployments legacy et n'est jamais mis à niveau,
+converti ou désactivé automatiquement.
+:::
+
 La certification release clean-source à `8d26cc3` a réussi avec un payload
 incompressible de 64 MiB, 1 024 chunks, une frame JSON maximale de 87 660
 octets, un p99 de 1,092 seconde et un pic RSS de suite de 366 432 KiB. Cette API

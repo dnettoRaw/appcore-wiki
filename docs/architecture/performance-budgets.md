@@ -25,7 +25,8 @@ publish the JSON artifact.
 - Gateway routing-state contention with 1, 100 and 1,000 tenants, plus a
   cross-tenant lock-independence probe;
 - 32 sequential HTTP/1.1 exchanges through one accepted keep-alive connection;
-- Peer RPC encode, decode, integrity and replay validation from 1 KiB to 4 MiB;
+- Peer RPC encode, decode, integrity and replay validation from 1 KiB to 4 MiB,
+  plus 4,096 typed V2 rejection round trips;
 - scheduler startup and bounded batches of 64 due tasks.
 
 The fixtures contain no static secret. Every run obtains temporary secret
@@ -93,6 +94,14 @@ overflow, route p99 no greater than 1 ms and snapshot p99 no greater than 5 ms.
 The clean macOS/aarch64 run at implementation commit `31c4fbe` measured 1,792
 ns route p99 and 5,792 ns snapshot p99. Export is an explicit deployment-owned
 pull boundary and is never invoked from routing.
+
+AC-021 validates the full typed-error matrix, exact V1 decoding and 4,096 V2
+rejection encode/decode/validation round trips. The gate requires at most 1 ms
+p99 and at least 1,000 operations/s. The clean macOS/aarch64 run at `d11befe`
+measured 750 ns p99 and 1,405,708 operations/s with 298,672 KiB whole-suite
+peak RSS. Linux and Windows CI artifacts remain the platform authority.
+
+Track the remaining platform evidence in [public AC-021](https://github.com/dnettoRaw/app-core-public/issues/23).
 
 AC-012 replaces process-random capability selection with stable
 `FirstAvailable`, `RoundRobin`, `LeastInflight`, `HealthWeighted` and stateless

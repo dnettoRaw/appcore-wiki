@@ -64,6 +64,27 @@ tenant, cluster, target, trace, deadline, command idempotency and bounded nonce
 replay. Ambiguous frames are not retried; best-effort cancellation is backed by
 authoritative deadline cleanup.
 
+## Typed V2 rejections
+
+The next 2.0 prerelease returns `PeerRpcWireErrorV2` from explicit V2
+endpoints. Its code fixes the phase and retryability; retry delay is bounded to
+300 seconds, correlation to 128 bytes and the protocol-owned redacted message
+to 256 bytes. The client rejects contradictory known metadata. Unknown codes
+discard their remote message/hint and become one observable, terminal
+`unknown` result.
+
+Frozen V1 responses keep their existing JSON shape. The client maps only exact
+host codes to `PeerRpcError::RemoteRejected`; only exact endpoint/replay
+capacity rejections enter the existing bounded retry loop. No substring or
+free-form message controls retry. V2 frame acknowledgement ambiguity still
+forbids automatic frame retry.
+
+:::warning Update together, keep V1 explicit
+Update caller and target before selecting the V2 endpoint. Stable V1 remains
+supported for legacy deployments and is never upgraded, converted or disabled
+automatically.
+:::
+
 Clean-source release certification at `8d26cc3` passed for an incompressible
 64 MiB payload with 1,024 chunks, an 87,660-byte largest JSON frame,
 1.092-second p99 and 366,432 KiB whole-suite peak RSS. This API does not

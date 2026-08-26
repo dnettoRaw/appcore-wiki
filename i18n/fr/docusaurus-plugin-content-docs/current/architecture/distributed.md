@@ -28,6 +28,14 @@ sequenceDiagram
 
 Peer RPC valide request ID, trace, protocole, source/target core, tenant, cluster, timestamp, expiry, nonce, capability, body hash et idempotency key optionnelle. Gateway existe pour les cores sans port entrant stable. Il relaie et route, mais n'interprète jamais le payload métier opaque.
 
+Les rejets V2 sont typés et bornés. Un code fixe détermine phase et si une
+opération idempotente de niveau supérieur peut retenter; le peer ne déclare pas
+retryability indépendamment. Des métadonnées inconnues ou contradictoires
+échouent de façon conservatrice. V1 conserve le champ string, mais le client ne
+reconnaît que les codes contrôlés exacts et n'interprète jamais de sous-chaîne.
+La sélection V2 est une décision de deployment explicite et coordonnée; les
+peers V1 ne sont ni mis à niveau ni redirigés.
+
 L'activation Gateway est déclarative. Quand le Deployment Manifest sélectionne
 l'adapter, `appcore-bin` valide la configuration, ajoute et autorise
 `runtime.gateway` dans le catalogue partagé, réutilise la sécurité Runtime et

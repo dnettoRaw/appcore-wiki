@@ -25,7 +25,8 @@ le même gate et publie l'artefact JSON.
 - contention du routing state Gateway avec 1, 100 et 1 000 tenants, plus une
   sonde d'indépendance des verrous entre tenants ;
 - 32 échanges HTTP/1.1 séquentiels sur une seule connexion keep-alive acceptée ;
-- encodage, décodage, intégrité et replay Peer RPC de 1 KiB à 4 MiB ;
+- encodage, décodage, intégrité et replay Peer RPC de 1 KiB à 4 MiB, plus 4 096
+  round trips de rejet V2 typé ;
 - startup du scheduler et lots bornés de 64 tasks arrivées à échéance.
 
 Les fixtures ne contiennent aucun secret statique. Chaque exécution obtient du
@@ -100,6 +101,12 @@ au commit d'implémentation `31c4fbe` a mesuré 1 792 ns p99 pour la route et
 5 792 ns p99 pour le snapshot. L'export est une frontière pull explicite du
 deployment et n'est jamais appelé par le routage.
 
+AC-021 valide la matrice complète des erreurs typées, le décodage V1 exact et
+4 096 round trips encode/décode/validation d'un rejet V2. Le gate exige un p99
+d'au plus 1 ms et au moins 1 000 opérations/s. Le run macOS/aarch64 propre à
+`d11befe` a mesuré 750 ns p99 et 1 405 708 opérations/s, avec un pic RSS total
+de 298 672 KiB. Les artefacts CI Linux et Windows restent l'autorité plateforme.
+
 AC-012 remplace la sélection aléatoire par processus par les policies stables
 `FirstAvailable`, `RoundRobin`, `LeastInflight`, `HealthWeighted` et `Affinity`
 stateless. Le gate enregistre 64 workers, exige exactement quatre sélections
@@ -120,3 +127,4 @@ L'index direct des workers est suivi dans [AC-011 public](https://github.com/dne
 Le pool fixe du scheduler est suivi dans [AC-018 public](https://github.com/dnettoRaw/app-core-public/issues/20).
 La télémétrie Gateway bornée est suivie dans [AC-020 public](https://github.com/dnettoRaw/app-core-public/issues/22).
 La sélection bornée des workers est suivie dans [AC-012 public](https://github.com/dnettoRaw/app-core-public/issues/14).
+Les artefacts plateforme restants de l'erreur wire typée sont suivis dans [AC-021 public](https://github.com/dnettoRaw/app-core-public/issues/23).

@@ -25,7 +25,8 @@ publica o artefato JSON.
 - contenção do routing state do Gateway com 1, 100 e 1.000 tenants, mais uma
   prova de independência de lock entre tenants;
 - 32 trocas HTTP/1.1 sequenciais por uma única conexão keep-alive aceita;
-- encode, decode, integridade e replay do Peer RPC entre 1 KiB e 4 MiB;
+- encode, decode, integridade e replay do Peer RPC entre 1 KiB e 4 MiB, mais
+  4.096 round trips de rejeição V2 tipada;
 - startup do scheduler e lotes limitados de 64 tasks vencidas.
 
 As fixtures não contêm segredo estático. Cada execução obtém material secreto
@@ -95,6 +96,13 @@ A execução limpa macOS/aarch64 no commit de implementação `31c4fbe` mediu
 1.792 ns p99 para rota e 5.792 ns p99 para snapshot. A exportação é uma
 fronteira pull explícita do deployment e nunca é chamada pelo roteamento.
 
+AC-021 valida a matriz completa de erros tipados, decode V1 exato e 4.096 round
+trips de encode/decode/validação de rejeição V2. O gate exige p99 de no máximo
+1 ms e pelo menos 1.000 operações/s. A execução limpa macOS/aarch64 em
+`d11befe` mediu p99 de 750 ns e 1.405.708 operações/s, com pico RSS total de
+298.672 KiB. Artefatos CI Linux e Windows continuam sendo a autoridade de
+plataforma.
+
 AC-012 substitui a seleção aleatória por processo pelas policies estáveis
 `FirstAvailable`, `RoundRobin`, `LeastInflight`, `HealthWeighted` e `Affinity`
 stateless. O gate registra 64 workers, exige exatamente quatro seleções
@@ -115,3 +123,4 @@ O índice direto de workers está em [AC-011 pública](https://github.com/dnetto
 O pool fixo do scheduler está em [AC-018 pública](https://github.com/dnettoRaw/app-core-public/issues/20).
 A telemetria limitada do Gateway está em [AC-020 pública](https://github.com/dnettoRaw/app-core-public/issues/22).
 A seleção limitada de workers está em [AC-012 pública](https://github.com/dnettoRaw/app-core-public/issues/14).
+Os artefatos de plataforma restantes do erro wire tipado estão na [AC-021 pública](https://github.com/dnettoRaw/app-core-public/issues/23).
