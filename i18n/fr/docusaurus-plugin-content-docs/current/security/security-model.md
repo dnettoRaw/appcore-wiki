@@ -25,18 +25,25 @@ DNT authentifie le contexte et chiffre le payload. Peer RPC valide tenant, clust
 ## Statut du provider Windows DPAPI
 
 AC-009 a accepté `windows-dpapi-user-v1` pour la ligne de développement
-post-1.0. Le provider utilise DPAPI non interactif avec portée utilisateur : le
-même utilisateur sur le même ordinateur est normalement requis pour
-déchiffrer. La portée machine est exclue car elle permettrait le déchiffrement
-par d'autres utilisateurs locaux. La sélection est opt-in et ne revient jamais
-implicitement à `env-file`, `file-keyring-v1` ou à la portée machine.
+post-1.0. L'implémentation alpha 2.0 protège chaque enregistrement de rotation
+borné avec DPAPI non interactif avec portée utilisateur : le même utilisateur
+sur le même ordinateur est normalement requis pour déchiffrer. La portée
+machine est exclue car elle permettrait le déchiffrement par d'autres
+utilisateurs locaux. La sélection est opt-in et ne revient jamais implicitement
+à `env-file`, `file-keyring-v1` ou à la portée machine. Les opérations CLI
+doivent passer `--keyring-provider windows-dpapi-user-v1` ; son omission
+sélectionne le comportement inchangé de `file-keyring-v1`.
 
 La racine persistée doit aussi appartenir au SID de l'utilisateur courant,
 avoir une DACL protégée limitée au propriétaire et refuser links, junctions et
 autres reparse points. Backup et restauration sont limités au même profil et à
-la même machine. Le provider n'est pas certifié avant réussite de la matrice
-Windows réelle multi-utilisateur et multi-machine ; cross-compilation et tests
-mockés ne constituent pas cette preuve.
+la même machine. Rotation, révocation, restauration avec le même utilisateur,
+séparation de format et redaction ont des tests de dépôt, et tous les
+exécutables de test du Runtime sont cross-buildés pour Windows. Le provider
+n'est pas certifié avant réussite de la matrice Windows réelle
+multi-utilisateur et multi-machine ; cross-compilation et tests mockés ne
+constituent pas cette preuve. La ligne stable 1.0 ne change pas et la mise à
+niveau est explicite.
 
 ## Limitations
 

@@ -51,17 +51,22 @@ Unsigned local artifacts are not a production default. They require a dedicated 
 ## Windows DPAPI provider status
 
 AC-009 has accepted `windows-dpapi-user-v1` for the post-1.0 development line.
-The provider uses non-interactive DPAPI user scope: normally the same user on
-the same computer is required to decrypt a record. Machine scope is explicitly
-excluded because it permits other local users to decrypt. Selection is opt-in
-and never falls back to `env-file`, `file-keyring-v1` or machine scope.
+The 2.0 alpha implementation protects every bounded rotation record with
+non-interactive DPAPI user scope: normally the same user on the same computer
+is required to decrypt a record. Machine scope is explicitly excluded because
+it permits other local users to decrypt. Selection is opt-in and never falls
+back to `env-file`, `file-keyring-v1` or machine scope. Keyring CLI operations
+must pass `--keyring-provider windows-dpapi-user-v1`; omission selects the
+unchanged `file-keyring-v1` behavior.
 
 The persisted root must also be owned by the current user SID, have an
 owner-only protected DACL and reject links, junctions and other reparse points.
 Backup and restore are deliberately limited to the same user profile and
-machine. The provider is not certified until the real Windows multi-user and
-multi-machine matrix passes; cross-compilation and mocked tests are not that
-evidence.
+machine. Rotation, revocation, same-user restore, format separation and
+redaction have repository tests, and the complete Runtime test executables
+cross-build for Windows. The provider is not certified until the real Windows
+multi-user and multi-machine matrix passes; cross-compilation and mocked tests
+are not that evidence. Stable 1.0 remains unchanged and updating is explicit.
 
 ## Limitations
 

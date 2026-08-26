@@ -25,17 +25,24 @@ DNT autentica contexto e cifra payload. Peer RPC valida tenant, cluster, core, p
 ## Status do provider Windows DPAPI
 
 A AC-009 aceitou `windows-dpapi-user-v1` para a linha de desenvolvimento
-pós-1.0. O provider usa DPAPI não interativo no escopo do usuário: normalmente
-o mesmo usuário na mesma máquina é necessário para descriptografar. O escopo
-da máquina é excluído porque permitiria descriptografia por outros usuários
-locais. A seleção é opt-in e nunca faz fallback para `env-file`,
-`file-keyring-v1` ou escopo da máquina.
+pós-1.0. A implementação do alpha 2.0 protege cada registro limitado de rotação
+com DPAPI não interativo no escopo do usuário: normalmente o mesmo usuário na
+mesma máquina é necessário para descriptografar. O escopo da máquina é excluído
+porque permitiria descriptografia por outros usuários locais. A seleção é
+opt-in e nunca faz fallback para `env-file`, `file-keyring-v1` ou escopo da
+máquina. As operações CLI devem passar `--keyring-provider
+windows-dpapi-user-v1`; omitir a opção seleciona o comportamento inalterado de
+`file-keyring-v1`.
 
 O root persistido também deve pertencer ao SID do usuário atual, ter DACL
 protegida apenas para o owner e rejeitar links, junctions e outros reparse
 points. Backup e restore são limitados ao mesmo perfil e máquina. O provider
-não está certificado até a matriz real Windows multiusuário e multimáquina
-passar; cross-compilation e testes mockados não constituem essa evidência.
+possui testes de repositório para rotação, revogação, restore no mesmo usuário,
+separação de formato e redaction, e todos os executáveis de teste do Runtime
+fazem cross-build para Windows. Ele não está certificado até a matriz real
+Windows multiusuário e multimáquina passar; cross-compilation e testes mockados
+não constituem essa evidência. A linha estável 1.0 não muda e a atualização é
+explícita.
 
 ## Limitations
 
