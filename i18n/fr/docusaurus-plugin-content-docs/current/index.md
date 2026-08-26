@@ -16,12 +16,13 @@ Lire ce manuel comme un livre technique :
 5. [Sync, logs, checkpoints et replay](/architecture/synchronization)
 6. [Fonctionnement distribué](/architecture/distributed)
 7. [Supervisor et cycle de vie](/architecture/supervisor)
-8. [Updates](/architecture/updates)
-9. [Modèle de sécurité](/security/security-model)
-10. [Première application](/tutorials/first-application)
-11. [Exemples du niveau débutant à intermédiaire](/tutorials/examples/)
-12. [Référence des 22 crates stables et de la bêta appcore-ai](/crates/)
-13. [Roadmap future](/roadmap/)
+8. [Budgets de performance](/architecture/performance-budgets)
+9. [Updates](/architecture/updates)
+10. [Modèle de sécurité](/security/security-model)
+11. [Première application](/tutorials/first-application)
+12. [Exemples du niveau débutant à intermédiaire](/tutorials/examples/)
+13. [Référence des 22 crates stables et de la bêta appcore-ai](/crates/)
+14. [Roadmap future](/roadmap/)
 
 Version stable : `1.0.0`. Les 22 crates publics sont disponibles sur crates.io.
 Toolchain Rust minimale : `1.89`. Une application doit normalement dépendre de

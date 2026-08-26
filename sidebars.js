@@ -8,6 +8,7 @@ const chapters = [
   'architecture/synchronization',
   'architecture/distributed',
   'architecture/supervisor',
+  'architecture/performance-budgets',
   'architecture/updates',
   'security/security-model',
   'architecture/providers',

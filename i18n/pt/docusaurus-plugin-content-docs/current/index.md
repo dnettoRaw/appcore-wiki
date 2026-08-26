@@ -16,12 +16,13 @@ Leia como um livro técnico:
 5. [Sync, logs, checkpoints e replay](/architecture/synchronization)
 6. [Operação distribuída](/architecture/distributed)
 7. [Supervisor e ciclo de vida](/architecture/supervisor)
-8. [Updates](/architecture/updates)
-9. [Modelo de segurança](/security/security-model)
-10. [Primeira aplicação](/tutorials/first-application)
-11. [Exemplos do básico ao intermediário](/tutorials/examples/)
-12. [Referência dos 22 crates estáveis e da beta do appcore-ai](/crates/)
-13. [Roadmap futuro](/roadmap/)
+8. [Budgets de performance](/architecture/performance-budgets)
+9. [Updates](/architecture/updates)
+10. [Modelo de segurança](/security/security-model)
+11. [Primeira aplicação](/tutorials/first-application)
+12. [Exemplos do básico ao intermediário](/tutorials/examples/)
+13. [Referência dos 22 crates estáveis e da beta do appcore-ai](/crates/)
+14. [Roadmap futuro](/roadmap/)
 
 Release estável: `1.0.0`. Todos os 22 crates públicos estão disponíveis no
 crates.io. Toolchain Rust mínima: `1.89`. Aplicações normalmente devem depender
