@@ -98,4 +98,10 @@ Worker and client connection hashes use canonical V2 binary framing and carry
 a `v2:` marker. Earlier unversioned hashes are not interchangeable; token
 issuers and Gateway consumers must be upgraded together.
 
+Each tenant keeps bounded direct worker indexes by Core ID and by
+`(cluster_id, core_id)`. Routing lookup is O(1); register, reconnect,
+disconnect and heartbeat pruning update the primary map, capability registry
+and indexes under the same tenant lock. Saturating rebuild and inconsistency
+counters expose index health without unbounded labels.
+
 **Maturity:** stable peer transport profile for the V1 distributed surface.

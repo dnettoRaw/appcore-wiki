@@ -104,4 +104,10 @@ canonique V2 avec le marqueur `v2:`. Les anciens hashes sans version ne sont
 pas interchangeables; émetteurs de token et consommateurs Gateway doivent être
 mis à jour ensemble.
 
+Chaque tenant conserve des index directs et bornés par Core ID et par
+`(cluster_id, core_id)`. Le lookup de routage est O(1) ; register, reconnect,
+disconnect et prune heartbeat mettent à jour map primaire, registre de
+capabilities et index sous le même verrou tenant. Des compteurs saturés de
+rebuild et d'incohérence exposent la santé sans labels non bornés.
+
 **Maturité :** profil stable de peer transport pour la surface distribuée V1.

@@ -74,6 +74,12 @@ limitado a 500 ms p99. A compactação atômica muda a geração; testes exigem
 recovery do frame final incompleto e falha fechada para corrupção completa,
 frames duplicados/reordenados e versões incompatíveis.
 
+AC-011 adiciona índices diretos por tenant, Core ID e `(cluster_id, core_id)`.
+O gate executa 16.384 lookups entre o máximo de 1.024 workers registrados e
+exige no máximo 1 ms p99, pelo menos 10.000 lookups/s e zero inconsistências.
+Testes de reconnect, disconnect e prune de heartbeat exigem que geração stale
+nunca remova a entrada atual.
+
 Veja o benchmark em [AC-022 pública](https://github.com/dnettoRaw/app-core-public/issues/24)
 e a correção de commands em [AC-001 pública](https://github.com/dnettoRaw/app-core-public/issues/3).
 A correção de queries está em [AC-002 pública](https://github.com/dnettoRaw/app-core-public/issues/4).
@@ -81,3 +87,4 @@ A correção do Gateway está em [AC-003 pública](https://github.com/dnettoRaw/
 O ownership de requests pendentes está em [AC-004 pública](https://github.com/dnettoRaw/app-core-public/issues/6).
 O reuso de conexões HTTP está em [AC-005 pública](https://github.com/dnettoRaw/app-core-public/issues/7).
 A correção do journal da outbox está em [AC-007 pública](https://github.com/dnettoRaw/app-core-public/issues/9).
+O índice direto de workers está em [AC-011 pública](https://github.com/dnettoRaw/app-core-public/issues/13).

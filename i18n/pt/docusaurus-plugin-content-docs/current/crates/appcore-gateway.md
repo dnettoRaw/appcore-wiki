@@ -100,4 +100,10 @@ Hashes de conexão de worker e client usam framing binário canônico V2 e levam
 o marcador `v2:`. Hashes anteriores sem versão não são intercambiáveis;
 emissores de token e consumidores Gateway devem ser atualizados juntos.
 
+Cada tenant mantém índices diretos e limitados por Core ID e por
+`(cluster_id, core_id)`. O lookup de roteamento é O(1); register, reconnect,
+disconnect e prune de heartbeat atualizam mapa primário, registry de
+capabilities e índices sob o mesmo lock do tenant. Contadores saturados de
+rebuild e inconsistência expõem saúde sem labels ilimitadas.
+
 **Maturidade:** perfil estável de peer transport para a superfície distribuída V1.

@@ -73,6 +73,12 @@ capped at 500 ms p99. Atomic compaction changes the journal generation; tests
 require incomplete final-frame recovery and fail-closed behavior for complete
 corruption, duplicate/reordered frames and unsupported versions.
 
+AC-011 adds direct per-tenant indexes by Core ID and `(cluster_id, core_id)`.
+The gate performs 16,384 target lookups across the maximum 1,024 registered
+workers and requires at most 1 ms p99, at least 10,000 lookups/s and zero index
+inconsistencies. Reconnect, disconnect and heartbeat-prune tests require stale
+generations never to remove the current entry.
+
 Follow the benchmark in [public AC-022](https://github.com/dnettoRaw/app-core-public/issues/24)
 and the command correction in [public AC-001](https://github.com/dnettoRaw/app-core-public/issues/3).
 The query correction is tracked in [public AC-002](https://github.com/dnettoRaw/app-core-public/issues/4).
@@ -80,3 +86,4 @@ The Gateway correction is tracked in [public AC-003](https://github.com/dnettoRa
 Pending-request ownership is tracked in [public AC-004](https://github.com/dnettoRaw/app-core-public/issues/6).
 HTTP connection reuse is tracked in [public AC-005](https://github.com/dnettoRaw/app-core-public/issues/7).
 The outbox journal correction is tracked in [public AC-007](https://github.com/dnettoRaw/app-core-public/issues/9).
+Direct worker indexing is tracked in [public AC-011](https://github.com/dnettoRaw/app-core-public/issues/13).
