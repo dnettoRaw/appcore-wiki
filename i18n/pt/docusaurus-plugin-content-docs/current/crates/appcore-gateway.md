@@ -106,4 +106,25 @@ disconnect e prune de heartbeat atualizam mapa primário, registry de
 capabilities e índices sob o mesmo lock do tenant. Contadores saturados de
 rebuild e inconsistência expõem saúde sem labels ilimitadas.
 
+## Alpha 2.0: telemetria limitada de roteamento
+
+A linha alpha 2.0 expõe um snapshot pull neutro de fornecedor por
+`GatewayMetrics::telemetry_snapshot` e uma fronteira explícita
+`GatewayTelemetryExporter`. Ela registra outcomes fixos de rota, rotas
+inflight/pico, saturação de fila, reconnects, retries, falhas de autenticação e
+exportação, além de histogramas fixos de latência de rota, espera de worker,
+espera de lock e payload. A cardinalidade é limitada a 128 séries de
+capability; nomes validados adicionais são combinados na série fixa
+`appcore.gateway.capability.overflow`. Tenant, conexão, request, token e
+payload nunca viram labels.
+
+O roteamento nunca chama um exporter. Adapters Prometheus ou OpenTelemetry do
+deployment puxam o snapshot próprio e controlam fila, retry e policy de
+transporte. Uma certificação limpa em perfil release no
+[commit de implementação `31c4fbe`](https://github.com/dnettoRaw/AppCore-Runtime/commit/31c4fbec34d403770bf59dfe76d36732cb9b4450)
+mediu 1.792 ns p99 para uma rota instrumentada sem worker disponível e 5.792 ns
+p99 para um snapshot com 129 séries, contra budgets de 1 ms e 5 ms. Estas
+medições são evidência local do repositório, não certificação de tráfego ou
+collector em produção.
+
 **Maturidade:** perfil estável de peer transport para a superfície distribuída V1.

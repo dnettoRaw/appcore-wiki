@@ -86,6 +86,15 @@ distintos de threads worker permaneçam dentro de `max_concurrent_tasks`, além
 de observar ao menos um evento limitado de saturação da fila. Trabalho
 excedente é adiado sem consumir tentativas de retry.
 
+AC-020 adiciona o contrato de telemetria Gateway da alpha 2.0. O gate mantém
+128 séries de capability, agrega oito nomes adicionais em uma série fixa de
+overflow, executa 4.096 rotas instrumentadas sem worker disponível e constrói
+256 snapshots. Ele exige zero rotas inflight residuais, cardinalidade e
+overflow exatos, rota p99 no máximo de 1 ms e snapshot p99 no máximo de 5 ms.
+A execução limpa macOS/aarch64 no commit de implementação `31c4fbe` mediu
+1.792 ns p99 para rota e 5.792 ns p99 para snapshot. A exportação é uma
+fronteira pull explícita do deployment e nunca é chamada pelo roteamento.
+
 Veja o benchmark em [AC-022 pública](https://github.com/dnettoRaw/app-core-public/issues/24)
 e a correção de commands em [AC-001 pública](https://github.com/dnettoRaw/app-core-public/issues/3).
 A correção de queries está em [AC-002 pública](https://github.com/dnettoRaw/app-core-public/issues/4).
@@ -95,3 +104,4 @@ O reuso de conexões HTTP está em [AC-005 pública](https://github.com/dnettoRa
 A correção do journal da outbox está em [AC-007 pública](https://github.com/dnettoRaw/app-core-public/issues/9).
 O índice direto de workers está em [AC-011 pública](https://github.com/dnettoRaw/app-core-public/issues/13).
 O pool fixo do scheduler está em [AC-018 pública](https://github.com/dnettoRaw/app-core-public/issues/20).
+A telemetria limitada do Gateway está em [AC-020 pública](https://github.com/dnettoRaw/app-core-public/issues/22).

@@ -90,6 +90,16 @@ noms distincts des threads workers restent dans `max_concurrent_tasks`, tout en
 observant au moins un événement borné de saturation de la file. Le travail
 excédentaire est différé sans consommer de tentatives de retry.
 
+AC-020 ajoute le contrat de télémétrie Gateway de l'alpha 2.0. Le gate conserve
+128 séries de capability, agrège huit noms supplémentaires dans une série
+d'overflow fixe, exécute 4 096 routes instrumentées sans worker disponible et
+construit 256 snapshots. Il exige zéro route inflight résiduelle, une
+cardinalité et un overflow exacts, un p99 de route inférieur ou égal à 1 ms et
+un p99 de snapshot inférieur ou égal à 5 ms. L'exécution propre macOS/aarch64
+au commit d'implémentation `31c4fbe` a mesuré 1 792 ns p99 pour la route et
+5 792 ns p99 pour le snapshot. L'export est une frontière pull explicite du
+deployment et n'est jamais appelé par le routage.
+
 Suivez le benchmark dans [AC-022 public](https://github.com/dnettoRaw/app-core-public/issues/24)
 et la correction des commands dans [AC-001 public](https://github.com/dnettoRaw/app-core-public/issues/3).
 La correction des queries est suivie dans [AC-002 public](https://github.com/dnettoRaw/app-core-public/issues/4).
@@ -99,3 +109,4 @@ La réutilisation des connexions HTTP est suivie dans [AC-005 public](https://gi
 La correction du journal outbox est suivie dans [AC-007 public](https://github.com/dnettoRaw/app-core-public/issues/9).
 L'index direct des workers est suivi dans [AC-011 public](https://github.com/dnettoRaw/app-core-public/issues/13).
 Le pool fixe du scheduler est suivi dans [AC-018 public](https://github.com/dnettoRaw/app-core-public/issues/20).
+La télémétrie Gateway bornée est suivie dans [AC-020 public](https://github.com/dnettoRaw/app-core-public/issues/22).

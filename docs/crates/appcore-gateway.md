@@ -104,4 +104,25 @@ disconnect and heartbeat pruning update the primary map, capability registry
 and indexes under the same tenant lock. Saturating rebuild and inconsistency
 counters expose index health without unbounded labels.
 
+## 2.0 alpha: bounded routing telemetry
+
+The 2.0 alpha line exposes a vendor-neutral pull snapshot through
+`GatewayMetrics::telemetry_snapshot` and an explicit
+`GatewayTelemetryExporter` boundary. It records fixed route outcomes,
+inflight/peak routes, queue saturation, reconnects, retries, authentication and
+export failures, plus fixed-bucket route latency, worker wait, lock wait and
+payload observations. Capability cardinality is capped at 128 series; further
+validated names are combined in the fixed
+`appcore.gateway.capability.overflow` series. Tenant, connection, request,
+token and payload values never become labels.
+
+Routing never invokes an exporter. Deployment-owned Prometheus or
+OpenTelemetry adapters pull the owned snapshot and control their own queue,
+retry and transport policy. A clean release-profile certification at
+[implementation commit `31c4fbe`](https://github.com/dnettoRaw/AppCore-Runtime/commit/31c4fbec34d403770bf59dfe76d36732cb9b4450)
+measured 1,792 ns p99 for an instrumented unavailable-worker route and 5,792 ns
+p99 for a 129-series snapshot, against budgets of 1 ms and 5 ms respectively.
+These measurements are repository-local evidence, not production traffic or
+collector certification.
+
 **Maturity:** stable peer transport profile for the V1 distributed surface.

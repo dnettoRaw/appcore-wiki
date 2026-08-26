@@ -85,6 +85,15 @@ thread names to remain within `max_concurrent_tasks`, while also observing at
 least one bounded queue-saturation event. Excess work is deferred without
 consuming retry attempts.
 
+AC-020 adds the 2.0 alpha Gateway telemetry contract. The gate retains 128
+capability series, aggregates eight further names into one fixed overflow
+series, runs 4,096 instrumented unavailable-worker routes and builds 256
+snapshots. It requires zero residual inflight routes, exact cardinality and
+overflow, route p99 no greater than 1 ms and snapshot p99 no greater than 5 ms.
+The clean macOS/aarch64 run at implementation commit `31c4fbe` measured 1,792
+ns route p99 and 5,792 ns snapshot p99. Export is an explicit deployment-owned
+pull boundary and is never invoked from routing.
+
 Follow the benchmark in [public AC-022](https://github.com/dnettoRaw/app-core-public/issues/24)
 and the command correction in [public AC-001](https://github.com/dnettoRaw/app-core-public/issues/3).
 The query correction is tracked in [public AC-002](https://github.com/dnettoRaw/app-core-public/issues/4).
@@ -94,3 +103,4 @@ HTTP connection reuse is tracked in [public AC-005](https://github.com/dnettoRaw
 The outbox journal correction is tracked in [public AC-007](https://github.com/dnettoRaw/app-core-public/issues/9).
 Direct worker indexing is tracked in [public AC-011](https://github.com/dnettoRaw/app-core-public/issues/13).
 The fixed scheduler pool is tracked in [public AC-018](https://github.com/dnettoRaw/app-core-public/issues/20).
+Bounded Gateway telemetry is tracked in [public AC-020](https://github.com/dnettoRaw/app-core-public/issues/22).
