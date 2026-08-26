@@ -1,9 +1,9 @@
 {
   "schemaVersion": 1,
-  "acceptedAt": "2026-08-26T22:35:38.608Z",
-  "runtimeCommit": "6d325ba413348443d1671594367e08549fceb208",
+  "acceptedAt": "2026-08-26T22:40:35.756Z",
+  "runtimeCommit": "70a9b03bb282a2f762f08c6dd5e6ff75624c7dbd",
   "runtimeRemote": "git@github.com:dnettoRaw/AppCore-Runtime.git",
-  "relevantDigest": "d03b84046eee8e8eb72b36cb6f03490e79fc84bedac1f56f222715f18fe58e1a",
+  "relevantDigest": "4ee405e13b856e6fb11c389f5e0536373d03bca47fbf4399dbd422258672e0ea",
   "publicCrateGraphDigest": "2d7e3b0f9158fc306f3a58cd3ebfee804ececd04c75ad0370d25cc89209e9525",
   "files": {
     "AGENTS.md": "48e797f166b071322fbdbb8d65a91cb89c87425667a6eae441f7212fe48c64a4",
@@ -404,7 +404,7 @@
     "release/peer-rpc-binary-v2.md": "b94e3bff084f5d92f57b0bf586dde74bde4f394fd50e01d43031532294a353d4",
     "release/peer-rpc-v2-streaming.md": "c28a6fbabf4a618df7d5c0bd553784e06882a16fd0748c0f160a352feff98c46",
     "release/peer-rpc-wire-errors-v2.md": "5835e32d833459cfab61847b171ac0c9d9cf9ffa9986f32f27ceba21dab829eb",
-    "release/scheduler-state-provider-v1.md": "a5e88ebb49f5d7355355d3b020c43f4f9845eeb9a7037ffdda7cec3cdc95effe",
+    "release/scheduler-state-provider-v1.md": "23a7e0523bea998aec7f2d1a060793b7e1008713c14927b2ac99dc4895a10aba",
     "release/sqlite-sync-provider-v1.md": "f04cebf05eb81bc4617fb4c67b558ef02e454b958c99a3665f8ddc121646f789",
     "release/storage-capability-descriptor-v1.md": "c6b322e55cc55c1a5a84bb1ec6802074deb2a77e35b8ceaf84398d9607bdc4b1",
     "release/windows-dpapi-secret-provider-v1.md": "d1a70d29725ac447ac4aef8fefb639cf7ef469ad791cfc1c82d0a86b2356686e",
