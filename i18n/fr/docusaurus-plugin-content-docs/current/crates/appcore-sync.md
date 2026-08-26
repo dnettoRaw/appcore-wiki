@@ -47,6 +47,10 @@ version ou futurs échouent avec `NO MORE SUPPORTED PLEASE UPDATE` ; aucune
 conversion automatique n'existe. Videz V1 avant la mise à niveau et V2 avant
 un rollback. Enqueue et ACK ajoutent et synchronisent alors une frame chaînée
 par intégrité sans réécrire le fichier complet.
+L'extension additive de pagination fournit `peek`, des `stats` sans payload,
+`mark_attempt` persistant, `next_ready` et des receipts partiels de préfixe
+exact. Les nouveaux consommateurs utilisent `pending_page`, `outbox_stats` et
+`flush_pending_with_progress` ; le wire peer V1 reste inchangé.
 :::
 
 **Maturité :** profil conservateur stable avec décodage V1 strict.

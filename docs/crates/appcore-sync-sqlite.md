@@ -35,6 +35,15 @@ Its declared storage guarantees are transactions, locking, snapshot, online
 backup and multi-process operation on one local filesystem. Streaming,
 multi-host operation and network shares are not claimed.
 
+:::warning Next prerelease schema update
+The development branch advances the internal database to schema V2. It adds
+bounded attempt counters and readiness timestamps; page metadata is selected
+before reading BLOBs, stats contain no payload, and exact partial receipts are
+transactional. A known schema V1 database migrates atomically. Unknown and
+future schemas still hit the update wall; rollback requires the verified
+pre-migration backup.
+:::
+
 ## Certified bounds
 
 Clean-source release certification at `0f6f6d0` passed on macOS arm64 with

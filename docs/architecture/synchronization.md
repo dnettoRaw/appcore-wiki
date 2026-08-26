@@ -113,6 +113,12 @@ an older in-memory view detects that generation change and reloads. The journal
 stays capped at 64 MiB and reserves enough tail space to acknowledge an
 accepted front message.
 
+The next-major outbox contract reads an ordered prefix with independent count
+and encoded-byte bounds before cloning payloads. It exposes payload-free stats,
+persists retry attempts/readiness and applies only exact ordered-prefix
+receipts. The Runtime follower and CLI use this path directly, so queue growth
+does not determine one delivery allocation or checkpoint progress.
+
 This is an explicit persistent-format boundary. V1, unversioned and future
 files report `NO MORE SUPPORTED PLEASE UPDATE`; the Runtime does not guess or
 convert. Operators must drain V1 before upgrading and drain V2 before rollback.

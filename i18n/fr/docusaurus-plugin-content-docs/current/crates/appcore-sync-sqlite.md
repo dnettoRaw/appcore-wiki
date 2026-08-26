@@ -37,6 +37,16 @@ Les garanties déclarées sont transactions, locking, snapshot, sauvegarde en
 ligne et fonctionnement multiprocessus sur un filesystem local. Streaming,
 multi-host et partages réseau ne sont pas garantis.
 
+:::warning Prochaine mise à jour prerelease du schéma
+La branche de développement fait évoluer la database interne vers le schéma
+V2. Elle ajoute des compteurs d'attempt bornés et des timestamps readiness ;
+les métadonnées de page sont sélectionnées avant la lecture des BLOBs, les
+stats ne contiennent aucun payload et les receipts partiels exacts sont
+transactionnels. Une database connue en schéma V1 migre atomiquement. Les
+schémas inconnus et futurs restent bloqués par l'update wall ; le rollback
+exige la sauvegarde vérifiée antérieure à la migration.
+:::
+
 ## Limites certifiées
 
 La certification release sur source propre au commit `0f6f6d0` a réussi sous

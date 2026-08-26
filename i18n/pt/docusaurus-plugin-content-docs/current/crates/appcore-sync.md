@@ -45,6 +45,10 @@ No próximo major, `FileSyncOutbox` aceita apenas o journal binário explícito
 `NO MORE SUPPORTED PLEASE UPDATE`; não existe conversão automática. Drene V1
 antes do upgrade e V2 antes do rollback. Enqueue e ACK passam a acrescentar e
 sincronizar um frame encadeado por integridade, sem reescrever o arquivo todo.
+A extensão aditiva de paginação oferece `peek`, `stats` sem payload,
+`mark_attempt` persistido, `next_ready` e receipts parciais de prefixo exato.
+Consumidores novos usam `pending_page`, `outbox_stats` e
+`flush_pending_with_progress`; o wire peer V1 permanece inalterado.
 :::
 
 **Maturidade:** perfil conservador estável com decode V1 estrito.

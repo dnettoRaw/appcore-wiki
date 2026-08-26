@@ -21,7 +21,8 @@ le même gate et publie l'artefact JSON.
 ## Charges fixes
 
 - startup manifest-first et dispatch concurrent des commands et queries ;
-- enqueue, lecture et ACK de l'outbox près de 1, 10 et 64 MiB ;
+- enqueue, lecture et ACK de l'outbox près de 1, 10 et 64 MiB, plus comparaison
+  de matérialisation entre snapshot complet et page bornée sur 256 messages ;
 - contention du routing state Gateway avec 1, 100 et 1 000 tenants, plus une
   sonde d'indépendance des verrous entre tenants ;
 - 32 échanges HTTP/1.1 séquentiels sur une seule connexion keep-alive acceptée ;
@@ -136,6 +137,16 @@ un buffer réduit de 14 % entre 64 Kio et 4 Mio; le pic RSS total était de
 306 448 Kio. L'absence du support binaire échoue sans retry JSON. Les artefacts
 Linux et Windows restent requis.
 
+AC-015 ajoute des pages outbox bornées par nombre/octets, des stats sans
+payload, une readiness retry durable et des receipts partiels exacts. Le
+follower et la CLI Runtime ne matérialisent plus toute la file. L'exécution
+propre macOS/aarch64 au commit `c904e83` a matérialisé 460 684 octets pour une
+page de sept messages contre 30 021 820 octets pour le snapshot complet de 256
+messages, soit 98,46 % de réduction. Le p99 de page était de 71 458 ns contre
+1 404 417 ns ; le p99 des stats était de 54 542 ns et le pic RSS total de
+244 752 Kio. Le wire peer V1 reste inchangé ; les artefacts Linux et Windows
+restent requis.
+
 Suivez le benchmark dans [AC-022 public](https://github.com/dnettoRaw/app-core-public/issues/24)
 et la correction des commands dans [AC-001 public](https://github.com/dnettoRaw/app-core-public/issues/3).
 La correction des queries est suivie dans [AC-002 public](https://github.com/dnettoRaw/app-core-public/issues/4).
@@ -149,4 +160,5 @@ La télémétrie Gateway bornée est suivie dans [AC-020 public](https://github.
 La sélection bornée des workers est suivie dans [AC-012 public](https://github.com/dnettoRaw/app-core-public/issues/14).
 La HA Gateway est suivie dans [AC-013 public](https://github.com/dnettoRaw/app-core-public/issues/15).
 Le framing binaire Peer RPC est suivi dans [AC-014 public](https://github.com/dnettoRaw/app-core-public/issues/16).
+La pagination outbox bornée est suivie dans [AC-015 public](https://github.com/dnettoRaw/app-core-public/issues/17).
 Les artefacts plateforme restants de l'erreur wire typée sont suivis dans [AC-021 public](https://github.com/dnettoRaw/app-core-public/issues/23).

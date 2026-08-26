@@ -36,6 +36,15 @@ As garantias declaradas são transactions, locking, snapshot, backup online e
 operação multiprocesso em um filesystem local. Streaming, multi-host e shares
 de rede não são garantidos.
 
+:::warning Próxima atualização prerelease do schema
+A branch de desenvolvimento avança o database interno para schema V2. Ela
+adiciona contadores limitados de attempt e timestamps de readiness; a metadata
+da página é selecionada antes de ler BLOBs, stats não contêm payload e receipts
+parciais exatos são transacionais. Database conhecido em schema V1 migra
+atomicamente. Schemas desconhecidos e futuros continuam na update wall;
+rollback exige o backup verificado anterior à migração.
+:::
+
 ## Limites certificados
 
 A certificação release com fonte limpa em `0f6f6d0` passou em macOS arm64 com

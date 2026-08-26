@@ -45,6 +45,10 @@ The next-major `FileSyncOutbox` accepts only the explicit
 with `NO MORE SUPPORTED PLEASE UPDATE`; there is no automatic conversion. Drain
 V1 before upgrading and drain V2 before rollback. Enqueue and ACK then append
 and sync one integrity-chained frame instead of rewriting the complete file.
+The additive paging extension provides `peek`, payload-free `stats`, persisted
+`mark_attempt`, `next_ready` and exact partial-prefix receipts. New consumers
+use `pending_page`, `outbox_stats` and `flush_pending_with_progress`; V1 peer
+wire remains unchanged.
 :::
 
 **Maturity:** stable conservative profile with strict V1 decoding.

@@ -55,6 +55,13 @@ mensagens pendentes e muda a geração. Outro processo com visão antiga detecta
 mudança e recarrega. O journal continua limitado a 64 MiB e reserva tail
 suficiente para confirmar a mensagem frontal já aceita.
 
+O contrato de outbox do próximo major lê um prefixo ordenado com limites
+independentes de quantidade e bytes codificados antes de clonar payloads. Ele
+expõe stats sem payload, persiste attempts/readiness de retry e aplica somente
+receipts de prefixo ordenado exato. O follower e a CLI do Runtime usam esse
+caminho diretamente, então o crescimento da fila não define uma única alocação
+de entrega nem o avanço do checkpoint.
+
 Essa é uma fronteira explícita de formato persistente. Arquivos V1, sem versão
 ou futuros retornam `NO MORE SUPPORTED PLEASE UPDATE`; o Runtime não infere nem
 converte. Operadores drenam V1 antes do upgrade e V2 antes do rollback.

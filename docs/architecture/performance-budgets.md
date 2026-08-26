@@ -21,7 +21,8 @@ publish the JSON artifact.
 ## Fixed workloads
 
 - manifest-first startup plus concurrent command and query dispatch;
-- file outbox enqueue, read and acknowledgement near 1, 10 and 64 MiB;
+- file outbox enqueue, read and acknowledgement near 1, 10 and 64 MiB, plus
+  complete-snapshot versus bounded-page materialization over 256 messages;
 - Gateway routing-state contention with 1, 100 and 1,000 tenants, plus a
   cross-tenant lock-independence probe;
 - 32 sequential HTTP/1.1 exchanges through one accepted keep-alive connection;
@@ -131,6 +132,15 @@ bytes, 93% lower codec p99 and a 14% smaller buffer from 64 KiB through 4 MiB;
 whole-suite peak RSS was 306,448 KiB. Missing binary support fails without a
 JSON retry. Linux and Windows artifacts remain required.
 
+AC-015 adds count/byte-bounded outbox pages, payload-free stats, durable retry
+readiness and exact partial receipts. The Runtime follower and CLI no longer
+materialize the complete queue. The clean macOS/aarch64 run at `c904e83`
+materialized 460,684 bytes for a seven-message page versus 30,021,820 bytes for
+the complete 256-message snapshot, a 98.46% reduction. Page p99 was 71,458 ns
+versus 1,404,417 ns; stats p99 was 54,542 ns and whole-suite peak RSS was
+244,752 KiB. The V1 peer wire remains unchanged; Linux and Windows artifacts
+remain required.
+
 Follow the benchmark in [public AC-022](https://github.com/dnettoRaw/app-core-public/issues/24)
 and the command correction in [public AC-001](https://github.com/dnettoRaw/app-core-public/issues/3).
 The query correction is tracked in [public AC-002](https://github.com/dnettoRaw/app-core-public/issues/4).
@@ -144,3 +154,4 @@ Bounded Gateway telemetry is tracked in [public AC-020](https://github.com/dnett
 Bounded worker selection is tracked in [public AC-012](https://github.com/dnettoRaw/app-core-public/issues/14).
 Gateway HA is tracked in [public AC-013](https://github.com/dnettoRaw/app-core-public/issues/15).
 Binary Peer RPC framing is tracked in [public AC-014](https://github.com/dnettoRaw/app-core-public/issues/16).
+Bounded outbox paging is tracked in [public AC-015](https://github.com/dnettoRaw/app-core-public/issues/17).
