@@ -32,6 +32,13 @@ Les queries applicatives sont autorisées par la policy capability composée
 avant le router. Les queries de statut Runtime restent hors du catalogue
 applicatif.
 
+Sur la ligne de maintenance 1.0 actuelle, les hosts Runtime gèlent
+l'enregistrement des queries de `ApiRouter` après le bootstrap. Les snapshots
+du router partagent des endpoints immuables via `Arc` ; la façade directe, le
+HTTP et le peer RPC libèrent le mutex d'état du host avant d'appeler
+l'endpoint. Les queries indépendantes s'exécutent donc en parallèle et un
+enregistrement tardif échoue avec `router_frozen`.
+
 La limite configurée s'applique au corps HTTP complet avant la
 désérialisation JSON par Axum. Les routes protégées acceptent exactement un
 header bearer `Authorization` bien formé; les doublons échouent fermés.

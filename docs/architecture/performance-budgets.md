@@ -41,7 +41,10 @@ commands and queries. AC-001 removes command-handler execution from the shared
 host mutex. The gate now requires at least four of eight command workers to
 overlap; deterministic tests require all eight to enter together, preserve
 single execution for a matching idempotency key and verify shutdown drain.
-Query serialization remains tracked separately by AC-002.
+AC-002 also removes query endpoint execution from the host mutex and applies
+the same four-of-eight gate. Its deterministic test freezes the registry and
+requires all eight endpoint calls to overlap.
 
 Follow the benchmark in [public AC-022](https://github.com/dnettoRaw/app-core-public/issues/24)
 and the command correction in [public AC-001](https://github.com/dnettoRaw/app-core-public/issues/3).
+The query correction is tracked in [public AC-002](https://github.com/dnettoRaw/app-core-public/issues/4).

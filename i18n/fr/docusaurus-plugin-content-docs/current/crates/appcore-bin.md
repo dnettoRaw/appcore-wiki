@@ -41,6 +41,9 @@ idempotente reste sérialisée par store. `shutdown()` ferme l'admission, draine
 les commandes admises pendant au plus 30 secondes, puis termine le lifecycle.
 Les tests embarqués peuvent choisir une borne plus courte avec
 `shutdown_with_timeout`.
+L'enregistrement des queries applicatives est gelé après le bootstrap ; les
+queries directes, HTTP et peer RPC clonent le router immuable et s'exécutent
+sans le mutex du host.
 
 Selectionner `[adapters.gateway]` avec le provider `appcore-gateway` est la
 frontiere declarative d'activation du Gateway. Le bootstrap parse la

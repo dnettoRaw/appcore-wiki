@@ -32,6 +32,12 @@ Application queries are authorized by the composed capability policy before
 the application router runs. Runtime-owned status queries remain outside the
 application capability catalog.
 
+On the current 1.0 maintenance line, Runtime hosts freeze `ApiRouter` query
+registration after bootstrap. Router snapshots share immutable endpoints via
+`Arc`; direct facade, HTTP and peer RPC dispatch release the host-state mutex
+before calling an endpoint. Independent queries therefore execute
+concurrently, and late registration fails with `router_frozen`.
+
 The configured payload bound applies to the complete HTTP body before Axum
 deserializes JSON. Protected routes accept exactly one well-formed bearer
 `Authorization` header; duplicates fail closed.

@@ -32,6 +32,12 @@ Queries de aplicação são autorizadas pela policy de capability composta antes
 do router. Queries de status do Runtime permanecem fora do catálogo da
 aplicação.
 
+Na linha de manutenção 1.0 atual, hosts do Runtime congelam o registro de
+queries do `ApiRouter` após o bootstrap. Snapshots do router compartilham
+endpoints imutáveis por `Arc`; facade direta, HTTP e peer RPC liberam o mutex do
+estado do host antes de chamar o endpoint. Queries independentes executam em
+paralelo, e registro tardio falha com `router_frozen`.
+
 O limite configurado aplica-se ao corpo HTTP completo antes de o Axum
 desserializar o JSON. Rotas protegidas aceitam exatamente um header
 `Authorization` bearer bem formado; duplicatas falham de forma fechada.

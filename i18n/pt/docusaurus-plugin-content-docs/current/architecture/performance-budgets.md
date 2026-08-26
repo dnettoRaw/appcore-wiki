@@ -40,8 +40,11 @@ A baseline inicial registrou concorrência máxima `1` nos handlers de commands 
 queries. AC-001 remove a execução de command handler do mutex compartilhado do
 host. O gate agora exige sobreposição de pelo menos quatro entre oito workers;
 testes determinísticos exigem que os oito entrem juntos, preservam execução
-única para uma chave idempotente igual e verificam a drenagem no shutdown. A
-serialização de queries continua acompanhada separadamente por AC-002.
+única para uma chave idempotente igual e verificam a drenagem no shutdown.
+AC-002 também remove a execução de query endpoint do mutex do host e aplica o
+mesmo gate de quatro entre oito. Seu teste determinístico congela o registro e
+exige sobreposição das oito chamadas de endpoint.
 
 Veja o benchmark em [AC-022 pública](https://github.com/dnettoRaw/app-core-public/issues/24)
 e a correção de commands em [AC-001 pública](https://github.com/dnettoRaw/app-core-public/issues/3).
+A correção de queries está em [AC-002 pública](https://github.com/dnettoRaw/app-core-public/issues/4).

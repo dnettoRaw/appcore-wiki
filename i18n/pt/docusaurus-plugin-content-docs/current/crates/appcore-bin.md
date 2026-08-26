@@ -40,6 +40,8 @@ independentes avançam em paralelo; a reserva idempotente permanece serializada
 por store. `shutdown()` fecha a admissão, drena comandos admitidos por no
 máximo 30 segundos e só então conclui o lifecycle. Testes embutidos podem
 escolher um limite menor com `shutdown_with_timeout`.
+O registro de queries de aplicação é congelado após o bootstrap; queries
+diretas, HTTP e peer RPC clonam o router imutável e executam sem o mutex do host.
 
 Selecionar `[adapters.gateway]` com provider `appcore-gateway` e a fronteira
 declarativa de ativacao do Gateway. O bootstrap faz parse pela crate owner,

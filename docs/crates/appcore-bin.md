@@ -41,6 +41,8 @@ commands progress concurrently; idempotency reservation remains serialized per
 store. `shutdown()` closes admission, drains admitted commands for at most 30
 seconds and only then completes lifecycle. Embedded tests can select a shorter
 bound with `shutdown_with_timeout`.
+Application query registration is frozen after bootstrap; direct, HTTP and peer
+RPC queries clone the immutable router and execute without the host mutex.
 
 Selecting `[adapters.gateway]` with provider `appcore-gateway` is the
 declarative Gateway activation boundary. Bootstrap parses the configuration

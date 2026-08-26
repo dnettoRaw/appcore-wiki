@@ -41,8 +41,11 @@ handlers de commands et queries. AC-001 retire l'exécution des command handlers
 du mutex partagé du host. Le gate exige maintenant le chevauchement d'au moins
 quatre workers sur huit ; les tests déterministes exigent l'entrée simultanée
 des huit workers, préservent une seule exécution pour une clé idempotente
-identique et vérifient le drainage au shutdown. La sérialisation des queries
-reste suivie séparément par AC-002.
+identique et vérifient le drainage au shutdown. AC-002 retire aussi l'exécution
+des query endpoints du mutex du host et applique
+le même gate de quatre workers sur huit. Son test déterministe gèle le registre
+et exige le chevauchement des huit appels d'endpoint.
 
 Suivez le benchmark dans [AC-022 public](https://github.com/dnettoRaw/app-core-public/issues/24)
 et la correction des commands dans [AC-001 public](https://github.com/dnettoRaw/app-core-public/issues/3).
+La correction des queries est suivie dans [AC-002 public](https://github.com/dnettoRaw/app-core-public/issues/4).
