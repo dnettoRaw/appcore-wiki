@@ -45,5 +45,18 @@ raiz protegida pelo proprietário: a troca maliciosa de um diretório ancestral
 por outro processo da mesma conta durante a operação permanece fora desta
 boundary portátil.
 
+## Preflight de capacidades pós-1.0
+
+`StorageCapabilityDescriptorV1` define sete garantias exatas: transactions,
+locking, snapshot, streaming, backup online, multi-process e multi-host. O
+catálogo é limitado a 32 providers. Deployments usam explicitamente
+`required_capabilities`; `storage.shared=true` exige `multi_host`. Requisitos
+desconhecidos, duplicados ou não suportados falham antes de abrir storage e
+nunca selecionam provider mais fraco. O provider de arquivo anuncia somente
+`snapshot`. O formato publicado dos manifests V1 não muda.
+
+A certificação clean-source em `12cbfc3` mediu p99 de 83 ns e 10.493.879
+preflights/s sob limites fixos de sete capacidades e 32 providers.
+
 **Maturidade:** contratos estáveis; provider em arquivo certificado para um
 processo local e filesystem com locks/sync/rename adequados.

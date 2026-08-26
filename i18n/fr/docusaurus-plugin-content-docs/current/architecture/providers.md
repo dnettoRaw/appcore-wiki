@@ -23,6 +23,11 @@ flowchart LR
 
 Une factory est enregistrée par role et provider ID. Si la paire sélectionnée n'existe pas, creation échoue. Il n'y a pas de fallback implicite.
 
+La sélection storage exécute aussi un preflight explicite de capacités
+post-1.0. Un descriptor borné déclare des garanties exactes plutôt que des noms
+d'implémentation; le provider sélectionné doit satisfaire chaque exigence avant
+l'ouverture. Voir [preflight des capacités storage](/architecture/storage-provider-capabilities).
+
 Le coordination store est runtime-owned, pas une base métier. Le secret provider résout les références après validation afin que les valeurs ne vivent pas dans les manifests.
 
 Le lease de ressource partagée sur filesystem persiste un sidecar versionné du

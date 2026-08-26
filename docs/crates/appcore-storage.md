@@ -44,5 +44,18 @@ revalidated under the process lock. The one-process profile still assumes an
 owner-protected root: a hostile same-account process replacing an ancestor
 directory during an operation remains outside this portable boundary.
 
+## Post-1.0 capability preflight
+
+`StorageCapabilityDescriptorV1` defines seven exact guarantees: transactions,
+locking, snapshot, streaming, online backup, multi-process and multi-host. The
+catalog is capped at 32 providers. Deployments opt in with
+`required_capabilities`; `storage.shared=true` requires `multi_host`.
+Unknown, duplicate or unsupported requirements fail before storage opens and
+never select a weaker provider. The file provider advertises only `snapshot`.
+The published V1 manifest shape is unchanged.
+
+Clean-source certification at `12cbfc3` measured 83 ns p99 and 10,493,879
+preflights/s under the fixed seven-capability and 32-provider bounds.
+
 **Maturity:** stable contracts; file provider certified for one local process
 and a filesystem with required lock/sync/rename semantics.

@@ -43,6 +43,11 @@ flowchart LR
 
 If the pair is not registered, creation fails. AppCore intentionally avoids implicit fallback because fallback changes deployment security and recovery semantics.
 
+Storage selection also performs explicit post-1.0 capability preflight. A
+bounded descriptor declares exact guarantees rather than implementation names;
+the selected provider must satisfy every requirement before it opens. See
+[storage provider capability preflight](/architecture/storage-provider-capabilities).
+
 ## What is the coordination store for?
 
 The coordination-store provider owns runtime coordination schema metadata. The file implementation maintains `coordination-schema.meta` with a stable format and schema version. It migrates metadata forward to the current schema and rejects newer unsupported schema versions.

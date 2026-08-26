@@ -23,6 +23,11 @@ flowchart LR
 
 Factory é registrada por role e provider ID. Se o par selecionado não existe, creation falha. Não há fallback implícito.
 
+A seleção de storage também executa preflight explícito de capacidades
+pós-1.0. Um descriptor limitado declara garantias exatas em vez de nomes de
+implementação; o provider selecionado deve satisfazer todos os requisitos antes
+de abrir. Veja [preflight de capacidades de storage](/architecture/storage-provider-capabilities).
+
 Provider de coordenação é runtime-owned e não banco de negócio. Secret provider resolve referências depois da validação, mantendo valores fora dos manifests.
 
 O lease de recurso compartilhado em filesystem persiste um sidecar versionado

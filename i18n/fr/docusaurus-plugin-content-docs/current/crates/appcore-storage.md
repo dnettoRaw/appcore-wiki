@@ -46,5 +46,18 @@ protégé par son propriétaire: le remplacement hostile d'un répertoire ancêt
 par un autre processus du même compte pendant l'opération reste hors de cette
 boundary portable.
 
+## Preflight de capacités post-1.0
+
+`StorageCapabilityDescriptorV1` définit sept garanties exactes: transactions,
+locking, snapshot, streaming, backup en ligne, multi-processus et multi-hôte.
+Le catalogue est limité à 32 providers. Les deployments activent explicitement
+`required_capabilities`; `storage.shared=true` exige `multi_host`. Toute
+exigence inconnue, dupliquée ou non supportée échoue avant l'ouverture sans
+provider plus faible. Le provider fichier annonce seulement `snapshot`. Le
+format publié des manifests V1 ne change pas.
+
+La certification clean-source à `12cbfc3` a mesuré un p99 de 83 ns et
+10 493 879 preflights/s sous les bornes fixes de sept capacités et 32 providers.
+
 **Maturité :** contrats stables; provider fichier certifié pour un processus
 local et filesystem aux sémantiques lock/sync/rename requises.
