@@ -41,6 +41,7 @@ error details.
 `PeerRpcChunkEncoder` and `PeerRpcChunkAssembler` process an explicitly selected
 V2 stream one bounded chunk at a time. Defaults cap decoded chunks at 64 KiB,
 encoded chunks at 96 KiB, the aggregate at 64 MiB and chunk count at 1,024.
+Encoded bytes use a canonical base64 JSON string, never an integer array.
 Sequence, exact decoded size, chunk and aggregate SHA-256, deadline,
 cancellation and quota after gzip decompression fail closed. A failed commit
 never exposes the partial sink as complete.
@@ -60,5 +61,8 @@ tenant, cluster, target, trace, deadline, command idempotency and bounded nonce
 replay. Ambiguous frames are not retried; best-effort cancellation is backed by
 authoritative deadline cleanup.
 
-This API does not negotiate a transport. `/v1/peer/*` parses only V1 and never
-infers V2. Benchmark and certification evidence remain AC-006 release gates.
+Clean-source release certification at `3cd0f48` passed for an incompressible
+64 MiB payload with 1,024 chunks, an 87,660-byte largest JSON frame,
+1.079-second p99 and 350,096 KiB whole-suite peak RSS. This API does not
+negotiate a transport. `/v1/peer/*` parses only V1 and never infers V2. V2 is
+certified on the post-1.0 development line but is not yet published.

@@ -39,11 +39,13 @@ O módulo pós-1.0 `peer_rpc::v2` define uma família explícita de frames
 open/chunk/commit/cancel. Open vincula bytes decodificados agregados,
 tamanho/quantidade de chunks e deadline; cada chunk vincula sequência, tamanho
 decodificado exato e digest; commit vincula o digest do payload decodificado
-completo. V1 e V2 permanecem em módulos e rotas separados, sem detecção,
+completo. Bytes codificados usam uma string JSON base64 canônica, não array de
+inteiros. V1 e V2 permanecem em módulos e rotas separados, sem detecção,
 conversão ou fallback.
 
 :::warning Contrato em desenvolvimento
-Os DTOs V2 e o codec incremental estão implementados, mas ownership de sessão
-HTTP assinada e streaming de resposta ainda devem passar AC-006 antes da
-publicação. Continue usando rotas V1 explícitas até o anúncio dessa release.
+Os DTOs, codec, registro limitado e integração host/client assinada V2 passaram
+na certificação release clean-source em `3cd0f48`. V2 permanece não publicado
+na linha de desenvolvimento pós-1.0. Continue usando rotas V1 explícitas até o
+anúncio dessa release.
 :::

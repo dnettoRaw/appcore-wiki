@@ -41,7 +41,8 @@ erro remoto.
 `PeerRpcChunkEncoder` e `PeerRpcChunkAssembler` processam um stream V2
 explicitamente selecionado usando um chunk limitado por vez. Os limites default
 são 64 KiB decodificados por chunk, 96 KiB codificados, 64 MiB agregados e
-1.024 chunks. Sequência, tamanho decodificado exato, SHA-256 por chunk e total,
+1.024 chunks. Bytes codificados usam string JSON base64 canônica, nunca array de
+inteiros. Sequência, tamanho decodificado exato, SHA-256 por chunk e total,
 deadline, cancelamento e quota após gzip falham fechados. Commit com falha nunca
 expõe o sink parcial como completo.
 
@@ -60,5 +61,8 @@ verifica tenant, cluster, target, trace, deadline, idempotência de command e
 nonce replay limitado. Frames ambíguos não são repetidos; cancelamento best
 effort é respaldado pela limpeza autoritativa por deadline.
 
-Essa API não negocia transporte. `/v1/peer/*` interpreta somente V1 e nunca
-infere V2. Evidências de benchmark e certificação permanecem gates do AC-006.
+A certificação release clean-source em `3cd0f48` passou com payload
+incompressível de 64 MiB, 1.024 chunks, maior frame JSON de 87.660 bytes, p99 de
+1,079 segundo e pico RSS da suíte de 350.096 KiB. Essa API não negocia
+transporte. `/v1/peer/*` interpreta somente V1 e nunca infere V2. V2 está
+certificado na linha de desenvolvimento pós-1.0, mas ainda não foi publicado.

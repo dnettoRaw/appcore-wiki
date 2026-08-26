@@ -38,11 +38,13 @@ bytes, nonce/idempotency values or remote error details.
 The post-1.0 `peer_rpc::v2` module defines an explicit open/chunk/commit/cancel
 frame family. Open binds aggregate decoded bytes, chunk size/count and deadline;
 each chunk binds sequence, exact decoded length and digest; commit binds the
-complete decoded payload digest. V1 and V2 stay in separate modules and routes,
-with no detection, conversion or fallback.
+complete decoded payload digest. Encoded chunk bytes use a canonical base64 JSON
+string rather than an integer array. V1 and V2 stay in separate modules and
+routes, with no detection, conversion or fallback.
 
 :::warning Development contract
-The V2 DTO and incremental codec are implemented, but signed HTTP session
-ownership and response streaming must pass AC-006 before V2 is publishable.
-Continue using explicit V1 routes until that release is announced.
+The V2 DTO, codec, bounded registry and signed host/client integration passed
+clean-source release certification at `3cd0f48`. V2 remains unpublished on the
+post-1.0 development line. Continue using explicit V1 routes until that release
+is announced.
 :::

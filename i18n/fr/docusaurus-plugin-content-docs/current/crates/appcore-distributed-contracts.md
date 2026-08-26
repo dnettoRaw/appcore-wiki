@@ -38,12 +38,13 @@ nonce/idempotence ou details d'erreur distante.
 Le module post-1.0 `peer_rpc::v2` définit une famille explicite de frames
 open/chunk/commit/cancel. Open lie bytes décodés agrégés, taille/nombre de
 chunks et deadline; chaque chunk lie séquence, taille décodée exacte et digest;
-commit lie le digest du payload décodé complet. V1 et V2 restent dans des
-modules et routes séparés, sans détection, conversion ni fallback.
+commit lie le digest du payload décodé complet. Les octets encodés utilisent
+une chaîne JSON base64 canonique, pas un tableau d'entiers. V1 et V2 restent
+dans des modules et routes séparés, sans détection, conversion ni fallback.
 
 :::warning Contrat en développement
-Les DTO V2 et le codec incrémental sont implémentés, mais l'ownership de session
-HTTP signée et le streaming de réponse doivent encore passer AC-006 avant
-publication. Continuez à utiliser les routes V1 explicites jusqu'à l'annonce de
-cette release.
+Les DTO, codec, registre borné et intégration host/client signée V2 ont réussi
+la certification release clean-source à `3cd0f48`. V2 reste non publié sur la
+ligne de développement post-1.0. Continuez à utiliser les routes V1 explicites
+jusqu'à l'annonce de cette release.
 :::

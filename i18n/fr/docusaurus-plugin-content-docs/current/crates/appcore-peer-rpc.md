@@ -41,7 +41,8 @@ d'erreur distante.
 `PeerRpcChunkEncoder` et `PeerRpcChunkAssembler` traitent un stream V2
 explicitement sélectionné un chunk borné à la fois. Les limites par défaut sont
 64 KiB décodés par chunk, 96 KiB encodés, 64 MiB agrégés et 1 024 chunks.
-Séquence, taille décodée exacte, SHA-256 par chunk et total, deadline,
+Les octets encodés utilisent une chaîne JSON base64 canonique, jamais un tableau
+d'entiers. Séquence, taille décodée exacte, SHA-256 par chunk et total, deadline,
 annulation et quota après gzip échouent de manière fermée. Un commit échoué
 n'expose jamais le sink partiel comme complet.
 
@@ -61,6 +62,8 @@ vérifie tenant, cluster, cible, trace, deadline, idempotence command et nonce
 replay borné. Les frames ambiguës ne sont pas répétées; l'annulation best effort
 est soutenue par le nettoyage autoritaire de la deadline.
 
-Cette API ne négocie pas le transport. `/v1/peer/*` analyse uniquement V1 et
-n'infère jamais V2. Les preuves de benchmark et certification restent des gates
-AC-006.
+La certification release clean-source à `3cd0f48` a réussi avec un payload
+incompressible de 64 MiB, 1 024 chunks, une frame JSON maximale de 87 660
+octets, un p99 de 1,079 seconde et un pic RSS de suite de 350 096 KiB. Cette API
+ne négocie pas le transport. `/v1/peer/*` analyse uniquement V1 et n'infère
+jamais V2. V2 est certifié sur la ligne de développement post-1.0, non publiée.
