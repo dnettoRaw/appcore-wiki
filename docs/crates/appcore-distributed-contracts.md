@@ -42,6 +42,12 @@ complete decoded payload digest. Encoded chunk bytes use a canonical base64 JSON
 string rather than an integer array. V1 and V2 stay in separate modules and
 routes, with no detection, conversion or fallback.
 
+The opt-in binary representation wraps the same V2 DTOs with the fixed
+`APCRPC2B` marker, codec version, frame/reply kind and exact Postcard length.
+Chunk bytes remain native and every encode/decode is capped at 256 KiB. JSON
+fixtures do not change. A marker, version, kind, length or codec mismatch fails
+before dispatch and never selects another representation.
+
 :::warning Published alpha contract
 The V2 DTO, codec, bounded registry and signed host/client integration passed
 clean-source release certification at `8d26cc3` and is published in

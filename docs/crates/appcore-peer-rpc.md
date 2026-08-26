@@ -64,6 +64,14 @@ tenant, cluster, target, trace, deadline, command idempotency and bounded nonce
 replay. Ambiguous frames are not retried; best-effort cancellation is backed by
 authoritative deadline cleanup.
 
+JSON remains the V2 default. Binary framing requires
+`with_v2_binary_codec()` on the host and
+`with_stream_codec_v2(PeerRpcStreamCodecV2::Binary)` on the client. Separate
+query/command paths require the exact Postcard media type and bind the token to
+the exact binary body. Binary bodies never use HTTP gzip; decoded bounds,
+optional chunk gzip and integrity hashes remain unchanged. Missing or
+mismatched binary support is terminal and never falls back to JSON.
+
 ## Typed V2 rejections
 
 The next 2.0 prerelease returns `PeerRpcWireErrorV2` from explicit V2
@@ -85,8 +93,8 @@ supported for legacy deployments and is never upgraded, converted or disabled
 automatically.
 :::
 
-Clean-source release certification at `8d26cc3` passed for an incompressible
-64 MiB payload with 1,024 chunks, an 87,660-byte largest JSON frame,
-1.092-second p99 and 366,432 KiB whole-suite peak RSS. This API does not
-negotiate a transport. `/v1/peer/*` parses only V1 and never infers V2. V2 is
-published only on the opt-in `2.0.0-alpha.1` line.
+Clean-source release certification at `6f3bc38` measured 25% fewer body bytes,
+93% lower codec p99 and a 14% smaller bounded codec buffer for binary frames
+from 64 KiB through 4 MiB. The 1 KiB case improved 38%/65%/18%; whole-suite
+peak RSS was 306,448 KiB. `/v1/peer/*` parses only V1 and never infers V2. The
+binary codec remains development-only until Linux/Windows evidence is attached.

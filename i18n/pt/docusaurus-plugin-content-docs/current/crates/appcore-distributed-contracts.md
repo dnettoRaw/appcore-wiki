@@ -43,6 +43,12 @@ completo. Bytes codificados usam uma string JSON base64 canônica, não array de
 inteiros. V1 e V2 permanecem em módulos e rotas separados, sem detecção,
 conversão ou fallback.
 
+A representação binária opt-in envolve os mesmos DTOs V2 com marcador fixo
+`APCRPC2B`, versão do codec, tipo frame/reply e tamanho Postcard exato. Bytes de
+chunk continuam nativos e todo encode/decode é limitado a 256 KiB. Fixtures
+JSON não mudam. Mismatch de marcador, versão, tipo, tamanho ou codec falha antes
+do dispatch e nunca seleciona outra representação.
+
 :::warning Contrato alpha publicado
 Os DTOs, codec, registro limitado e integração host/client assinada V2 passaram
 na certificação release clean-source em `8d26cc3` e estão publicados em

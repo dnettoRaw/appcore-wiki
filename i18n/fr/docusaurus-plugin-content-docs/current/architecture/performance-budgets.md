@@ -25,8 +25,8 @@ le même gate et publie l'artefact JSON.
 - contention du routing state Gateway avec 1, 100 et 1 000 tenants, plus une
   sonde d'indépendance des verrous entre tenants ;
 - 32 échanges HTTP/1.1 séquentiels sur une seule connexion keep-alive acceptée ;
-- encodage, décodage, intégrité et replay Peer RPC de 1 KiB à 4 MiB, plus 4 096
-  round trips de rejet V2 typé ;
+- encodage, décodage, intégrité et replay JSON/base64 et binaire/natif Peer RPC
+  de 1 KiB à 4 MiB, plus 4 096 round trips de rejet V2 typé ;
 - startup du scheduler et lots bornés de 64 tasks arrivées à échéance.
 
 Les fixtures ne contiennent aucun secret statique. Chaque exécution obtient du
@@ -126,6 +126,16 @@ p99 de recovery, 0,35 ms p99 de route locale et 0,91 ms p99 de route fédérée.
 Les tests Redis, proxy externe et perte d'owner restent des preuves séparées;
 les artefacts Linux et Windows restent requis.
 
+AC-014 ajoute une représentation binaire opt-in explicite aux DTO Peer RPC V2
+existants tout en préservant les fixtures JSON/base64 exactes et toutes les
+routes V1. Le gate exige que les octets du body binaire restent à 80 % ou moins
+du JSON, que le p99 du codec binaire ne dépasse pas celui du JSON et que le
+buffer borné reste à 90 % ou moins du JSON. Le run macOS/aarch64 propre à
+`6f3bc38` a mesuré 25 % d'octets body en moins, un p99 codec réduit de 93 % et
+un buffer réduit de 14 % entre 64 Kio et 4 Mio; le pic RSS total était de
+306 448 Kio. L'absence du support binaire échoue sans retry JSON. Les artefacts
+Linux et Windows restent requis.
+
 Suivez le benchmark dans [AC-022 public](https://github.com/dnettoRaw/app-core-public/issues/24)
 et la correction des commands dans [AC-001 public](https://github.com/dnettoRaw/app-core-public/issues/3).
 La correction des queries est suivie dans [AC-002 public](https://github.com/dnettoRaw/app-core-public/issues/4).
@@ -138,4 +148,5 @@ Le pool fixe du scheduler est suivi dans [AC-018 public](https://github.com/dnet
 La télémétrie Gateway bornée est suivie dans [AC-020 public](https://github.com/dnettoRaw/app-core-public/issues/22).
 La sélection bornée des workers est suivie dans [AC-012 public](https://github.com/dnettoRaw/app-core-public/issues/14).
 La HA Gateway est suivie dans [AC-013 public](https://github.com/dnettoRaw/app-core-public/issues/15).
+Le framing binaire Peer RPC est suivi dans [AC-014 public](https://github.com/dnettoRaw/app-core-public/issues/16).
 Les artefacts plateforme restants de l'erreur wire typée sont suivis dans [AC-021 public](https://github.com/dnettoRaw/app-core-public/issues/23).

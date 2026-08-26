@@ -65,6 +65,14 @@ vérifie tenant, cluster, cible, trace, deadline, idempotence command et nonce
 replay borné. Les frames ambiguës ne sont pas répétées; l'annulation best effort
 est soutenue par le nettoyage autoritaire de la deadline.
 
+JSON reste le défaut V2. Le framing binaire exige `with_v2_binary_codec()` sur
+le host et `with_stream_codec_v2(PeerRpcStreamCodecV2::Binary)` sur le client.
+Des paths query/command séparés exigent le media type Postcard exact et lient le
+token au body binaire exact. Les bodies binaires n'utilisent jamais gzip HTTP;
+bornes décodées, gzip optionnel du chunk et hashes d'intégrité restent
+inchangés. Un support binaire absent ou incompatible est terminal, sans
+fallback JSON.
+
 ## Rejets V2 typés
 
 La prochaine préversion 2.0 retourne `PeerRpcWireErrorV2` sur les endpoints V2
@@ -86,8 +94,8 @@ reste supporté pour les deployments legacy et n'est jamais mis à niveau,
 converti ou désactivé automatiquement.
 :::
 
-La certification release clean-source à `8d26cc3` a réussi avec un payload
-incompressible de 64 MiB, 1 024 chunks, une frame JSON maximale de 87 660
-octets, un p99 de 1,092 seconde et un pic RSS de suite de 366 432 KiB. Cette API
-ne négocie pas le transport. `/v1/peer/*` analyse uniquement V1 et n'infère
-jamais V2. V2 est publié uniquement sur la ligne opt-in `2.0.0-alpha.1`.
+La certification release clean-source à `6f3bc38` mesure 25 % d'octets body en
+moins, un p99 codec réduit de 93 % et un buffer borné réduit de 14 % entre
+64 Kio et 4 Mio. Le cas 1 Kio progresse de 38 %/65 %/18 %; le RSS maximal de la
+suite est 306 448 Kio. `/v1/peer/*` analyse uniquement V1 et n'infère jamais V2.
+Le codec binaire reste en développement sans preuve Linux/Windows.

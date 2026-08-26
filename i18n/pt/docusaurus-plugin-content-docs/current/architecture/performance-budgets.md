@@ -25,8 +25,8 @@ publica o artefato JSON.
 - contenção do routing state do Gateway com 1, 100 e 1.000 tenants, mais uma
   prova de independência de lock entre tenants;
 - 32 trocas HTTP/1.1 sequenciais por uma única conexão keep-alive aceita;
-- encode, decode, integridade e replay do Peer RPC entre 1 KiB e 4 MiB, mais
-  4.096 round trips de rejeição V2 tipada;
+- encode, decode, integridade e replay JSON/base64 e binário/nativo do Peer RPC
+  entre 1 KiB e 4 MiB, mais 4.096 round trips de rejeição V2 tipada;
 - startup do scheduler e lotes limitados de 64 tasks vencidas.
 
 As fixtures não contêm segredo estático. Cada execução obtém material secreto
@@ -122,6 +122,15 @@ p99 de rota local e 0,91 ms p99 de rota federada. Testes Redis, proxy externo e
 perda de owner continuam como evidências separadas; artefatos Linux e Windows
 ainda são necessários.
 
+AC-014 adiciona uma representação binária opt-in explícita para os DTOs Peer
+RPC V2 existentes, preservando as fixtures JSON/base64 exatas e todas as rotas
+V1. O gate exige que bytes de body binário fiquem em até 80% do JSON, que o p99
+do codec binário não ultrapasse o JSON e que o buffer limitado fique em até
+90% do JSON. A execução limpa macOS/aarch64 em `6f3bc38` mediu 25% menos bytes
+de body, 93% menos p99 de codec e buffer 14% menor entre 64 KiB e 4 MiB; o pico
+RSS total foi 306.448 KiB. Suporte binário ausente falha sem retry JSON.
+Artefatos Linux e Windows ainda são necessários.
+
 Veja o benchmark em [AC-022 pública](https://github.com/dnettoRaw/app-core-public/issues/24)
 e a correção de commands em [AC-001 pública](https://github.com/dnettoRaw/app-core-public/issues/3).
 A correção de queries está em [AC-002 pública](https://github.com/dnettoRaw/app-core-public/issues/4).
@@ -134,4 +143,5 @@ O pool fixo do scheduler está em [AC-018 pública](https://github.com/dnettoRaw
 A telemetria limitada do Gateway está em [AC-020 pública](https://github.com/dnettoRaw/app-core-public/issues/22).
 A seleção limitada de workers está em [AC-012 pública](https://github.com/dnettoRaw/app-core-public/issues/14).
 A HA do Gateway está na [AC-013 pública](https://github.com/dnettoRaw/app-core-public/issues/15).
+O framing binário do Peer RPC está na [AC-014 pública](https://github.com/dnettoRaw/app-core-public/issues/16).
 Os artefatos de plataforma restantes do erro wire tipado estão na [AC-021 pública](https://github.com/dnettoRaw/app-core-public/issues/23).

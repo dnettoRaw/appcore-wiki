@@ -42,6 +42,13 @@ commit lie le digest du payload décodé complet. Les octets encodés utilisent
 une chaîne JSON base64 canonique, pas un tableau d'entiers. V1 et V2 restent
 dans des modules et routes séparés, sans détection, conversion ni fallback.
 
+La représentation binaire opt-in encadre les mêmes DTO V2 avec le marqueur fixe
+`APCRPC2B`, la version codec, le type frame/reply et la taille Postcard exacte.
+Les octets de chunk restent natifs et tout encodage/décodage est borné à
+256 Kio. Les fixtures JSON ne changent pas. Un mismatch de marqueur, version,
+type, taille ou codec échoue avant dispatch et ne sélectionne jamais une autre
+représentation.
+
 :::warning Contrat alpha publié
 Les DTO, codec, registre borné et intégration host/client signée V2 ont réussi
 la certification release clean-source à `8d26cc3` et sont publiés en

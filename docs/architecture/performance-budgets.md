@@ -25,8 +25,8 @@ publish the JSON artifact.
 - Gateway routing-state contention with 1, 100 and 1,000 tenants, plus a
   cross-tenant lock-independence probe;
 - 32 sequential HTTP/1.1 exchanges through one accepted keep-alive connection;
-- Peer RPC encode, decode, integrity and replay validation from 1 KiB to 4 MiB,
-  plus 4,096 typed V2 rejection round trips;
+- Peer RPC JSON/base64 and binary/native encode, decode, integrity and replay
+  validation from 1 KiB to 4 MiB, plus 4,096 typed V2 rejection round trips;
 - scheduler startup and bounded batches of 64 due tasks.
 
 The fixtures contain no static secret. Every run obtains temporary secret
@@ -122,6 +122,15 @@ recovery p99, 0.35 ms local-route p99 and 0.91 ms federated-route p99. Redis,
 external-proxy and owner-loss tests remain separate evidence; Linux and
 Windows artifacts remain required.
 
+AC-014 adds an explicit opt-in binary representation for the existing V2 Peer
+RPC DTOs while preserving the exact JSON/base64 fixtures and all V1 routes.
+The gate requires binary body bytes to stay at or below 80% of JSON, binary
+codec p99 not to exceed JSON and the bounded codec buffer to stay at or below
+90% of JSON. The clean macOS/aarch64 run at `6f3bc38` measured 25% fewer body
+bytes, 93% lower codec p99 and a 14% smaller buffer from 64 KiB through 4 MiB;
+whole-suite peak RSS was 306,448 KiB. Missing binary support fails without a
+JSON retry. Linux and Windows artifacts remain required.
+
 Follow the benchmark in [public AC-022](https://github.com/dnettoRaw/app-core-public/issues/24)
 and the command correction in [public AC-001](https://github.com/dnettoRaw/app-core-public/issues/3).
 The query correction is tracked in [public AC-002](https://github.com/dnettoRaw/app-core-public/issues/4).
@@ -134,3 +143,4 @@ The fixed scheduler pool is tracked in [public AC-018](https://github.com/dnetto
 Bounded Gateway telemetry is tracked in [public AC-020](https://github.com/dnettoRaw/app-core-public/issues/22).
 Bounded worker selection is tracked in [public AC-012](https://github.com/dnettoRaw/app-core-public/issues/14).
 Gateway HA is tracked in [public AC-013](https://github.com/dnettoRaw/app-core-public/issues/15).
+Binary Peer RPC framing is tracked in [public AC-014](https://github.com/dnettoRaw/app-core-public/issues/16).
