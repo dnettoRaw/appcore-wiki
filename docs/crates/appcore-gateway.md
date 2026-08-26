@@ -108,7 +108,7 @@ counters expose index health without unbounded labels.
 
 This is development status, not functionality in the stable `1.0.0` package.
 The private Runtime beta through
-[`ab0422b`](https://github.com/dnettoRaw/AppCore-Runtime/commit/ab0422b)
+[`b9af862`](https://github.com/dnettoRaw/AppCore-Runtime/commit/b9af862)
 defines `GatewayRegistryProvider`, implements `RedisGatewayRegistryProvider`
 and adds the bounded `GatewayHaCoordinator`. It uses monotonic tenant-local instance epochs,
 exact instance/worker-generation fences, one Redis Cluster hash slot per
@@ -144,9 +144,10 @@ The authenticated V2 federation endpoint now binds the exact request body,
 source/target epochs and worker generation to a separate short-lived one-use
 credential. The target validates the shared claim before touching the socket,
 returns typed AC-021 errors, and the origin completes the fence before accepting
-the response. The E2E passes with two Gateway states and independent Redis 7.4
-connections. Deployment load-balancer certification is still pending, so this
-is not yet a deployable HA profile and must never fall back locally. Track
+the response. The E2E passes with two Gateway states, independent Redis 7.4
+connections and Caddy 2.11.4 as the only advertised route to the target. Owner
+loss/recovery certification is still pending, so this is not yet a deployable
+HA profile and must never fall back locally. Track
 [public AC-013](https://github.com/dnettoRaw/app-core-public/issues/15).
 
 ## 2.0 alpha: bounded worker selection

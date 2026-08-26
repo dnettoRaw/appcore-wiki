@@ -114,7 +114,7 @@ rebuild et d'incohérence exposent la santé sans labels non bornés.
 
 Ceci décrit l'état de développement, pas une fonctionnalité du paquet stable
 `1.0.0`. La beta privée du Runtime jusqu'au commit
-[`ab0422b`](https://github.com/dnettoRaw/AppCore-Runtime/commit/ab0422b)
+[`b9af862`](https://github.com/dnettoRaw/AppCore-Runtime/commit/b9af862)
 définit `GatewayRegistryProvider`, implémente `RedisGatewayRegistryProvider` et
 ajoute le `GatewayHaCoordinator` borné. Elle utilise des epochs monotones par tenant,
 des fences exactes instance/génération worker, un hash slot Redis Cluster par
@@ -152,10 +152,10 @@ L'endpoint V2 de fédération authentifié lie maintenant le body exact, les epo
 source/target et la génération worker à un credential séparé, court et à usage
 unique. La target valide le claim partagé avant de toucher le socket, retourne
 des erreurs AC-021 typées et l'origin complète le fence avant d'accepter la
-réponse. L'E2E passe avec deux états Gateway et des connexions Redis 7.4
-indépendantes. La certification via le load balancer de déploiement reste en
-attente; le profil HA n'est donc pas encore déployable et aucun fallback local
-n'est permis. Suivez
+réponse. L'E2E passe avec deux états Gateway, des connexions Redis 7.4
+indépendantes et Caddy 2.11.4 comme seule route annoncée vers la target. La
+certification perte/recovery de l'owner reste en attente; le profil HA n'est
+donc pas encore déployable et aucun fallback local n'est permis. Suivez
 [AC-013 public](https://github.com/dnettoRaw/app-core-public/issues/15).
 
 ## Alpha 2.0 : sélection bornée des workers
