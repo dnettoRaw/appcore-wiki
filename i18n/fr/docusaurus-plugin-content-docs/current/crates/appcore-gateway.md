@@ -114,7 +114,7 @@ rebuild et d'incohérence exposent la santé sans labels non bornés.
 
 Ceci décrit l'état de développement, pas une fonctionnalité du paquet stable
 `1.0.0`. La beta privée du Runtime jusqu'au commit
-[`68a3013`](https://github.com/dnettoRaw/AppCore-Runtime/commit/68a3013)
+[`840c8a8`](https://github.com/dnettoRaw/AppCore-Runtime/commit/840c8a8)
 définit `GatewayRegistryProvider`, implémente `RedisGatewayRegistryProvider` et
 ajoute le `GatewayHaCoordinator` borné. Elle utilise des epochs monotones par tenant,
 des fences exactes instance/génération worker, un hash slot Redis Cluster par
@@ -138,10 +138,13 @@ renouvelle ou annule l'ensemble exact dans des rounds serialisés et limite
 chaque round à 64 opérations concurrentes et cinq secondes. Le mode
 single-instance sans HA conserve son comportement existant.
 
-Le replay Runtime de l'ownership worker/session et l'endpoint V2 de fédération
-authentifié restent en attente. Tant qu'ils ne sont pas intégrés et certifiés,
-ces composants n'activent pas HA et ne doivent jamais utiliser le répertoire
-local comme fallback. Suivez
+Le Runtime possède maintenant cette task et rejoue chaque worker live borné et
+session non expirée avant `Healthy`. Un nouveau socket entre dans l'ownership
+partagé avant admission locale; disconnect, prune heartbeat et shutdown
+suppriment les records exacts. Claim/completion partagé dans le vrai chemin
+request et endpoint V2 de fédération authentifié restent en attente. Tant
+qu'ils ne sont pas intégrés et certifiés, ce n'est pas un profil HA deux
+instances déployable et aucun fallback local n'est permis. Suivez
 [AC-013 public](https://github.com/dnettoRaw/app-core-public/issues/15).
 
 ## Alpha 2.0 : sélection bornée des workers

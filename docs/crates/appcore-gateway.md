@@ -108,7 +108,7 @@ counters expose index health without unbounded labels.
 
 This is development status, not functionality in the stable `1.0.0` package.
 The private Runtime beta through
-[`68a3013`](https://github.com/dnettoRaw/AppCore-Runtime/commit/68a3013)
+[`840c8a8`](https://github.com/dnettoRaw/AppCore-Runtime/commit/840c8a8)
 defines `GatewayRegistryProvider`, implements `RedisGatewayRegistryProvider`
 and adds the bounded `GatewayHaCoordinator`. It uses monotonic tenant-local instance epochs,
 exact instance/worker-generation fences, one Redis Cluster hash slot per
@@ -131,10 +131,13 @@ rejects HTTP/WebSocket admission, dispatch and response completion outside
 each round to 64 concurrent operations and five seconds. Unconfigured
 single-instance state keeps its existing behavior.
 
-Runtime worker/session ownership replay and the authenticated V2 federation
-endpoint are still pending. Until both are integrated and certified, these
-components do not enable Gateway HA and must never fall back to the
-process-local directory. Track
+The Runtime now owns that task and replays every bounded live worker and
+unexpired session before `Healthy`. New sockets reach shared ownership before
+local admission; disconnect, heartbeat pruning and shutdown remove exact
+records. Shared claim/completion in the real request path and the authenticated
+V2 federation endpoint are still pending. Until both are integrated and
+certified, this is not a deployable two-instance HA profile and must never fall
+back to the process-local directory. Track
 [public AC-013](https://github.com/dnettoRaw/app-core-public/issues/15).
 
 ## 2.0 alpha: bounded worker selection
