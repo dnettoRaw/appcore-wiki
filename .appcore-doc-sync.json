@@ -1,9 +1,9 @@
 {
   "schemaVersion": 1,
-  "acceptedAt": "2026-08-26T14:00:03.053Z",
-  "runtimeCommit": "e11fe5678480f249d81e3c0c14ed5ad5a9b1c79f",
+  "acceptedAt": "2026-08-26T14:01:04.260Z",
+  "runtimeCommit": "f4c25efad9bcb633de625a223d4c66ff4663e5a4",
   "runtimeRemote": "git@github.com:dnettoRaw/AppCore-Runtime.git",
-  "relevantDigest": "f5e0b7c1706015e1d50151e1692d53cd611342b098e85dc6e12c3e028c520aab",
+  "relevantDigest": "b5c8efe0dc2e21f7b541ada8c845137e77da0c6b9bbc1528779e2e76ee921171",
   "publicCrateGraphDigest": "117a5fe755838c9f26fc8667354c7fce8c967811975965f3125cbbda2fe43f91",
   "files": {
     "AGENTS.md": "48e797f166b071322fbdbb8d65a91cb89c87425667a6eae441f7212fe48c64a4",
@@ -390,7 +390,7 @@
     "release/gateway-tenant-migration.md": "ffaf2930dec2121d5968925eca681ef0e83595695594c12ff7301089e25d5392",
     "release/outbox-v2-migration.md": "7efc1b4acb59f7f41ca47733541835af2700f07deb0f6918df5ade92b440d911",
     "release/peer-rpc-v2-streaming.md": "c28a6fbabf4a618df7d5c0bd553784e06882a16fd0748c0f160a352feff98c46",
-    "release/sqlite-sync-provider-v1.md": "37b182255f01f9d6b79b7bc4293accb9d1df5397ce794d3abeab758e6c0af890",
+    "release/sqlite-sync-provider-v1.md": "cc49390c0108defb4d67e1ca1c5608bb1a4599feb1bc6463c4c7b60de148978d",
     "release/storage-capability-descriptor-v1.md": "c6b322e55cc55c1a5a84bb1ec6802074deb2a77e35b8ceaf84398d9607bdc4b1",
     "tests/three-artifact-app/Cargo.toml": "392c1794b65c01687b7202fc3ad32c222de567a50dc98e088528026060ba1b23",
     "tests/three-artifact-app/README.md": "0f6e70cafaf00e35a0be4d28ec39892e062db1910ec991781f59d3c78898419c",
