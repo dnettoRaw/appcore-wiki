@@ -22,7 +22,8 @@ le même gate et publie l'artefact JSON.
 
 - startup manifest-first et dispatch concurrent des commands et queries ;
 - enqueue, lecture et ACK de l'outbox près de 1, 10 et 64 MiB ;
-- contention du routing state Gateway avec 1, 100 et 1 000 tenants ;
+- contention du routing state Gateway avec 1, 100 et 1 000 tenants, plus une
+  sonde d'indépendance des verrous entre tenants ;
 - encodage, décodage, intégrité et replay Peer RPC de 1 KiB à 4 MiB ;
 - startup du scheduler et lots bornés de 64 tasks arrivées à échéance.
 
@@ -46,6 +47,14 @@ des query endpoints du mutex du host et applique
 le même gate de quatre workers sur huit. Son test déterministe gèle le registre
 et exige le chevauchement des huit appels d'endpoint.
 
+AC-003 remplace la map publique globale des tenants Gateway par un répertoire
+borné de 32 shards et un verrou par tenant. Le gate conserve le verrou
+d'écriture d'un tenant tout en exigeant que celui d'un autre tenant reste
+disponible. Conserver l'ancienne map rétablirait la sérialisation ou dupliquerait
+l'état mutable ; cette correction est donc réservée au prochain major SemVer et
+l'ancien champ est supprimé.
+
 Suivez le benchmark dans [AC-022 public](https://github.com/dnettoRaw/app-core-public/issues/24)
 et la correction des commands dans [AC-001 public](https://github.com/dnettoRaw/app-core-public/issues/3).
 La correction des queries est suivie dans [AC-002 public](https://github.com/dnettoRaw/app-core-public/issues/4).
+La correction Gateway est suivie dans [AC-003 public](https://github.com/dnettoRaw/app-core-public/issues/5).

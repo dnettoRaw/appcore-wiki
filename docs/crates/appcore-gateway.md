@@ -25,6 +25,12 @@ registry and resolver, bounded worker/client connection handles,
 Axum router factory. Opaque content-envelope transport contracts are reexported
 for encrypted payload routing.
 
+> **Next-major migration:** direct access to `GatewayState::tenants` has been
+> removed so unrelated tenants no longer share one lock. Use
+> `tenant_partition`, `tenant_partition_or_insert`, `tenant_count` and
+> `connection_count`. This change is reserved for the next SemVer major and
+> must not be published as 1.0.x.
+
 The gateway resolves a tenant from the deployment-owned domain suffix or an
 explicit local-test query parameter, authenticates connections when configured,
 routes Peer RPC envelopes and mesh-relayed Peer RPC HTTP requests only inside

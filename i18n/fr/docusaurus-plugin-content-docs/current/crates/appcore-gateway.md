@@ -25,6 +25,13 @@ et resolver de capability, connexions worker/client bornées,
 factory du router Axum. Les contrats content-envelope opaque sont réexportés
 pour router des payloads chiffrés.
 
+> **Migration du prochain major :** l'accès direct à
+> `GatewayState::tenants` a été supprimé afin que des tenants indépendants ne
+> partagent plus un verrou unique. Utilisez `tenant_partition`,
+> `tenant_partition_or_insert`, `tenant_count` et `connection_count`. Cette
+> modification est réservée au prochain major SemVer et ne doit pas être
+> publiée en 1.0.x.
+
 Le gateway résout le tenant depuis le suffixe de domaine défini par le
 deployment ou depuis un paramètre de query réservé aux tests locaux, authentifie
 les connexions lorsque configuré, route les enveloppes Peer RPC et les requests

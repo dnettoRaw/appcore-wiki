@@ -25,6 +25,13 @@ e resolver de capability, conexoes bounded de worker/client,
 heartbeat e factory do router Axum. Contratos de content-envelope opaco são
 reexportados para roteamento de payload cifrado.
 
+> **Migração do próximo major:** o acesso direto a
+> `GatewayState::tenants` foi removido para que tenants independentes não
+> compartilhem um único lock. Use `tenant_partition`,
+> `tenant_partition_or_insert`, `tenant_count` e `connection_count`. Esta
+> mudança está reservada ao próximo major SemVer e não pode ser publicada como
+> 1.0.x.
+
 O gateway resolve o tenant pelo sufixo de dominio definido pelo deployment ou
 por parametro de query usado em teste local, autentica conexoes quando
 configurado, roteia envelopes Peer RPC e requests HTTP Peer RPC via mesh relay
