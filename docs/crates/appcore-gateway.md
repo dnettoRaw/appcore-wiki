@@ -107,10 +107,10 @@ counters expose index health without unbounded labels.
 ## 2.0 beta development: Redis HA registry
 
 This is development status, not functionality in the stable `1.0.0` package.
-The private Runtime beta at
-[`5429d92`](https://github.com/dnettoRaw/AppCore-Runtime/commit/5429d92)
-defines `GatewayRegistryProvider` and implements
-`RedisGatewayRegistryProvider`. It uses monotonic tenant-local instance epochs,
+The private Runtime beta through
+[`68a3013`](https://github.com/dnettoRaw/AppCore-Runtime/commit/68a3013)
+defines `GatewayRegistryProvider`, implements `RedisGatewayRegistryProvider`
+and adds the bounded `GatewayHaCoordinator`. It uses monotonic tenant-local instance epochs,
 exact instance/worker-generation fences, one Redis Cluster hash slot per
 tenant, bounded timeouts/concurrency and separately resolved zeroizing
 credentials. Plain Redis endpoints are loopback-only; remote endpoints require
@@ -123,10 +123,18 @@ all three capacity walls, connection kill, explicit reconnect and recovery
 with a higher epoch. Windows GNU cross-compilation passed; the macOS-hosted
 Linux cross-check lacked a Linux OpenSSL sysroot and is not Linux evidence.
 
-The authenticated V2 federation endpoint and the Runtime
-`Healthy`/`Isolated`/`Recovering` lifecycle are still pending. Until both are
-integrated and certified, this provider alone does not enable Gateway HA and
-must never fall back to the process-local directory. Track
+The lifecycle gate in
+[`756b794`](https://github.com/dnettoRaw/AppCore-Runtime/commit/756b794)
+rejects HTTP/WebSocket admission, dispatch and response completion outside
+`Healthy`. The coordinator acquires every configured tenant epoch before
+`Healthy`, renews or rolls back the exact set in serialized rounds, and limits
+each round to 64 concurrent operations and five seconds. Unconfigured
+single-instance state keeps its existing behavior.
+
+Runtime worker/session ownership replay and the authenticated V2 federation
+endpoint are still pending. Until both are integrated and certified, these
+components do not enable Gateway HA and must never fall back to the
+process-local directory. Track
 [public AC-013](https://github.com/dnettoRaw/app-core-public/issues/15).
 
 ## 2.0 alpha: bounded worker selection

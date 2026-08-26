@@ -113,10 +113,10 @@ rebuild et d'incohérence exposent la santé sans labels non bornés.
 ## Développement beta 2.0 : registre HA Redis
 
 Ceci décrit l'état de développement, pas une fonctionnalité du paquet stable
-`1.0.0`. La beta privée du Runtime au commit
-[`5429d92`](https://github.com/dnettoRaw/AppCore-Runtime/commit/5429d92)
-définit `GatewayRegistryProvider` et implémente
-`RedisGatewayRegistryProvider`. Elle utilise des epochs monotones par tenant,
+`1.0.0`. La beta privée du Runtime jusqu'au commit
+[`68a3013`](https://github.com/dnettoRaw/AppCore-Runtime/commit/68a3013)
+définit `GatewayRegistryProvider`, implémente `RedisGatewayRegistryProvider` et
+ajoute le `GatewayHaCoordinator` borné. Elle utilise des epochs monotones par tenant,
 des fences exactes instance/génération worker, un hash slot Redis Cluster par
 tenant, timeout/concurrency bornés et des credentials zeroizing résolus
 séparément. Redis sans TLS reste limité au loopback; un endpoint distant exige
@@ -130,10 +130,18 @@ recovery avec epoch supérieur. La cross-compilation Windows GNU a réussi; le
 cross-check Linux depuis macOS manquait d'un sysroot OpenSSL Linux et ne
 constitue pas une preuve Linux.
 
-L'endpoint V2 de fédération authentifié et le lifecycle Runtime
-`Healthy`/`Isolated`/`Recovering` restent en attente. Tant qu'ils ne sont pas
-intégrés et certifiés, le provider seul n'active pas HA et ne doit jamais
-utiliser le répertoire local comme fallback. Suivez
+Le gate lifecycle du commit
+[`756b794`](https://github.com/dnettoRaw/AppCore-Runtime/commit/756b794)
+rejette admission HTTP/WebSocket, dispatch et completion hors de `Healthy`. Le
+coordinateur acquiert tous les epochs tenant configurés avant `Healthy`,
+renouvelle ou annule l'ensemble exact dans des rounds serialisés et limite
+chaque round à 64 opérations concurrentes et cinq secondes. Le mode
+single-instance sans HA conserve son comportement existant.
+
+Le replay Runtime de l'ownership worker/session et l'endpoint V2 de fédération
+authentifié restent en attente. Tant qu'ils ne sont pas intégrés et certifiés,
+ces composants n'activent pas HA et ne doivent jamais utiliser le répertoire
+local comme fallback. Suivez
 [AC-013 public](https://github.com/dnettoRaw/app-core-public/issues/15).
 
 ## Alpha 2.0 : sélection bornée des workers
