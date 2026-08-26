@@ -39,4 +39,12 @@ checkpoint são validados na escrita e na leitura. O receiver valida o batch
 completo, a aritmética de sequence e cada limite de record antes de alterar log
 ou checkpoint; um evento inválido no fim não deixa append parcial.
 
+:::warning Atualização da outbox no próximo major
+No próximo major, `FileSyncOutbox` aceita apenas o journal binário explícito
+`appcore-sync-outbox-v2`. Arquivos V1, sem versão ou futuros falham com
+`NO MORE SUPPORTED PLEASE UPDATE`; não existe conversão automática. Drene V1
+antes do upgrade e V2 antes do rollback. Enqueue e ACK passam a acrescentar e
+sincronizar um frame encadeado por integridade, sem reescrever o arquivo todo.
+:::
+
 **Maturidade:** perfil conservador estável com decode V1 estrito.

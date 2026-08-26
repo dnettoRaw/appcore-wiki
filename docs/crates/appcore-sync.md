@@ -39,4 +39,12 @@ and hashes are validated on write and load. A receiver validates the complete
 batch, sequence arithmetic and every record bound before any log or checkpoint
 mutation, so a late invalid event cannot leave a partial append.
 
+:::warning Next-major outbox update
+The next-major `FileSyncOutbox` accepts only the explicit
+`appcore-sync-outbox-v2` binary journal. V1, unversioned and future files fail
+with `NO MORE SUPPORTED PLEASE UPDATE`; there is no automatic conversion. Drain
+V1 before upgrading and drain V2 before rollback. Enqueue and ACK then append
+and sync one integrity-chained frame instead of rewriting the complete file.
+:::
+
 **Maturity:** stable conservative profile with strict V1 decoding.

@@ -32,6 +32,25 @@ Le log est la preuve utilisée par replay. Sans lui, recovery devrait faire conf
 
 Checkpoint garde dernière séquence acceptée et batch hash par peer dans `# appcore-sync-checkpoint-v1`. Sans checkpoint, recovery devrait replay tout l'historique ou deviner depuis une projection.
 
+## Comment l'outbox durable récupère-t-elle ?
+
+L'outbox fichier de la prochaine version majeure utilise le marqueur binaire
+explicite `appcore-sync-outbox-v2`. Chaque enqueue ou ACK ajoute et synchronise
+une frame bornée. Les ordinaux, longueurs initiale/finale et une chaîne SHA-256
+détectent corruption, duplication et réordonnancement. Seule une frame finale
+incomplète est tronquée après un crash ; une frame complète invalide échoue de
+manière fermée.
+
+L'espace acquitté est récupéré par compaction atomique, qui écrit uniquement
+les messages en attente et change la génération. Un autre processus avec une
+vue ancienne détecte ce changement et recharge. Le journal reste limité à 64
+MiB et réserve assez de tail pour acquitter le message frontal déjà accepté.
+
+Il s'agit d'une frontière explicite de format persistant. Les fichiers V1, sans
+version ou futurs retournent `NO MORE SUPPORTED PLEASE UPDATE` ; le Runtime ne
+les déduit ni ne les convertit. Les opérateurs vident V1 avant la mise à niveau
+et V2 avant un rollback.
+
 Idempotency de command et idempotency de batch ne protègent pas la même frontière. La key de command évite de dupliquer un retry client. Séquence/checkpoint évitent de dupliquer une réplication peer.
 
 ## Limitations
@@ -40,6 +59,8 @@ Idempotency de command et idempotency de batch ne protègent pas la même fronti
 - AppCore détecte conflits sequence/hash, mais ne fusionne pas les changements métier.
 - Checkpoint prouve le progrès accepté par le runtime, pas la correction d'une projection.
 - Replay dépend de handlers respectant l'idempotency.
+- Les outboxes fichier V1 et V2 ne sont pas mutuellement lisibles ; mise à
+  niveau et rollback exigent une file durable vide.
 - Les partitions réseau sont traitées prudemment ; les writes nécessitant leadership ne promettent pas disponibilité globale continue.
 
 Suivant : [fonctionnement distribué](/architecture/distributed).

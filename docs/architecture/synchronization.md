@@ -99,6 +99,24 @@ Checkpoints answer a recovery question: "where did this receiver stop accepting 
 
 Replay alone is not enough because the log can be larger than the useful recovery point, and projections are not always authoritative. A checkpoint is a small, explicit promise: all batches up to this sequence and hash were accepted for this peer.
 
+## How does the durable outbox recover?
+
+The next-major file outbox uses the explicit binary marker
+`appcore-sync-outbox-v2`. Each enqueue or acknowledgement appends and syncs one
+bounded frame. Ordinals, leading/trailing lengths and a SHA-256 chain detect
+corruption, duplication and reordering. Only an incomplete final frame is
+truncated after a crash; a complete invalid frame fails closed.
+
+Acknowledged space is reclaimed by an atomic compaction that writes only
+pending messages and changes a generation identifier. Another process holding
+an older in-memory view detects that generation change and reloads. The journal
+stays capped at 64 MiB and reserves enough tail space to acknowledge an
+accepted front message.
+
+This is an explicit persistent-format boundary. V1, unversioned and future
+files report `NO MORE SUPPORTED PLEASE UPDATE`; the Runtime does not guess or
+convert. Operators must drain V1 before upgrading and drain V2 before rollback.
+
 ## What makes replay safe?
 
 Replay is safe only if handlers and logs are idempotent at the right layer.
@@ -117,6 +135,8 @@ Multi-master replication requires a domain conflict model. AppCore cannot know w
 - AppCore detects sequence/hash conflicts; it does not merge conflicting business changes.
 - Checkpoints prove runtime acceptance progress, not that downstream domain projections are correct.
 - Replay safety depends on handlers respecting idempotency boundaries.
+- V1 and V2 file outboxes are not mutually readable; both update and rollback
+  require an empty durable queue.
 - Network partitions are handled conservatively; AppCore does not promise continuous global availability for writes that require leadership.
 
 Continue with [distributed operation](/architecture/distributed).

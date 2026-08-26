@@ -70,9 +70,18 @@ toute réponse non réutilisable élimine le socket. Le gate exige les 32 échan
 sur la même connexion acceptée. L'adaptateur V1 libre `send` reste one-shot avec
 `Connection: close`.
 
+AC-007 remplace le reload/rewrite complet de l'outbox par le journal append-only
+V2 explicite dans la prochaine version majeure SemVer. Les charges de 1/10/64
+MiB incluent désormais un petit enqueue incrémental du tail limité à 100 ms p99,
+tandis que l'ACK est limité à 500 ms p99. La compaction atomique change la
+génération ; les tests exigent la récupération d'une frame finale incomplète et
+un échec fermé pour corruption complète, frames dupliquées/réordonnées et
+versions incompatibles.
+
 Suivez le benchmark dans [AC-022 public](https://github.com/dnettoRaw/app-core-public/issues/24)
 et la correction des commands dans [AC-001 public](https://github.com/dnettoRaw/app-core-public/issues/3).
 La correction des queries est suivie dans [AC-002 public](https://github.com/dnettoRaw/app-core-public/issues/4).
 La correction Gateway est suivie dans [AC-003 public](https://github.com/dnettoRaw/app-core-public/issues/5).
 L'ownership des requests en attente est suivi dans [AC-004 public](https://github.com/dnettoRaw/app-core-public/issues/6).
 La réutilisation des connexions HTTP est suivie dans [AC-005 public](https://github.com/dnettoRaw/app-core-public/issues/7).
+La correction du journal outbox est suivie dans [AC-007 public](https://github.com/dnettoRaw/app-core-public/issues/9).

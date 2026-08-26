@@ -42,6 +42,23 @@ Checkpoint guarda última sequência aceita e batch hash por peer em formato `# 
 
 Sem checkpoint, recovery teria que replayar tudo ou inferir progresso pela projection. AppCore não faz essa inferência.
 
+## Como a outbox durável faz recovery?
+
+A outbox file-backed do próximo major usa o marcador binário explícito
+`appcore-sync-outbox-v2`. Cada enqueue ou ACK acrescenta e sincroniza um frame
+limitado. Ordinais, comprimentos no início/fim e uma cadeia SHA-256 detectam
+corrupção, duplicação e reordenação. Somente um frame final incompleto é
+truncado após crash; um frame completo inválido falha fechado.
+
+Espaço confirmado é recuperado por compactação atômica, que grava apenas
+mensagens pendentes e muda a geração. Outro processo com visão antiga detecta a
+mudança e recarrega. O journal continua limitado a 64 MiB e reserva tail
+suficiente para confirmar a mensagem frontal já aceita.
+
+Essa é uma fronteira explícita de formato persistente. Arquivos V1, sem versão
+ou futuros retornam `NO MORE SUPPORTED PLEASE UPDATE`; o Runtime não infere nem
+converte. Operadores drenam V1 antes do upgrade e V2 antes do rollback.
+
 ## Onde entra idempotency?
 
 Idempotency de command e idempotency de batch resolvem problemas diferentes. A key de command evita duplicar retry de cliente. A sequência/checkpoint evita duplicar replicação entre peers. Os dois limites precisam existir porque os retries acontecem em fronteiras diferentes.
@@ -52,6 +69,8 @@ Idempotency de command e idempotency de batch resolvem problemas diferentes. A k
 - AppCore detecta conflito de sequência/hash, mas não mescla alterações de negócio.
 - Checkpoint prova progresso aceito pelo runtime, não correção de projection.
 - Replay depende de handlers respeitarem idempotency.
+- Outboxes file V1 e V2 não são mutuamente legíveis; upgrade e rollback exigem
+  fila durável vazia.
 - Partições de rede são tratadas de forma conservadora; writes que exigem liderança não prometem disponibilidade global contínua.
 
 Próximo: [operação distribuída](/architecture/distributed).

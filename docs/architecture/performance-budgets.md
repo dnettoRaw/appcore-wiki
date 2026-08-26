@@ -66,9 +66,17 @@ failure or non-reusable response discards the socket. The gate requires all 32
 exchanges to complete through one accepted connection. The V1 free `send`
 adapter stays one-shot with `Connection: close`.
 
+AC-007 replaces whole-file outbox reload/rewrite with the explicit V2
+append-only journal for the next SemVer major. The 1/10/64 MiB workloads now
+include a small incremental tail enqueue capped at 100 ms p99, while ACK is
+capped at 500 ms p99. Atomic compaction changes the journal generation; tests
+require incomplete final-frame recovery and fail-closed behavior for complete
+corruption, duplicate/reordered frames and unsupported versions.
+
 Follow the benchmark in [public AC-022](https://github.com/dnettoRaw/app-core-public/issues/24)
 and the command correction in [public AC-001](https://github.com/dnettoRaw/app-core-public/issues/3).
 The query correction is tracked in [public AC-002](https://github.com/dnettoRaw/app-core-public/issues/4).
 The Gateway correction is tracked in [public AC-003](https://github.com/dnettoRaw/app-core-public/issues/5).
 Pending-request ownership is tracked in [public AC-004](https://github.com/dnettoRaw/app-core-public/issues/6).
 HTTP connection reuse is tracked in [public AC-005](https://github.com/dnettoRaw/app-core-public/issues/7).
+The outbox journal correction is tracked in [public AC-007](https://github.com/dnettoRaw/app-core-public/issues/9).

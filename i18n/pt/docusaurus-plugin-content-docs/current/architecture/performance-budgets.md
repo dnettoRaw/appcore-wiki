@@ -67,9 +67,17 @@ interpretadas voltam ao pool; qualquer falha ou resposta não reutilizável
 descarta o socket. O gate exige as 32 trocas pela mesma conexão aceita. O
 adapter V1 livre `send` continua one-shot com `Connection: close`.
 
+AC-007 substitui reload/rewrite integral da outbox pelo journal append-only V2
+explícito no próximo major SemVer. As cargas de 1/10/64 MiB agora incluem um
+pequeno enqueue incremental de tail limitado a 100 ms p99, enquanto ACK fica
+limitado a 500 ms p99. A compactação atômica muda a geração; testes exigem
+recovery do frame final incompleto e falha fechada para corrupção completa,
+frames duplicados/reordenados e versões incompatíveis.
+
 Veja o benchmark em [AC-022 pública](https://github.com/dnettoRaw/app-core-public/issues/24)
 e a correção de commands em [AC-001 pública](https://github.com/dnettoRaw/app-core-public/issues/3).
 A correção de queries está em [AC-002 pública](https://github.com/dnettoRaw/app-core-public/issues/4).
 A correção do Gateway está em [AC-003 pública](https://github.com/dnettoRaw/app-core-public/issues/5).
 O ownership de requests pendentes está em [AC-004 pública](https://github.com/dnettoRaw/app-core-public/issues/6).
 O reuso de conexões HTTP está em [AC-005 pública](https://github.com/dnettoRaw/app-core-public/issues/7).
+A correção do journal da outbox está em [AC-007 pública](https://github.com/dnettoRaw/app-core-public/issues/9).
