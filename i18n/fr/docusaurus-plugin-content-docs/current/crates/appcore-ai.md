@@ -6,7 +6,7 @@ sidebar_position: 23
 # appcore-ai
 
 :::caution Beta publique
-`appcore-ai 0.1.0-beta.2` est publié sur crates.io. L'API peut changer pendant
+`appcore-ai 0.1.0-beta.3` est publié sur crates.io. L'API peut changer pendant
 la beta et docs.rs peut prendre du temps pour terminer le build d'une nouvelle
 release. Elle n'ajoute aucun champ aux manifests V1 gelés.
 :::

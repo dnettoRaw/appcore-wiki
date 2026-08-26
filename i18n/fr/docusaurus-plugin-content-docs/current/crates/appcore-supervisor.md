@@ -6,12 +6,12 @@ sidebar_position: 5
 # appcore-supervisor
 
 :::info Paquet publié
-Stable **`1.0.0`** · MSRV **Rust `1.89`** · [crates.io](https://crates.io/crates/appcore-supervisor/1.0.0) · [docs.rs](https://docs.rs/crate/appcore-supervisor/1.0.0) · [code source](https://github.com/dnettoRaw/AppCore-Runtime/tree/v1.0.0/crates/appcore-supervisor)
+Stable **`1.0.1`** · MSRV **Rust `1.89`** · [crates.io](https://crates.io/crates/appcore-supervisor/1.0.1) · [docs.rs](https://docs.rs/crate/appcore-supervisor/1.0.1) · [code source](https://github.com/dnettoRaw/app-core-public/tree/main/crates/appcore-supervisor)
 :::
 
 ## Guide et exemples maintenus par le crate
 
-Le dépôt Runtime maintient le [guide détaillé](https://github.com/dnettoRaw/AppCore-Runtime/blob/v1.0.0/crates/appcore-supervisor/wiki/guide.fr.md), [exemple débutant](https://github.com/dnettoRaw/AppCore-Runtime/blob/v1.0.0/crates/appcore-supervisor/wiki/examples/basic.fr.md) et [exemple intermédiaire](https://github.com/dnettoRaw/AppCore-Runtime/blob/v1.0.0/crates/appcore-supervisor/wiki/examples/intermediate.fr.md). Le wiki résume la frontière publique ; les détails d’API et d’exécution restent avec le code du crate.
+Le dépôt public maintient le [guide détaillé](https://github.com/dnettoRaw/app-core-public/blob/main/crates/appcore-supervisor/wiki/guide.fr.md), [exemple débutant](https://github.com/dnettoRaw/app-core-public/blob/main/crates/appcore-supervisor/wiki/examples/basic.fr.md) et [exemple intermédiaire](https://github.com/dnettoRaw/app-core-public/blob/main/crates/appcore-supervisor/wiki/examples/intermediate.fr.md). Le wiki résume la frontière publique ; les détails d’API et d’exécution restent avec le code du crate.
 
 **Responsabilité :** lifecycle avec dépendances, health, budget de restart et
 shutdown des managed services appartenant au Runtime.

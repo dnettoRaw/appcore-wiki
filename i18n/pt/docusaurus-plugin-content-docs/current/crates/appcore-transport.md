@@ -6,12 +6,17 @@ sidebar_position: 4
 # appcore-transport
 
 :::info Pacote publicado
-Estável **`1.0.0`** · MSRV **Rust `1.89`** · [crates.io](https://crates.io/crates/appcore-transport/1.0.0) · [docs.rs](https://docs.rs/crate/appcore-transport/1.0.0) · [código-fonte](https://github.com/dnettoRaw/AppCore-Runtime/tree/v1.0.0/crates/appcore-transport)
+Estável **`1.0.0`** · MSRV **Rust `1.89`** · [crates.io](https://crates.io/crates/appcore-transport/1.0.0) · [docs.rs](https://docs.rs/crate/appcore-transport/1.0.0) · [código-fonte](https://github.com/dnettoRaw/app-core-public/tree/main/crates/appcore-transport)
+
+Prerelease opcional **`1.1.0-alpha.1`** com client pooled e deadlines por
+exchange: [crates.io](https://crates.io/crates/appcore-transport/1.1.0-alpha.1) ·
+[docs.rs](https://docs.rs/crate/appcore-transport/1.1.0-alpha.1) ·
+[código-fonte público](https://github.com/dnettoRaw/app-core-public/tree/beta/crates/appcore-transport).
 :::
 
 ## Guia e exemplos mantidos pelo crate
 
-O repositório do Runtime mantém o [guia detalhado](https://github.com/dnettoRaw/AppCore-Runtime/blob/v1.0.0/crates/appcore-transport/wiki/guide.pt.md), [exemplo básico](https://github.com/dnettoRaw/AppCore-Runtime/blob/v1.0.0/crates/appcore-transport/wiki/examples/basic.pt.md) e [exemplo intermediário](https://github.com/dnettoRaw/AppCore-Runtime/blob/v1.0.0/crates/appcore-transport/wiki/examples/intermediate.pt.md). O wiki resume a fronteira pública; detalhes de API e execução ficam junto ao código do crate.
+O repositório público mantém o [guia detalhado](https://github.com/dnettoRaw/app-core-public/blob/main/crates/appcore-transport/wiki/guide.pt.md), [exemplo básico](https://github.com/dnettoRaw/app-core-public/blob/main/crates/appcore-transport/wiki/examples/basic.pt.md) e [exemplo intermediário](https://github.com/dnettoRaw/app-core-public/blob/main/crates/appcore-transport/wiki/examples/intermediate.pt.md). O wiki resume a fronteira pública; detalhes de API e execução ficam junto ao código do crate.
 
 **Responsabilidade:** mecânica HTTP/TLS compartilhada e limitada.
 

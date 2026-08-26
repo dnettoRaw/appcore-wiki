@@ -5,9 +5,12 @@ sidebar_position: 23
 
 # appcore-sync-sqlite
 
-:::warning Aperçu de développement
-Post-1.0 **`0.1.0-alpha.1`** · non publié · non sélectionnable par le manifest
-V1 gelé et non enregistré par `appcore-bin`.
+:::warning Alpha publiée
+Post-1.0 **`0.1.0-alpha.2`** ·
+[crates.io](https://crates.io/crates/appcore-sync-sqlite/0.1.0-alpha.2) ·
+[docs.rs](https://docs.rs/crate/appcore-sync-sqlite/0.1.0-alpha.2) ·
+[code source public](https://github.com/dnettoRaw/app-core-public/tree/beta/crates/appcore-sync-sqlite) ·
+non sélectionnable par le manifest V1 gelé et non enregistré par `appcore-bin`.
 :::
 
 **Responsabilité :** persistance SQLite facultative et bornée pour l'état de
@@ -18,9 +21,11 @@ arbitraire ni schémas applicatifs.
 
 **Dépendances AppCore directes :** `appcore-sync`, `appcore-storage`.
 
-La documentation du crate est maintenue dans `guide.fr.md`, `basic.fr.md` et
-`intermediate.fr.md`. Des liens publics remplaceront ces identifiants après la
-publication de la prerelease.
+La documentation du crate est disponible dans le
+[guide](https://github.com/dnettoRaw/app-core-public/blob/beta/crates/appcore-sync-sqlite/wiki/guide.fr.md),
+[exemple débutant](https://github.com/dnettoRaw/app-core-public/blob/beta/crates/appcore-sync-sqlite/wiki/examples/basic.fr.md) et
+[exemple intermédiaire](https://github.com/dnettoRaw/app-core-public/blob/beta/crates/appcore-sync-sqlite/wiki/examples/intermediate.fr.md),
+avec les variantes anglaise et portugaise à côté.
 
 Le provider utilise un schéma interne V1 fixe, WAL, `synchronous=FULL`, un pool
 de connexions borné et les limites runtime de SQLite. Un schéma inconnu,
@@ -42,6 +47,6 @@ vérifiée de 3 182 592 octets a pris 73,870 ms ; le contrôle d'intégrité com
 15,675 ms. Les 14 tests de conformité ont aussi réussi sous Linux arm64 et
 amd64 ; le check croisé et Clippy Windows GNU ont réussi.
 
-La publication exige des versions prerelease coordonnées des contrats
-post-1.0 non encore publiés `appcore-sync` et `appcore-storage`. Les liens du
-registre et du source mirror ne seront ajoutés qu'après cette release.
+Le provider utilise les contrats coordonnés `appcore-sync` et `appcore-storage`
+`2.0.0-alpha.1`. Les applications stables `1.0.0` ne le sélectionnent pas
+implicitement ; l'adoption est un choix explicite de prerelease.

@@ -21,21 +21,25 @@ Lire ce manuel comme un livre technique :
 10. [Modèle de sécurité](/security/security-model)
 11. [Première application](/tutorials/first-application)
 12. [Exemples du niveau débutant à intermédiaire](/tutorials/examples/)
-13. [Référence des 22 crates stables et de la bêta appcore-ai](/crates/)
+13. [Référence des crates stables et des aperçus publiés](/crates/)
 14. [Roadmap future](/roadmap/)
 
 Version stable : `1.0.0`. Les 22 crates publics sont disponibles sur crates.io.
 Toolchain Rust minimale : `1.89`. Une application doit normalement dépendre de
 `appcore-bin@1.0.0` et utiliser sa façade `application`.
 
-Bêta publique IA : `appcore-ai 0.1.0-beta.1`, publiée séparément du graphe
-stable des crates Runtime.
+Prereleases publiées : `appcore-ai 0.1.0-beta.3`, le graphe Runtime en
+`2.0.0-alpha.1`, `appcore-transport 1.1.0-alpha.1` et l'intégration facultative
+`appcore-sync-sqlite 0.1.0-alpha.2`. Aucune ne modifie le contrat de manifest
+V1 gelé.
 
 ## Et Ensuite
 
 La roadmap future suit le travail prévu sans le mélanger à la référence stable
-du Runtime. La bêta publique actuelle est [appcore-ai](/crates/appcore-ai), et
-l'aperçu en design actuel est [appcore-ui](/crates/appcore-ui). Les zones
+du Runtime. Les aperçus publiés actuels sont
+[appcore-ai](/crates/appcore-ai) et
+[appcore-sync-sqlite](/crates/appcore-sync-sqlite) ; l'aperçu en design actuel
+est [appcore-ui](/crates/appcore-ui). Les zones
 planifiées en haute priorité
 incluent `appcore-test`, `appcore-jobs`, `appcore-search`,
 `appcore-automation` et `appcore-plugin` ; voir la [roadmap future](/roadmap/).

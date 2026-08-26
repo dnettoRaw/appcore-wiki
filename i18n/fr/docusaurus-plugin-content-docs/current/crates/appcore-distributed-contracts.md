@@ -42,9 +42,9 @@ commit lie le digest du payload décodé complet. Les octets encodés utilisent
 une chaîne JSON base64 canonique, pas un tableau d'entiers. V1 et V2 restent
 dans des modules et routes séparés, sans détection, conversion ni fallback.
 
-:::warning Contrat en développement
+:::warning Contrat alpha publié
 Les DTO, codec, registre borné et intégration host/client signée V2 ont réussi
-la certification release clean-source à `8d26cc3`. V2 reste non publié sur la
-ligne de développement post-1.0. Continuez à utiliser les routes V1 explicites
-jusqu'à l'annonce de cette release.
+la certification release clean-source à `8d26cc3` et sont publiés en
+`2.0.0-alpha.1`. Les applications stables continuent avec les routes V1
+explicites ; l'alpha reste une prerelease opt-in.
 :::

@@ -6,12 +6,17 @@ sidebar_position: 4
 # appcore-transport
 
 :::info Paquet publié
-Stable **`1.0.0`** · MSRV **Rust `1.89`** · [crates.io](https://crates.io/crates/appcore-transport/1.0.0) · [docs.rs](https://docs.rs/crate/appcore-transport/1.0.0) · [code source](https://github.com/dnettoRaw/AppCore-Runtime/tree/v1.0.0/crates/appcore-transport)
+Stable **`1.0.0`** · MSRV **Rust `1.89`** · [crates.io](https://crates.io/crates/appcore-transport/1.0.0) · [docs.rs](https://docs.rs/crate/appcore-transport/1.0.0) · [code source](https://github.com/dnettoRaw/app-core-public/tree/main/crates/appcore-transport)
+
+Prerelease facultative **`1.1.0-alpha.1`** avec client pooled et deadlines par
+exchange : [crates.io](https://crates.io/crates/appcore-transport/1.1.0-alpha.1) ·
+[docs.rs](https://docs.rs/crate/appcore-transport/1.1.0-alpha.1) ·
+[code source public](https://github.com/dnettoRaw/app-core-public/tree/beta/crates/appcore-transport).
 :::
 
 ## Guide et exemples maintenus par le crate
 
-Le dépôt Runtime maintient le [guide détaillé](https://github.com/dnettoRaw/AppCore-Runtime/blob/v1.0.0/crates/appcore-transport/wiki/guide.fr.md), [exemple débutant](https://github.com/dnettoRaw/AppCore-Runtime/blob/v1.0.0/crates/appcore-transport/wiki/examples/basic.fr.md) et [exemple intermédiaire](https://github.com/dnettoRaw/AppCore-Runtime/blob/v1.0.0/crates/appcore-transport/wiki/examples/intermediate.fr.md). Le wiki résume la frontière publique ; les détails d’API et d’exécution restent avec le code du crate.
+Le dépôt public maintient le [guide détaillé](https://github.com/dnettoRaw/app-core-public/blob/main/crates/appcore-transport/wiki/guide.fr.md), [exemple débutant](https://github.com/dnettoRaw/app-core-public/blob/main/crates/appcore-transport/wiki/examples/basic.fr.md) et [exemple intermédiaire](https://github.com/dnettoRaw/app-core-public/blob/main/crates/appcore-transport/wiki/examples/intermediate.fr.md). Le wiki résume la frontière publique ; les détails d’API et d’exécution restent avec le code du crate.
 
 **Responsabilité :** mécanique client HTTP/TLS partagée et bornée.
 

@@ -65,7 +65,7 @@ Idempotency de command e idempotency de batch resolvem problemas diferentes. A k
 
 ## Persistência SQLite opcional depois do 1.0
 
-A prévia pós-1.0 `appcore-sync-sqlite` persiste apenas registros de sync do
+A prévia pós-1.0 publicada `appcore-sync-sqlite 0.1.0-alpha.2` persiste apenas registros de sync do
 Runtime: replication log, outbox, checkpoints por peer e tombstones opacos. Ela
 usa schema interno versionado, WAL, sincronização completa, conexões e limites
 explícitos, snapshots portáveis, backup online verificado e integrity scan que

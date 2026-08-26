@@ -8,19 +8,19 @@ slug: /crates/
 
 AppCore `1.0.0` expose **22 crates publics**, tous publiés sur crates.io avec un
 MSRV Rust `1.89`. Les crates autonomes `appcore-args`, `appcore-supervisor` et
-`appcore-transport` gardent un SemVer indépendant, même si leur version stable
-actuelle est également `1.0.0`. Les outils comme `appcore-certification`,
+`appcore-transport` gardent un SemVer indépendant. Les outils comme `appcore-certification`,
 `appcore-dev` et `runtime-console` ne sont pas des crates Runtime publics.
 
-La bêta publique [`appcore-ai 0.1.0-beta.1`](./appcore-ai), versionnée
+La bêta publique [`appcore-ai 0.1.0-beta.3`](./appcore-ai), versionnée
 séparément, est également publiée sur crates.io. Elle ne fait pas partie du
 graphe stable des crates Runtime `1.0.0`.
 
 L'intégration facultative
-[`appcore-sync-sqlite 0.1.0-alpha.1`](./appcore-sync-sqlite) est un aperçu de
-développement post-1.0 et n'est **pas publiée**. Sa page documente la frontière
-acceptée et les preuves de certification sans la présenter comme partie du
-catalogue stable.
+[`appcore-sync-sqlite 0.1.0-alpha.2`](./appcore-sync-sqlite) est une prerelease
+post-1.0 publiée. Sa page documente la frontière acceptée et les preuves de
+certification sans la présenter comme partie du catalogue stable. Le graphe
+Runtime coordonné est aussi disponible en `2.0.0-alpha.1` ; les instructions
+stables pour les applications restent en `1.0.0`.
 
 Pour une nouvelle application, utiliser la façade de haut niveau :
 

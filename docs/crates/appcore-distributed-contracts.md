@@ -42,9 +42,9 @@ complete decoded payload digest. Encoded chunk bytes use a canonical base64 JSON
 string rather than an integer array. V1 and V2 stay in separate modules and
 routes, with no detection, conversion or fallback.
 
-:::warning Development contract
+:::warning Published alpha contract
 The V2 DTO, codec, bounded registry and signed host/client integration passed
-clean-source release certification at `8d26cc3`. V2 remains unpublished on the
-post-1.0 development line. Continue using explicit V1 routes until that release
-is announced.
+clean-source release certification at `8d26cc3` and is published in
+`2.0.0-alpha.1`. Stable applications continue using explicit V1 routes; the
+alpha remains an opt-in prerelease.
 :::

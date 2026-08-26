@@ -55,7 +55,7 @@ Idempotency de command et idempotency de batch ne protègent pas la même fronti
 
 ## Persistance SQLite facultative après la 1.0
 
-L'aperçu post-1.0 `appcore-sync-sqlite` persiste uniquement les enregistrements
+L'aperçu post-1.0 publié `appcore-sync-sqlite 0.1.0-alpha.2` persiste uniquement les enregistrements
 de synchronisation du Runtime : replication log, outbox, checkpoints par peer
 et tombstones opaques. Il utilise un schéma interne versionné, WAL,
 synchronisation complète, connexions et limites bornées, snapshots portables,

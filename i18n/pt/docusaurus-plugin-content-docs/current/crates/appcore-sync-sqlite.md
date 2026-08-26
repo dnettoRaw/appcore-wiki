@@ -5,9 +5,12 @@ sidebar_position: 23
 
 # appcore-sync-sqlite
 
-:::warning Prévia de desenvolvimento
-Pós-1.0 **`0.1.0-alpha.1`** · não publicada · não selecionável pelo manifest V1
-congelado nem registrada pelo `appcore-bin`.
+:::warning Alpha publicada
+Pós-1.0 **`0.1.0-alpha.2`** ·
+[crates.io](https://crates.io/crates/appcore-sync-sqlite/0.1.0-alpha.2) ·
+[docs.rs](https://docs.rs/crate/appcore-sync-sqlite/0.1.0-alpha.2) ·
+[código-fonte público](https://github.com/dnettoRaw/app-core-public/tree/beta/crates/appcore-sync-sqlite) ·
+não selecionável pelo manifest V1 congelado nem registrada pelo `appcore-bin`.
 :::
 
 **Responsabilidade:** persistência SQLite opcional e limitada para estado de
@@ -18,9 +21,11 @@ aplicação.
 
 **Dependências AppCore diretas:** `appcore-sync`, `appcore-storage`.
 
-A documentação do crate é mantida como `guide.pt.md`, `basic.pt.md` e
-`intermediate.pt.md`. Links públicos substituirão esses identificadores após a
-publicação da prerelease.
+A documentação do crate está disponível no
+[guia](https://github.com/dnettoRaw/app-core-public/blob/beta/crates/appcore-sync-sqlite/wiki/guide.pt.md),
+[exemplo básico](https://github.com/dnettoRaw/app-core-public/blob/beta/crates/appcore-sync-sqlite/wiki/examples/basic.pt.md) e
+[exemplo intermediário](https://github.com/dnettoRaw/app-core-public/blob/beta/crates/appcore-sync-sqlite/wiki/examples/intermediate.pt.md),
+com variantes em inglês e francês ao lado.
 
 O provider usa schema interno V1 fixo, WAL, `synchronous=FULL`, pool de conexões
 limitado e limites de runtime do SQLite. Schemas desconhecidos, removidos ou
@@ -40,6 +45,6 @@ de append foi 1,086 ms a 3.729 operações/s e o p99 de leitura foi 0,583 ms a
 ms; a verificação integral levou 15,675 ms. Os 14 testes de conformidade também
 passaram em Linux arm64 e amd64; check cruzado e Clippy Windows GNU passaram.
 
-A publicação exige versões prerelease coordenadas dos contratos pós-1.0 ainda
-não publicados de `appcore-sync` e `appcore-storage`. Links do registry e do
-source mirror serão adicionados somente quando essa release existir.
+O provider usa os contratos coordenados `appcore-sync` e `appcore-storage`
+`2.0.0-alpha.1`. Aplicações estáveis `1.0.0` não o selecionam implicitamente;
+a adoção é uma escolha explícita de prerelease.

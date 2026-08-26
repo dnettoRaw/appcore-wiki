@@ -68,4 +68,4 @@ Clean-source release certification at `8d26cc3` passed for an incompressible
 64 MiB payload with 1,024 chunks, an 87,660-byte largest JSON frame,
 1.092-second p99 and 366,432 KiB whole-suite peak RSS. This API does not
 negotiate a transport. `/v1/peer/*` parses only V1 and never infers V2. V2 is
-certified on the post-1.0 development line but is not yet published.
+published only on the opt-in `2.0.0-alpha.1` line.

@@ -8,10 +8,10 @@ slug: /roadmap/
 # Roadmap future
 
 :::caution Composants futurs
-Cette roadmap est conceptuelle. Ces composants **ne sont pas des crates
-publiés**, ne modifient pas les 22 crates publics stables et ne doivent pas être
-utilisés comme dépendances avant un changement de statut via revue normale de
-design, d'implémentation et de release.
+Cette roadmap sépare les prereleases et composants conceptuels des 22 crates
+publics stables. Les entrées Alpha ou Beta sont publiées mais restent opt-in ;
+les entrées prévues et de recherche ne doivent pas être utilisées comme
+dépendances.
 :::
 
 AppCore garde la documentation stable du Runtime séparée du design futur. Les
@@ -26,7 +26,13 @@ promotion n'est automatique parce qu'un crate apparaît dans le dépôt Runtime.
 
 | Composant | Statut | Frontière |
 | --- | --- | --- |
-| [appcore-ai](/crates/appcore-ai) | Beta | `0.1.0-beta.1` publiée pour routage borné, inférence locale/distante, ressources, provenance, sécurité et exécution observable. |
+| [appcore-ai](/crates/appcore-ai) | Beta | `0.1.0-beta.3` publiée pour routage borné, inférence locale/distante, ressources, provenance, sécurité et exécution observable. |
+
+## Alpha
+
+| Composant | Statut | Frontière |
+| --- | --- | --- |
+| [appcore-sync-sqlite](/crates/appcore-sync-sqlite) | Alpha | `0.1.0-alpha.2` publiée pour la persistance facultative de l'état sync du Runtime, avec les contrats coordonnés `2.0.0-alpha.1`. |
 
 ## In Design
 

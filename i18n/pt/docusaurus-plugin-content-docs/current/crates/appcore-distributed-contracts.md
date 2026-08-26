@@ -43,9 +43,9 @@ completo. Bytes codificados usam uma string JSON base64 canônica, não array de
 inteiros. V1 e V2 permanecem em módulos e rotas separados, sem detecção,
 conversão ou fallback.
 
-:::warning Contrato em desenvolvimento
+:::warning Contrato alpha publicado
 Os DTOs, codec, registro limitado e integração host/client assinada V2 passaram
-na certificação release clean-source em `8d26cc3`. V2 permanece não publicado
-na linha de desenvolvimento pós-1.0. Continue usando rotas V1 explícitas até o
-anúncio dessa release.
+na certificação release clean-source em `8d26cc3` e estão publicados em
+`2.0.0-alpha.1`. Aplicações estáveis continuam usando rotas V1 explícitas; o
+alpha permanece uma prerelease opt-in.
 :::

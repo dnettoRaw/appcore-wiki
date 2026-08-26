@@ -70,7 +70,7 @@ attaches an already configured `appcore_ai::AiRuntime` through
 Supervisor owns required/optional health, cancellation and bounded shutdown.
 
 This programmatic bridge does not alter V1 manifests. It belongs to the
-independent [`appcore-ai 0.1.0-beta.1`](./appcore-ai) beta release;
+independent [`appcore-ai 0.1.0-beta.3`](./appcore-ai) beta release;
 declarative model/provider selection requires a future versioned post-1.0
 contract and a publishable AppCore release.
 

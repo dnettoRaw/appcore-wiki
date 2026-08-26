@@ -8,10 +8,9 @@ slug: /roadmap/
 # Future Roadmap
 
 :::caution Future components
-This roadmap is conceptual. These components are **not published crates**, do
-not change the 22 stable public crates, and should not be used as dependencies
-until their status changes through normal design, implementation and release
-review.
+This roadmap separates prereleases and conceptual components from the 22
+stable public crates. Entries marked Alpha or Beta are published but remain
+opt-in; planned and research entries should not be used as dependencies.
 :::
 
 AppCore keeps stable Runtime documentation separate from future design work.
@@ -26,7 +25,13 @@ automatic just because a crate appears in the Runtime repository.
 
 | Component | Status | Boundary |
 | --- | --- | --- |
-| [appcore-ai](/crates/appcore-ai) | Beta | Published `0.1.0-beta.1` for bounded model routing, local or remote inference, resource governance, provenance, security and observable execution. |
+| [appcore-ai](/crates/appcore-ai) | Beta | Published `0.1.0-beta.3` for bounded model routing, local or remote inference, resource governance, provenance, security and observable execution. |
+
+## Alpha
+
+| Component | Status | Boundary |
+| --- | --- | --- |
+| [appcore-sync-sqlite](/crates/appcore-sync-sqlite) | Alpha | Published `0.1.0-alpha.2` optional persistence for Runtime-owned sync state, against the coordinated `2.0.0-alpha.1` Runtime contracts. |
 
 ## In Design
 

@@ -71,7 +71,7 @@ rattache un `appcore_ai::AiRuntime` configuré via `AppCoreAiComponent` et
 required/optional, annulation et shutdown borné.
 
 Ce bridge programmatique ne modifie pas les manifests V1. Il appartient à la
-release beta indépendante [`appcore-ai 0.1.0-beta.1`](./appcore-ai) ; la sélection
+release beta indépendante [`appcore-ai 0.1.0-beta.3`](./appcore-ai) ; la sélection
 déclarative exige un contrat versionné post-1.0 et une release AppCore
 publiable.
 

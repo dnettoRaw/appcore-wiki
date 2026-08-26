@@ -6,12 +6,17 @@ sidebar_position: 4
 # appcore-transport
 
 :::info Published package
-Stable **`1.0.0`** · MSRV **Rust `1.89`** · [crates.io](https://crates.io/crates/appcore-transport/1.0.0) · [docs.rs](https://docs.rs/crate/appcore-transport/1.0.0) · [source](https://github.com/dnettoRaw/AppCore-Runtime/tree/v1.0.0/crates/appcore-transport)
+Stable **`1.0.0`** · MSRV **Rust `1.89`** · [crates.io](https://crates.io/crates/appcore-transport/1.0.0) · [docs.rs](https://docs.rs/crate/appcore-transport/1.0.0) · [source](https://github.com/dnettoRaw/app-core-public/tree/main/crates/appcore-transport)
+
+Optional prerelease **`1.1.0-alpha.1`** adds the owned pooled client and
+per-exchange deadline API: [crates.io](https://crates.io/crates/appcore-transport/1.1.0-alpha.1) ·
+[docs.rs](https://docs.rs/crate/appcore-transport/1.1.0-alpha.1) ·
+[public source](https://github.com/dnettoRaw/app-core-public/tree/beta/crates/appcore-transport).
 :::
 
 ## Crate-owned guide and examples
 
-The Runtime repository maintains the detailed [guide](https://github.com/dnettoRaw/AppCore-Runtime/blob/v1.0.0/crates/appcore-transport/wiki/guide.en.md), [basic example](https://github.com/dnettoRaw/AppCore-Runtime/blob/v1.0.0/crates/appcore-transport/wiki/examples/basic.en.md), and [intermediate example](https://github.com/dnettoRaw/AppCore-Runtime/blob/v1.0.0/crates/appcore-transport/wiki/examples/intermediate.en.md). The wiki summarizes the public boundary; API and executable details live beside the crate code.
+The public repository maintains the detailed [guide](https://github.com/dnettoRaw/app-core-public/blob/main/crates/appcore-transport/wiki/guide.en.md), [basic example](https://github.com/dnettoRaw/app-core-public/blob/main/crates/appcore-transport/wiki/examples/basic.en.md), and [intermediate example](https://github.com/dnettoRaw/app-core-public/blob/main/crates/appcore-transport/wiki/examples/intermediate.en.md). The wiki summarizes the public boundary; API and executable details live beside the crate code.
 
 **Responsibility:** shared bounded HTTP and TLS client mechanics.
 
