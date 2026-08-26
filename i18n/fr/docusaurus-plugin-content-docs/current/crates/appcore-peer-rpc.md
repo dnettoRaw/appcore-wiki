@@ -53,6 +53,14 @@ pulls explicites et bornés. Erreur, annulation, expiration et fin libèrent le
 fichier et la réservation. Le snapshot expose sessions, octets réservés,
 saturations et nettoyages.
 
+Activez les routes HTTP signées uniquement avec
+`PeerRpcHttpHost::with_v2_stream_registry`; le host par défaut reste V1-only.
+`query_stream_v2` et `command_stream_v2` lient chaque body JSON exact à un
+bearer token et déplacent request/response une frame à la fois. L'admission open
+vérifie tenant, cluster, cible, trace, deadline, idempotence command et nonce
+replay borné. Les frames ambiguës ne sont pas répétées; l'annulation best effort
+est soutenue par le nettoyage autoritaire de la deadline.
+
 Cette API ne négocie pas le transport. `/v1/peer/*` analyse uniquement V1 et
-n'infère jamais V2. Le transport HTTP signé des frames et l'intégration client
-restent des gates AC-006.
+n'infère jamais V2. Les preuves de benchmark et certification restent des gates
+AC-006.

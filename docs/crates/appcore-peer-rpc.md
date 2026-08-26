@@ -52,6 +52,13 @@ responses through explicit bounded pull frames. Error, cancellation, expiry
 and completion release the partial file and reservation. Snapshots expose
 active sessions, reserved bytes, saturation and cleanup counters.
 
+Enable the signed HTTP routes only with
+`PeerRpcHttpHost::with_v2_stream_registry`; the default host remains V1-only.
+`query_stream_v2` and `command_stream_v2` bind each exact JSON body to a bearer
+token and move request/response data one frame at a time. Open admission checks
+tenant, cluster, target, trace, deadline, command idempotency and bounded nonce
+replay. Ambiguous frames are not retried; best-effort cancellation is backed by
+authoritative deadline cleanup.
+
 This API does not negotiate a transport. `/v1/peer/*` parses only V1 and never
-infers V2. Signed HTTP frame transport and client integration remain AC-006
-release gates.
+infers V2. Benchmark and certification evidence remain AC-006 release gates.

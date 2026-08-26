@@ -52,6 +52,13 @@ commits verificados chegam ao dispatcher e respostas usam pulls explícitos e
 limitados. Erro, cancelamento, expiração e conclusão liberam arquivo e reserva.
 O snapshot expõe sessões, bytes reservados, saturações e limpezas.
 
+Habilite as rotas HTTP assinadas somente com
+`PeerRpcHttpHost::with_v2_stream_registry`; o host default continua V1-only.
+`query_stream_v2` e `command_stream_v2` vinculam cada body JSON exato a um
+bearer token e movem request/response um frame por vez. A admissão do open
+verifica tenant, cluster, target, trace, deadline, idempotência de command e
+nonce replay limitado. Frames ambíguos não são repetidos; cancelamento best
+effort é respaldado pela limpeza autoritativa por deadline.
+
 Essa API não negocia transporte. `/v1/peer/*` interpreta somente V1 e nunca
-infere V2. Transporte HTTP assinado de frames e integração do client permanecem
-gates do AC-006.
+infere V2. Evidências de benchmark e certificação permanecem gates do AC-006.
