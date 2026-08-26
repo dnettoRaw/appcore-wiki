@@ -36,8 +36,12 @@ production performance claims. Each bottleneck correction must preserve V1,
 show a before/after report, add a behavior invariant and tighten the affected
 budget when the result is stable.
 
-The initial baseline records maximum handler concurrency of `1` for both
-commands and queries. That is evidence of the known global serialization, not
-the desired final behavior.
+The initial baseline recorded maximum handler concurrency of `1` for both
+commands and queries. AC-001 removes command-handler execution from the shared
+host mutex. The gate now requires at least four of eight command workers to
+overlap; deterministic tests require all eight to enter together, preserve
+single execution for a matching idempotency key and verify shutdown drain.
+Query serialization remains tracked separately by AC-002.
 
-Follow the work in [public AC-022](https://github.com/dnettoRaw/app-core-public/issues/24).
+Follow the benchmark in [public AC-022](https://github.com/dnettoRaw/app-core-public/issues/24)
+and the command correction in [public AC-001](https://github.com/dnettoRaw/app-core-public/issues/3).

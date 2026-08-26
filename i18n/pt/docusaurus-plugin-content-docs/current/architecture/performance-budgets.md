@@ -36,8 +36,12 @@ são promessa de performance em produção. Cada correção deve preservar V1,
 mostrar antes/depois, adicionar uma invariante de comportamento e apertar o
 budget afetado quando o resultado estiver estável.
 
-A baseline inicial registra concorrência máxima `1` nos handlers de commands e
-queries. Isso comprova a serialização global conhecida; não representa o
-comportamento final desejado.
+A baseline inicial registrou concorrência máxima `1` nos handlers de commands e
+queries. AC-001 remove a execução de command handler do mutex compartilhado do
+host. O gate agora exige sobreposição de pelo menos quatro entre oito workers;
+testes determinísticos exigem que os oito entrem juntos, preservam execução
+única para uma chave idempotente igual e verificam a drenagem no shutdown. A
+serialização de queries continua acompanhada separadamente por AC-002.
 
-Veja o acompanhamento em [AC-022 pública](https://github.com/dnettoRaw/app-core-public/issues/24).
+Veja o benchmark em [AC-022 pública](https://github.com/dnettoRaw/app-core-public/issues/24)
+e a correção de commands em [AC-001 pública](https://github.com/dnettoRaw/app-core-public/issues/3).

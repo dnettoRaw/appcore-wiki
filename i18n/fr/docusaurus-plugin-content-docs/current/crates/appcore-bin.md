@@ -34,6 +34,14 @@ applicatif et le peer RPC utilisent le même owner pour l'enforcement de
 déclaration, mode, idempotence, écriture opérationnelle et leadership. Les
 queries de statut Runtime restent un comportement explicite du host.
 
+Sur la ligne de maintenance 1.0 actuelle, les handlers de la façade directe,
+du HTTP applicatif et du peer RPC s'exécutent sans conserver le mutex partagé
+du host. Les commandes indépendantes progressent en parallèle ; la réservation
+idempotente reste sérialisée par store. `shutdown()` ferme l'admission, draine
+les commandes admises pendant au plus 30 secondes, puis termine le lifecycle.
+Les tests embarqués peuvent choisir une borne plus courte avec
+`shutdown_with_timeout`.
+
 Selectionner `[adapters.gateway]` avec le provider `appcore-gateway` est la
 frontiere declarative d'activation du Gateway. Le bootstrap parse la
 configuration dans la crate owner, ajoute et autorise `runtime.gateway` dans le

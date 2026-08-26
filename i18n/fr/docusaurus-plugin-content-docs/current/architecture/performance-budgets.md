@@ -36,8 +36,13 @@ Ils ne constituent pas une promesse de performance en production. Chaque
 correction doit préserver V1, fournir un avant/après, ajouter un invariant de
 comportement et resserrer le budget concerné lorsque le résultat est stable.
 
-La baseline initiale indique une concurrence maximale de `1` pour les handlers
-de commands et queries. Cela prouve la sérialisation globale connue ; ce n'est
-pas le comportement final souhaité.
+La baseline initiale indiquait une concurrence maximale de `1` pour les
+handlers de commands et queries. AC-001 retire l'exécution des command handlers
+du mutex partagé du host. Le gate exige maintenant le chevauchement d'au moins
+quatre workers sur huit ; les tests déterministes exigent l'entrée simultanée
+des huit workers, préservent une seule exécution pour une clé idempotente
+identique et vérifient le drainage au shutdown. La sérialisation des queries
+reste suivie séparément par AC-002.
 
-Suivez le travail dans [AC-022 public](https://github.com/dnettoRaw/app-core-public/issues/24).
+Suivez le benchmark dans [AC-022 public](https://github.com/dnettoRaw/app-core-public/issues/24)
+et la correction des commands dans [AC-001 public](https://github.com/dnettoRaw/app-core-public/issues/3).

@@ -35,6 +35,13 @@ bootstrap. Direct facade, application HTTP and peer RPC dispatch use that same
 owner for declaration, mode, idempotency, operational-write and leadership
 enforcement. Runtime-owned status queries remain explicit host behavior.
 
+On the current 1.0 maintenance line, direct facade, application HTTP and peer
+RPC handlers execute without retaining the shared host mutex. Independent
+commands progress concurrently; idempotency reservation remains serialized per
+store. `shutdown()` closes admission, drains admitted commands for at most 30
+seconds and only then completes lifecycle. Embedded tests can select a shorter
+bound with `shutdown_with_timeout`.
+
 Selecting `[adapters.gateway]` with provider `appcore-gateway` is the
 declarative Gateway activation boundary. Bootstrap parses the configuration
 through the owner crate, adds and authorizes `runtime.gateway` in the shared
