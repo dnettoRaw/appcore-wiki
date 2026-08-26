@@ -59,6 +59,18 @@ supervision, updates e shutdown.
 
 Aplicações usam o módulo público `application` e evitam internals.
 
+## Prerelease 2.0: geração HTTP supervisionada
+
+A linha de source 2.0 compõe o listener HTTP por uma geração de
+`ReloadableRuntimeHttpHost` registrada como o serviço gerenciado `http`
+existente. O Supervisor global continua como único owner do lifecycle; não há
+Supervisor aninhado nem worker de reload destacado. Rotas estáveis e o caminho
+1.0 de `RuntimeHttpHost` continuam inalterados.
+
+Essa integração estabelece prepare, troca atômica, drain limitado e rollback no
+mesmo listener. Ela não observa manifests V1 nem liga outro endereço
+silenciosamente. Veja [reload coordenado](/pt/architecture/reload).
+
 ## Integração AI experimental disponível no código-fonte
 
 O workspace de desenvolvimento atual possui a feature opt-in `ai-alpha`, que

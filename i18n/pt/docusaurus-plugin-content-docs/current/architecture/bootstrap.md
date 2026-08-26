@@ -35,6 +35,11 @@ validar declaração, mode, idempotência, escrita operacional e liderança. Um
 `CapabilityRegistry` só existe quando há handler local real; queries de status
 do Runtime continuam comportamento explícito do host.
 
+A linha de source 2.0 também possui uma fronteira opt-in de geração de routing
+para o serviço HTTP. Ela prepara e verifica um Router mais novo antes de uma
+troca atômica e depois drena requests já admitidos pela geração antiga. Isso não
+é um watcher implícito de manifest V1. Veja [reload coordenado](./reload).
+
 ## Limitations
 
 - Bootstrap não infere providers nem aplica fallback silencioso.

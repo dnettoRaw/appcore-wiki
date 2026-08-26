@@ -49,4 +49,23 @@ command/query para testes locais controlados. `/v1/health` permanece público
 por contrato. Rejeições de autorização de command geram audit com metadados
 normalizados, sem credenciais, payload ou chave de idempotência.
 
+## Prerelease 2.0: reload coordenado de routing
+
+A linha de source 2.0 adiciona o `ReloadableRuntimeHttpHost` opt-in ainda não
+publicado. Um candidato deve usar geração estritamente mais nova no mesmo
+endereço ligado e passar por `/v1/health` antes e depois de uma troca atômica de
+routing. Requests já aceitos mantêm o Router original até a conclusão; a
+geração anterior é drenada com prazo. Falha de saúde ou drain restaura a geração
+anterior e fecha a admissão da geração com falha.
+
+O ponteiro ativo é lock-free, prazos são limitados a 60 segundos e o snapshot
+contém apenas contadores de geração, in-flight, sucesso, falha e rollback. A
+composition root pode transferir um listener TCP já ligado para validar o bind
+antes do startup. Mudanças de endereço exigem outra geração de listener
+preparada e não são inferidas.
+
+Esta API descreve apenas o status do source. Não presuma que ela esteja
+disponível no pacote estável `1.0.0` indicado acima. Veja
+[reload coordenado](/pt/architecture/reload).
+
 **Maturidade:** superfície HTTP V1 estrita e estável.

@@ -69,6 +69,11 @@ The host may start HTTP, sync receiver, peer RPC, control-plane worker, schedule
 
 The host exposes a probe path used by tests and certification: it starts selected services, waits for readiness up to a timeout, then gracefully shuts down and reports which services were observed.
 
+The 2.0 source line also has an opt-in routing-generation boundary for the HTTP
+service. It prepares and health-checks a newer Router before one atomic switch,
+then drains requests already admitted by the old generation. This is not an
+implicit V1 manifest watcher. See [coordinated reload](./reload).
+
 ## What does shutdown mean?
 
 Shutdown is not a process kill. The host asks the runtime lifecycle to move through shutdown-requested and shutdown-completed states. Service shutdown remains cooperative. The supervisor can quarantine a service that does not stop, but it does not safely terminate arbitrary user code inside the process.

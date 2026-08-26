@@ -29,6 +29,10 @@ Restart não é inline: consome orçamento, aplica backoff/jitter, agenda em exe
 
 Se shutdown não consegue parar um worker, o serviço vira orphaned/quarantined. Isso é mais correto do que fingir que o worker antigo desapareceu.
 
+O owner de routing HTTP coordenado da linha 2.0 continua sendo o serviço
+gerenciado `http` existente. Suas gerações internas não registram outro
+Supervisor nem reiniciam o processo. Veja [reload coordenado](./reload).
+
 ## Limitations
 
 - O supervisor não reinicia o processo, apenas serviços dentro dele.

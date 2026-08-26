@@ -49,4 +49,22 @@ remains intentionally public. Rejected command authorization is audited with
 normalized metadata and never records credentials, payloads or idempotency
 keys.
 
+## 2.0 prerelease: coordinated routing reload
+
+The 2.0 source line adds the unpublished opt-in
+`ReloadableRuntimeHttpHost`. A candidate must use a strictly newer generation
+on the same bound address and pass `/v1/health` before and after one atomic
+routing switch. Requests already accepted retain their original Router until
+completion; the old generation drains under a deadline. Failed health or drain
+restores the prior generation and closes failed-generation admission.
+
+The active pointer is lock-free, deadlines are capped at 60 seconds and the
+snapshot contains only generation, in-flight, success, failure and rollback
+counters. A composition root may transfer an already bound TCP listener for
+bind-before-start validation. Address changes require a separate prepared
+listener generation and are not inferred.
+
+This API is source status only. Do not infer that it is available from the
+stable `1.0.0` package shown above. See [coordinated reload](/architecture/reload).
+
 **Maturity:** stable strict HTTP V1 surface.
