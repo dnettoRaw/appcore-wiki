@@ -108,7 +108,7 @@ counters expose index health without unbounded labels.
 
 This is development status, not functionality in the stable `1.0.0` package.
 The private Runtime beta through
-[`e7e337c`](https://github.com/dnettoRaw/AppCore-Runtime/commit/e7e337c)
+[`deff156`](https://github.com/dnettoRaw/AppCore-Runtime/commit/deff156)
 defines `GatewayRegistryProvider`, implements `RedisGatewayRegistryProvider`
 and adds the bounded `GatewayHaCoordinator`. It uses monotonic tenant-local instance epochs,
 exact instance/worker-generation fences, one Redis Cluster hash slot per
@@ -144,10 +144,11 @@ The authenticated V2 federation endpoint now binds the exact request body,
 source/target epochs and worker generation to a separate short-lived one-use
 credential. The target validates the shared claim before touching the socket,
 returns typed AC-021 errors, and the origin completes the fence before accepting
-the response. The E2E passes with two Gateway states, independent Redis 7.4
-connections and Caddy 2.11.4 as the only advertised route to the target. Owner
-loss now expires at the bounded lease TTL, reacquires a higher epoch and routes
-again in under five seconds. The clean AC-022 local report at `7197416` passed
+the response. The combined E2E uses two Gateway states, independent Redis 7.4
+connections and Caddy 2.11.4 as the only advertised route to the target. It
+drops the owner ungracefully, waits for the bounded lease TTL, reacquires a
+higher epoch and routes through Caddy again in under five seconds. The clean
+AC-022 local report at `7197416` passed
 all subsystems: shared lookup stayed at 0.58--0.67 us p99, 1,000-tenant
 recovery at 2.25 ms p99, local fenced routing at 0.35 ms p99 and federated
 routing at 0.91 ms p99. Linux and Windows CI evidence remains required before

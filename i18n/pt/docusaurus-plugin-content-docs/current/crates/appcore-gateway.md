@@ -109,7 +109,7 @@ rebuild e inconsistência expõem saúde sem labels ilimitadas.
 
 Este é o estado de desenvolvimento, não uma funcionalidade do pacote estável
 `1.0.0`. A beta privada do Runtime até
-[`e7e337c`](https://github.com/dnettoRaw/AppCore-Runtime/commit/e7e337c)
+[`deff156`](https://github.com/dnettoRaw/AppCore-Runtime/commit/deff156)
 define `GatewayRegistryProvider`, implementa `RedisGatewayRegistryProvider` e
 adiciona o `GatewayHaCoordinator` limitado. Ela usa epochs monotônicos por tenant, fences
 exatos de instância/geração de worker, um hash slot Redis Cluster por tenant,
@@ -145,10 +145,11 @@ O endpoint V2 de federação autenticado agora vincula body exato, epochs de
 source/target e geração do worker a uma credential separada, curta e de uso
 único. O target valida o claim compartilhado antes de tocar o socket, devolve
 erros AC-021 tipados e o origin completa o fence antes de aceitar a resposta. O
-E2E passa com dois estados Gateway, conexões independentes ao Redis 7.4 e Caddy
-2.11.4 como única rota anunciada para o target. A perda do owner agora expira
-no TTL limitado do lease, readquire epoch maior e volta a rotear em menos de
-cinco segundos. O relatório local AC-022 limpo em `7197416` passou todos os
+E2E combinado usa dois estados Gateway, conexões independentes ao Redis 7.4 e
+Caddy 2.11.4 como única rota anunciada para o target. Ele perde o owner
+abruptamente, espera o TTL limitado do lease, readquire epoch maior e volta a
+rotear via Caddy em menos de cinco segundos. O relatório local AC-022 limpo em
+`7197416` passou todos os
 subsistemas: lookup compartilhado ficou em 0,58--0,67 us p99, recovery de 1.000
 tenants em 2,25 ms p99, rota fenced local em 0,35 ms p99 e rota federada em
 0,91 ms p99. Evidência CI Linux e Windows ainda é necessária antes de o profile

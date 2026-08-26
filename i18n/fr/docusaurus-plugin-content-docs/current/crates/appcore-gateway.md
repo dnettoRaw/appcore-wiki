@@ -114,7 +114,7 @@ rebuild et d'incohérence exposent la santé sans labels non bornés.
 
 Ceci décrit l'état de développement, pas une fonctionnalité du paquet stable
 `1.0.0`. La beta privée du Runtime jusqu'au commit
-[`e7e337c`](https://github.com/dnettoRaw/AppCore-Runtime/commit/e7e337c)
+[`deff156`](https://github.com/dnettoRaw/AppCore-Runtime/commit/deff156)
 définit `GatewayRegistryProvider`, implémente `RedisGatewayRegistryProvider` et
 ajoute le `GatewayHaCoordinator` borné. Elle utilise des epochs monotones par tenant,
 des fences exactes instance/génération worker, un hash slot Redis Cluster par
@@ -152,11 +152,11 @@ L'endpoint V2 de fédération authentifié lie maintenant le body exact, les epo
 source/target et la génération worker à un credential séparé, court et à usage
 unique. La target valide le claim partagé avant de toucher le socket, retourne
 des erreurs AC-021 typées et l'origin complète le fence avant d'accepter la
-réponse. L'E2E passe avec deux états Gateway, des connexions Redis 7.4
-indépendantes et Caddy 2.11.4 comme seule route annoncée vers la target. La
-perte de l'owner expire maintenant au TTL borné du lease, reprend un epoch
-supérieur et route à nouveau en moins de cinq secondes. Le rapport local
-AC-022 propre à `7197416` a validé tous les sous-systèmes : lookup partagé à
+réponse. L'E2E combiné utilise deux états Gateway, des connexions Redis 7.4
+indépendantes et Caddy 2.11.4 comme seule route annoncée vers la target. Il perd
+brutalement l'owner, attend le TTL borné du lease, reprend un epoch supérieur et
+route à nouveau via Caddy en moins de cinq secondes. Le rapport local AC-022
+propre à `7197416` a validé tous les sous-systèmes : lookup partagé à
 0,58--0,67 us p99, recovery de 1 000 tenants à 2,25 ms p99, route fenced locale
 à 0,35 ms p99 et route fédérée à 0,91 ms p99. Les preuves CI Linux et Windows
 restent requises avant que le profil HA soit déployable, et aucun fallback
