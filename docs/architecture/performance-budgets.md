@@ -112,6 +112,16 @@ capped at 1 ms p99 and must exceed 10,000 selections/s. The final clean
 macOS/aarch64 run at `7caddc1` measured 17,125 ns round-robin p99, 18,542 ns
 least-inflight p99 and 38,083 ns affinity p99.
 
+AC-013 adds 4,096 shared-registry lookups and three complete recovery rounds
+at 1, 100 and 1,000 tenants, then 64 successful requests through each real
+local fenced and authenticated V2 federated route. Lookup is capped at 5 ms
+p99 and must exceed 500/s; recovery is capped at 5 s; local routing is capped
+at 50 ms p99 and 100/s; federation at 250 ms p99 and 20/s. The clean
+macOS/aarch64 run at `7197416` measured at most 667 ns lookup p99, 2.25 ms
+recovery p99, 0.35 ms local-route p99 and 0.91 ms federated-route p99. Redis,
+external-proxy and owner-loss tests remain separate evidence; Linux and
+Windows artifacts remain required.
+
 Follow the benchmark in [public AC-022](https://github.com/dnettoRaw/app-core-public/issues/24)
 and the command correction in [public AC-001](https://github.com/dnettoRaw/app-core-public/issues/3).
 The query correction is tracked in [public AC-002](https://github.com/dnettoRaw/app-core-public/issues/4).
@@ -123,3 +133,4 @@ Direct worker indexing is tracked in [public AC-011](https://github.com/dnettoRa
 The fixed scheduler pool is tracked in [public AC-018](https://github.com/dnettoRaw/app-core-public/issues/20).
 Bounded Gateway telemetry is tracked in [public AC-020](https://github.com/dnettoRaw/app-core-public/issues/22).
 Bounded worker selection is tracked in [public AC-012](https://github.com/dnettoRaw/app-core-public/issues/14).
+Gateway HA is tracked in [public AC-013](https://github.com/dnettoRaw/app-core-public/issues/15).

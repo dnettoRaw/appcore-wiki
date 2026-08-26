@@ -108,7 +108,7 @@ counters expose index health without unbounded labels.
 
 This is development status, not functionality in the stable `1.0.0` package.
 The private Runtime beta through
-[`b9af862`](https://github.com/dnettoRaw/AppCore-Runtime/commit/b9af862)
+[`e7e337c`](https://github.com/dnettoRaw/AppCore-Runtime/commit/e7e337c)
 defines `GatewayRegistryProvider`, implements `RedisGatewayRegistryProvider`
 and adds the bounded `GatewayHaCoordinator`. It uses monotonic tenant-local instance epochs,
 exact instance/worker-generation fences, one Redis Cluster hash slot per
@@ -146,8 +146,12 @@ credential. The target validates the shared claim before touching the socket,
 returns typed AC-021 errors, and the origin completes the fence before accepting
 the response. The E2E passes with two Gateway states, independent Redis 7.4
 connections and Caddy 2.11.4 as the only advertised route to the target. Owner
-loss/recovery certification is still pending, so this is not yet a deployable
-HA profile and must never fall back locally. Track
+loss now expires at the bounded lease TTL, reacquires a higher epoch and routes
+again in under five seconds. The clean AC-022 local report at `7197416` passed
+all subsystems: shared lookup stayed at 0.58--0.67 us p99, 1,000-tenant
+recovery at 2.25 ms p99, local fenced routing at 0.35 ms p99 and federated
+routing at 0.91 ms p99. Linux and Windows CI evidence remains required before
+the HA profile is deployable, and it must never fall back locally. Track
 [public AC-013](https://github.com/dnettoRaw/app-core-public/issues/15).
 
 ## 2.0 alpha: bounded worker selection

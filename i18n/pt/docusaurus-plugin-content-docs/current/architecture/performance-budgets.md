@@ -112,6 +112,16 @@ deve superar 10.000 seleções/s. A execução final limpa macOS/aarch64 em
 `7caddc1` mediu 17.125 ns p99 para round-robin, 18.542 ns para least-inflight e
 38.083 ns para affinity.
 
+AC-013 adiciona 4.096 lookups no registry compartilhado e três rounds completos
+de recovery com 1, 100 e 1.000 tenants, depois 64 requests com sucesso em cada
+rota fenced local real e rota federada V2 autenticada. Lookup é limitado a 5 ms
+p99 e deve superar 500/s; recovery é limitado a 5 s; rota local a 50 ms p99 e
+100/s; federação a 250 ms p99 e 20/s. A execução limpa macOS/aarch64 em
+`7197416` mediu no máximo 667 ns p99 de lookup, 2,25 ms p99 de recovery, 0,35 ms
+p99 de rota local e 0,91 ms p99 de rota federada. Testes Redis, proxy externo e
+perda de owner continuam como evidências separadas; artefatos Linux e Windows
+ainda são necessários.
+
 Veja o benchmark em [AC-022 pública](https://github.com/dnettoRaw/app-core-public/issues/24)
 e a correção de commands em [AC-001 pública](https://github.com/dnettoRaw/app-core-public/issues/3).
 A correção de queries está em [AC-002 pública](https://github.com/dnettoRaw/app-core-public/issues/4).
@@ -123,4 +133,5 @@ O índice direto de workers está em [AC-011 pública](https://github.com/dnetto
 O pool fixo do scheduler está em [AC-018 pública](https://github.com/dnettoRaw/app-core-public/issues/20).
 A telemetria limitada do Gateway está em [AC-020 pública](https://github.com/dnettoRaw/app-core-public/issues/22).
 A seleção limitada de workers está em [AC-012 pública](https://github.com/dnettoRaw/app-core-public/issues/14).
+A HA do Gateway está na [AC-013 pública](https://github.com/dnettoRaw/app-core-public/issues/15).
 Os artefatos de plataforma restantes do erro wire tipado estão na [AC-021 pública](https://github.com/dnettoRaw/app-core-public/issues/23).
