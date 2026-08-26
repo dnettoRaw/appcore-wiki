@@ -21,8 +21,17 @@ O repositório do Runtime mantém o [guia detalhado](https://github.com/dnettoRa
 outro pacote AppCore.
 
 **API principal:** `HttpScheme`, `HttpTarget`, `HttpRequest`, `HttpHeader`,
+`HttpClient`, `HttpExchangeConfig`, `HttpTimeouts`, `HttpPoolConfig`,
 `HttpClientConfig`, `HttpResponse`, `CancellationToken`, `TransportError`,
 `send`, parse de resposta e gzip limitado.
+
+Mantenha e clone um `HttpClient` para compartilhar um pool limitado por scheme,
+host e porta. Os deadlines de conexão/admissão, leitura e escrita são
+independentes. Somente respostas totalmente delimitadas e interpretadas podem
+ser reutilizadas; truncamento, framing inválido, timeout, cancelamento,
+`Connection: close` e body delimitado por fechamento descartam o socket. A
+função livre `send` continua sendo um adapter V1 one-shot e enviando
+`Connection: close`.
 
 Use em adapters de infraestrutura que compartilham limites, timeout,
 cancelamento e TLS. O consumidor mantém autenticação e policy. Não transforme

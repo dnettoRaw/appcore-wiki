@@ -21,7 +21,10 @@ replay protection.
 **Primary API:** token issuer/authenticator/dispatcher traits and HashToken or
 static implementations; in-memory/file nonce stores; validation config,
 validator and signing/payload hashes; retry/client config and transport trait;
-standard transport; HTTP state and host.
+pooled and standard one-shot transports; HTTP state and host.
+
+Use `PooledPeerRpcTransport` to reuse bounded per-origin connections.
+`StdPeerRpcTransport` preserves the V1 one-shot `Connection: close` behavior.
 
 Use it only after tenant, cluster, source, target, protocol, expiry, nonce and
 payload integrity can be established. `AllowPeerAuthenticator` is for tests,

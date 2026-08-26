@@ -26,6 +26,10 @@ métriques et `SyncError`.
 Les contrats content-envelope opaque sont réexportés pour les paquets sync
 basés sur DNT sans exposer le plaintext au code de routage.
 
+`HttpSyncTransport` possède un client HTTP réutilisable et borné. Utilisez
+`with_timeout_ms` pour le délai V1 uniforme ou `with_timeouts` pour des délais
+indépendants de connexion/admission, de lecture et d'écriture.
+
 À utiliser pour réplication compatible, ordonnée et hash-chaînée. Ne pas
 contourner identité/protocole ni l'interpréter comme RAFT, multi-master ou
 résolution de conflits métier.

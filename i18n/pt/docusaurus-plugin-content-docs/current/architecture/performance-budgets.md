@@ -24,6 +24,7 @@ publica o artefato JSON.
 - enqueue, leitura e ACK da outbox perto de 1, 10 e 64 MiB;
 - contenção do routing state do Gateway com 1, 100 e 1.000 tenants, mais uma
   prova de independência de lock entre tenants;
+- 32 trocas HTTP/1.1 sequenciais por uma única conexão keep-alive aceita;
 - encode, decode, integridade e replay do Peer RPC entre 1 KiB e 4 MiB;
 - startup do scheduler e lotes limitados de 64 tasks vencidas.
 
@@ -59,8 +60,16 @@ cleanup após resposta, resposta inválida, timeout, cancelamento, shutdown,
 substituição e desconexão do worker; geração stale deve preservar a entrada
 atual.
 
+AC-005 adiciona um cliente HTTP reutilizável com admissão por origem, conexões
+ociosas e retenção de origens limitadas. Os deadlines de conexão/admissão,
+leitura e escrita são independentes. Somente respostas totalmente delimitadas e
+interpretadas voltam ao pool; qualquer falha ou resposta não reutilizável
+descarta o socket. O gate exige as 32 trocas pela mesma conexão aceita. O
+adapter V1 livre `send` continua one-shot com `Connection: close`.
+
 Veja o benchmark em [AC-022 pública](https://github.com/dnettoRaw/app-core-public/issues/24)
 e a correção de commands em [AC-001 pública](https://github.com/dnettoRaw/app-core-public/issues/3).
 A correção de queries está em [AC-002 pública](https://github.com/dnettoRaw/app-core-public/issues/4).
 A correção do Gateway está em [AC-003 pública](https://github.com/dnettoRaw/app-core-public/issues/5).
 O ownership de requests pendentes está em [AC-004 pública](https://github.com/dnettoRaw/app-core-public/issues/6).
+O reuso de conexões HTTP está em [AC-005 pública](https://github.com/dnettoRaw/app-core-public/issues/7).

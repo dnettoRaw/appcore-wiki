@@ -26,6 +26,10 @@ state/ack; follower client; HTTP transport; peer discovery; retry, métricas e
 Contratos de content-envelope opaco são reexportados para pacotes sync
 baseados em DNT sem expor plaintext ao código de roteamento.
 
+`HttpSyncTransport` possui um cliente HTTP reutilizável e limitado. Use
+`with_timeout_ms` para o deadline V1 uniforme ou `with_timeouts` para deadlines
+independentes de conexão/admissão, leitura e escrita.
+
 Use para replicação compatível, ordenada e hash-chained. Não ignore identidade
 ou protocolo nem trate como RAFT, multi-master ou resolvedor de conflito de
 negócio.

@@ -24,6 +24,7 @@ publish the JSON artifact.
 - file outbox enqueue, read and acknowledgement near 1, 10 and 64 MiB;
 - Gateway routing-state contention with 1, 100 and 1,000 tenants, plus a
   cross-tenant lock-independence probe;
+- 32 sequential HTTP/1.1 exchanges through one accepted keep-alive connection;
 - Peer RPC encode, decode, integrity and replay validation from 1 KiB to 4 MiB;
 - scheduler startup and bounded batches of 64 due tasks.
 
@@ -58,8 +59,16 @@ response-size limit in the same entry. Deterministic tests require cleanup after
 response, invalid response, timeout, cancellation, shutdown, worker replacement
 and disconnect, while a stale generation must leave the current entry intact.
 
+AC-005 adds a reusable HTTP client with bounded per-origin admission, idle
+ownership and origin retention. Connect/admission, read and write deadlines are
+independent. Only fully framed and parsed responses return to the pool; any
+failure or non-reusable response discards the socket. The gate requires all 32
+exchanges to complete through one accepted connection. The V1 free `send`
+adapter stays one-shot with `Connection: close`.
+
 Follow the benchmark in [public AC-022](https://github.com/dnettoRaw/app-core-public/issues/24)
 and the command correction in [public AC-001](https://github.com/dnettoRaw/app-core-public/issues/3).
 The query correction is tracked in [public AC-002](https://github.com/dnettoRaw/app-core-public/issues/4).
 The Gateway correction is tracked in [public AC-003](https://github.com/dnettoRaw/app-core-public/issues/5).
 Pending-request ownership is tracked in [public AC-004](https://github.com/dnettoRaw/app-core-public/issues/6).
+HTTP connection reuse is tracked in [public AC-005](https://github.com/dnettoRaw/app-core-public/issues/7).

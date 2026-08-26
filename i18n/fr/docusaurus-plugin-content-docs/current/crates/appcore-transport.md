@@ -21,8 +21,17 @@ Le dépôt Runtime maintient le [guide détaillé](https://github.com/dnettoRaw/
 autre paquet AppCore.
 
 **API principale :** `HttpScheme`, `HttpTarget`, `HttpRequest`, `HttpHeader`,
+`HttpClient`, `HttpExchangeConfig`, `HttpTimeouts`, `HttpPoolConfig`,
 `HttpClientConfig`, `HttpResponse`, `CancellationToken`, `TransportError`,
 `send`, parsing de réponse et gzip borné.
+
+Conservez et clonez un `HttpClient` pour partager un pool borné par schéma,
+hôte et port. Les délais de connexion/admission, de lecture et d'écriture sont
+indépendants. Seules les réponses entièrement cadrées et analysées sont
+réutilisables ; troncature, cadrage invalide, timeout, annulation,
+`Connection: close` et corps délimité par fermeture éliminent le socket. La
+fonction libre `send` reste un adaptateur V1 one-shot et continue d'envoyer
+`Connection: close`.
 
 À utiliser dans les adapters partageant limites, timeout, annulation et TLS. Le
 consommateur garde authentification et policy. Ne pas en faire un framework web

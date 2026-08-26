@@ -26,6 +26,10 @@ retry policy, push metrics and `SyncError`.
 Opaque content-envelope transport contracts are reexported for DNT-backed sync
 packages without exposing plaintext to routing code.
 
+`HttpSyncTransport` owns a reusable bounded HTTP client. Use
+`with_timeout_ms` for the uniform V1 deadline or `with_timeouts` for independent
+connect/admission, read and write deadlines.
+
 Use it for compatible, ordered, hash-chained replication. Do not bypass
 identity/protocol checks or reinterpret it as RAFT, multi-master consensus or a
 business conflict resolver.

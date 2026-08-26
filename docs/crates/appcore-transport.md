@@ -21,8 +21,16 @@ The Runtime repository maintains the detailed [guide](https://github.com/dnettoR
 other AppCore package.
 
 **Primary API:** `HttpScheme`, `HttpTarget`, `HttpRequest`, `HttpHeader`,
+`HttpClient`, `HttpExchangeConfig`, `HttpTimeouts`, `HttpPoolConfig`,
 `HttpClientConfig`, `HttpResponse`, `CancellationToken`, `TransportError`,
 `send`, response parsing and bounded gzip encode/decode.
+
+Own and clone one `HttpClient` to share a bounded pool keyed by scheme, host
+and port. Connect/pool admission, read and write deadlines are independent.
+Only fully framed and parsed responses are reusable; truncation, malformed
+framing, timeout, cancellation, `Connection: close` and close-delimited bodies
+discard the socket. The existing free `send` function remains a one-shot V1
+adapter and continues to send `Connection: close`.
 
 Use it inside infrastructure adapters that need the same size, timeout,
 cancellation and TLS mechanics. Consumers still own authentication and policy.

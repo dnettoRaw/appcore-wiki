@@ -20,8 +20,12 @@ protection.
 
 **API principale :** traits token issuer/authenticator/dispatcher et
 implémentations HashToken/static; nonce stores mémoire/fichier; config,
-validator et hashes; retry/client config et trait transport; transport standard;
-HTTP state et host.
+validator et hashes ; retry/client config et trait transport ; transports
+pooled et standard one-shot ; HTTP state et host.
+
+Utilisez `PooledPeerRpcTransport` pour réutiliser des connexions bornées par
+origine. `StdPeerRpcTransport` conserve le comportement V1 one-shot avec
+`Connection: close`.
 
 À utiliser uniquement si tenant, cluster, source, cible, protocole, expiry,
 nonce et intégrité sont établis. `AllowPeerAuthenticator` est réservé aux tests.
