@@ -12,6 +12,16 @@
       "related_future": ["appcore-agent", "appcore-search", "appcore-jobs"]
     },
     {
+      "name": "appcore-sync-sqlite",
+      "slug": "appcore-sync-sqlite",
+      "status": "Alpha",
+      "category": "Experimental",
+      "summary": "Optional bounded SQLite persistence for Runtime replication log, outbox, checkpoints, opaque tombstones, integrity and online backup.",
+      "horizon": "0.1.0-alpha.1 development preview; not published",
+      "related_existing": ["appcore-sync", "appcore-storage"],
+      "related_future": []
+    },
+    {
       "name": "appcore-ui",
       "slug": "appcore-ui",
       "status": "In Design",

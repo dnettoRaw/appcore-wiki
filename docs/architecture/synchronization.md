@@ -125,6 +125,22 @@ AppCore handles runtime replay by storing sequence and checkpoint state. If a pe
 
 Application command idempotency is separate. A command may require an idempotency key before it is accepted by the runtime. Sync batch idempotency prevents duplicate replication. Both are needed because client retries and peer retries happen at different boundaries.
 
+## Optional SQLite persistence after 1.0
+
+The post-1.0 `appcore-sync-sqlite` preview persists only Runtime sync records:
+the replication log, outbox, per-peer checkpoints and opaque tombstones. It
+uses a versioned internal schema, WAL, full synchronization, bounded
+connections and limits, portable snapshots, verified online backup and a
+fail-closed integrity scan. It never exposes arbitrary SQL or application
+tables.
+
+The provider supports independent local processes on a filesystem with
+reliable locking. Network shares, multi-host SQLite and automatic selection by
+the frozen V1 manifest are outside the contract. Unknown or future internal
+schemas return `NO MORE SUPPORTED PLEASE UPDATE`; there is no inferred import
+from file-provider formats. See the
+[`appcore-sync-sqlite` preview](../crates/appcore-sync-sqlite).
+
 ## Why doesn't AppCore resolve conflicts automatically?
 
 Multi-master replication requires a domain conflict model. AppCore cannot know whether "reserve stock", "edit note", "approve quote", and "rotate secret" have the same conflict semantics. The runtime therefore keeps sync conservative and asks application code to own domain conflict policy.

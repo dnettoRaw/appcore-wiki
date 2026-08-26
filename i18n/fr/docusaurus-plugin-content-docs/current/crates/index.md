@@ -16,6 +16,12 @@ La bêta publique [`appcore-ai 0.1.0-beta.1`](./appcore-ai), versionnée
 séparément, est également publiée sur crates.io. Elle ne fait pas partie du
 graphe stable des crates Runtime `1.0.0`.
 
+L'intégration facultative
+[`appcore-sync-sqlite 0.1.0-alpha.1`](./appcore-sync-sqlite) est un aperçu de
+développement post-1.0 et n'est **pas publiée**. Sa page documente la frontière
+acceptée et les preuves de certification sans la présenter comme partie du
+catalogue stable.
+
 Pour une nouvelle application, utiliser la façade de haut niveau :
 
 ```bash

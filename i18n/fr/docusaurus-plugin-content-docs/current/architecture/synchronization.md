@@ -53,6 +53,22 @@ et V2 avant un rollback.
 
 Idempotency de command et idempotency de batch ne protègent pas la même frontière. La key de command évite de dupliquer un retry client. Séquence/checkpoint évitent de dupliquer une réplication peer.
 
+## Persistance SQLite facultative après la 1.0
+
+L'aperçu post-1.0 `appcore-sync-sqlite` persiste uniquement les enregistrements
+de synchronisation du Runtime : replication log, outbox, checkpoints par peer
+et tombstones opaques. Il utilise un schéma interne versionné, WAL,
+synchronisation complète, connexions et limites bornées, snapshots portables,
+sauvegarde en ligne vérifiée et contrôle d'intégrité fermé en cas d'échec. Il
+n'expose jamais de SQL arbitraire ni de tables applicatives.
+
+Le provider accepte des processus locaux indépendants sur un filesystem au
+locking fiable. Les partages réseau, SQLite multi-host et la sélection
+automatique par le manifest V1 gelé sont hors contrat. Un schéma interne
+inconnu ou futur retourne `NO MORE SUPPORTED PLEASE UPDATE` ; aucun format du
+file provider n'est importé par inférence. Voir
+[l'aperçu `appcore-sync-sqlite`](../crates/appcore-sync-sqlite).
+
 ## Limitations
 
 - Sync est leader-to-follower, pas RAFT ni multi-master.

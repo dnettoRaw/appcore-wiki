@@ -63,6 +63,21 @@ converte. Operadores drenam V1 antes do upgrade e V2 antes do rollback.
 
 Idempotency de command e idempotency de batch resolvem problemas diferentes. A key de command evita duplicar retry de cliente. A sequência/checkpoint evita duplicar replicação entre peers. Os dois limites precisam existir porque os retries acontecem em fronteiras diferentes.
 
+## Persistência SQLite opcional depois do 1.0
+
+A prévia pós-1.0 `appcore-sync-sqlite` persiste apenas registros de sync do
+Runtime: replication log, outbox, checkpoints por peer e tombstones opacos. Ela
+usa schema interno versionado, WAL, sincronização completa, conexões e limites
+explícitos, snapshots portáveis, backup online verificado e integrity scan que
+falha fechado. Ela nunca expõe SQL arbitrário nem tabelas de aplicação.
+
+O provider suporta processos locais independentes em filesystem com locking
+confiável. Shares de rede, SQLite multi-host e seleção automática pelo manifest
+V1 congelado estão fora do contrato. Schemas internos desconhecidos ou futuros
+retornam `NO MORE SUPPORTED PLEASE UPDATE`; formatos file-provider não são
+importados por inferência. Veja a
+[prévia `appcore-sync-sqlite`](../crates/appcore-sync-sqlite).
+
 ## Limitations
 
 - Sync é leader-to-follower, não RAFT nem multi-master.
