@@ -53,6 +53,9 @@ les commits vérifiés atteignent le dispatcher et les réponses utilisent des
 pulls explicites et bornés. Erreur, annulation, expiration et fin libèrent le
 fichier et la réservation. Le snapshot expose sessions, octets réservés,
 saturations et nettoyages.
+Unix valide le propriétaire effectif et les modes répertoire/fichier
+`0700`/`0600`. Windows rejette les reparse points et tout allow ACE hors du SID
+propriétaire du processus courant. Les autres plateformes échouent fermées.
 
 Activez les routes HTTP signées uniquement avec
 `PeerRpcHttpHost::with_v2_stream_registry`; le host par défaut reste V1-only.
@@ -62,8 +65,8 @@ vérifie tenant, cluster, cible, trace, deadline, idempotence command et nonce
 replay borné. Les frames ambiguës ne sont pas répétées; l'annulation best effort
 est soutenue par le nettoyage autoritaire de la deadline.
 
-La certification release clean-source à `3cd0f48` a réussi avec un payload
+La certification release clean-source à `8d26cc3` a réussi avec un payload
 incompressible de 64 MiB, 1 024 chunks, une frame JSON maximale de 87 660
-octets, un p99 de 1,079 seconde et un pic RSS de suite de 350 096 KiB. Cette API
+octets, un p99 de 1,092 seconde et un pic RSS de suite de 366 432 KiB. Cette API
 ne négocie pas le transport. `/v1/peer/*` analyse uniquement V1 et n'infère
 jamais V2. V2 est certifié sur la ligne de développement post-1.0, non publiée.

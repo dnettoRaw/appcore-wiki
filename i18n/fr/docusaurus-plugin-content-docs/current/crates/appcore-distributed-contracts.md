@@ -44,7 +44,7 @@ dans des modules et routes séparés, sans détection, conversion ni fallback.
 
 :::warning Contrat en développement
 Les DTO, codec, registre borné et intégration host/client signée V2 ont réussi
-la certification release clean-source à `3cd0f48`. V2 reste non publié sur la
+la certification release clean-source à `8d26cc3`. V2 reste non publié sur la
 ligne de développement post-1.0. Continuez à utiliser les routes V1 explicites
 jusqu'à l'annonce de cette release.
 :::

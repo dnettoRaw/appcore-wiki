@@ -52,6 +52,9 @@ diretório de spool existente acessível somente pelo proprietário; apenas
 commits verificados chegam ao dispatcher e respostas usam pulls explícitos e
 limitados. Erro, cancelamento, expiração e conclusão liberam arquivo e reserva.
 O snapshot expõe sessões, bytes reservados, saturações e limpezas.
+Unix valida o proprietário efetivo e modos `0700`/`0600` do diretório/arquivo.
+Windows rejeita reparse points e todo allow ACE fora do SID proprietário do
+processo atual. Outras plataformas falham fechadas ao construir o registry.
 
 Habilite as rotas HTTP assinadas somente com
 `PeerRpcHttpHost::with_v2_stream_registry`; o host default continua V1-only.
@@ -61,8 +64,8 @@ verifica tenant, cluster, target, trace, deadline, idempotência de command e
 nonce replay limitado. Frames ambíguos não são repetidos; cancelamento best
 effort é respaldado pela limpeza autoritativa por deadline.
 
-A certificação release clean-source em `3cd0f48` passou com payload
+A certificação release clean-source em `8d26cc3` passou com payload
 incompressível de 64 MiB, 1.024 chunks, maior frame JSON de 87.660 bytes, p99 de
-1,079 segundo e pico RSS da suíte de 350.096 KiB. Essa API não negocia
+1,092 segundo e pico RSS da suíte de 366.432 KiB. Essa API não negocia
 transporte. `/v1/peer/*` interpreta somente V1 e nunca infere V2. V2 está
 certificado na linha de desenvolvimento pós-1.0, mas ainda não foi publicado.

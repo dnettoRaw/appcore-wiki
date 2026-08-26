@@ -45,7 +45,7 @@ conversão ou fallback.
 
 :::warning Contrato em desenvolvimento
 Os DTOs, codec, registro limitado e integração host/client assinada V2 passaram
-na certificação release clean-source em `3cd0f48`. V2 permanece não publicado
+na certificação release clean-source em `8d26cc3`. V2 permanece não publicado
 na linha de desenvolvimento pós-1.0. Continue usando rotas V1 explícitas até o
 anúncio dessa release.
 :::
