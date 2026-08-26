@@ -109,7 +109,7 @@ rebuild e inconsistência expõem saúde sem labels ilimitadas.
 
 Este é o estado de desenvolvimento, não uma funcionalidade do pacote estável
 `1.0.0`. A beta privada do Runtime até
-[`840c8a8`](https://github.com/dnettoRaw/AppCore-Runtime/commit/840c8a8)
+[`583435b`](https://github.com/dnettoRaw/AppCore-Runtime/commit/583435b)
 define `GatewayRegistryProvider`, implementa `RedisGatewayRegistryProvider` e
 adiciona o `GatewayHaCoordinator` limitado. Ela usa epochs monotônicos por tenant, fences
 exatos de instância/geração de worker, um hash slot Redis Cluster por tenant,
@@ -135,10 +135,15 @@ o comportamento existente.
 O Runtime agora possui essa task e refaz todo worker live limitado e session
 não expirada antes de `Healthy`. Socket novo entra no shared ownership antes da
 admission local; disconnect, prune de heartbeat e shutdown removem records
-exatos. Claim/completion compartilhado no caminho real de request e endpoint
-V2 de federação autenticado continuam pendentes. Até ambos serem integrados e
-certificados, isso não é um profile HA de duas instâncias pronto para
-deployment e nunca pode usar o diretório local como fallback. Acompanhe a
+exatos. A rota local agora faz claim de epochs origin/target e geração do
+worker antes do dispatch, complete antes de devolver sucesso e cancel em falha
+de fila, timeout ou shutdown. Future abortado pelo owner deixa somente record
+limitado por TTL de 30 segundos. Contadores fixos expõem
+claims/completions/cancellations sem labels de request.
+
+Endpoint V2 de federação autenticado continua pendente. Até ser integrado e
+certificado, isso não é um profile HA de duas instâncias pronto para deployment
+e nunca pode usar o diretório local como fallback. Acompanhe a
 [AC-013 pública](https://github.com/dnettoRaw/app-core-public/issues/15).
 
 ## Alpha 2.0: seleção limitada de workers

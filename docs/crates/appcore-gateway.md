@@ -108,7 +108,7 @@ counters expose index health without unbounded labels.
 
 This is development status, not functionality in the stable `1.0.0` package.
 The private Runtime beta through
-[`840c8a8`](https://github.com/dnettoRaw/AppCore-Runtime/commit/840c8a8)
+[`583435b`](https://github.com/dnettoRaw/AppCore-Runtime/commit/583435b)
 defines `GatewayRegistryProvider`, implements `RedisGatewayRegistryProvider`
 and adds the bounded `GatewayHaCoordinator`. It uses monotonic tenant-local instance epochs,
 exact instance/worker-generation fences, one Redis Cluster hash slot per
@@ -134,10 +134,15 @@ single-instance state keeps its existing behavior.
 The Runtime now owns that task and replays every bounded live worker and
 unexpired session before `Healthy`. New sockets reach shared ownership before
 local admission; disconnect, heartbeat pruning and shutdown remove exact
-records. Shared claim/completion in the real request path and the authenticated
-V2 federation endpoint are still pending. Until both are integrated and
-certified, this is not a deployable two-instance HA profile and must never fall
-back to the process-local directory. Track
+records. The local route now claims origin/target epochs and worker generation before
+dispatch, completes before returning success, and cancels on queue failure,
+timeout or shutdown. Owner-aborted futures leave only a 30-second TTL-bounded
+record. Fixed counters expose claims/completions/cancellations without request
+labels.
+
+The authenticated V2 federation endpoint is still pending. Until it is
+integrated and certified, this is not a deployable two-instance HA profile and
+must never fall back to the process-local directory. Track
 [public AC-013](https://github.com/dnettoRaw/app-core-public/issues/15).
 
 ## 2.0 alpha: bounded worker selection
