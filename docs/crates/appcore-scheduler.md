@@ -37,6 +37,24 @@ the limit and pressure. Shutdown drains accepted callbacks with cooperative
 cancellation; callbacks must check `TaskContext::is_cancelled()` because Rust
 threads are not forcibly timed out.
 
+## 2.0 prerelease: opt-in recovery
+
+The 2.0 source line implements the unpublished `SchedulerStateProvider` V1
+boundary. `Scheduler::with_state_provider` selects a bounded owner, claim TTL,
+clock-skew allowance and provider; `schedule_durable` opts individual tasks
+into persisted next-run, attempt, misfire, fencing and receipt state. Existing
+`Scheduler::new` and `schedule` calls remain ephemeral and offline.
+
+The file provider combines same-process and interprocess locking with a
+checksummed bounded V1 snapshot and atomic replacement. Claims are acquired
+before dispatch and renewed while work runs. Callbacks receive
+`TaskContext::fencing_epoch()` and must use it at the protected effect boundary
+when owners can compete. Recovery remains at-least-once until the cycle receipt
+commits; callbacks and business workflow data are never serialized.
+
+This API is source status only. Do not infer that it is available from the
+stable `1.0.0` package shown above.
+
 :::warning Update recommended
 Deploy the scheduler release containing AC-018 when it becomes available.
 Earlier releases create a new operating-system thread per execution; that

@@ -38,6 +38,26 @@ les callbacks acceptés avec annulation coopérative ; les callbacks doivent
 consulter `TaskContext::is_cancelled()` car les threads Rust ne reçoivent pas de
 timeout forcé.
 
+## Prerelease 2.0 : récupération opt-in
+
+La ligne source 2.0 implémente la frontière non publiée
+`SchedulerStateProvider` V1. `Scheduler::with_state_provider` sélectionne un
+owner borné, le TTL du claim, la tolérance de clock skew et le provider ;
+`schedule_durable` inscrit des tâches individuelles dans l'état persistant de
+next run, attempt, misfire, fencing et receipt. `Scheduler::new` et `schedule`
+restent éphémères et offline.
+
+Le provider fichier combine le locking local et interprocessus avec un snapshot
+V1 borné et checksummed et un remplacement atomique. Les claims sont acquis
+avant dispatch et renouvelés pendant l'exécution. Les callbacks reçoivent
+`TaskContext::fencing_epoch()` et doivent l'appliquer à la frontière de l'effet
+protégé quand plusieurs owners sont possibles. La récupération reste
+at-least-once jusqu'au commit du receipt ; callbacks et données de workflow de
+l'application ne sont jamais sérialisés.
+
+Cette API décrit uniquement l'état du source. Elle ne doit pas être considérée
+comme disponible dans le paquet stable `1.0.0` indiqué ci-dessus.
+
 :::warning Mise à jour recommandée
 Installez la version du scheduler contenant AC-018 dès qu'elle sera disponible.
 Les versions antérieures créent un nouveau thread système par exécution ; ce
