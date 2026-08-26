@@ -106,6 +106,30 @@ disconnect e prune de heartbeat atualizam mapa primário, registry de
 capabilities e índices sob o mesmo lock do tenant. Contadores saturados de
 rebuild e inconsistência expõem saúde sem labels ilimitadas.
 
+## Alpha 2.0: seleção limitada de workers
+
+`FirstAvailable` permanece o default e agora escolhe em ordem estável de
+identidade do worker, em vez da ordem aleatória por processo do `HashSet`. O
+resolver 2.0 adiciona policies opt-in `RoundRobin`, `LeastInflight`,
+`HealthWeighted` e `Affinity`. `CapabilityResolver::select` considera somente
+workers anunciados pelo tenant atual e retorna falhas tipadas para capability
+ausente, nenhum worker saudável, todos em capacity ou affinity inválida.
+
+Health é limitado pela idade do heartbeat; least-inflight também usa a
+profundidade da fila de saída como desempate determinístico. Affinity aceita no
+máximo 128 bytes e usa rendezvous hashing stateless por tenant, sem mapa de
+chaves crescente. A seleção ocorre antes de o caller assinar o envelope Peer
+RPC. O dispatch do Gateway nunca reescreve seu alvo V1 e adquire
+independentemente um permit de no máximo 64 rotas concorrentes por worker,
+liberado em todo caminho terminal.
+
+A gate final limpa macOS/aarch64 em
+[`7caddc1`](https://github.com/dnettoRaw/AppCore-Runtime/commit/7caddc1510e2cf88059c0dedaf3df0144d1e197b)
+mediu 17.125 ns p99 para round-robin, 18.542 ns para least-inflight e 38.083 ns
+para affinity entre 64 workers. As invariantes de distribuição round-robin
+exata, health, capacity e affinity stateless passaram. Isto é evidência local
+do repositório, não certificação de produção ou multiplataforma.
+
 ## Alpha 2.0: telemetria limitada de roteamento
 
 A linha alpha 2.0 expõe um snapshot pull neutro de fornecedor por

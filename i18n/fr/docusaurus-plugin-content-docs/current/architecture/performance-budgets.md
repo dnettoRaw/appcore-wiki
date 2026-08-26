@@ -100,6 +100,15 @@ au commit d'implémentation `31c4fbe` a mesuré 1 792 ns p99 pour la route et
 5 792 ns p99 pour le snapshot. L'export est une frontière pull explicite du
 deployment et n'est jamais appelé par le routage.
 
+AC-012 remplace la sélection aléatoire par processus par les policies stables
+`FirstAvailable`, `RoundRobin`, `LeastInflight`, `HealthWeighted` et `Affinity`
+stateless. Le gate enregistre 64 workers, exige exactement quatre sélections
+round-robin par worker, vérifie les invariants health, capacity et affinity, et
+exécute 16 384 sélections par policy mesurée. Chaque policy est plafonnée à
+1 ms p99 et doit dépasser 10 000 sélections/s. L'exécution finale propre
+macOS/aarch64 au `7caddc1` a mesuré 17 125 ns p99 pour round-robin, 18 542 ns
+pour least-inflight et 38 083 ns pour affinity.
+
 Suivez le benchmark dans [AC-022 public](https://github.com/dnettoRaw/app-core-public/issues/24)
 et la correction des commands dans [AC-001 public](https://github.com/dnettoRaw/app-core-public/issues/3).
 La correction des queries est suivie dans [AC-002 public](https://github.com/dnettoRaw/app-core-public/issues/4).
@@ -110,3 +119,4 @@ La correction du journal outbox est suivie dans [AC-007 public](https://github.c
 L'index direct des workers est suivi dans [AC-011 public](https://github.com/dnettoRaw/app-core-public/issues/13).
 Le pool fixe du scheduler est suivi dans [AC-018 public](https://github.com/dnettoRaw/app-core-public/issues/20).
 La télémétrie Gateway bornée est suivie dans [AC-020 public](https://github.com/dnettoRaw/app-core-public/issues/22).
+La sélection bornée des workers est suivie dans [AC-012 public](https://github.com/dnettoRaw/app-core-public/issues/14).

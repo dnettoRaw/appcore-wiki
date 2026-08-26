@@ -104,6 +104,29 @@ disconnect and heartbeat pruning update the primary map, capability registry
 and indexes under the same tenant lock. Saturating rebuild and inconsistency
 counters expose index health without unbounded labels.
 
+## 2.0 alpha: bounded worker selection
+
+`FirstAvailable` remains the default and now chooses in stable worker-identity
+order instead of process-random `HashSet` order. The 2.0 resolver adds opt-in
+`RoundRobin`, `LeastInflight`, `HealthWeighted` and `Affinity` policies.
+`CapabilityResolver::select` considers only the current tenant's advertised
+workers and returns typed failures for an absent capability, no healthy worker,
+all workers at capacity, or invalid affinity.
+
+Health is bounded by heartbeat age; least-inflight also uses outbound queue
+depth as a deterministic tie-breaker. Affinity accepts at most 128 bytes and
+uses stateless tenant-local rendezvous hashing, so it retains no growing key
+map. Selection happens before the caller signs a Peer RPC envelope. Gateway
+dispatch never rewrites its V1 target and independently acquires a permit for
+at most 64 concurrent routes per worker, released on every terminal path.
+
+The final clean macOS/aarch64 gate at
+[`7caddc1`](https://github.com/dnettoRaw/AppCore-Runtime/commit/7caddc1510e2cf88059c0dedaf3df0144d1e197b)
+measured 17,125 ns round-robin p99, 18,542 ns least-inflight p99 and 38,083 ns
+affinity p99 across 64 workers. Exact round-robin distribution, health,
+capacity and stateless-affinity invariants passed. This is repository-local
+evidence, not production or cross-platform certification.
+
 ## 2.0 alpha: bounded routing telemetry
 
 The 2.0 alpha line exposes a vendor-neutral pull snapshot through
