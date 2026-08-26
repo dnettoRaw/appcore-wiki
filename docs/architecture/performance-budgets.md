@@ -79,6 +79,12 @@ workers and requires at most 1 ms p99, at least 10,000 lookups/s and zero index
 inconsistencies. Reconnect, disconnect and heartbeat-prune tests require stale
 generations never to remove the current entry.
 
+AC-018 replaces scheduler thread-per-execution with a fixed pool and bounded
+queue. The 64-task gate requires callback concurrency and distinct worker
+thread names to remain within `max_concurrent_tasks`, while also observing at
+least one bounded queue-saturation event. Excess work is deferred without
+consuming retry attempts.
+
 Follow the benchmark in [public AC-022](https://github.com/dnettoRaw/app-core-public/issues/24)
 and the command correction in [public AC-001](https://github.com/dnettoRaw/app-core-public/issues/3).
 The query correction is tracked in [public AC-002](https://github.com/dnettoRaw/app-core-public/issues/4).
@@ -87,3 +93,4 @@ Pending-request ownership is tracked in [public AC-004](https://github.com/dnett
 HTTP connection reuse is tracked in [public AC-005](https://github.com/dnettoRaw/app-core-public/issues/7).
 The outbox journal correction is tracked in [public AC-007](https://github.com/dnettoRaw/app-core-public/issues/9).
 Direct worker indexing is tracked in [public AC-011](https://github.com/dnettoRaw/app-core-public/issues/13).
+The fixed scheduler pool is tracked in [public AC-018](https://github.com/dnettoRaw/app-core-public/issues/20).

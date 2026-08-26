@@ -29,4 +29,17 @@ O shutdown fecha a admissão mantendo o lock do estado, e a aritmética de
 deadlines é verificada. Tempos one-shot, interval ou retry não representáveis
 retornam `InvalidSchedule` ou removem a task esgotada em vez de causar panic.
 
+Callbacks usam um pool fixo limitado por `max_concurrent_tasks` e uma fila
+interna limitada. Trabalho devido excedente permanece agendado sem consumir
+retry; `worker_thread_count`, `queued_task_count` e `queue_saturation_count`
+expõem o limite e a pressão. O shutdown drena callbacks aceitos com cancelamento
+cooperativo; callbacks devem consultar `TaskContext::is_cancelled()` porque
+threads Rust não recebem timeout forçado.
+
+:::warning Atualização recomendada
+Instale a versão do scheduler que contém AC-018 quando ela estiver disponível.
+Versões anteriores criam uma nova thread do sistema operacional por execução;
+esse caminho legacy não é mantido ao lado da correção limitada.
+:::
+
 **Maturidade:** perfil local estável; scheduling é local ao processo.

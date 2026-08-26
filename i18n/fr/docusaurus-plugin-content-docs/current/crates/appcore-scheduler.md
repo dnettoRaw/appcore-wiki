@@ -30,4 +30,18 @@ deadlines est vérifiée. Les temps one-shot, interval ou retry non
 représentables renvoient `InvalidSchedule` ou retirent la task épuisée au lieu
 de paniquer.
 
+Les callbacks utilisent un pool fixe limité par `max_concurrent_tasks` et une
+file interne bornée. Le travail dû excédentaire reste planifié sans consommer
+de retry ; `worker_thread_count`, `queued_task_count` et
+`queue_saturation_count` exposent la limite et la pression. Le shutdown draine
+les callbacks acceptés avec annulation coopérative ; les callbacks doivent
+consulter `TaskContext::is_cancelled()` car les threads Rust ne reçoivent pas de
+timeout forcé.
+
+:::warning Mise à jour recommandée
+Installez la version du scheduler contenant AC-018 dès qu'elle sera disponible.
+Les versions antérieures créent un nouveau thread système par exécution ; ce
+chemin legacy n'est pas conservé à côté de la correction bornée.
+:::
+
 **Maturité :** profil local stable; scheduling local au processus.

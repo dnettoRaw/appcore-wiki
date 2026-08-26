@@ -80,6 +80,12 @@ exige no máximo 1 ms p99, pelo menos 10.000 lookups/s e zero inconsistências.
 Testes de reconnect, disconnect e prune de heartbeat exigem que geração stale
 nunca remova a entrada atual.
 
+AC-018 substitui uma thread por execução do scheduler por pool fixo e fila
+limitada. O gate de 64 tasks exige que concorrência de callbacks e nomes
+distintos de threads worker permaneçam dentro de `max_concurrent_tasks`, além
+de observar ao menos um evento limitado de saturação da fila. Trabalho
+excedente é adiado sem consumir tentativas de retry.
+
 Veja o benchmark em [AC-022 pública](https://github.com/dnettoRaw/app-core-public/issues/24)
 e a correção de commands em [AC-001 pública](https://github.com/dnettoRaw/app-core-public/issues/3).
 A correção de queries está em [AC-002 pública](https://github.com/dnettoRaw/app-core-public/issues/4).
@@ -88,3 +94,4 @@ O ownership de requests pendentes está em [AC-004 pública](https://github.com/
 O reuso de conexões HTTP está em [AC-005 pública](https://github.com/dnettoRaw/app-core-public/issues/7).
 A correção do journal da outbox está em [AC-007 pública](https://github.com/dnettoRaw/app-core-public/issues/9).
 O índice direto de workers está em [AC-011 pública](https://github.com/dnettoRaw/app-core-public/issues/13).
+O pool fixo do scheduler está em [AC-018 pública](https://github.com/dnettoRaw/app-core-public/issues/20).

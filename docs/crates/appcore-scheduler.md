@@ -30,4 +30,17 @@ Shutdown closes admission while holding scheduler state, and deadline
 arithmetic is checked. Unrepresentable one-shot, interval or retry times return
 `InvalidSchedule` or remove the exhausted task instead of panicking.
 
+Callbacks use a fixed pool capped by `max_concurrent_tasks` and a bounded
+internal queue. Excess due work stays scheduled without consuming a retry;
+`worker_thread_count`, `queued_task_count` and `queue_saturation_count` expose
+the limit and pressure. Shutdown drains accepted callbacks with cooperative
+cancellation; callbacks must check `TaskContext::is_cancelled()` because Rust
+threads are not forcibly timed out.
+
+:::warning Update recommended
+Deploy the scheduler release containing AC-018 when it becomes available.
+Earlier releases create a new operating-system thread per execution; that
+legacy path is not retained alongside the bounded correction.
+:::
+
 **Maturity:** stable local profile; schedule state is process-local.
