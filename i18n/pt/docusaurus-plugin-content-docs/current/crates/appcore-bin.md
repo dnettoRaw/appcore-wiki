@@ -59,6 +59,10 @@ supervision, updates e shutdown.
 
 Aplicações usam o módulo público `application` e evitam internals.
 
+A AC-023 mediu o consumer mínimo empacotado e manteve esse ownership combinado
+de facade/composição para 1.x. Consulte a
+[decisão de ownership da facade](/pt/architecture/appcore-bin-facade).
+
 ## `1.0.2-rc`: geração HTTP supervisionada
 
 O candidato `1.0.2-rc` compõe o listener HTTP por uma geração de

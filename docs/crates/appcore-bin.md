@@ -61,6 +61,10 @@ control plane, Gateway, scheduling, supervision, updates and shutdown.
 Application code must use the public `application` module and avoid private host
 internals.
 
+AC-023 measured the minimal packaged consumer and retained this combined
+facade/composition ownership for 1.x. See the
+[facade ownership decision](/architecture/appcore-bin-facade).
+
 ## `1.0.2-rc`: supervised HTTP generation
 
 The `1.0.2-rc` candidate composes the HTTP listener through one

@@ -62,6 +62,10 @@ Gateway, scheduling, supervision, updates et shutdown.
 
 Les applications utilisent le module public `application` et évitent internals.
 
+AC-023 a mesuré le consumer packagé minimal et conservé cet ownership combiné
+façade/composition pour 1.x. Voir la
+[décision d'ownership de la façade](/fr/architecture/appcore-bin-facade).
+
 ## `1.0.2-rc` : génération HTTP supervisée
 
 La version candidate `1.0.2-rc` compose le listener HTTP avec une génération
