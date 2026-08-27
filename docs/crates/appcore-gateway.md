@@ -25,13 +25,13 @@ registry and resolver, bounded worker/client connection handles,
 Axum router factory. Opaque content-envelope transport contracts are reexported
 for encrypted payload routing.
 
-> **Current RC compatibility blocker:** direct access to `GatewayState::tenants` has been
-> removed so unrelated tenants no longer share one lock. Use
+> **Current RC migration:** direct access to `GatewayState::tenants` has been
+> removed so unrelated tenants no longer share one lock. Code using that field
+> intentionally fails to compile; use
 > `tenant_partition`, `tenant_partition_or_insert`, `tenant_count` and
-> `connection_count`. The V1 pending maps remain public; use
+> `connection_count`. Pending-response maps are private; use
 > `pending_request_count` for observation and let `EnvelopeRouter` own their
-> generation-bound lifecycle. The tenant-directory field conflict remains a GA
-> blocker and does not start or assume a 2.0 line.
+> generation-bound lifecycle. No compatibility alias or mirror map is provided.
 
 The gateway resolves a tenant from the deployment-owned domain suffix or an
 explicit local-test query parameter, authenticates connections when configured,
