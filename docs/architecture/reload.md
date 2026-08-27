@@ -6,7 +6,7 @@ sidebar_position: 8
 # Coordinated Reload
 
 AppCore 1.0 starts one immutable HTTP routing configuration and remains the
-stable package. The 2.0 source line introduces an opt-in routing-generation
+stable package. The `appcore-api` 1.5 candidate introduces an opt-in routing-generation
 transaction for configuration changes that keep the listener address.
 
 ## Transaction
@@ -49,7 +49,7 @@ Use the [inbound TLS sidecar profile](./inbound-tls-sidecar) for certificate
 rotation. It keeps the Runtime listener stable and adds no second Runtime
 routing path.
 
-The current 2.0 source implements same-listener routing and accepts ownership
+The current `appcore-api` 1.5 candidate implements same-listener routing and accepts ownership
 of a pre-bound TCP listener. Address-changing composition and external
 cross-platform certification remain pending. This API is not available from
 the stable `1.0.0` package.

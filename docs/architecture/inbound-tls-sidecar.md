@@ -16,7 +16,7 @@ flowchart LR
     Sidecar -->|HTTP on loopback| Runtime[AppCore Runtime]
 ```
 
-The 2.0 source line provides reference profiles for Caddy 2.11.4 on systemd,
+Post-1.0 source provides reference profiles for Caddy 2.11.4 on systemd,
 launchd and Windows/WinSW, and Envoy 1.39.0 on systemd. This is development
 status, not part of the stable 1.0 crate surface.
 

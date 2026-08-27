@@ -8,9 +8,9 @@ sidebar_position: 12
 Quando um runtime cresce, os limites entre crates precisam explicar a arquitetura. No AppCore eles seguem ownership, não conveniência.
 
 A release estável `1.0.0` contém 22 crates públicos, todos publicados no
-crates.io. As fundações standalone mantêm SemVer independente mesmo quando
-seus números de versão coincidem com o Runtime. A referência individual está
-no [catálogo de crates](/crates/).
+crates.io. Cada crate público possui SemVer independente, mesmo quando vários
+números de versão coincidem. A referência individual está no
+[catálogo de crates](/crates/).
 
 | Camada | Crates | Por que existe |
 | --- | --- | --- |
@@ -21,7 +21,8 @@ no [catálogo de crates](/crates/).
 | Composição | `appcore-bin` | único crate autorizado a compor infraestrutura concreta para aplicações |
 | Ferramentas | `appcore-dev`, `runtime-console`, ferramentas de certificação | desenvolvimento, operação e evidência de release; não são crates públicos |
 
-As fundações standalone continuam reutilizáveis e versionadas separadamente.
+Todos os pacotes públicos são versionados separadamente. As fundações
+standalone também continuam reutilizáveis sem dependências AppCore.
 `appcore-supervisor` gerencia serviços em processo sem depender do dispatch de
 commands; `appcore-args` faz parsing de CLI sem executar comandos do Runtime.
 

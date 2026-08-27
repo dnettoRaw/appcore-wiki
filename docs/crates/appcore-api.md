@@ -49,9 +49,9 @@ remains intentionally public. Rejected command authorization is audited with
 normalized metadata and never records credentials, payloads or idempotency
 keys.
 
-## 2.0 prerelease: coordinated routing reload
+## 1.5 prerelease: coordinated routing reload
 
-The 2.0 source line adds the unpublished opt-in
+The 1.5 source candidate adds the unpublished opt-in
 `ReloadableRuntimeHttpHost`. A candidate must use a strictly newer generation
 on the same bound address and pass `/v1/health` before and after one atomic
 routing switch. Requests already accepted retain their original Router until

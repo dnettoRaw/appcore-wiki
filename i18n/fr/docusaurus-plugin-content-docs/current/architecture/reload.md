@@ -6,7 +6,7 @@ sidebar_position: 8
 # Reload coordonné
 
 AppCore 1.0 démarre avec une configuration HTTP immuable et reste le paquet
-stable. La ligne source 2.0 introduit une transaction opt-in de génération de
+stable. Le candidat 1.5 de `appcore-api` introduit une transaction opt-in de génération de
 routing pour les changements qui conservent l'adresse du listener.
 
 ## Transaction
@@ -49,7 +49,7 @@ Utilisez le [profil sidecar TLS entrant](./inbound-tls-sidecar) pour la rotation
 des certificats. Il garde le listener Runtime stable et ne crée pas un second
 chemin de routing Runtime.
 
-Le source 2.0 actuel implémente le routing sur le même listener et accepte un
+Le candidat 1.5 actuel de `appcore-api` implémente le routing sur le même listener et accepte un
 listener TCP pré-lié. La composition avec changement d'adresse et la
 certification externe multiplateforme restent en attente. Cette API n'est pas
 disponible dans le paquet stable `1.0.0`.

@@ -77,7 +77,7 @@ The watchdog gives health consumers a way to distinguish a responsive runtime fr
 
 The core runtime owns command dispatch, registries, audit, and lifecycle state. The supervisor owns managed-service orchestration. Keeping them separate prevents command dispatch from depending on concrete service restart machinery and lets infrastructure services share one lifecycle model.
 
-The 2.0 coordinated HTTP routing owner remains the existing `http` managed
+The coordinated HTTP routing owner remains the existing `http` managed
 service. Its internal generations do not register another Supervisor and do not
 restart the process. See [coordinated reload](./reload).
 

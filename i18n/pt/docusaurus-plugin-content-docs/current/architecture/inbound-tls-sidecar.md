@@ -16,7 +16,7 @@ flowchart LR
     Sidecar -->|HTTP em loopback| Runtime[AppCore Runtime]
 ```
 
-A linha fonte 2.0 fornece perfis Caddy 2.11.4 para systemd, launchd e
+O source pós-1.0 fornece perfis Caddy 2.11.4 para systemd, launchd e
 Windows/WinSW, e Envoy 1.39.0 para systemd. Isto é desenvolvimento, não parte da
 superfície estável 1.0.
 

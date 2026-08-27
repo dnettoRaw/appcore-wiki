@@ -74,8 +74,9 @@ mismatched binary support is terminal and never falls back to JSON.
 
 ## Typed V2 rejections
 
-The next 2.0 prerelease returns `PeerRpcWireErrorV2` from explicit V2
-endpoints. Its code fixes the phase and retryability; retry delay is bounded to
+The `appcore-peer-rpc` 1.5 candidate consumes `PeerRpcWireErrorV2` from the
+explicit `appcore-distributed-contracts` 2.0 prerelease endpoints. Its code
+fixes the phase and retryability; retry delay is bounded to
 300 seconds, correlation to 128 bytes and the protocol-owned redacted message
 to 256 bytes. The client rejects contradictory known metadata. Unknown codes
 discard their remote message/hint and become one observable, terminal

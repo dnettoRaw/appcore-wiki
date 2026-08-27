@@ -7,9 +7,9 @@ slug: /crates/
 # Catálogo de crates
 
 O AppCore `1.0.0` expõe **22 crates públicos**, todos publicados no crates.io e
-com MSRV Rust `1.89`. Os crates standalone `appcore-args`,
-`appcore-supervisor` e `appcore-transport` mantêm SemVer independente.
-Ferramentas como
+com MSRV Rust `1.89`. Cada crate público agora possui SemVer independente; uma
+mudança em um crate não força pacotes não relacionados a publicar ou adotar a
+mesma versão. Ferramentas como
 `appcore-certification`, `appcore-dev` e `runtime-console` não são crates
 públicos do Runtime.
 
@@ -20,9 +20,24 @@ estável de crates do Runtime `1.0.0`.
 A integração opcional
 [`appcore-sync-sqlite 0.1.0-alpha.2`](./appcore-sync-sqlite) é uma prerelease
 pós-1.0 publicada. Sua página documenta a fronteira aceita e a evidência de
-certificação sem apresentá-la como parte do catálogo estável. O grafo Runtime
-coordenado também está disponível como `2.0.0-alpha.1`; a orientação estável
-para aplicações permanece em `1.0.0`.
+certificação sem apresentá-la como parte do catálogo estável. O grafo
+coordenado histórico está disponível como `2.0.0-alpha.1`; os novos candidatos
+são versionados por crate e a orientação estável para aplicações permanece em
+`1.0.0`.
+
+O trem de release do repositório está atualmente em `1.0.2-rc`, com trabalho
+compatível avançando para 1.5 somente nos crates responsáveis:
+
+| Linha candidata | Crates |
+|---|---|
+| Releases independentes existentes | `appcore-ai 0.1.0-beta.3`, `appcore-args 1.0.1`, `appcore-supervisor 1.0.1`, `appcore-transport 1.1.0-alpha.1` |
+| `0.1.0-alpha.3` | `appcore-sync-sqlite` |
+| `1.0.2-rc` | contracts, types, DNT, core, ops, control plane, capabilities, contratos de provider, adapter Vercel/Neon, update |
+| `1.5.0-alpha.1` | API, security, storage, peer RPC |
+| `2.0.0-alpha.2` | contratos distribuídos, sync, scheduler, Gateway e host de composição; cada um mantém uma quebra pública comprovada em vez de ser rotulado incorretamente como 1.5 |
+
+Candidato significa versão declarada no código, não publicação concluída. O
+crates.io continua sendo a autoridade para versões disponíveis.
 
 Para criar uma aplicação, use a facade de alto nível:
 

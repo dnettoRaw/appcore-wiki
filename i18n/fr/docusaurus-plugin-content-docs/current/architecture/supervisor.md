@@ -27,7 +27,7 @@ stateDiagram-v2
 
 Restart est planifié : budget, backoff/jitter, executor borné, completion. Budget épuisé mène à quarantine et action opérateur. Un worker non stoppable devient orphaned/quarantined au lieu d'être ignoré.
 
-Le owner de routing HTTP coordonné de la ligne 2.0 reste le service géré `http`
+Le owner de routing HTTP coordonné reste le service géré `http`
 existant. Ses générations internes n'enregistrent aucun autre Supervisor et ne
 redémarrent pas le processus. Voir [reload coordonné](./reload).
 

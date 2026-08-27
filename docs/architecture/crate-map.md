@@ -8,9 +8,9 @@ sidebar_position: 12
 When a runtime grows, crate boundaries either explain the architecture or hide it. AppCore crates are split by ownership boundary, not by convenience.
 
 The stable `1.0.0` release contains 22 public crates, all published on
-crates.io. Standalone foundations retain independent SemVer even when their
-release numbers align with the Runtime. The complete reference is available in
-the [crate catalog](/crates/).
+crates.io. Every public crate owns independent SemVer even when several release
+numbers happen to align. The complete reference is available in the
+[crate catalog](/crates/).
 
 | Layer | Crates | Why it exists |
 | --- | --- | --- |
@@ -21,10 +21,11 @@ the [crate catalog](/crates/).
 | Composition | `appcore-bin` | the only crate allowed to compose concrete runtime infrastructure for applications |
 | Tools | `appcore-dev`, `runtime-console`, certification tools | development, operator, and release evidence workflows; not public Runtime crates |
 
-Standalone foundations remain reusable and independently versioned. In
-particular, `appcore-supervisor` manages in-process services without depending
-on command dispatch, and `appcore-args` parses CLI input without executing
-Runtime commands.
+All public packages are independently versioned. Standalone foundations also
+remain reusable without AppCore dependencies. In particular,
+`appcore-supervisor` manages in-process services without depending on command
+dispatch, and `appcore-args` parses CLI input without executing Runtime
+commands.
 
 The architecture rule is acyclic dependency direction. Contracts do not depend on implementations. Business code depends on the public application facade, not private host modules.
 

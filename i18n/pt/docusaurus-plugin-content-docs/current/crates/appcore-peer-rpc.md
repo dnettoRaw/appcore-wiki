@@ -74,8 +74,9 @@ ausente ou incompatível é terminal e nunca faz fallback para JSON.
 
 ## Rejeições V2 tipadas
 
-O próximo prerelease 2.0 retorna `PeerRpcWireErrorV2` nos endpoints V2
-explícitos. O code determina phase e retryability; retry delay é limitado a
+O candidato 1.5 do `appcore-peer-rpc` consome `PeerRpcWireErrorV2` dos endpoints
+explícitos do prerelease 2.0 de `appcore-distributed-contracts`. O code determina
+phase e retryability; retry delay é limitado a
 300 segundos, correlation a 128 bytes e a mensagem redigida controlada pelo
 protocolo a 256 bytes. O client rejeita metadata conhecida contraditória. Code
 desconhecido descarta mensagem/hint remotos e vira um único resultado

@@ -7,9 +7,9 @@ slug: /crates/
 # Crate Catalog
 
 AppCore `1.0.0` exposes **22 public crates**, all published on crates.io and all
-declaring MSRV Rust `1.89`. The standalone crates `appcore-args`,
-`appcore-supervisor`, and `appcore-transport` keep independent SemVer even
-though their releases are independent. Workspace tools such as
+declaring MSRV Rust `1.89`. Every public crate now owns independent SemVer;
+one crate changing does not force unrelated packages to publish or adopt the
+same version. Workspace tools such as
 `appcore-certification`, `appcore-dev`, and `runtime-console` are not public
 Runtime crates.
 
@@ -20,8 +20,23 @@ crate graph.
 The optional [`appcore-sync-sqlite 0.1.0-alpha.2`](./appcore-sync-sqlite)
 integration is a published post-1.0 prerelease. Its page documents the accepted
 boundary and certification evidence without presenting it as part of the
-stable catalog. The coordinated Runtime graph is also available as
-`2.0.0-alpha.1`; stable application guidance remains on `1.0.0`.
+stable catalog. The historical coordinated graph is available as
+`2.0.0-alpha.1`; new candidates are versioned per crate and stable application
+guidance remains on `1.0.0`.
+
+The repository release train is currently `1.0.2-rc`, with compatible feature
+work moving toward 1.5 only in the crates that own it:
+
+| Candidate line | Crates |
+|---|---|
+| Existing independent releases | `appcore-ai 0.1.0-beta.3`, `appcore-args 1.0.1`, `appcore-supervisor 1.0.1`, `appcore-transport 1.1.0-alpha.1` |
+| `0.1.0-alpha.3` | `appcore-sync-sqlite` |
+| `1.0.2-rc` | contracts, types, DNT, core, ops, control plane, capabilities, provider contracts, Vercel/Neon adapter, update |
+| `1.5.0-alpha.1` | API, security, storage, peer RPC |
+| `2.0.0-alpha.2` | distributed contracts, sync, scheduler, Gateway, composition host; each retains a proven public break instead of being mislabeled as 1.5 |
+
+Candidate means declared source, not already published. crates.io remains the
+authority for available versions.
 
 For a new application, depend on the high-level facade:
 

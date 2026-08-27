@@ -75,8 +75,9 @@ fallback JSON.
 
 ## Rejets V2 typés
 
-La prochaine préversion 2.0 retourne `PeerRpcWireErrorV2` sur les endpoints V2
-explicites. Le code fixe phase et retryability; le délai est borné à 300
+Le candidat 1.5 de `appcore-peer-rpc` consomme `PeerRpcWireErrorV2` depuis les
+endpoints explicites de la préversion 2.0 de `appcore-distributed-contracts`.
+Le code fixe phase et retryability; le délai est borné à 300
 secondes, la corrélation à 128 octets et le message expurgé contrôlé par le
 protocole à 256 octets. Le client rejette les métadonnées connues
 contradictoires. Un code inconnu abandonne message/hint distants et devient un
