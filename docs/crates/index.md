@@ -17,7 +17,7 @@ The separately versioned [`appcore-ai 0.1.0-beta.3`](./appcore-ai) public beta
 is also published on crates.io. It is not part of the stable `1.0.0` Runtime
 crate graph.
 
-The optional [`appcore-sync-sqlite 0.1.0-alpha.2`](./appcore-sync-sqlite)
+The optional [`appcore-sync-sqlite 0.1.0-alpha.3`](./appcore-sync-sqlite)
 integration is a published post-1.0 prerelease. Its page documents the accepted
 boundary and certification evidence without presenting it as part of the
 stable catalog. The accidental coordinated `2.0.0-alpha.1` publications are
@@ -32,7 +32,8 @@ that RC until it closes; future minor work then starts at `1.1.0` crate by crate
 |---|---|
 | Existing independent releases | `appcore-ai 0.1.0-beta.3`, `appcore-args 1.0.1`, `appcore-supervisor 1.0.1`, `appcore-transport 1.1.0-alpha.1` |
 | `0.1.0-alpha.3` | `appcore-sync-sqlite` |
-| `1.0.2-rc` | contracts, types, DNT, core, ops, control plane, capabilities, provider contracts, Vercel/Neon adapter, update, API, security, storage, peer RPC, distributed contracts, sync, scheduler, Gateway, composition host; compatibility findings remain blockers before RC completion |
+| `1.0.2-rc` | contracts, types, DNT, core, ops, provider contracts, update, API, security, storage, peer RPC, distributed contracts, sync, scheduler, Gateway, composition host; compatibility findings remain blockers before RC completion |
+| `1.0.3-rc` | control plane, capabilities, Vercel/Neon adapter; clean patch successors for immutable `1.0.2-rc` archives that referenced the mistaken alpha line |
 
 Candidate means declared source, not already published. crates.io remains the
 authority for available versions. RC stabilization advances the patch from
@@ -40,8 +41,10 @@ authority for available versions. RC stabilization advances the patch from
 still a candidate, then completes at the next independent `1.x.0` milestone.
 Version 2 development has not started; its historical alpha publication does
 not define the current source line. The mistaken `1.5.0-alpha.1` publications
-are also yanked after their `1.0.2-rc` replacements were indexed. Future minor
-work starts at `1.1.0` crate by crate after the RC closes.
+are also yanked after their RC replacements were indexed and passed the
+registry-only consumer. The three contaminated `1.0.2-rc` archives are yanked
+in favor of their `1.0.3-rc` successors. Future minor work starts at `1.1.0`
+crate by crate after the RC closes.
 
 For a new application, depend on the high-level facade:
 

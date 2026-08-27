@@ -17,7 +17,7 @@ séparément, est également publiée sur crates.io. Elle ne fait pas partie du
 graphe stable des crates Runtime `1.0.0`.
 
 L'intégration facultative
-[`appcore-sync-sqlite 0.1.0-alpha.2`](./appcore-sync-sqlite) est une prerelease
+[`appcore-sync-sqlite 0.1.0-alpha.3`](./appcore-sync-sqlite) est une prerelease
 post-1.0 publiée. Sa page documente la frontière acceptée et les preuves de
 certification sans la présenter comme partie du catalogue stable. Les
 publications coordonnées accidentelles `2.0.0-alpha.1` sont retirées (yanked) ;
@@ -33,7 +33,8 @@ Runtime restent sur ce RC jusqu'à sa clôture ; le prochain minor commence à
 |---|---|
 | Publications indépendantes existantes | `appcore-ai 0.1.0-beta.3`, `appcore-args 1.0.1`, `appcore-supervisor 1.0.1`, `appcore-transport 1.1.0-alpha.1` |
 | `0.1.0-alpha.3` | `appcore-sync-sqlite` |
-| `1.0.2-rc` | contracts, types, DNT, core, ops, control plane, capabilities, contrats provider, adapter Vercel/Neon, update, API, sécurité, stockage, peer RPC, contrats distribués, sync, scheduler, Gateway et hôte de composition ; les constats de compatibilité bloquent toujours la clôture du RC |
+| `1.0.2-rc` | contracts, types, DNT, core, ops, contrats provider, update, API, sécurité, stockage, peer RPC, contrats distribués, sync, scheduler, Gateway et hôte de composition ; les constats de compatibilité bloquent toujours la clôture du RC |
+| `1.0.3-rc` | control plane, capabilities et adapter Vercel/Neon ; successeurs patch propres des archives immuables `1.0.2-rc` qui référençaient la ligne alpha erronée |
 
 Candidate désigne la version déclarée dans les sources, pas une publication
 achevée. crates.io reste l'autorité pour les versions disponibles. La
@@ -42,8 +43,10 @@ conservant le suffixe `-rc` tant que le build reste candidat, puis se termine au
 prochain jalon indépendant `1.x.0`. Le développement de la version 2 n'a pas
 commencé ; sa publication alpha historique ne définit pas la ligne source
 actuelle. Les publications erronées `1.5.0-alpha.1` sont également retirées
-(yanked) après l'indexation de leurs remplacements `1.0.2-rc`. Le prochain
-minor commence à `1.1.0` après le RC.
+(yanked) après l'indexation de leurs remplacements RC et la réussite du
+consommateur basé uniquement sur le registre. Les trois archives `1.0.2-rc`
+contaminées sont retirées au profit de leurs successeurs `1.0.3-rc`. Le
+prochain minor commence à `1.1.0` après le RC.
 
 Pour une nouvelle application, utiliser la façade de haut niveau :
 
