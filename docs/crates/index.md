@@ -20,9 +20,10 @@ crate graph.
 The optional [`appcore-sync-sqlite 0.1.0-alpha.2`](./appcore-sync-sqlite)
 integration is a published post-1.0 prerelease. Its page documents the accepted
 boundary and certification evidence without presenting it as part of the
-stable catalog. The historical coordinated graph is available as
-`2.0.0-alpha.1`; new candidates are versioned per crate and stable application
-guidance remains on `1.0.0`.
+stable catalog. The accidental coordinated `2.0.0-alpha.1` publications are
+yanked; their historical Git tag remains only as immutable audit evidence.
+New candidates are versioned per crate and stable application guidance remains
+on `1.0.0`.
 
 The repository release train is currently `1.0.2-rc`, with compatible feature
 work moving toward 1.5 only in the crates that own it:

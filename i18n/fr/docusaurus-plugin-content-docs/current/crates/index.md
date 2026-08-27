@@ -19,10 +19,11 @@ graphe stable des crates Runtime `1.0.0`.
 L'intégration facultative
 [`appcore-sync-sqlite 0.1.0-alpha.2`](./appcore-sync-sqlite) est une prerelease
 post-1.0 publiée. Sa page documente la frontière acceptée et les preuves de
-certification sans la présenter comme partie du catalogue stable. Le graphe
-coordonné historique reste disponible en `2.0.0-alpha.1` ; les nouveaux
-candidats sont versionnés par crate et les instructions stables pour les
-applications restent en `1.0.0`.
+certification sans la présenter comme partie du catalogue stable. Les
+publications coordonnées accidentelles `2.0.0-alpha.1` sont retirées (yanked) ;
+le tag Git historique reste uniquement une preuve d'audit immuable. Les
+nouveaux candidats sont versionnés par crate et les instructions stables pour
+les applications restent en `1.0.0`.
 
 Le train de publication du dépôt est actuellement `1.0.2-rc`, tandis que les
 fonctionnalités compatibles avancent vers 1.5 uniquement dans les crates qui
