@@ -17,7 +17,7 @@ The separately versioned [`appcore-ai 0.1.0-beta.3`](./appcore-ai) public beta
 is also published on crates.io. It is not part of the stable `1.0.0` Runtime
 crate graph.
 
-The optional [`appcore-sync-sqlite 0.1.0-alpha.3`](./appcore-sync-sqlite)
+The optional [`appcore-sync-sqlite 0.1.0-alpha.4`](./appcore-sync-sqlite)
 integration is a published post-1.0 prerelease. Its page documents the accepted
 boundary and certification evidence without presenting it as part of the
 stable catalog. The accidental coordinated `2.0.0-alpha.1` publications are
@@ -31,7 +31,7 @@ that RC until it closes; future minor work then starts at `1.1.0` crate by crate
 | Candidate line | Crates |
 |---|---|
 | Existing independent releases | `appcore-ai 0.1.0-beta.3`, `appcore-args 1.0.1`, `appcore-supervisor 1.0.1`, `appcore-transport 1.1.0-alpha.1` |
-| `0.1.0-alpha.3` | `appcore-sync-sqlite` |
+| `0.1.0-alpha.4` | `appcore-sync-sqlite`; clean successor to the yanked alpha.3 archive whose storage and sync dependencies referenced the mistaken alpha line |
 | `1.0.2-rc` | contracts, types, DNT, core, ops, provider contracts, update, API, security, storage, peer RPC, distributed contracts, sync, scheduler, Gateway, composition host; compatibility findings remain blockers before RC completion |
 | `1.0.3-rc` | control plane, capabilities, Vercel/Neon adapter; clean patch successors for immutable `1.0.2-rc` archives that referenced the mistaken alpha line |
 

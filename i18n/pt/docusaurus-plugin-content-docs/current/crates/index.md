@@ -18,7 +18,7 @@ separadamente, também está publicada no crates.io. Ela não faz parte do grafo
 estável de crates do Runtime `1.0.0`.
 
 A integração opcional
-[`appcore-sync-sqlite 0.1.0-alpha.3`](./appcore-sync-sqlite) é uma prerelease
+[`appcore-sync-sqlite 0.1.0-alpha.4`](./appcore-sync-sqlite) é uma prerelease
 pós-1.0 publicada. Sua página documenta a fronteira aceita e a evidência de
 certificação sem apresentá-la como parte do catálogo estável. As publicações
 coordenadas acidentais `2.0.0-alpha.1` estão yanked; o tag Git histórico
@@ -33,7 +33,7 @@ Runtime permanecem nesse RC até seu encerramento; o próximo minor começa em
 | Linha candidata | Crates |
 |---|---|
 | Releases independentes existentes | `appcore-ai 0.1.0-beta.3`, `appcore-args 1.0.1`, `appcore-supervisor 1.0.1`, `appcore-transport 1.1.0-alpha.1` |
-| `0.1.0-alpha.3` | `appcore-sync-sqlite` |
+| `0.1.0-alpha.4` | `appcore-sync-sqlite`; sucessor limpo do arquivo alpha.3 yanked cujas dependências storage e sync referenciavam a linha alpha incorreta |
 | `1.0.2-rc` | contracts, types, DNT, core, ops, contratos de provider, update, API, security, storage, peer RPC, contratos distribuídos, sync, scheduler, Gateway e host de composição; achados de compatibilidade continuam bloqueando o encerramento do RC |
 | `1.0.3-rc` | control plane, capabilities e adapter Vercel/Neon; sucessores patch limpos para os arquivos imutáveis `1.0.2-rc` que referenciavam a linha alpha incorreta |
 
