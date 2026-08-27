@@ -191,7 +191,7 @@ a mesuré 17 125 ns p99 pour round-robin, 18 542 ns pour least-inflight et
 exacte, health, capacity et affinity stateless ont réussi. Il s'agit d'une
 preuve locale au dépôt, pas d'une certification production ou multiplateforme.
 
-## `1.0.2-rc` : télémétrie de routage bornée
+## `1.0.4-rc` : télémétrie de routage bornée
 
 Le RC actuel expose un snapshot pull indépendant du fournisseur via
 `GatewayMetrics::telemetry_snapshot` et une frontière explicite
@@ -203,6 +203,11 @@ cardinalité est limitée à 128 séries de capability ; les noms validés
 supplémentaires sont réunis dans la série fixe
 `appcore.gateway.capability.overflow`. Tenant, connexion, request, token et
 payload ne deviennent jamais des labels.
+
+Les owners Runtime utilisent `GatewayRuntime::details` pour la télémétrie et
+l'état HA additifs. Le `GatewayRuntimeSnapshot` V1 constructible conserve ses
+champs d'origine, et `GatewayMetrics` préserve son contrat stable d'unwind
+safety.
 
 Le routage n'appelle jamais d'exporter. Les adapters Prometheus ou
 OpenTelemetry du deployment tirent le snapshot possédé et contrôlent leur

@@ -181,7 +181,7 @@ affinity p99 across 64 workers. Exact round-robin distribution, health,
 capacity and stateless-affinity invariants passed. This is repository-local
 evidence, not production or cross-platform certification.
 
-## `1.0.2-rc`: bounded routing telemetry
+## `1.0.4-rc`: bounded routing telemetry
 
 The current RC exposes a vendor-neutral pull snapshot through
 `GatewayMetrics::telemetry_snapshot` and an explicit
@@ -192,6 +192,10 @@ payload observations. Capability cardinality is capped at 128 series; further
 validated names are combined in the fixed
 `appcore.gateway.capability.overflow` series. Tenant, connection, request,
 token and payload values never become labels.
+
+Runtime owners use `GatewayRuntime::details` for additive telemetry and HA
+state. The constructible V1 `GatewayRuntimeSnapshot` keeps its original field
+set, and `GatewayMetrics` retains its stable unwind-safety contract.
 
 Routing never invokes an exporter. Deployment-owned Prometheus or
 OpenTelemetry adapters pull the owned snapshot and control their own queue,

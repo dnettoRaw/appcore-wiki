@@ -183,7 +183,7 @@ para affinity entre 64 workers. As invariantes de distribuição round-robin
 exata, health, capacity e affinity stateless passaram. Isto é evidência local
 do repositório, não certificação de produção ou multiplataforma.
 
-## `1.0.2-rc`: telemetria limitada de roteamento
+## `1.0.4-rc`: telemetria limitada de roteamento
 
 O RC atual expõe um snapshot pull neutro de fornecedor por
 `GatewayMetrics::telemetry_snapshot` e uma fronteira explícita
@@ -194,6 +194,10 @@ espera de lock e payload. A cardinalidade é limitada a 128 séries de
 capability; nomes validados adicionais são combinados na série fixa
 `appcore.gateway.capability.overflow`. Tenant, conexão, request, token e
 payload nunca viram labels.
+
+Owners do Runtime usam `GatewayRuntime::details` para telemetria e estado HA
+aditivos. O `GatewayRuntimeSnapshot` V1 construtível mantém seus campos
+originais, e `GatewayMetrics` preserva seu contrato estável de unwind safety.
 
 O roteamento nunca chama um exporter. Adapters Prometheus ou OpenTelemetry do
 deployment puxam o snapshot próprio e controlam fila, retry e policy de
