@@ -156,12 +156,15 @@ tenants em 2,25 ms p99, rota fenced local em 0,35 ms p99 e rota federada em
 HA ser deployable, e fallback local continua proibido. Acompanhe a
 [AC-013 pública](https://github.com/dnettoRaw/app-core-public/issues/15).
 
-## `1.0.2-rc`: seleção limitada de workers
+## `1.0.3-rc`: seleção limitada de workers
 
 `FirstAvailable` permanece o default e agora escolhe em ordem estável de
 identidade do worker, em vez da ordem aleatória por processo do `HashSet`. O
-resolver do RC atual adiciona policies opt-in `RoundRobin`, `LeastInflight`,
-`HealthWeighted` e `Affinity`. `CapabilityResolver::select` considera somente
+enum V1 exaustivo `SelectionPolicy` continua limitado a `FirstAvailable`; o
+novo `WorkerSelectionPolicy` não exaustivo carrega as policies opt-in
+`RoundRobin`, `LeastInflight`, `HealthWeighted` e `Affinity`. Quem consumiu o
+rascunho anterior do RC só troca o nome do enum; manifestos e contratos wire
+não mudam. `CapabilityResolver::select` considera somente
 workers anunciados pelo tenant atual e retorna falhas tipadas para capability
 ausente, nenhum worker saudável, todos em capacity ou affinity inválida.
 

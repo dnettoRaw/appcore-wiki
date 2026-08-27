@@ -163,12 +163,15 @@ restent requises avant que le profil HA soit déployable, et aucun fallback
 local n'est permis. Suivez
 [AC-013 public](https://github.com/dnettoRaw/app-core-public/issues/15).
 
-## `1.0.2-rc` : sélection bornée des workers
+## `1.0.3-rc` : sélection bornée des workers
 
 `FirstAvailable` reste le défaut et choisit désormais selon un ordre stable
-d'identité worker, plutôt que l'ordre aléatoire par processus du `HashSet`. Le
-resolver du RC actuel ajoute les policies opt-in `RoundRobin`, `LeastInflight`,
-`HealthWeighted` et `Affinity`. `CapabilityResolver::select` considère
+d'identité worker, plutôt que l'ordre aléatoire par processus du `HashSet`.
+L'enum V1 exhaustif `SelectionPolicy` reste limité à `FirstAvailable` ; le
+nouveau `WorkerSelectionPolicy` non exhaustif porte les policies opt-in
+`RoundRobin`, `LeastInflight`, `HealthWeighted` et `Affinity`. Les consommateurs
+du brouillon RC précédent ne changent que le nom de l'enum ; les manifestes et
+contrats wire ne changent pas. `CapabilityResolver::select` considère
 uniquement les workers annoncés du tenant courant et retourne des échecs typés
 pour capability absente, aucun worker sain, tous à capacity ou affinity
 invalide.

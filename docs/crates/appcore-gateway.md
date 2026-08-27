@@ -155,11 +155,14 @@ routing at 0.91 ms p99. Linux and Windows CI evidence remains required before
 the HA profile is deployable, and it must never fall back locally. Track
 [public AC-013](https://github.com/dnettoRaw/app-core-public/issues/15).
 
-## `1.0.2-rc`: bounded worker selection
+## `1.0.3-rc`: bounded worker selection
 
 `FirstAvailable` remains the default and now chooses in stable worker-identity
-order instead of process-random `HashSet` order. The current RC resolver adds opt-in
-`RoundRobin`, `LeastInflight`, `HealthWeighted` and `Affinity` policies.
+order instead of process-random `HashSet` order. The exhaustive V1
+`SelectionPolicy` remains limited to `FirstAvailable`; the new non-exhaustive
+`WorkerSelectionPolicy` carries opt-in `RoundRobin`, `LeastInflight`,
+`HealthWeighted` and `Affinity` policies. Consumers of the earlier RC draft
+only replace the enum name; manifests and wire contracts do not change.
 `CapabilityResolver::select` considers only the current tenant's advertised
 workers and returns typed failures for an absent capability, no healthy worker,
 all workers at capacity, or invalid affinity.
