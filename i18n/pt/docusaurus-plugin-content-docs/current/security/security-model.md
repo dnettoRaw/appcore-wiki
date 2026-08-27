@@ -25,7 +25,7 @@ DNT autentica contexto e cifra payload. Peer RPC valida tenant, cluster, core, p
 ## Status do provider Windows DPAPI
 
 A AC-009 aceitou `windows-dpapi-user-v1` para a linha de desenvolvimento
-pós-1.0. A implementação do alpha 2.0 protege cada registro limitado de rotação
+pós-1.0. A implementação do alpha 1.5 protege cada registro limitado de rotação
 com DPAPI não interativo no escopo do usuário: normalmente o mesmo usuário na
 mesma máquina é necessário para descriptografar. O escopo da máquina é excluído
 porque permitiria descriptografia por outros usuários locais. A seleção é

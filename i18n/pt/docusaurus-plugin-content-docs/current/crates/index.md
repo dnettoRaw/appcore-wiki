@@ -33,11 +33,14 @@ compatível avançando para 1.5 somente nos crates responsáveis:
 | Releases independentes existentes | `appcore-ai 0.1.0-beta.3`, `appcore-args 1.0.1`, `appcore-supervisor 1.0.1`, `appcore-transport 1.1.0-alpha.1` |
 | `0.1.0-alpha.3` | `appcore-sync-sqlite` |
 | `1.0.2-rc` | contracts, types, DNT, core, ops, control plane, capabilities, contratos de provider, adapter Vercel/Neon, update |
-| `1.5.0-alpha.1` | API, security, storage, peer RPC |
-| `2.0.0-alpha.2` | contratos distribuídos, sync, scheduler, Gateway e host de composição; cada um mantém uma quebra pública comprovada em vez de ser rotulado incorretamente como 1.5 |
+| `1.5.0-alpha.1` | API, security, storage, peer RPC, contratos distribuídos, sync, scheduler, Gateway e host de composição; achados de compatibilidade nos crates afetados continuam bloqueando a publicação beta ou estável |
 
 Candidato significa versão declarada no código, não publicação concluída. O
-crates.io continua sendo a autoridade para versões disponíveis.
+crates.io continua sendo a autoridade para versões disponíveis. A estabilização
+RC avança o patch de `1.0.0` até `1.0.9`, conforme necessário, mantendo o
+sufixo `-rc` enquanto o build ainda é candidato, e então termina no próximo
+marco independente `1.x.0`. O desenvolvimento da versão 2 não começou; sua
+publicação alpha histórica não define a linha atual do código.
 
 Para criar uma aplicação, use a facade de alto nível:
 

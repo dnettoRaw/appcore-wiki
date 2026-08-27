@@ -104,7 +104,7 @@ disconnect and heartbeat pruning update the primary map, capability registry
 and indexes under the same tenant lock. Saturating rebuild and inconsistency
 counters expose index health without unbounded labels.
 
-## 2.0 beta development: Redis HA registry
+## 1.5 candidate: Redis HA registry
 
 This is development status, not functionality in the stable `1.0.0` package.
 The private Runtime beta through
@@ -155,10 +155,10 @@ routing at 0.91 ms p99. Linux and Windows CI evidence remains required before
 the HA profile is deployable, and it must never fall back locally. Track
 [public AC-013](https://github.com/dnettoRaw/app-core-public/issues/15).
 
-## 2.0 alpha: bounded worker selection
+## 1.5 alpha: bounded worker selection
 
 `FirstAvailable` remains the default and now chooses in stable worker-identity
-order instead of process-random `HashSet` order. The 2.0 resolver adds opt-in
+order instead of process-random `HashSet` order. The 1.5 candidate resolver adds opt-in
 `RoundRobin`, `LeastInflight`, `HealthWeighted` and `Affinity` policies.
 `CapabilityResolver::select` considers only the current tenant's advertised
 workers and returns typed failures for an absent capability, no healthy worker,
@@ -178,9 +178,9 @@ affinity p99 across 64 workers. Exact round-robin distribution, health,
 capacity and stateless-affinity invariants passed. This is repository-local
 evidence, not production or cross-platform certification.
 
-## 2.0 alpha: bounded routing telemetry
+## 1.5 alpha: bounded routing telemetry
 
-The 2.0 alpha line exposes a vendor-neutral pull snapshot through
+The 1.5 alpha candidate exposes a vendor-neutral pull snapshot through
 `GatewayMetrics::telemetry_snapshot` and an explicit
 `GatewayTelemetryExporter` boundary. It records fixed route outcomes,
 inflight/peak routes, queue saturation, reconnects, retries, authentication and

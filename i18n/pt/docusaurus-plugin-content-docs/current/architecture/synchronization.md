@@ -44,7 +44,7 @@ Sem checkpoint, recovery teria que replayar tudo ou inferir progresso pela proje
 
 ## Como a outbox durável faz recovery?
 
-A outbox file-backed do próximo major usa o marcador binário explícito
+A outbox file-backed do candidato 1.5 usa o marcador binário explícito
 `appcore-sync-outbox-v2`. Cada enqueue ou ACK acrescenta e sincroniza um frame
 limitado. Ordinais, comprimentos no início/fim e uma cadeia SHA-256 detectam
 corrupção, duplicação e reordenação. Somente um frame final incompleto é
@@ -55,7 +55,7 @@ mensagens pendentes e muda a geração. Outro processo com visão antiga detecta
 mudança e recarrega. O journal continua limitado a 64 MiB e reserva tail
 suficiente para confirmar a mensagem frontal já aceita.
 
-O contrato de outbox do próximo major lê um prefixo ordenado com limites
+O contrato de outbox do candidato 1.5 lê um prefixo ordenado com limites
 independentes de quantidade e bytes codificados antes de clonar payloads. Ele
 expõe stats sem payload, persiste attempts/readiness de retry e aplica somente
 receipts de prefixo ordenado exato. O follower e a CLI do Runtime usam esse

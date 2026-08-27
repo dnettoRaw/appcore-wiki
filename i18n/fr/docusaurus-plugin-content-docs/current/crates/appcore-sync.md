@@ -40,8 +40,8 @@ valide tout le batch, l'arithmétique de sequence et chaque limite de record
 avant toute mutation du log ou checkpoint; un événement final invalide ne
 laisse pas d'append partiel.
 
-:::warning Mise à jour de l'outbox dans la prochaine version majeure
-Dans la prochaine version majeure, `FileSyncOutbox` accepte uniquement le
+:::warning Mise à jour de l'outbox dans la version candidate 1.5
+Dans la version candidate 1.5, `FileSyncOutbox` accepte uniquement le
 journal binaire explicite `appcore-sync-outbox-v2`. Les fichiers V1, sans
 version ou futurs échouent avec `NO MORE SUPPORTED PLEASE UPDATE` ; aucune
 conversion automatique n'existe. Videz V1 avant la mise à niveau et V2 avant

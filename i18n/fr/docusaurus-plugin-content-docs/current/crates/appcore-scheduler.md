@@ -38,9 +38,9 @@ les callbacks acceptés avec annulation coopérative ; les callbacks doivent
 consulter `TaskContext::is_cancelled()` car les threads Rust ne reçoivent pas de
 timeout forcé.
 
-## Prerelease 2.0 : récupération opt-in
+## Version candidate 1.5 : récupération opt-in
 
-La ligne source 2.0 implémente la frontière non publiée
+La version candidate 1.5 implémente la frontière non publiée
 `SchedulerStateProvider` V1. `Scheduler::with_state_provider` sélectionne un
 owner borné, le TTL du claim, la tolérance de clock skew et le provider ;
 `schedule_durable` inscrit des tâches individuelles dans l'état persistant de

@@ -32,11 +32,14 @@ work moving toward 1.5 only in the crates that own it:
 | Existing independent releases | `appcore-ai 0.1.0-beta.3`, `appcore-args 1.0.1`, `appcore-supervisor 1.0.1`, `appcore-transport 1.1.0-alpha.1` |
 | `0.1.0-alpha.3` | `appcore-sync-sqlite` |
 | `1.0.2-rc` | contracts, types, DNT, core, ops, control plane, capabilities, provider contracts, Vercel/Neon adapter, update |
-| `1.5.0-alpha.1` | API, security, storage, peer RPC |
-| `2.0.0-alpha.2` | distributed contracts, sync, scheduler, Gateway, composition host; each retains a proven public break instead of being mislabeled as 1.5 |
+| `1.5.0-alpha.1` | API, security, storage, peer RPC, distributed contracts, sync, scheduler, Gateway, composition host; compatibility findings in affected crates remain blockers before beta or stable publication |
 
 Candidate means declared source, not already published. crates.io remains the
-authority for available versions.
+authority for available versions. RC stabilization advances the patch from
+`1.0.0` through `1.0.9` as needed, retaining an `-rc` label while a build is
+still a candidate, then completes at the next independent `1.x.0` milestone.
+Version 2 development has not started; its historical alpha publication does
+not define the current source line.
 
 For a new application, depend on the high-level facade:
 

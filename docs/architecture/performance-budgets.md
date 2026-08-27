@@ -87,7 +87,7 @@ thread names to remain within `max_concurrent_tasks`, while also observing at
 least one bounded queue-saturation event. Excess work is deferred without
 consuming retry attempts.
 
-AC-020 adds the 2.0 alpha Gateway telemetry contract. The gate retains 128
+AC-020 adds the 1.5 alpha Gateway telemetry contract. The gate retains 128
 capability series, aggregates eight further names into one fixed overflow
 series, runs 4,096 instrumented unavailable-worker routes and builds 256
 snapshots. It requires zero residual inflight routes, exact cardinality and

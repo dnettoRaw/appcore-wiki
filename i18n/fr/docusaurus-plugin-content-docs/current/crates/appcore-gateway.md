@@ -25,14 +25,14 @@ et resolver de capability, connexions worker/client bornées,
 factory du router Axum. Les contrats content-envelope opaque sont réexportés
 pour router des payloads chiffrés.
 
-> **Migration du prochain major :** l'accès direct à
+> **Migration candidate 1.5 :** l'accès direct à
 > `GatewayState::tenants` a été supprimé afin que des tenants indépendants ne
 > partagent plus un verrou unique. Utilisez `tenant_partition`,
 > `tenant_partition_or_insert`, `tenant_count` et `connection_count`. Les maps
 > de requests en attente sont désormais privées ; utilisez
 > `pending_request_count` pour l'observation et laissez `EnvelopeRouter` gérer
 > leur cycle de vie. Cette
-> modification est réservée au prochain major SemVer et ne doit pas être
+> modification reste bloquée jusqu'au rétablissement de la compatibilité 1.x et ne doit pas être
 > publiée en 1.0.x.
 
 Le gateway résout le tenant depuis le suffixe de domaine défini par le
@@ -110,7 +110,7 @@ disconnect et prune heartbeat mettent à jour map primaire, registre de
 capabilities et index sous le même verrou tenant. Des compteurs saturés de
 rebuild et d'incohérence exposent la santé sans labels non bornés.
 
-## Développement beta 2.0 : registre HA Redis
+## Version candidate 1.5 : registre HA Redis
 
 Ceci décrit l'état de développement, pas une fonctionnalité du paquet stable
 `1.0.0`. La beta privée du Runtime jusqu'au commit
@@ -163,11 +163,11 @@ restent requises avant que le profil HA soit déployable, et aucun fallback
 local n'est permis. Suivez
 [AC-013 public](https://github.com/dnettoRaw/app-core-public/issues/15).
 
-## Alpha 2.0 : sélection bornée des workers
+## Alpha 1.5 : sélection bornée des workers
 
 `FirstAvailable` reste le défaut et choisit désormais selon un ordre stable
 d'identité worker, plutôt que l'ordre aléatoire par processus du `HashSet`. Le
-resolver 2.0 ajoute les policies opt-in `RoundRobin`, `LeastInflight`,
+resolver candidat 1.5 ajoute les policies opt-in `RoundRobin`, `LeastInflight`,
 `HealthWeighted` et `Affinity`. `CapabilityResolver::select` considère
 uniquement les workers annoncés du tenant courant et retourne des échecs typés
 pour capability absente, aucun worker sain, tous à capacity ou affinity
@@ -188,9 +188,9 @@ a mesuré 17 125 ns p99 pour round-robin, 18 542 ns pour least-inflight et
 exacte, health, capacity et affinity stateless ont réussi. Il s'agit d'une
 preuve locale au dépôt, pas d'une certification production ou multiplateforme.
 
-## Alpha 2.0 : télémétrie de routage bornée
+## Alpha 1.5 : télémétrie de routage bornée
 
-La ligne alpha 2.0 expose un snapshot pull indépendant du fournisseur via
+La version candidate alpha 1.5 expose un snapshot pull indépendant du fournisseur via
 `GatewayMetrics::telemetry_snapshot` et une frontière explicite
 `GatewayTelemetryExporter`. Elle enregistre des résultats de route fixes, les
 routes inflight/maximales, la saturation de file, les reconnexions, retries,

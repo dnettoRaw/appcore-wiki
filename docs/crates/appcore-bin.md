@@ -61,9 +61,9 @@ control plane, Gateway, scheduling, supervision, updates and shutdown.
 Application code must use the public `application` module and avoid private host
 internals.
 
-## 2.0 prerelease: supervised HTTP generation
+## 1.5 candidate: supervised HTTP generation
 
-The 2.0 source line composes the HTTP listener through one
+The 1.5 candidate composes the HTTP listener through one
 `ReloadableRuntimeHttpHost` generation registered as the existing `http`
 managed service. The global Supervisor remains the sole lifecycle owner; no
 nested Supervisor or detached reload worker is created. Stable routes and the

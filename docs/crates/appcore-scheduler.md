@@ -37,9 +37,9 @@ the limit and pressure. Shutdown drains accepted callbacks with cooperative
 cancellation; callbacks must check `TaskContext::is_cancelled()` because Rust
 threads are not forcibly timed out.
 
-## 2.0 prerelease: opt-in recovery
+## 1.5 candidate: opt-in recovery
 
-The 2.0 source line implements the unpublished `SchedulerStateProvider` V1
+The 1.5 candidate implements the unpublished `SchedulerStateProvider` V1
 boundary. `Scheduler::with_state_provider` selects a bounded owner, claim TTL,
 clock-skew allowance and provider; `schedule_durable` opts individual tasks
 into persisted next-run, attempt, misfire, fencing and receipt state. Existing

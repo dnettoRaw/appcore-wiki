@@ -25,7 +25,7 @@ DNT authentifie le contexte et chiffre le payload. Peer RPC valide tenant, clust
 ## Statut du provider Windows DPAPI
 
 AC-009 a accepté `windows-dpapi-user-v1` pour la ligne de développement
-post-1.0. L'implémentation alpha 2.0 protège chaque enregistrement de rotation
+post-1.0. L'implémentation alpha 1.5 protège chaque enregistrement de rotation
 borné avec DPAPI non interactif avec portée utilisateur : le même utilisateur
 sur le même ordinateur est normalement requis pour déchiffrer. La portée
 machine est exclue car elle permettrait le déchiffrement par d'autres

@@ -51,7 +51,7 @@ Unsigned local artifacts are not a production default. They require a dedicated 
 ## Windows DPAPI provider status
 
 AC-009 has accepted `windows-dpapi-user-v1` for the post-1.0 development line.
-The 2.0 alpha implementation protects every bounded rotation record with
+The 1.5 alpha implementation protects every bounded rotation record with
 non-interactive DPAPI user scope: normally the same user on the same computer
 is required to decrypt a record. Machine scope is explicitly excluded because
 it permits other local users to decrypt. Selection is opt-in and never falls

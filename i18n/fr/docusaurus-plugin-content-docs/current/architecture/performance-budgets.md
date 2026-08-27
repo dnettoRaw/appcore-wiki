@@ -54,7 +54,7 @@ AC-003 remplace la map publique globale des tenants Gateway par un répertoire
 borné de 32 shards et un verrou par tenant. Le gate conserve le verrou
 d'écriture d'un tenant tout en exigeant que celui d'un autre tenant reste
 disponible. Conserver l'ancienne map rétablirait la sérialisation ou dupliquerait
-l'état mutable ; cette correction est donc réservée au prochain major SemVer et
+l'état mutable ; cette correction reste donc bloquée dans la version candidate 1.5 jusqu'au rétablissement de la compatibilité 1.x et
 l'ancien champ est supprimé.
 
 AC-004 supprime le mutex global des métadonnées de requests en attente. Une map
@@ -73,7 +73,7 @@ sur la même connexion acceptée. L'adaptateur V1 libre `send` reste one-shot av
 `Connection: close`.
 
 AC-007 remplace le reload/rewrite complet de l'outbox par le journal append-only
-V2 explicite dans la prochaine version majeure SemVer. Les charges de 1/10/64
+V2 explicite dans la version candidate 1.5. Les charges de 1/10/64
 MiB incluent désormais un petit enqueue incrémental du tail limité à 100 ms p99,
 tandis que l'ACK est limité à 500 ms p99. La compaction atomique change la
 génération ; les tests exigent la récupération d'une frame finale incomplète et
@@ -92,7 +92,7 @@ noms distincts des threads workers restent dans `max_concurrent_tasks`, tout en
 observant au moins un événement borné de saturation de la file. Le travail
 excédentaire est différé sans consommer de tentatives de retry.
 
-AC-020 ajoute le contrat de télémétrie Gateway de l'alpha 2.0. Le gate conserve
+AC-020 ajoute le contrat de télémétrie Gateway de l'alpha 1.5. Le gate conserve
 128 séries de capability, agrège huit noms supplémentaires dans une série
 d'overflow fixe, exécute 4 096 routes instrumentées sans worker disponible et
 construit 256 snapshots. Il exige zéro route inflight résiduelle, une

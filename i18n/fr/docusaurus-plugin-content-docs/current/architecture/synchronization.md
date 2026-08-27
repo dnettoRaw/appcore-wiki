@@ -34,7 +34,7 @@ Checkpoint garde dernière séquence acceptée et batch hash par peer dans `# ap
 
 ## Comment l'outbox durable récupère-t-elle ?
 
-L'outbox fichier de la prochaine version majeure utilise le marqueur binaire
+L'outbox fichier de la version candidate 1.5 utilise le marqueur binaire
 explicite `appcore-sync-outbox-v2`. Chaque enqueue ou ACK ajoute et synchronise
 une frame bornée. Les ordinaux, longueurs initiale/finale et une chaîne SHA-256
 détectent corruption, duplication et réordonnancement. Seule une frame finale
@@ -46,7 +46,7 @@ les messages en attente et change la génération. Un autre processus avec une
 vue ancienne détecte ce changement et recharge. Le journal reste limité à 64
 MiB et réserve assez de tail pour acquitter le message frontal déjà accepté.
 
-Le contrat outbox de la prochaine version majeure lit un préfixe ordonné avec
+Le contrat outbox de la version candidate 1.5 lit un préfixe ordonné avec
 des limites indépendantes de nombre et d'octets encodés avant de cloner les
 payloads. Il expose des stats sans payload, persiste les attempts/readiness
 retry et applique uniquement des receipts de préfixe ordonné exact. Le follower

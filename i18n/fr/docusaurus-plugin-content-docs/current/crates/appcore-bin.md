@@ -62,9 +62,9 @@ Gateway, scheduling, supervision, updates et shutdown.
 
 Les applications utilisent le module public `application` et évitent internals.
 
-## Prerelease 2.0 : génération HTTP supervisée
+## Version candidate 1.5 : génération HTTP supervisée
 
-La ligne source 2.0 compose le listener HTTP avec une génération
+La version candidate 1.5 compose le listener HTTP avec une génération
 `ReloadableRuntimeHttpHost` enregistrée comme service géré `http` existant. Le
 Supervisor global reste l'unique owner du lifecycle ; aucun Supervisor imbriqué
 ni worker de reload détaché n'est créé. Les routes stables et le chemin 1.0 de
