@@ -25,16 +25,15 @@ le tag Git historique reste uniquement une preuve d'audit immuable. Les
 nouveaux candidats sont versionnés par crate et les instructions stables pour
 les applications restent en `1.0.0`.
 
-Le train de publication du dépôt est actuellement `1.0.2-rc`, tandis que les
-fonctionnalités compatibles avancent vers 1.5 uniquement dans les crates qui
-les possèdent :
+Le train de publication du dépôt est actuellement `1.0.2-rc`. Les crates du
+Runtime restent sur ce RC jusqu'à sa clôture ; le prochain minor commence à
+`1.1.0` crate par crate :
 
 | Ligne candidate | Crates |
 |---|---|
 | Publications indépendantes existantes | `appcore-ai 0.1.0-beta.3`, `appcore-args 1.0.1`, `appcore-supervisor 1.0.1`, `appcore-transport 1.1.0-alpha.1` |
 | `0.1.0-alpha.3` | `appcore-sync-sqlite` |
-| `1.0.2-rc` | contracts, types, DNT, core, ops, control plane, capabilities, contrats provider, adapter Vercel/Neon, update |
-| `1.5.0-alpha.1` | API, sécurité, stockage, peer RPC, contrats distribués, sync, scheduler, Gateway et hôte de composition ; les constats de compatibilité des crates concernés bloquent toujours une publication bêta ou stable |
+| `1.0.2-rc` | contracts, types, DNT, core, ops, control plane, capabilities, contrats provider, adapter Vercel/Neon, update, API, sécurité, stockage, peer RPC, contrats distribués, sync, scheduler, Gateway et hôte de composition ; les constats de compatibilité bloquent toujours la clôture du RC |
 
 Candidate désigne la version déclarée dans les sources, pas une publication
 achevée. crates.io reste l'autorité pour les versions disponibles. La
@@ -42,7 +41,9 @@ stabilisation RC avance le patch de `1.0.0` à `1.0.9` selon les besoins, en
 conservant le suffixe `-rc` tant que le build reste candidat, puis se termine au
 prochain jalon indépendant `1.x.0`. Le développement de la version 2 n'a pas
 commencé ; sa publication alpha historique ne définit pas la ligne source
-actuelle.
+actuelle. Les publications erronées `1.5.0-alpha.1` sont également retirées
+(yanked) après l'indexation de leurs remplacements `1.0.2-rc`. Le prochain
+minor commence à `1.1.0` après le RC.
 
 Pour une nouvelle application, utiliser la façade de haut niveau :
 

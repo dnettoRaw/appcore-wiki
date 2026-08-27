@@ -40,7 +40,7 @@ batch, sequence arithmetic and every record bound before any log or checkpoint
 mutation, so a late invalid event cannot leave a partial append.
 
 :::warning Next-major outbox update
-The 1.5 candidate `FileSyncOutbox` accepts only the explicit
+The `1.0.2-rc` `FileSyncOutbox` accepts only the explicit
 `appcore-sync-outbox-v2` binary journal. V1, unversioned and future files fail
 with `NO MORE SUPPORTED PLEASE UPDATE`; there is no automatic conversion. Drain
 V1 before upgrading and drain V2 before rollback. Enqueue and ACK then append

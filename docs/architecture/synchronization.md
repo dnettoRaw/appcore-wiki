@@ -101,7 +101,7 @@ Replay alone is not enough because the log can be larger than the useful recover
 
 ## How does the durable outbox recover?
 
-The 1.5 candidate file outbox uses the explicit binary marker
+The `1.0.2-rc` file outbox uses the explicit binary marker
 `appcore-sync-outbox-v2`. Each enqueue or acknowledgement appends and syncs one
 bounded frame. Ordinals, leading/trailing lengths and a SHA-256 chain detect
 corruption, duplication and reordering. Only an incomplete final frame is
@@ -113,7 +113,7 @@ an older in-memory view detects that generation change and reloads. The journal
 stays capped at 64 MiB and reserves enough tail space to acknowledge an
 accepted front message.
 
-The 1.5 candidate outbox contract reads an ordered prefix with independent count
+The `1.0.2-rc` outbox contract reads an ordered prefix with independent count
 and encoded-byte bounds before cloning payloads. It exposes payload-free stats,
 persists retry attempts/readiness and applies only exact ordered-prefix
 receipts. The Runtime follower and CLI use this path directly, so queue growth

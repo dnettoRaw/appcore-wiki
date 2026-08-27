@@ -59,9 +59,9 @@ supervision, updates e shutdown.
 
 Aplicações usam o módulo público `application` e evitam internals.
 
-## Candidato 1.5: geração HTTP supervisionada
+## `1.0.2-rc`: geração HTTP supervisionada
 
-O candidato 1.5 compõe o listener HTTP por uma geração de
+O candidato `1.0.2-rc` compõe o listener HTTP por uma geração de
 `ReloadableRuntimeHttpHost` registrada como o serviço gerenciado `http`
 existente. O Supervisor global continua como único owner do lifecycle; não há
 Supervisor aninhado nem worker de reload destacado. Rotas estáveis e o caminho

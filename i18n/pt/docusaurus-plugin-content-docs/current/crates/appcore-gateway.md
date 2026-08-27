@@ -25,7 +25,7 @@ e resolver de capability, conexoes bounded de worker/client,
 heartbeat e factory do router Axum. Contratos de content-envelope opaco são
 reexportados para roteamento de payload cifrado.
 
-> **Migração candidata 1.5:** o acesso direto a
+> **Migração do RC atual:** o acesso direto a
 > `GatewayState::tenants` foi removido para que tenants independentes não
 > compartilhem um único lock. Use `tenant_partition`,
 > `tenant_partition_or_insert`, `tenant_count` e `connection_count`. Os mapas
@@ -105,7 +105,7 @@ disconnect e prune de heartbeat atualizam mapa primário, registry de
 capabilities e índices sob o mesmo lock do tenant. Contadores saturados de
 rebuild e inconsistência expõem saúde sem labels ilimitadas.
 
-## Candidato 1.5: registry HA Redis
+## `1.0.2-rc`: registry HA Redis
 
 Este é o estado de desenvolvimento, não uma funcionalidade do pacote estável
 `1.0.0`. A beta privada do Runtime até
@@ -156,11 +156,11 @@ tenants em 2,25 ms p99, rota fenced local em 0,35 ms p99 e rota federada em
 HA ser deployable, e fallback local continua proibido. Acompanhe a
 [AC-013 pública](https://github.com/dnettoRaw/app-core-public/issues/15).
 
-## Alpha 1.5: seleção limitada de workers
+## `1.0.2-rc`: seleção limitada de workers
 
 `FirstAvailable` permanece o default e agora escolhe em ordem estável de
 identidade do worker, em vez da ordem aleatória por processo do `HashSet`. O
-resolver candidato 1.5 adiciona policies opt-in `RoundRobin`, `LeastInflight`,
+resolver do RC atual adiciona policies opt-in `RoundRobin`, `LeastInflight`,
 `HealthWeighted` e `Affinity`. `CapabilityResolver::select` considera somente
 workers anunciados pelo tenant atual e retorna falhas tipadas para capability
 ausente, nenhum worker saudável, todos em capacity ou affinity inválida.
@@ -180,9 +180,9 @@ para affinity entre 64 workers. As invariantes de distribuição round-robin
 exata, health, capacity e affinity stateless passaram. Isto é evidência local
 do repositório, não certificação de produção ou multiplataforma.
 
-## Alpha 1.5: telemetria limitada de roteamento
+## `1.0.2-rc`: telemetria limitada de roteamento
 
-O candidato alpha 1.5 expõe um snapshot pull neutro de fornecedor por
+O RC atual expõe um snapshot pull neutro de fornecedor por
 `GatewayMetrics::telemetry_snapshot` e uma fronteira explícita
 `GatewayTelemetryExporter`. Ela registra outcomes fixos de rota, rotas
 inflight/pico, saturação de fila, reconnects, retries, falhas de autenticação e

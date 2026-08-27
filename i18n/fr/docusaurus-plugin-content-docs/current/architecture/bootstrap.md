@@ -33,7 +33,7 @@ catalogue pour contrôler déclaration, mode, idempotence, écriture
 opérationnelle et leadership. Un `CapabilityRegistry` n'existe qu'avec un vrai
 handler local ; les queries de statut Runtime restent explicites dans le host.
 
-Le candidat 1.5 de `appcore-api` possède aussi une frontière opt-in de génération de routing
+Le candidat `appcore-api 1.0.2-rc` possède aussi une frontière opt-in de génération de routing
 pour le service HTTP. Elle prépare et vérifie un Router plus récent avant une
 commutation atomique, puis draine les requêtes déjà admises par l'ancienne
 génération. Ce n'est pas un watcher implicite du manifest V1. Voir

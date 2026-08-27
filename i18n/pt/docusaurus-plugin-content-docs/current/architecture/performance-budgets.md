@@ -53,7 +53,7 @@ AC-003 substitui o mapa global público de tenants do Gateway por um diretório
 limitado com 32 shards e um lock por tenant. O gate mantém o write lock de um
 tenant enquanto exige que o lock de outro continue disponível. Como manter o
 mapa antigo restauraria a serialização ou duplicaria estado mutável, a correção
-continua bloqueada no candidato 1.5 até restaurar a compatibilidade 1.x e o campo antigo foi removido.
+continua bloqueada no RC até restaurar a compatibilidade 1.x e o campo antigo foi removido.
 
 AC-004 remove o mutex global de metadata de requests pendentes. Um único mapa
 privado e limitado por tenant guarda channel de resposta, geração do worker,
@@ -70,7 +70,7 @@ descarta o socket. O gate exige as 32 trocas pela mesma conexão aceita. O
 adapter V1 livre `send` continua one-shot com `Connection: close`.
 
 AC-007 substitui reload/rewrite integral da outbox pelo journal append-only V2
-explícito no candidato 1.5. As cargas de 1/10/64 MiB agora incluem um
+explícito no `1.0.2-rc`. As cargas de 1/10/64 MiB agora incluem um
 pequeno enqueue incremental de tail limitado a 100 ms p99, enquanto ACK fica
 limitado a 500 ms p99. A compactação atômica muda a geração; testes exigem
 recovery do frame final incompleto e falha fechada para corrupção completa,
@@ -88,7 +88,7 @@ distintos de threads worker permaneçam dentro de `max_concurrent_tasks`, além
 de observar ao menos um evento limitado de saturação da fila. Trabalho
 excedente é adiado sem consumir tentativas de retry.
 
-AC-020 adiciona o contrato de telemetria Gateway da alpha 1.5. O gate mantém
+AC-020 adiciona o contrato de telemetria Gateway do `1.0.2-rc`. O gate mantém
 128 séries de capability, agrega oito nomes adicionais em uma série fixa de
 overflow, executa 4.096 rotas instrumentadas sem worker disponível e constrói
 256 snapshots. Ele exige zero rotas inflight residuais, cardinalidade e

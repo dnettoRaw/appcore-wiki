@@ -49,10 +49,10 @@ command/query para testes locais controlados. `/v1/health` permanece público
 por contrato. Rejeições de autorização de command geram audit com metadados
 normalizados, sem credenciais, payload ou chave de idempotência.
 
-## Prerelease 1.5: reload coordenado de routing
+## `1.0.2-rc`: reload coordenado de routing
 
-A linha candidata 1.5 adiciona o `ReloadableRuntimeHttpHost` opt-in ainda não
-publicado. Um candidato deve usar geração estritamente mais nova no mesmo
+A linha candidata `1.0.2-rc` adiciona o `ReloadableRuntimeHttpHost` opt-in. Um
+candidato deve usar geração estritamente mais nova no mesmo
 endereço ligado e passar por `/v1/health` antes e depois de uma troca atômica de
 routing. Requests já aceitos mantêm o Router original até a conclusão; a
 geração anterior é drenada com prazo. Falha de saúde ou drain restaura a geração

@@ -26,22 +26,24 @@ permanece somente como evidência imutável de auditoria. Os novos candidatos s�
 versionados por crate e a orientação estável para aplicações permanece em
 `1.0.0`.
 
-O trem de release do repositório está atualmente em `1.0.2-rc`, com trabalho
-compatível avançando para 1.5 somente nos crates responsáveis:
+O trem de release do repositório está atualmente em `1.0.2-rc`. Os crates do
+Runtime permanecem nesse RC até seu encerramento; o próximo minor começa em
+`1.1.0` crate por crate:
 
 | Linha candidata | Crates |
 |---|---|
 | Releases independentes existentes | `appcore-ai 0.1.0-beta.3`, `appcore-args 1.0.1`, `appcore-supervisor 1.0.1`, `appcore-transport 1.1.0-alpha.1` |
 | `0.1.0-alpha.3` | `appcore-sync-sqlite` |
-| `1.0.2-rc` | contracts, types, DNT, core, ops, control plane, capabilities, contratos de provider, adapter Vercel/Neon, update |
-| `1.5.0-alpha.1` | API, security, storage, peer RPC, contratos distribuídos, sync, scheduler, Gateway e host de composição; achados de compatibilidade nos crates afetados continuam bloqueando a publicação beta ou estável |
+| `1.0.2-rc` | contracts, types, DNT, core, ops, control plane, capabilities, contratos de provider, adapter Vercel/Neon, update, API, security, storage, peer RPC, contratos distribuídos, sync, scheduler, Gateway e host de composição; achados de compatibilidade continuam bloqueando o encerramento do RC |
 
 Candidato significa versão declarada no código, não publicação concluída. O
 crates.io continua sendo a autoridade para versões disponíveis. A estabilização
 RC avança o patch de `1.0.0` até `1.0.9`, conforme necessário, mantendo o
 sufixo `-rc` enquanto o build ainda é candidato, e então termina no próximo
 marco independente `1.x.0`. O desenvolvimento da versão 2 não começou; sua
-publicação alpha histórica não define a linha atual do código.
+publicação alpha histórica não define a linha atual do código. As publicações
+incorretas `1.5.0-alpha.1` também estão yanked depois da indexação dos
+replacements `1.0.2-rc`. O próximo minor começa em `1.1.0` após o RC.
 
 Para criar uma aplicação, use a facade de alto nível:
 

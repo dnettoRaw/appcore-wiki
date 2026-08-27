@@ -69,7 +69,7 @@ The host may start HTTP, sync receiver, peer RPC, control-plane worker, schedule
 
 The host exposes a probe path used by tests and certification: it starts selected services, waits for readiness up to a timeout, then gracefully shuts down and reports which services were observed.
 
-The `appcore-api` 1.5 candidate also has an opt-in routing-generation boundary for the HTTP
+The `appcore-api 1.0.2-rc` candidate also has an opt-in routing-generation boundary for the HTTP
 service. It prepares and health-checks a newer Router before one atomic switch,
 then drains requests already admitted by the old generation. This is not an
 implicit V1 manifest watcher. See [coordinated reload](./reload).
