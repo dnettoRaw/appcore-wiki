@@ -30,13 +30,16 @@ superfície estável 1.0.
 
 Os templates ficam em `packaging/tls-sidecar` na fonte beta privada.
 `appcore-dev service check` bloqueia a remoção do upstream loopback, entradas
-TLS, health limitado, limites de capacidade ou hardening do serviço.
+TLS, health limitado, limites de capacidade ou hardening do serviço. O Envoy
+usa o recurso filesystem-SDS separado `envoy/tls-secret.yaml`; um certificado
+estático em `CommonTlsContext` não faz hot reload.
 
 ## Rotação e rollback
 
 Valide o par completo em novo caminho owner-only e publique-o atomicamente.
-Caddy valida e recarrega o candidato; Envoy observa moves atômicos no diretório.
-Preserve o par anterior até o health HTTPS confirmar o novo certificado.
+Caddy valida e recarrega o candidato; o Envoy observa via filesystem SDS a
+troca atômica do symlink de um diretório versionado. Preserve o par anterior
+até o health HTTPS confirmar o novo certificado.
 
 Falha mantém ou restaura o par anterior. Se o sidecar parar, o endpoint público
 fica indisponível e a porta Runtime continua inacessível. Se o Runtime parar, o
@@ -46,11 +49,19 @@ Rotação não exige trocar a routing generation AppCore: requests aceitas ficam
 no sidecar e o listener Runtime permanece estável. Troca de endereço pertence
 ao routing externo do deployment.
 
-## Evidência e limites
+## Certificação do repositório e limites
 
-Os perfis foram aceitos pelas imagens oficiais Caddy 2.11.4 e Envoy 1.39.0 em
-Docker Linux/arm64. AC-024 continua aberta até instalações Unix e Windows reais
-cobrirem bloqueio cleartext, rotação durante requests, expiração/revogação,
-perda de processo, rollback e carga limitada. Windows também depende de AC-009.
+Execute `appcore-dev cert tls-sidecar` para certificar os dois perfis em Docker
+Linux e gravar `builds/certification/tls-sidecar.json`. O gate usa hostname e
+cadeia confiados localmente e verifica readiness HTTPS, bloqueio cleartext, 512
+requests aceitas durante a rotação, troca de serial, rollback de candidato
+inválido, restart do sidecar e falha fechada quando o Runtime desaparece. O
+Envoy também limita globalmente a 1.024 conexões downstream.
+
+Isto conclui o perfil AC-024 que pertence ao repositório, sem certificar um
+host de produção. AC-010 acompanha service managers Windows/Unix reais,
+firewalls do host, expiração/revogação de certificados de produção, soak de
+cluster por 24 horas e revisão de segurança independente. A certificação de
+segredos em repouso no Windows também depende de AC-009.
 
 Continue em [reload HTTP coordenado](./reload).
