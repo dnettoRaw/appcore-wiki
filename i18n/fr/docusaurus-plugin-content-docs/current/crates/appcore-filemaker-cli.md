@@ -14,6 +14,9 @@ les fichiers atomiquement. `migrate` est réservé et échoue sans modifier
 l'entrée. Les réponses JSON stables servent l'automatisation et les échecs
 typés gardent des codes de sortie non nuls.
 
+`schema --json` décrit couleurs typées, cascade de style exécutable, overrides
+export limités à la peinture et ordre layer/z-index indépendant de la collision.
+
 Les dépendances AppCore directes sont `appcore-args` et `appcore-filemaker`.
 
 Documentation maintenue par le crate : [guide](https://github.com/dnettoRaw/AppCore-Runtime/blob/beta/crates/appcore-filemaker-cli/wiki/guide.fr.md),

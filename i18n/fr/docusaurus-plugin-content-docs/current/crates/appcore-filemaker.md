@@ -23,6 +23,13 @@ implémentent la résolution bornée des assets, templates et polices.
 `FontManager::register_from` enregistre une police logique exacte sous la
 limite d'octets de l'appelant sans jamais parcourir les polices de l'hôte.
 
+La cascade complète est defaults → theme → template → style
+component/nommé/inline développé → règles data conditionnelles ordonnées →
+`SetStyle` runtime transactionnel → `ExportStyleOverride`. Le style runtime
+change avant la mesure. La couche export expose seulement fill, stroke, opacity
+et couleur texte ; elle ne peut invalider la géométrie résolue. Layer, z-index
+et ordre source trient la peinture indépendamment de la collision géométrique.
+
 La politique de collision hérite dans l'ordre explicite document → page →
 région → groupe → élément. Le YAML accepte `collision: false`, et le reflow
 interroge le bound mesuré sélectionné : layout, visuel ou intrinsèque.

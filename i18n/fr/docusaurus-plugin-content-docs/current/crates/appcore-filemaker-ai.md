@@ -13,6 +13,11 @@ et applique la policy editable/locked du template avant toute mutation
 atomique. Les requêtes ne changent pas la revision. Les outils d'artifact
 renvoient du base64 borné en mémoire sans choisir de path filesystem.
 
+`filemaker_schema` décrit couleurs typées, chaque couche de cascade, ordre de
+peinture et frontières de résolution. `filemaker_set` et patches typés acceptent
+`set_style` transactionnel ; les overrides export restent limités à la peinture
+et ne changent pas le layout.
+
 Les dépendances AppCore directes sont `appcore-ai` et `appcore-filemaker`. Policy
 et orchestration IA restent hors du compilateur déterministe.
 

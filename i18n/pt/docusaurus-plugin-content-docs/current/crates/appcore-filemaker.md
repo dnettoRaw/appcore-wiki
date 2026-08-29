@@ -22,6 +22,13 @@ implementam busca limitada de assets, templates e fontes.
 `FontManager::register_from` registra uma fonte lógica exata sob o limite de
 bytes do chamador e nunca varre as fontes do host.
 
+A cascata completa é defaults → theme → template → style expandido de
+component/nome/inline → regras condicionais de dados ordenadas → `SetStyle`
+runtime transacional → `ExportStyleOverride`. Style runtime muda antes da
+medição. A layer de export expõe somente fill, stroke, opacity e cor de texto,
+portanto não invalida geometria resolvida. Layer, z-index e ordem da origem
+ordenam pintura independentemente da colisão por geometria.
+
 A política de colisão herda na ordem explícita documento → página → região →
 grupo → elemento. O YAML aceita `collision: false`, e o reflow consulta o bound
 medido selecionado: layout, visual ou intrínseco.

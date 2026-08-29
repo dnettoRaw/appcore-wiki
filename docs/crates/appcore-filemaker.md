@@ -22,6 +22,13 @@ typed colors; fill backgrounds, stroke borders, and opacity remain separate.
 template, and font lookup. `FontManager::register_from` registers an exact
 logical font under the caller's byte cap and never scans host fonts.
 
+The complete cascade is defaults → theme → template → expanded
+component/named/inline style → ordered conditional data rules → transactional
+runtime `SetStyle` → `ExportStyleOverride`. Runtime style changes occur before
+measurement. The export layer exposes only fill, stroke, opacity, and text
+color, so it cannot invalidate resolved geometry. Layer, z-index, and source
+order sort painting independently from geometry-first collision placement.
+
 Collision policy inherits in the explicit document → page → region → group →
 element order. YAML accepts `collision: false`, and reflow queries the selected
 measured layout, visual, or intrinsic bounds.
