@@ -15,6 +15,10 @@ geometry-first collision/reflow, and immutable `ResolvedScene` construction.
 Inspection, validation, preflight, and the selected exporter consume that scene
 without changing geometry.
 
+Collision policy inherits in the explicit document → page → region → group →
+element order. YAML accepts `collision: false`, and reflow queries the selected
+measured layout, visual, or intrinsic bounds.
+
 Implemented outputs are editable/flattened PDF, SVG, PNG, JPEG, semantic/fixed
 HTML, streaming CSV, and PNG/PDF/SVG/JSON debug masks. Prepared modes and nodes
 fail explicitly or enter `ExportLossReport`; no silent fallback is allowed.

@@ -14,6 +14,10 @@ IR tipada. Fontes e assets explícitos são medidos antes do layout fixed-point,
 colisão/reflow por geometria e construção da `ResolvedScene` imutável.
 Inspeção, validação, preflight e exporter consomem a cena sem mudar geometria.
 
+A política de colisão herda na ordem explícita documento → página → região →
+grupo → elemento. O YAML aceita `collision: false`, e o reflow consulta o bound
+medido selecionado: layout, visual ou intrínseco.
+
 Os outputs implementados são PDF editável/flattened, SVG, PNG, JPEG,
 HTML semântico/fixo, CSV streaming e máscaras PNG/PDF/SVG/JSON. Modos e nodes
 preparados falham explicitamente ou entram em `ExportLossReport`.

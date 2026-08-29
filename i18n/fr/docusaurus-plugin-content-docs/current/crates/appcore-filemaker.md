@@ -15,6 +15,10 @@ fixed-point, collision/reflow géométrique et construction de la
 `ResolvedScene` immuable. Inspection, validation, preflight et export consomment
 cette scène sans modifier la géométrie.
 
+La politique de collision hérite dans l'ordre explicite document → page →
+région → groupe → élément. Le YAML accepte `collision: false`, et le reflow
+interroge le bound mesuré sélectionné : layout, visuel ou intrinsèque.
+
 Les sorties sont PDF éditable/flattened, SVG, PNG, JPEG, HTML sémantique/fixe,
 CSV streaming et masques PNG/PDF/SVG/JSON. Les modes préparés échouent
 explicitement ou figurent dans `ExportLossReport`.
