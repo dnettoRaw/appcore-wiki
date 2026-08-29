@@ -23,6 +23,13 @@ Fixed-point transforms support translation, integer-degree rotation, scale,
 flip/mirror, and explicit origins. They compose through groups and the same
 resolved matrix is consumed by PDF, SVG, PNG/JPEG, and HTML.
 
+Text elements declare layout through `text_options`. Overflow supports `wrap`,
+`shrink`, `ellipsis`, `clip`, `expand`, and `error`, with bounded `max_lines`,
+absolute `min_font_size`, and fixed-point `line_height`. Measurement and
+expansion happen before collision; clipping is resolved geometry; SVG and HTML
+render the resolved shaped/truncated runs. Vertical writing and color emoji are
+reported as explicit exporter losses until implemented.
+
 Implemented outputs are editable/flattened PDF, SVG, PNG, JPEG, semantic/fixed
 HTML, streaming CSV, and PNG/PDF/SVG/JSON debug masks. Prepared modes and nodes
 fail explicitly or enter `ExportLossReport`; no silent fallback is allowed.

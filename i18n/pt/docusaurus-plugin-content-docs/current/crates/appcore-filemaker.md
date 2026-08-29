@@ -22,6 +22,13 @@ Transforms fixed-point aceitam translação, rotação em graus inteiros, escala
 flip/mirror e origins explícitas. Eles compõem através de grupos, e PDF, SVG,
 PNG/JPEG e HTML consomem a mesma matriz resolvida.
 
+Elementos de texto declaram layout por `text_options`. Overflow aceita `wrap`,
+`shrink`, `ellipsis`, `clip`, `expand` e `error`, com `max_lines` limitado,
+`min_font_size` absoluto e `line_height` fixed-point. Medição e expansão
+ocorrem antes da colisão; clipping é geometria resolvida; SVG e HTML renderizam
+os runs moldados/truncados. Escrita vertical e emoji colorido são perdas
+explícitas do exporter até serem implementados.
+
 Os outputs implementados são PDF editável/flattened, SVG, PNG, JPEG,
 HTML semântico/fixo, CSV streaming e máscaras PNG/PDF/SVG/JSON. Modos e nodes
 preparados falham explicitamente ou entram em `ExportLossReport`.
