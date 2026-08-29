@@ -42,6 +42,15 @@ Vertical and horizontal flow containers support `start`, `center`, `end`,
 requires explicit, preferred, or aspect-derived primary sizes; ambiguous auto
 measurement and overflow fail before collision.
 
+Document pages can declare `master`, `first`, `continuation`, and `last`
+layers, each split into collision-free `background`, `header`, and `footer`
+bands. Master elements repeat on every physical page; one role layer is chosen
+after bounded body pagination; and `{page}`/`{pages}` text is resolved only
+after the final total is known. Components, styles, binding, patches,
+inspection, and every scene exporter honor the same contract. Resolved elements
+retain a `collidable` flag so overlays do not create false collisions, consume
+free regions, or alter pagination.
+
 Restartable `Dataset` streams can stop at the bounded auto-column sample
 without scanning the remainder. Tables resolve fixed, sampled-auto, and
 weighted-flex widths; paginate fixed or callback-measured rows with correct

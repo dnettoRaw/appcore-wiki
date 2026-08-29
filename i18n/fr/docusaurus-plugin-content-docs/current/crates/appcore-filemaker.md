@@ -43,6 +43,16 @@ Les conteneurs flow verticaux et horizontaux acceptent `start`, `center`,
 autre que start exige une taille primaire explicite, préférée ou dérivée du
 ratio ; mesure auto ambiguë et overflow échouent avant la collision.
 
+Les pages document peuvent déclarer des layers `master`, `first`,
+`continuation` et `last`, chacune divisée en bandes `background`, `header` et
+`footer` sans collision. Les éléments master se répètent sur chaque page
+physique ; une layer de rôle est choisie après la pagination bornée du corps ;
+et le texte `{page}`/`{pages}` n'est résolu qu'une fois le total final connu.
+Composants, styles, binding, patches, inspection et tous les exporters de scène
+respectent le même contrat. Les éléments résolus conservent un flag
+`collidable` afin que les overlays ne créent pas de fausses collisions, ne
+consomment pas les régions libres et ne modifient pas la pagination.
+
 Les streams `Dataset` redémarrables s'arrêtent à l'échantillon borné de colonne
 auto sans parcourir le reste. Les tables résolvent largeurs fixed, auto
 échantillonnées et flex pondérées ; paginent lignes fixes ou mesurées par
