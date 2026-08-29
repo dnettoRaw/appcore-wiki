@@ -30,6 +30,13 @@ change avant la mesure. La couche export expose seulement fill, stroke, opacity
 et couleur texte ; elle ne peut invalider la géométrie résolue. Layer, z-index
 et ordre source trient la peinture indépendamment de la collision géométrique.
 
+Les métadonnées raster et SVG sont résolues avant export. `contain` et la
+réduction `scale_down` conservent l'aspect en microunités fixed-point ; fill,
+none intrinsèque, crop, cover focal et EXIF facultatif produisent des rectangles
+source, destination et clip immuables. Preflight calcule le DPI raster effectif
+après transform. SVG/HTML incorporent SVG ; PDF/raster signalent sa
+rasterisation non prise en charge comme perte de fidélité explicite.
+
 La politique de collision hérite dans l'ordre explicite document → page →
 région → groupe → élément. Le YAML accepte `collision: false`, et le reflow
 interroge le bound mesuré sélectionné : layout, visuel ou intrinsèque.

@@ -29,6 +29,13 @@ measurement. The export layer exposes only fill, stroke, opacity, and text
 color, so it cannot invalidate resolved geometry. Layer, z-index, and source
 order sort painting independently from geometry-first collision placement.
 
+Raster and SVG metadata resolve before export. `contain` and reducing
+`scale_down` preserve aspect in fixed-point microunits; fill, intrinsic-size
+none, crop, focal cover, and optional EXIF orientation yield immutable source,
+destination, and clip rectangles. Preflight computes effective raster DPI from
+the transformed destination. SVG/HTML embed SVG assets; PDF/raster report the
+currently unsupported SVG rasterization as an explicit fidelity loss.
+
 Collision policy inherits in the explicit document → page → region → group →
 element order. YAML accepts `collision: false`, and reflow queries the selected
 measured layout, visual, or intrinsic bounds.
