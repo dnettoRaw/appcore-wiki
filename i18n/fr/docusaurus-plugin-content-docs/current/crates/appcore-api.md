@@ -67,6 +67,6 @@ autre génération de listener préparée et ne sont pas inférés.
 
 Cette API décrit seulement l'état du source. Elle ne doit pas être considérée
 comme disponible dans le paquet stable `1.0.0` indiqué ci-dessus. Voir
-[reload coordonné](/fr/architecture/reload).
+[reload coordonné](/architecture/reload).
 
 **Maturité :** surface HTTP V1 stricte et stable.

@@ -20,6 +20,8 @@ crate graph.
 The official [`appcore-filemaker 0.1.0-alpha.1`](./appcore-filemaker) source
 preview is developed on the Runtime `beta` branch. It has not been published
 to crates.io and is not part of the stable graph.
+Its optional [AI bridge](./appcore-filemaker-ai) and
+[CLI adapter](./appcore-filemaker-cli) are separate unpublished alpha crates.
 
 The optional [`appcore-sync-sqlite 0.1.0-alpha.4`](./appcore-sync-sqlite)
 integration is a published post-1.0 prerelease. Its page documents the accepted

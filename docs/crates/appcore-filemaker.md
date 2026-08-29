@@ -49,6 +49,12 @@ first/repeating header capacity; retain group boundaries and conditional
 styles; and emit checked integer/decimal/currency totals only on the final
 page. Row, field, cell, expression, sample, and page limits fail closed.
 
+Strict YAML now exposes that contract directly: a `type: table` element must
+declare its columns and an array `binding`. Grouping, totals, conditional
+styles, header repetition, and row sizing remain typed in `TableIr`; every
+bound row must be an object. Template-specific row, field, and cell limits may
+only tighten the compiler-wide resource limits.
+
 Implemented outputs are editable/flattened PDF, SVG, PNG, JPEG, semantic/fixed
 HTML, streaming CSV, and PNG/PDF/SVG/JSON debug masks. Prepared modes and nodes
 fail explicitly or enter `ExportLossReport`; no silent fallback is allowed.
@@ -57,3 +63,7 @@ The deterministic core does not depend on AI. `appcore-filemaker-ai` is an
 optional 20-tool bridge over `appcore-ai`; `appcore-filemaker-cli` is the
 bounded process adapter. Source examples and exact alpha evidence live in the
 Runtime repository on the `beta` branch.
+
+Crate-owned documentation: [guide](https://github.com/dnettoRaw/AppCore-Runtime/blob/beta/crates/appcore-filemaker/wiki/guide.en.md),
+[basic example](https://github.com/dnettoRaw/AppCore-Runtime/blob/beta/crates/appcore-filemaker/wiki/examples/basic.en.md), and
+[intermediate example](https://github.com/dnettoRaw/AppCore-Runtime/blob/beta/crates/appcore-filemaker/wiki/examples/intermediate.en.md).

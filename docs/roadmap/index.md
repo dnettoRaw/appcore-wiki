@@ -32,6 +32,9 @@ automatic just because a crate appears in the Runtime repository.
 | Component | Status | Boundary |
 | --- | --- | --- |
 | [appcore-sync-sqlite](/crates/appcore-sync-sqlite) | Alpha | Published `0.1.0-alpha.2` optional persistence for Runtime-owned sync state, against the coordinated `2.0.0-alpha.1` Runtime contracts. |
+| [appcore-filemaker](/crates/appcore-filemaker) | Alpha | Unpublished `0.1.0-alpha.1` source preview for deterministic document, canvas, and dataset compilation. |
+| [appcore-filemaker-ai](/crates/appcore-filemaker-ai) | Alpha | Unpublished optional bounded tool bridge; AI remains outside the deterministic compiler. |
+| [appcore-filemaker-cli](/crates/appcore-filemaker-cli) | Alpha | Unpublished bounded process adapter for compilation, diagnostics, and explicit export. |
 
 ## In Design
 
