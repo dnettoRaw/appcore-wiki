@@ -55,6 +55,12 @@ styles, header repetition, and row sizing remain typed in `TableIr`; every
 bound row must be an object. Template-specific row, field, and cell limits may
 only tighten the compiler-wide resource limits.
 
+Layout now turns each bounded table page into an immutable
+`ResolvedTableFragment` on a physical scene page. Exact columns, repeated
+headers, row and cell rectangles, data styles, group continuity, totals, and
+shaped cell text are fixed before export. Continuations use the normal global
+page and collision bounds; exporters do not measure or repaginate them.
+
 Implemented outputs are editable/flattened PDF, SVG, PNG, JPEG, semantic/fixed
 HTML, streaming CSV, and PNG/PDF/SVG/JSON debug masks. Prepared modes and nodes
 fail explicitly or enter `ExportLossReport`; no silent fallback is allowed.

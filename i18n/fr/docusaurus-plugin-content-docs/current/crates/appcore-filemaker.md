@@ -58,6 +58,13 @@ lignes restent typés dans `TableIr` ; chaque ligne liée doit être un object.
 Les limites de lignes, fields et cellules propres au template peuvent seulement
 réduire les limites globales de ressources du compilateur.
 
+Le layout transforme maintenant chaque page de table bornée en
+`ResolvedTableFragment` immuable sur une page physique de la scène. Colonnes
+exactes, headers répétés, rectangles ligne/cellule, styles data, continuité de
+groupe, totaux et texte façonné sont fixés avant export. Les continuations
+respectent les bornes globales de pages et collision ; les exporters ne mesurent
+ni ne repaginent.
+
 Les sorties sont PDF éditable/flattened, SVG, PNG, JPEG, HTML sémantique/fixe,
 CSV streaming et masques PNG/PDF/SVG/JSON. Les modes préparés échouent
 explicitement ou figurent dans `ExportLossReport`.
