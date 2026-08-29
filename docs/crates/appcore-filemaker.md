@@ -37,6 +37,11 @@ Anchors target earlier element edges or named guides with
 `guide:name[+offset]`. Contradictory coordinates, ranges, and ratios fail
 explicitly. Runtime move/resize patches replace prior positional/sizing intent.
 
+Vertical and horizontal flow containers support `start`, `center`, `end`,
+`space_between`, `space_around`, and `space_evenly`. Non-start distribution
+requires explicit, preferred, or aspect-derived primary sizes; ambiguous auto
+measurement and overflow fail before collision.
+
 Implemented outputs are editable/flattened PDF, SVG, PNG, JPEG, semantic/fixed
 HTML, streaming CSV, and PNG/PDF/SVG/JSON debug masks. Prepared modes and nodes
 fail explicitly or enter `ExportLossReport`; no silent fallback is allowed.

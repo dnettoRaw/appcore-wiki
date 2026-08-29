@@ -38,6 +38,11 @@ guides nommés avec `guide:nom[+offset]`. Coordonnées, plages et ratios
 contradictoires échouent explicitement. Les patches move/resize remplacent
 l'intention de position/taille antérieure.
 
+Les conteneurs flow verticaux et horizontaux acceptent `start`, `center`,
+`end`, `space_between`, `space_around` et `space_evenly`. Toute distribution
+autre que start exige une taille primaire explicite, préférée ou dérivée du
+ratio ; mesure auto ambiguë et overflow échouent avant la collision.
+
 Les sorties sont PDF éditable/flattened, SVG, PNG, JPEG, HTML sémantique/fixe,
 CSV streaming et masques PNG/PDF/SVG/JSON. Les modes préparés échouent
 explicitement ou figurent dans `ExportLossReport`.

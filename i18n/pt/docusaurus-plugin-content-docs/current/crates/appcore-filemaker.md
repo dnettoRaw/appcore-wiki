@@ -36,6 +36,11 @@ Anchors apontam para bordas de elementos anteriores ou guides nomeadas com
 `guide:nome[+offset]`. Coordenadas, ranges e ratios contraditórios falham
 explicitamente. Patches move/resize substituem a intenção posicional anterior.
 
+Containers de flow vertical e horizontal aceitam `start`, `center`, `end`,
+`space_between`, `space_around` e `space_evenly`. Distribuição diferente de
+start exige tamanho primário explícito, preferido ou derivado de aspect;
+auto-medição ambígua e overflow falham antes da colisão.
+
 Os outputs implementados são PDF editável/flattened, SVG, PNG, JPEG,
 HTML semântico/fixo, CSV streaming e máscaras PNG/PDF/SVG/JSON. Modos e nodes
 preparados falham explicitamente ou entram em `ExportLossReport`.
