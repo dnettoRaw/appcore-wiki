@@ -43,6 +43,14 @@ Les conteneurs flow verticaux et horizontaux acceptent `start`, `center`,
 autre que start exige une taille primaire explicite, préférée ou dérivée du
 ratio ; mesure auto ambiguë et overflow échouent avant la collision.
 
+Les streams `Dataset` redémarrables s'arrêtent à l'échantillon borné de colonne
+auto sans parcourir le reste. Les tables résolvent largeurs fixed, auto
+échantillonnées et flex pondérées ; paginent lignes fixes ou mesurées par
+callback avec capacité correcte du header initial/répété ; conservent limites
+de groupe et styles conditionnels ; et émettent les totaux
+integer/decimal/currency vérifiés uniquement sur la dernière page. Les limites
+de ligne, field, cellule, expression, échantillon et page échouent fermées.
+
 Les sorties sont PDF éditable/flattened, SVG, PNG, JPEG, HTML sémantique/fixe,
 CSV streaming et masques PNG/PDF/SVG/JSON. Les modes préparés échouent
 explicitement ou figurent dans `ExportLossReport`.

@@ -42,6 +42,13 @@ Vertical and horizontal flow containers support `start`, `center`, `end`,
 requires explicit, preferred, or aspect-derived primary sizes; ambiguous auto
 measurement and overflow fail before collision.
 
+Restartable `Dataset` streams can stop at the bounded auto-column sample
+without scanning the remainder. Tables resolve fixed, sampled-auto, and
+weighted-flex widths; paginate fixed or callback-measured rows with correct
+first/repeating header capacity; retain group boundaries and conditional
+styles; and emit checked integer/decimal/currency totals only on the final
+page. Row, field, cell, expression, sample, and page limits fail closed.
+
 Implemented outputs are editable/flattened PDF, SVG, PNG, JPEG, semantic/fixed
 HTML, streaming CSV, and PNG/PDF/SVG/JSON debug masks. Prepared modes and nodes
 fail explicitly or enter `ExportLossReport`; no silent fallback is allowed.

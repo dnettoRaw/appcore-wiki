@@ -41,6 +41,13 @@ Containers de flow vertical e horizontal aceitam `start`, `center`, `end`,
 start exige tamanho primário explícito, preferido ou derivado de aspect;
 auto-medição ambígua e overflow falham antes da colisão.
 
+Streams `Dataset` reiniciáveis param na amostra limitada da coluna auto sem
+varrer o restante. Tabelas resolvem larguras fixed, auto por amostra e flex
+ponderada; paginam linhas fixas ou medidas por callback com capacidade correta
+do header inicial/repetido; mantêm limites de grupo e estilos condicionais; e
+emitem totais integer/decimal/currency verificados somente na página final.
+Limites de linha, field, célula, expressão, amostra e página falham fechados.
+
 Os outputs implementados são PDF editável/flattened, SVG, PNG, JPEG,
 HTML semântico/fixo, CSV streaming e máscaras PNG/PDF/SVG/JSON. Modos e nodes
 preparados falham explicitamente ou entram em `ExportLossReport`.
