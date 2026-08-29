@@ -41,6 +41,16 @@ Containers de flow vertical e horizontal aceitam `start`, `center`, `end`,
 start exige tamanho primário explícito, preferido ou derivado de aspect;
 auto-medição ambígua e overflow falham antes da colisão.
 
+`exclusions` nomeadas no nível superior definem retângulos relativos à página
+que não são pintados e devem ficar dentro do trim box. Elas repetem dentro do
+orçamento global de geometria e inicializam o índice espacial de cada página
+física antes de posicionar elementos. Os campos opcionais `group` e
+`collides_with` usam o mesmo contrato simétrico de colisão dos elementos,
+enquanto a política push/error/next-page/shrink do candidato continua
+responsável pelo reflow limitado. Inspeção, máscaras de colisão e consultas de
+regiões livres mantêm a exclusão resolvida; exporters não recebem node para
+pintá-la.
+
 Páginas de documento podem declarar layers `master`, `first`, `continuation` e
 `last`, cada uma dividida em bandas `background`, `header` e `footer` sem
 colisão. Elementos master repetem em toda página física; uma layer de papel é

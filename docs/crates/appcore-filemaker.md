@@ -42,6 +42,15 @@ Vertical and horizontal flow containers support `start`, `center`, `end`,
 requires explicit, preferred, or aspect-derived primary sizes; ambiguous auto
 measurement and overflow fail before collision.
 
+Top-level named `exclusions` define non-painted, page-relative rectangles that
+must remain inside the trim box. They repeat within the global geometry budget
+and seed every physical page's spatial index before element placement. Optional
+`group` and `collides_with` fields use the same symmetric collision contract as
+elements, while the candidate's existing push/error/next-page/shrink policy
+remains responsible for bounded reflow. Inspection, collision masks, and
+free-region queries retain the resolved exclusion; scene exporters receive no
+paint node for it.
+
 Document pages can declare `master`, `first`, `continuation`, and `last`
 layers, each split into collision-free `background`, `header`, and `footer`
 bands. Master elements repeat on every physical page; one role layer is chosen

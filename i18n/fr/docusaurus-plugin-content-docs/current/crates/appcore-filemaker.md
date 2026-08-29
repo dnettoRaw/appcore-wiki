@@ -43,6 +43,16 @@ Les conteneurs flow verticaux et horizontaux acceptent `start`, `center`,
 autre que start exige une taille primaire explicite, préférée ou dérivée du
 ratio ; mesure auto ambiguë et overflow échouent avant la collision.
 
+Les `exclusions` nommées au niveau racine définissent des rectangles relatifs à
+la page, non peints et obligatoirement contenus dans la trim box. Elles se
+répètent dans le budget géométrique global et initialisent l'index spatial de
+chaque page physique avant le placement des éléments. Les champs optionnels
+`group` et `collides_with` utilisent le même contrat de collision symétrique que
+les éléments, tandis que la politique push/error/next-page/shrink du candidat
+reste responsable du reflow borné. Inspection, masques de collision et requêtes
+de régions libres conservent l'exclusion résolue ; les exporters ne reçoivent
+aucun node à peindre.
+
 Les pages document peuvent déclarer des layers `master`, `first`,
 `continuation` et `last`, chacune divisée en bandes `background`, `header` et
 `footer` sans collision. Les éléments master se répètent sur chaque page
