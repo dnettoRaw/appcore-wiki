@@ -18,6 +18,10 @@ A política de colisão herda na ordem explícita documento → página → regi
 grupo → elemento. O YAML aceita `collision: false`, e o reflow consulta o bound
 medido selecionado: layout, visual ou intrínseco.
 
+Transforms fixed-point aceitam translação, rotação em graus inteiros, escala,
+flip/mirror e origins explícitas. Eles compõem através de grupos, e PDF, SVG,
+PNG/JPEG e HTML consomem a mesma matriz resolvida.
+
 Os outputs implementados são PDF editável/flattened, SVG, PNG, JPEG,
 HTML semântico/fixo, CSV streaming e máscaras PNG/PDF/SVG/JSON. Modos e nodes
 preparados falham explicitamente ou entram em `ExportLossReport`.

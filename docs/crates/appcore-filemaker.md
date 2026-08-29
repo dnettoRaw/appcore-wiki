@@ -19,6 +19,10 @@ Collision policy inherits in the explicit document → page → region → group
 element order. YAML accepts `collision: false`, and reflow queries the selected
 measured layout, visual, or intrinsic bounds.
 
+Fixed-point transforms support translation, integer-degree rotation, scale,
+flip/mirror, and explicit origins. They compose through groups and the same
+resolved matrix is consumed by PDF, SVG, PNG/JPEG, and HTML.
+
 Implemented outputs are editable/flattened PDF, SVG, PNG, JPEG, semantic/fixed
 HTML, streaming CSV, and PNG/PDF/SVG/JSON debug masks. Prepared modes and nodes
 fail explicitly or enter `ExportLossReport`; no silent fallback is allowed.
