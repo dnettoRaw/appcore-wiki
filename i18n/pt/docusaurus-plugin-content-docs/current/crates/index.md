@@ -17,6 +17,10 @@ A beta pública [`appcore-ai 0.1.0-beta.3`](./appcore-ai), versionada
 separadamente, também está publicada no crates.io. Ela não faz parte do grafo
 estável de crates do Runtime `1.0.0`.
 
+A prévia oficial [`appcore-filemaker 0.1.0-alpha.1`](./appcore-filemaker) é
+desenvolvida na branch `beta` do Runtime. Ela não foi publicada no crates.io e
+não faz parte do grafo estável.
+
 A integração opcional
 [`appcore-sync-sqlite 0.1.0-alpha.4`](./appcore-sync-sqlite) é uma prerelease
 pós-1.0 publicada. Sua página documenta a fronteira aceita e a evidência de

@@ -52,6 +52,7 @@ const futureRoadmap = [
   'roadmap/index',
   'architecture/future-architecture',
   'crates/appcore-ai',
+  'crates/appcore-filemaker',
   'crates/appcore-ui',
 ];
 

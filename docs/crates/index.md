@@ -17,6 +17,10 @@ The separately versioned [`appcore-ai 0.1.0-beta.3`](./appcore-ai) public beta
 is also published on crates.io. It is not part of the stable `1.0.0` Runtime
 crate graph.
 
+The official [`appcore-filemaker 0.1.0-alpha.1`](./appcore-filemaker) source
+preview is developed on the Runtime `beta` branch. It has not been published
+to crates.io and is not part of the stable graph.
+
 The optional [`appcore-sync-sqlite 0.1.0-alpha.4`](./appcore-sync-sqlite)
 integration is a published post-1.0 prerelease. Its page documents the accepted
 boundary and certification evidence without presenting it as part of the
