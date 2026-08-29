@@ -15,6 +15,13 @@ geometry-first collision/reflow, and immutable `ResolvedScene` construction.
 Inspection, validation, preflight, and the selected exporter consume that scene
 without changing geometry.
 
+Colors stay format-neutral as RGB, RGBA, Gray, or millionth-channel CMYK. YAML
+accepts stable names, hex, integer functional notation, and explicitly tagged
+typed colors; fill backgrounds, stroke borders, and opacity remain separate.
+`MemoryResolver` and canonical-root `FileResolver` implement bounded asset,
+template, and font lookup. `FontManager::register_from` registers an exact
+logical font under the caller's byte cap and never scans host fonts.
+
 Collision policy inherits in the explicit document → page → region → group →
 element order. YAML accepts `collision: false`, and reflow queries the selected
 measured layout, visual, or intrinsic bounds.

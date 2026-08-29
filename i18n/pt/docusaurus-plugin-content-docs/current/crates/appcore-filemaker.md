@@ -14,6 +14,14 @@ IR tipada. Fontes e assets explícitos são medidos antes do layout fixed-point,
 colisão/reflow por geometria e construção da `ResolvedScene` imutável.
 Inspeção, validação, preflight e exporter consomem a cena sem mudar geometria.
 
+As cores permanecem independentes do formato como RGB, RGBA, Gray ou CMYK em
+milionésimos. O YAML aceita nomes estáveis, hex, notação funcional inteira e
+cores tipadas com tag explícita; fundos por fill, bordas por stroke e opacity
+continuam separados. `MemoryResolver` e `FileResolver` com raiz canônica
+implementam busca limitada de assets, templates e fontes.
+`FontManager::register_from` registra uma fonte lógica exata sob o limite de
+bytes do chamador e nunca varre as fontes do host.
+
 A política de colisão herda na ordem explícita documento → página → região →
 grupo → elemento. O YAML aceita `collision: false`, e o reflow consulta o bound
 medido selecionado: layout, visual ou intrínseco.

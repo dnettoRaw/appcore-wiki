@@ -15,6 +15,14 @@ fixed-point, collision/reflow géométrique et construction de la
 `ResolvedScene` immuable. Inspection, validation, preflight et export consomment
 cette scène sans modifier la géométrie.
 
+Les couleurs restent indépendantes du format en RGB, RGBA, Gray ou CMYK en
+millionièmes. YAML accepte noms stables, hex, notation fonctionnelle entière et
+couleurs typées avec tag explicite ; fonds fill, bordures stroke et opacity
+restent séparés. `MemoryResolver` et `FileResolver` à racine canonique
+implémentent la résolution bornée des assets, templates et polices.
+`FontManager::register_from` enregistre une police logique exacte sous la
+limite d'octets de l'appelant sans jamais parcourir les polices de l'hôte.
+
 La politique de collision hérite dans l'ordre explicite document → page →
 région → groupe → élément. Le YAML accepte `collision: false`, et le reflow
 interroge le bound mesuré sélectionné : layout, visuel ou intrinsèque.
