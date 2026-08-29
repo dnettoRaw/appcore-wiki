@@ -61,6 +61,12 @@ headers, row and cell rectangles, data styles, group continuity, totals, and
 shaped cell text are fixed before export. Continuations use the normal global
 page and collision bounds; exporters do not measure or repaginate them.
 
+Editable/flattened PDF, SVG, PNG/JPEG, and semantic/fixed HTML now render those
+resolved fragments directly. PDF font usage includes every cell run, SVG and
+HTML include data-style fonts, and raster output outlines the same shaped
+glyphs. Preflight validates table structure, cell bounds, text diagnostics,
+and embedded-font requirements before export.
+
 Implemented outputs are editable/flattened PDF, SVG, PNG, JPEG, semantic/fixed
 HTML, streaming CSV, and PNG/PDF/SVG/JSON debug masks. Prepared modes and nodes
 fail explicitly or enter `ExportLossReport`; no silent fallback is allowed.

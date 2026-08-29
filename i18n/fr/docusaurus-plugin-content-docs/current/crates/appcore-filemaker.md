@@ -65,6 +65,12 @@ groupe, totaux et texte façonné sont fixés avant export. Les continuations
 respectent les bornes globales de pages et collision ; les exporters ne mesurent
 ni ne repaginent.
 
+PDF éditable/flattened, SVG, PNG/JPEG et HTML sémantique/fixe rendent maintenant
+directement ces fragments résolus. L'usage des polices PDF inclut chaque run de
+cellule, SVG et HTML incluent les polices des styles data, et le raster trace les
+mêmes glyphes façonnés. Le preflight valide structure de table, bornes des
+cellules, diagnostics de texte et exigences de polices incorporées avant export.
+
 Les sorties sont PDF éditable/flattened, SVG, PNG, JPEG, HTML sémantique/fixe,
 CSV streaming et masques PNG/PDF/SVG/JSON. Les modes préparés échouent
 explicitement ou figurent dans `ExportLossReport`.

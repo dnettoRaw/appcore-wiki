@@ -61,6 +61,13 @@ headers repetidos, retângulos de linha/célula, estilos de dados, continuidade 
 grupo, totais e texto moldado são fixados antes do export. Continuações usam os
 limites globais normais de páginas e colisão; exporters não medem nem repaginam.
 
+PDF editável/flattened, SVG, PNG/JPEG e HTML semântico/fixo agora renderizam
+esses fragments resolvidos diretamente. O uso de fontes no PDF inclui cada run
+de célula, SVG e HTML incluem as fontes dos estilos de dados, e o raster contorna
+os mesmos glyphs moldados. O preflight valida estrutura da tabela, limites das
+células, diagnósticos de texto e requisitos de fontes incorporadas antes do
+export.
+
 Os outputs implementados são PDF editável/flattened, SVG, PNG, JPEG,
 HTML semântico/fixo, CSV streaming e máscaras PNG/PDF/SVG/JSON. Modos e nodes
 preparados falham explicitamente ou entram em `ExportLossReport`.
