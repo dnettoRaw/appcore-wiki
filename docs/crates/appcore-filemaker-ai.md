@@ -13,9 +13,13 @@ budgets, and applies template editable/locked policy before atomic mutations.
 Queries do not change revision. Artifact tools return bounded in-memory base64
 and never select a filesystem path.
 
-`filemaker_schema` reports typed colors, every cascade layer, paint ordering,
-and resolver boundaries. `filemaker_set` and typed patches accept transactional
-`set_style`; export overrides remain paint-only and cannot change layout.
+`filemaker_schema` reports typed colors, every cascade layer, semantic Canvas
+units/primitives, paint ordering, resolver boundaries, and prepared advanced
+graphics. `filemaker_add` accepts a compact strict source element identified by
+`type`, or complete IR identified by `kind`; fields requiring compiler
+expansion or data binding fail explicitly. `filemaker_set` and typed patches
+accept transactional `set_style`; export overrides remain paint-only and
+cannot change layout.
 
 Direct AppCore dependencies are `appcore-ai` and `appcore-filemaker`. AI policy
 and orchestration remain outside the deterministic compiler.

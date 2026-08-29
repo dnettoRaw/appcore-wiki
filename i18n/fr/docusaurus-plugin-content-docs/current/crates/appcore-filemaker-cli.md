@@ -14,8 +14,10 @@ les fichiers atomiquement. `migrate` est réservé et échoue sans modifier
 l'entrée. Les réponses JSON stables servent l'automatisation et les échecs
 typés gardent des codes de sortie non nuls.
 
-`schema --json` décrit couleurs typées, cascade de style exécutable, overrides
-export limités à la peinture et ordre layer/z-index indépendant de la collision.
+`schema --json` décrit couleurs typées, cascade de style exécutable, unités de
+coordonnées, primitives et commandes de path sémantiques Canvas, graphiques
+avancés préparés, overrides export limités à la peinture et ordre layer/z-index
+indépendant de la collision.
 
 Les dépendances AppCore directes sont `appcore-args` et `appcore-filemaker`.
 

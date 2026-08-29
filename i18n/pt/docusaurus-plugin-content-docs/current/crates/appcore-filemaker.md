@@ -14,6 +14,14 @@ IR tipada. Fontes e assets explícitos são medidos antes do layout fixed-point,
 colisão/reflow por geometria e construção da `ResolvedScene` imutável.
 Inspeção, validação, preflight e exporter consomem a cena sem mudar geometria.
 
+Canvas é um contrato de desenho semântico, não um buffer de pixels. Coordenadas
+aceitam `pt`, `px`, `mm`, `cm`, `in`, `%`, `lu` lógico e valores
+`norm`/`normalized` limitados a `0..=1`. Text, image, line, rect, circle,
+ellipse, polygon, path e group permanecem nós tipados; paths preservam comandos
+move, line, curve cúbica e close. Circle exige eixos resolvidos iguais. Safe
+area, presets, layers/z-index, transforms e colisão são entradas explícitas e
+ortogonais.
+
 As cores permanecem independentes do formato como RGB, RGBA, Gray ou CMYK em
 milionésimos. O YAML aceita nomes estáveis, hex, notação funcional inteira e
 cores tipadas com tag explícita; fundos por fill, bordas por stroke e opacity

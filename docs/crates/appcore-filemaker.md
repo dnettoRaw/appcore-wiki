@@ -15,6 +15,13 @@ geometry-first collision/reflow, and immutable `ResolvedScene` construction.
 Inspection, validation, preflight, and the selected exporter consume that scene
 without changing geometry.
 
+Canvas is a semantic drawing contract rather than a pixel buffer. Coordinates
+accept `pt`, `px`, `mm`, `cm`, `in`, `%`, logical `lu`, and bounded `0..=1`
+`norm`/`normalized` values. Text, image, line, rect, circle, ellipse, polygon,
+path, and group remain typed nodes; paths retain move, line, cubic curve, and
+close commands. Circles require equal resolved axes. Safe areas, presets,
+layers/z-index, transforms, and collision are explicit orthogonal inputs.
+
 Colors stay format-neutral as RGB, RGBA, Gray, or millionth-channel CMYK. YAML
 accepts stable names, hex, integer functional notation, and explicitly tagged
 typed colors; fill backgrounds, stroke borders, and opacity remain separate.

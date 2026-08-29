@@ -15,6 +15,14 @@ fixed-point, collision/reflow géométrique et construction de la
 `ResolvedScene` immuable. Inspection, validation, preflight et export consomment
 cette scène sans modifier la géométrie.
 
+Canvas est un contrat de dessin sémantique, pas un tampon de pixels. Les
+coordonnées acceptent `pt`, `px`, `mm`, `cm`, `in`, `%`, l'unité logique `lu`
+et les valeurs `norm`/`normalized` bornées à `0..=1`. Text, image, line, rect,
+circle, ellipse, polygon, path et group restent des nœuds typés ; les paths
+conservent move, line, courbe cubique et close. Circle exige des axes résolus
+égaux. Safe area, presets, layers/z-index, transforms et collision sont des
+entrées explicites et orthogonales.
+
 Les couleurs restent indépendantes du format en RGB, RGBA, Gray ou CMYK en
 millionièmes. YAML accepte noms stables, hex, notation fonctionnelle entière et
 couleurs typées avec tag explicite ; fonds fill, bordures stroke et opacity

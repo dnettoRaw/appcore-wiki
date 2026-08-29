@@ -13,8 +13,10 @@ exceto por artifacts de output explícitos. `render` e `mask` publicam arquivos
 atomicamente. `migrate` é reservado e falha sem alterar input. Respostas JSON
 estáveis servem à automação e falhas tipadas preservam exit codes não zero.
 
-`schema --json` relata cores tipadas, a cascata executável de style, overrides
-de export somente de pintura e layer/z-index independentes da colisão.
+`schema --json` relata cores tipadas, a cascata executável de style, unidades de
+coordenada, primitivas e comandos de path semânticos do Canvas, gráficos
+avançados preparados, overrides de export somente de pintura e layer/z-index
+independentes da colisão.
 
 As dependências AppCore diretas são `appcore-args` e `appcore-filemaker`.
 
