@@ -30,6 +30,14 @@ précèdent la collision ; le clipping est une géométrie résolue ; SVG et HTM
 rendent les runs façonnés/tronqués. Écriture verticale et emoji couleur sont
 des pertes explicites de l'exporter jusqu'à leur implémentation.
 
+La géométrie déclarative traverse aussi YAML et IR sans modification.
+`constraints` porte minimum, préféré, maximum et ratio largeur/hauteur
+fixed-point ; `align_x` et `align_y` choisissent début, centre ou fin dans le
+conteneur actif. Les anchors ciblent les bords d'éléments antérieurs ou des
+guides nommés avec `guide:nom[+offset]`. Coordonnées, plages et ratios
+contradictoires échouent explicitement. Les patches move/resize remplacent
+l'intention de position/taille antérieure.
+
 Les sorties sont PDF éditable/flattened, SVG, PNG, JPEG, HTML sémantique/fixe,
 CSV streaming et masques PNG/PDF/SVG/JSON. Les modes préparés échouent
 explicitement ou figurent dans `ExportLossReport`.

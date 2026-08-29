@@ -29,6 +29,13 @@ ocorrem antes da colisão; clipping é geometria resolvida; SVG e HTML renderiza
 os runs moldados/truncados. Escrita vertical e emoji colorido são perdas
 explícitas do exporter até serem implementados.
 
+Geometria declarativa também atravessa YAML e IR sem alteração. `constraints`
+carrega mínimo, preferido, máximo e aspect ratio largura/altura fixed-point;
+`align_x` e `align_y` escolhem início, centro ou fim no container ativo.
+Anchors apontam para bordas de elementos anteriores ou guides nomeadas com
+`guide:nome[+offset]`. Coordenadas, ranges e ratios contraditórios falham
+explicitamente. Patches move/resize substituem a intenção posicional anterior.
+
 Os outputs implementados são PDF editável/flattened, SVG, PNG, JPEG,
 HTML semântico/fixo, CSV streaming e máscaras PNG/PDF/SVG/JSON. Modos e nodes
 preparados falham explicitamente ou entram em `ExportLossReport`.

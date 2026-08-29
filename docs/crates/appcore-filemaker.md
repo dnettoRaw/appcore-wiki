@@ -30,6 +30,13 @@ expansion happen before collision; clipping is resolved geometry; SVG and HTML
 render the resolved shaped/truncated runs. Vertical writing and color emoji are
 reported as explicit exporter losses until implemented.
 
+Declarative geometry also crosses YAML and IR unchanged. `constraints` carries
+minimum, preferred, maximum, and a fixed-point width/height aspect ratio;
+`align_x` and `align_y` select start, center, or end in the active container.
+Anchors target earlier element edges or named guides with
+`guide:name[+offset]`. Contradictory coordinates, ranges, and ratios fail
+explicitly. Runtime move/resize patches replace prior positional/sizing intent.
+
 Implemented outputs are editable/flattened PDF, SVG, PNG, JPEG, semantic/fixed
 HTML, streaming CSV, and PNG/PDF/SVG/JSON debug masks. Prepared modes and nodes
 fail explicitly or enter `ExportLossReport`; no silent fallback is allowed.
