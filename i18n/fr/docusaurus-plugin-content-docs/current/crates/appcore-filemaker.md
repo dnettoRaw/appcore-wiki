@@ -197,7 +197,13 @@ Une police valide sans capital height OS/2 utilise ascent comme policy PDF
 Les exemples Rust exécutables conservent le document dans les fichiers séparés
 [`basic.yml`](https://github.com/dnettoRaw/AppCore-Runtime/blob/beta/crates/appcore-filemaker/examples/basic.yml)
 et [`intermediate.yml`](https://github.com/dnettoRaw/AppCore-Runtime/blob/beta/crates/appcore-filemaker/examples/intermediate.yml).
-Les lanceurs Rust chargent ces fichiers au lieu d'intégrer le YAML du template.
+Les données typées restent dans des JSON correspondants séparés. Le lanceur de
+base produit un SVG complet d'une page avec texte lié, dessins sémantiques,
+sparkline et table stylée. L'intermédiaire produit un rapport confidentiel de
+deux pages exactes avec numérotation, filigrane répété, graphiques vectoriels,
+table paginée, preflight strict, PDF éditable, HTML fixe et aperçus SVG par
+page. Tous deux enregistrent explicitement la police Noto Sans sous OFL fournie,
+sans dépendre des polices hôte. Le code Rust n'intègre ni YAML ni JSON.
 
 Documentation maintenue par le crate : [guide](https://github.com/dnettoRaw/AppCore-Runtime/blob/beta/crates/appcore-filemaker/wiki/guide.fr.md),
 [exemple de base](https://github.com/dnettoRaw/AppCore-Runtime/blob/beta/crates/appcore-filemaker/wiki/examples/basic.fr.md) et

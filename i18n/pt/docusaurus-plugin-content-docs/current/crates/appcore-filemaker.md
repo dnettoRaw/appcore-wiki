@@ -191,7 +191,13 @@ determinística de `CapHeight` do PDF; advances ausentes falham.
 Os exemplos Rust executáveis mantêm o documento nos arquivos separados
 [`basic.yml`](https://github.com/dnettoRaw/AppCore-Runtime/blob/beta/crates/appcore-filemaker/examples/basic.yml)
 e [`intermediate.yml`](https://github.com/dnettoRaw/AppCore-Runtime/blob/beta/crates/appcore-filemaker/examples/intermediate.yml).
-Os runners Rust carregam esses arquivos em vez de embutir o YAML do template.
+Os dados tipados ficam em arquivos JSON correspondentes e separados. O runner
+básico gera um SVG completo de uma página com texto associado, desenhos
+semânticos, sparkline e tabela estilizada. O intermediário gera um relatório
+confidencial de exatamente duas páginas, com numeração, watermark repetido,
+gráficos vetoriais, tabela paginada, preflight estrito, PDF editável, HTML fixo
+e previews SVG por página. Ambos registram explicitamente a Noto Sans sob OFL
+incluída, sem depender de fontes do host. O código Rust não embute YAML nem JSON.
 
 Documentação mantida pelo crate: [guia](https://github.com/dnettoRaw/AppCore-Runtime/blob/beta/crates/appcore-filemaker/wiki/guide.pt.md),
 [exemplo básico](https://github.com/dnettoRaw/AppCore-Runtime/blob/beta/crates/appcore-filemaker/wiki/examples/basic.pt.md) e

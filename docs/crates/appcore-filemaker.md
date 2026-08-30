@@ -185,7 +185,13 @@ deterministic PDF `CapHeight` descriptor policy; missing glyph advances fail.
 Runnable Rust examples keep document input in separate
 [`basic.yml`](https://github.com/dnettoRaw/AppCore-Runtime/blob/beta/crates/appcore-filemaker/examples/basic.yml)
 and [`intermediate.yml`](https://github.com/dnettoRaw/AppCore-Runtime/blob/beta/crates/appcore-filemaker/examples/intermediate.yml)
-files. Their Rust runners load those files instead of embedding template YAML.
+files, with typed input in matching separate JSON files. The basic runner emits
+a complete one-page SVG with bound text, semantic drawings, a sparkline, and a
+styled table. The intermediate runner emits an exactly two-page confidential
+report with numbering, repeated watermark, vector charts, paginated table,
+strict preflight, editable PDF, fixed HTML, and per-page SVG previews. Both
+runners register the bundled OFL Noto Sans font explicitly instead of depending
+on host fonts. Their Rust source embeds neither YAML nor JSON.
 
 Crate-owned documentation: [guide](https://github.com/dnettoRaw/AppCore-Runtime/blob/beta/crates/appcore-filemaker/wiki/guide.en.md),
 [basic example](https://github.com/dnettoRaw/AppCore-Runtime/blob/beta/crates/appcore-filemaker/wiki/examples/basic.en.md), and
