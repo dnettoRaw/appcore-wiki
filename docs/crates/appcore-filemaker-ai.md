@@ -8,10 +8,18 @@ title: appcore-filemaker-ai — 0.1 alpha
 `appcore-ai` tool calls to deterministic FileMaker sessions. It is a source
 preview and has not been published to crates.io.
 
-The bridge declares 20 exact tools, enforces call, patch, and result-byte
-budgets, and applies template editable/locked policy before atomic mutations.
-Queries do not change revision. Artifact tools return bounded in-memory base64
-and never select a filesystem path.
+The bridge declares 20 exact tools with closed execution-matched schemas,
+enforces call, argument, core-capped patch, and result-byte budgets, and applies
+template editable/locked policy across destructive subtrees before atomic
+mutations. Candidate documents validate and resolve before commit; patch
+sequences equal the next revision. Queries do not change revision. Artifact
+tools return bounded in-memory base64 and never select a filesystem path.
+
+Capabilities provide remaining calls plus compact purpose/rules and
+editable/locked document context. Replacing a trusted document would also
+replace that author policy, so `load` requires explicit host opt-in through
+`allow_document_replacement`, which is false by default. Failed loads and
+patches preserve both state and revision.
 
 `filemaker_schema` reports typed colors, every cascade layer, semantic Canvas
 units/primitives, paint ordering, resolver boundaries, and prepared advanced
