@@ -11,8 +11,14 @@ crates.io.
 The command selects export format; template YAML never does. `check`,
 `validate`, `preflight`, and diagnostic commands are read-only except for
 explicit output artifacts. `render` and `mask` publish files atomically.
-`migrate` is reserved and fails without modifying input. Stable JSON responses
-support automation while typed failures retain nonzero exit codes.
+They reject an output resolving to the input template. `migrate` is reserved
+and fails without modifying input; future mutation requires an explicit flag
+and contract. Every command has concise human output plus stable JSON for
+automation.
+
+`capabilities --json` publishes the stable exit matrix: 0 success, 2
+validation, 64 usage, 65 data, 66 missing input, 69 unavailable, 70 software,
+73 cannot-create, 74 I/O, 75 temporary resource failure, and 130 cancellation.
 
 `schema --json` reports typed colors, the executable style cascade, semantic
 Canvas coordinate units, primitives and path commands, prepared advanced

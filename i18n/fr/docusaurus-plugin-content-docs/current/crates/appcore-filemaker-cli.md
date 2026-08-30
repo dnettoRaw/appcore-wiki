@@ -10,9 +10,14 @@ title: appcore-filemaker-cli — 0.1 alpha
 La commande choisit le format d'export ; le YAML du template ne le choisit
 jamais. `check`, `validate`, `preflight` et les commandes de diagnostic sont en
 lecture seule, sauf artifacts de sortie explicites. `render` et `mask` publient
-les fichiers atomiquement. `migrate` est réservé et échoue sans modifier
-l'entrée. Les réponses JSON stables servent l'automatisation et les échecs
-typés gardent des codes de sortie non nuls.
+les fichiers atomiquement et rejettent une sortie résolue vers le template
+d'entrée. `migrate` est réservé et échoue sans modifier l'entrée ; toute
+mutation future exige flag et contrat explicites. Chaque commande fournit un
+texte humain concis et un JSON stable pour l'automatisation.
+
+`capabilities --json` publie la matrice stable : 0 succès, 2 validation, 64
+usage, 65 données, 66 entrée absente, 69 indisponible, 70 software, 73 création
+impossible, 74 I/O, 75 échec temporaire de ressource et 130 annulation.
 
 `schema --json` décrit couleurs typées, cascade de style exécutable, unités de
 coordonnées, primitives et commandes de path sémantiques Canvas, graphiques
