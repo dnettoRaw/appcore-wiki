@@ -169,6 +169,19 @@ optional 20-tool bridge over `appcore-ai`; `appcore-filemaker-cli` is the
 bounded process adapter. Source examples and exact alpha evidence live in the
 Runtime repository on the `beta` branch.
 
+Export and preflight independently reject stale or malformed public resolved
+scenes and enforce page, element, path, row, text, and coordinate budgets before
+writing. Diagnostic overlay, collision-mask/JSON, and free-region operations
+also consume explicit comparison and retained-geometry limits. Validated IDs
+retain their constructor invariant when deserialized.
+Controlled exports observe cancellation and report progress from the actual
+renderer element loops, before staged output is written to the caller.
+The explicit-font pipeline uses maintained HarfBuzz-project `harfrust` for
+shaping and Google Fonts `skrifa` for validation, metrics, and outlines; it
+does not discover fonts from the operating system.
+A valid font without OS/2 capital height uses ascent as the explicit,
+deterministic PDF `CapHeight` descriptor policy; missing glyph advances fail.
+
 Crate-owned documentation: [guide](https://github.com/dnettoRaw/AppCore-Runtime/blob/beta/crates/appcore-filemaker/wiki/guide.en.md),
 [basic example](https://github.com/dnettoRaw/AppCore-Runtime/blob/beta/crates/appcore-filemaker/wiki/examples/basic.en.md), and
 [intermediate example](https://github.com/dnettoRaw/AppCore-Runtime/blob/beta/crates/appcore-filemaker/wiki/examples/intermediate.en.md).

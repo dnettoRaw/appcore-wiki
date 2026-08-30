@@ -41,6 +41,10 @@ strict rejeita warnings e truncamento falha fechado. Discovery do schema também
 lista validação de dados tipados, inputs completos do fingerprint e cache
 imutável limitado resolve-on-miss.
 
+Inputs de template, dados e fonts são lidos por um único handle aberto e param
+em `limit + 1` bytes. Os comandos debug e mask passam os mesmos limites do core
+para a geometria diagnóstica limitada.
+
 As dependências AppCore diretas são `appcore-args` e `appcore-filemaker`.
 
 Documentação mantida pelo crate: [guia](https://github.com/dnettoRaw/AppCore-Runtime/blob/beta/crates/appcore-filemaker-cli/wiki/guide.pt.md),

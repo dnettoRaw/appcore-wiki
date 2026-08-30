@@ -179,6 +179,21 @@ Le core déterministe ne dépend pas de l'IA. `appcore-filemaker-ai` est un brid
 optionnel de 20 outils sur `appcore-ai`; `appcore-filemaker-cli` est l'adaptateur
 processus borné. Exemples et preuves se trouvent sur la branche Runtime `beta`.
 
+Export et preflight rejettent indépendamment les scènes résolues publiques
+anciennes ou malformées et appliquent les budgets pages, éléments, paths,
+lignes, texte et coordonnées avant toute écriture. Overlay diagnostique,
+masque de collision/JSON et régions libres consomment aussi des limites
+explicites de comparaisons et géométrie conservée. Les ID validés préservent
+l'invariant du constructeur lors de la désérialisation.
+Les exports contrôlés observent l'annulation et signalent la progression depuis
+les vraies boucles d'éléments des renderers, avant d'écrire la sortie préparée à
+l'appelant.
+Le pipeline de polices explicites utilise `harfrust`, maintenu par le projet
+HarfBuzz, pour le shaping et `skrifa`, de Google Fonts, pour validation,
+métriques et outlines ; il ne découvre aucune police du système.
+Une police valide sans capital height OS/2 utilise ascent comme policy PDF
+`CapHeight` explicite et déterministe ; les advances absentes échouent.
+
 Documentation maintenue par le crate : [guide](https://github.com/dnettoRaw/AppCore-Runtime/blob/beta/crates/appcore-filemaker/wiki/guide.fr.md),
 [exemple de base](https://github.com/dnettoRaw/AppCore-Runtime/blob/beta/crates/appcore-filemaker/wiki/examples/basic.fr.md) et
 [exemple intermédiaire](https://github.com/dnettoRaw/AppCore-Runtime/blob/beta/crates/appcore-filemaker/wiki/examples/intermediate.fr.md).

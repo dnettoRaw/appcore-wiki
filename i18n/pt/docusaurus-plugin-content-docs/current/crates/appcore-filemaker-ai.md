@@ -49,6 +49,10 @@ página, DPI, strict e acessibilidade. Discovery do schema nomeia as quatro
 etapas de validação, inputs completos do fingerprint e cache imutável
 resolve-on-miss.
 
+As tools de debug-mask e regiões livres passam os limites do core da sessão
+para a geometria diagnóstica limitada, impedindo o bridge opcional de contornar
+budgets de comparações ou geometria retida.
+
 As dependências AppCore diretas são `appcore-ai` e `appcore-filemaker`. Policy e
 orquestração de IA permanecem fora do compiler determinístico.
 

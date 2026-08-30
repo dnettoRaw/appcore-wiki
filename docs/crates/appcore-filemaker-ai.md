@@ -46,6 +46,10 @@ and editable-PDF font subsets, so a model cannot infer unsupported output.
 strict, and accessibility inputs. Schema discovery names the four validation
 stages, complete fingerprint inputs, and resolve-on-miss immutable caching.
 
+Debug-mask and free-region tools pass the session's core limits into bounded
+diagnostic geometry, preventing the optional bridge from bypassing comparison
+or retained-geometry budgets.
+
 Direct AppCore dependencies are `appcore-ai` and `appcore-filemaker`. AI policy
 and orchestration remain outside the deterministic compiler.
 

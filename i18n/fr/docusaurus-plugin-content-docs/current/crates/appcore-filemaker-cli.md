@@ -42,6 +42,10 @@ explicite ; strict rejette les warnings et la troncature échoue fermée. La
 découverte du schéma liste aussi validation des données typées, entrées
 complètes du fingerprint et cache immuable borné resolve-on-miss.
 
+Les entrées template, données et polices sont lues via un seul handle ouvert et
+s'arrêtent à `limit + 1` octets. Les commandes debug et mask transmettent les
+mêmes limites core à la géométrie diagnostique bornée.
+
 Les dépendances AppCore directes sont `appcore-args` et `appcore-filemaker`.
 
 Documentation maintenue par le crate : [guide](https://github.com/dnettoRaw/AppCore-Runtime/blob/beta/crates/appcore-filemaker-cli/wiki/guide.fr.md),

@@ -49,6 +49,10 @@ fidelity, mode, page, DPI, strict et accessibilité. La découverte du schéma
 nomme les quatre étapes de validation, les entrées complètes du fingerprint et
 le cache immuable resolve-on-miss.
 
+Les outils debug-mask et régions libres transmettent les limites core de la
+session à la géométrie diagnostique bornée, empêchant le bridge optionnel de
+contourner les budgets de comparaisons ou de géométrie conservée.
+
 Les dépendances AppCore directes sont `appcore-ai` et `appcore-filemaker`. Policy
 et orchestration IA restent hors du compilateur déterministe.
 

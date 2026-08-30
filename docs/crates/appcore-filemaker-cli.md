@@ -42,6 +42,10 @@ exporter-aware boundaries. JSON retains bounded warnings and explicit
 discovery also lists typed-data validation, complete fingerprint inputs, and
 bounded immutable resolve-on-miss caching.
 
+Template, data, and font inputs are read through one opened handle and stop at
+`limit + 1` bytes. Debug and mask commands pass the same core limits into
+bounded diagnostic geometry.
+
 Its direct AppCore dependencies are `appcore-args` and `appcore-filemaker`.
 
 Crate-owned documentation: [guide](https://github.com/dnettoRaw/AppCore-Runtime/blob/beta/crates/appcore-filemaker-cli/wiki/guide.en.md),
