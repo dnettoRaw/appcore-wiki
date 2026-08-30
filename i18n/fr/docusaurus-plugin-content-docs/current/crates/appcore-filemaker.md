@@ -194,6 +194,11 @@ métriques et outlines ; il ne découvre aucune police du système.
 Une police valide sans capital height OS/2 utilise ascent comme policy PDF
 `CapHeight` explicite et déterministe ; les advances absentes échouent.
 
+Les exemples Rust exécutables conservent le document dans les fichiers séparés
+[`basic.yml`](https://github.com/dnettoRaw/AppCore-Runtime/blob/beta/crates/appcore-filemaker/examples/basic.yml)
+et [`intermediate.yml`](https://github.com/dnettoRaw/AppCore-Runtime/blob/beta/crates/appcore-filemaker/examples/intermediate.yml).
+Les lanceurs Rust chargent ces fichiers au lieu d'intégrer le YAML du template.
+
 Documentation maintenue par le crate : [guide](https://github.com/dnettoRaw/AppCore-Runtime/blob/beta/crates/appcore-filemaker/wiki/guide.fr.md),
 [exemple de base](https://github.com/dnettoRaw/AppCore-Runtime/blob/beta/crates/appcore-filemaker/wiki/examples/basic.fr.md) et
 [exemple intermédiaire](https://github.com/dnettoRaw/AppCore-Runtime/blob/beta/crates/appcore-filemaker/wiki/examples/intermediate.fr.md).

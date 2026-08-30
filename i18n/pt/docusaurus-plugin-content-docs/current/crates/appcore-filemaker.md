@@ -188,6 +188,11 @@ ele não descobre fonts do sistema operacional.
 Uma font válida sem capital height em OS/2 usa ascent como policy explícita e
 determinística de `CapHeight` do PDF; advances ausentes falham.
 
+Os exemplos Rust executáveis mantêm o documento nos arquivos separados
+[`basic.yml`](https://github.com/dnettoRaw/AppCore-Runtime/blob/beta/crates/appcore-filemaker/examples/basic.yml)
+e [`intermediate.yml`](https://github.com/dnettoRaw/AppCore-Runtime/blob/beta/crates/appcore-filemaker/examples/intermediate.yml).
+Os runners Rust carregam esses arquivos em vez de embutir o YAML do template.
+
 Documentação mantida pelo crate: [guia](https://github.com/dnettoRaw/AppCore-Runtime/blob/beta/crates/appcore-filemaker/wiki/guide.pt.md),
 [exemplo básico](https://github.com/dnettoRaw/AppCore-Runtime/blob/beta/crates/appcore-filemaker/wiki/examples/basic.pt.md) e
 [exemplo intermediário](https://github.com/dnettoRaw/AppCore-Runtime/blob/beta/crates/appcore-filemaker/wiki/examples/intermediate.pt.md).
