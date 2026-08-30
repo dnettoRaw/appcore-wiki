@@ -182,3 +182,6 @@ processus borné. Exemples et preuves se trouvent sur la branche Runtime `beta`.
 Documentation maintenue par le crate : [guide](https://github.com/dnettoRaw/AppCore-Runtime/blob/beta/crates/appcore-filemaker/wiki/guide.fr.md),
 [exemple de base](https://github.com/dnettoRaw/AppCore-Runtime/blob/beta/crates/appcore-filemaker/wiki/examples/basic.fr.md) et
 [exemple intermédiaire](https://github.com/dnettoRaw/AppCore-Runtime/blob/beta/crates/appcore-filemaker/wiki/examples/intermediate.fr.md).
+Le [plan d'implémentation M0-M12](https://github.com/dnettoRaw/AppCore-Runtime/blob/beta/crates/appcore-filemaker/wiki/implementation-milestones.fr.md)
+consigne l'API, les modules, l'acceptation, les tests, le benchmark/fuzz et les
+risques de chaque incrément ; il n'autorise ni publication ni tag.

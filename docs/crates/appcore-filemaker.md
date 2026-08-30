@@ -172,3 +172,6 @@ Runtime repository on the `beta` branch.
 Crate-owned documentation: [guide](https://github.com/dnettoRaw/AppCore-Runtime/blob/beta/crates/appcore-filemaker/wiki/guide.en.md),
 [basic example](https://github.com/dnettoRaw/AppCore-Runtime/blob/beta/crates/appcore-filemaker/wiki/examples/basic.en.md), and
 [intermediate example](https://github.com/dnettoRaw/AppCore-Runtime/blob/beta/crates/appcore-filemaker/wiki/examples/intermediate.en.md).
+The [M0-M12 implementation plan](https://github.com/dnettoRaw/AppCore-Runtime/blob/beta/crates/appcore-filemaker/wiki/implementation-milestones.en.md)
+records the API, module, acceptance, test, benchmark/fuzz, and risk gate for
+every increment; it does not authorize publication or release tags.
