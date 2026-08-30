@@ -122,7 +122,8 @@ HTML semântico/fixo, CSV streaming e máscaras PNG/PDF/SVG/JSON. Modos e nodes
 preparados falham explicitamente ou entram em `ExportLossReport`.
 
 Todo formato de documento escreve em um writer do chamador e também oferece
-bytes limitados em memória; CSV de dataset tem as mesmas duas interfaces. DPI
+bytes limitados em memória; CSV de dataset transmite linhas pelas mesmas duas
+interfaces. DPI
 se aplica somente a PNG/JPEG e qualidade somente a JPEG. PNG preserva
 transparência, enquanto JPEG registra flattening de alpha de style ou imagem
 antes do output strict. HTML fixo não anuncia capability semântica. PDF emite
@@ -142,6 +143,23 @@ template/dados/patches canônicos, digests dos assets referenciados e das fonts
 registradas. `LayoutEngine::resolve_cached` resolve somente em miss do
 `SceneCache` limitado, retorna cenas imutáveis compartilhadas para render-many
 e rejeita versões antigas do engine.
+
+Trabalho sobre input hostil tem limites explícitos. O binding compartilha um
+único orçamento de elementos entre raízes, descendentes e expansão de repeats,
+com cancelamento/progresso cooperativo nas fronteiras de elemento. O layout tem
+um orçamento total de comparações espaciais além do reflow limitado. Leituras
+de filesystem sob raiz canônica rejeitam traversal e links de escape, abrem sem
+seguir symlink/reparse point final substituído, respeitam o limite de bytes e
+revalidam o sandbox ao redor da leitura. O cancelamento de export ocorre antes
+de output visível pelo chamador.
+
+Os gates de confiabilidade incluem snapshots exatos do SVG visual e da mask de
+colisão, properties de geometria fixed-point e fuzz targets separados para o
+pipeline YAML/bind/layout limitado, Unicode arbitrário e texto grande demais,
+assets raster corrompidos, tamanhos absurdos/overlaps/anchors circulares e
+grafos de include malformados, circulares ou profundos demais. Input inválido
+pode falhar com erro tipado, mas não pode causar panic, loop infinito ou
+alocação sem limite explícito.
 
 Debug permanece uma layer derivada e somente leitura. `DebugOverlay` fornece
 grids limitados de 1/5/10/20 pontos, rulers, coordenadas, IDs, bounds distintos,

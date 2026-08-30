@@ -117,9 +117,10 @@ Implemented outputs are editable/flattened PDF, SVG, PNG, JPEG, semantic/fixed
 HTML, streaming CSV, and PNG/PDF/SVG/JSON debug masks. Prepared modes and nodes
 fail explicitly or enter `ExportLossReport`; no silent fallback is allowed.
 
-Every document format streams to a caller-owned writer and also offers bounded
-in-memory bytes; dataset CSV has the same two interfaces. DPI applies only to
-PNG/JPEG and quality only to JPEG. PNG preserves transparency, while JPEG
+Every document format writes to a caller-owned writer and also offers bounded
+in-memory bytes; dataset CSV streams rows through the same two interfaces. DPI
+applies only to PNG/JPEG and quality only to JPEG. PNG preserves transparency,
+while JPEG
 records style or image-alpha flattening before strict output. Fixed HTML does
 not advertise semantic capability. PDF emits deterministic title, creator, and
 producer metadata; editable PDF embeds exact glyph subsets and Unicode maps.
@@ -137,6 +138,22 @@ template/data/patches, referenced asset digests, and registered font digests.
 `LayoutEngine::resolve_cached` resolves only on a bounded `SceneCache` miss,
 returns immutable shared scenes for render-many, and rejects stale engine
 versions.
+
+Hostile-input work is bounded explicitly. Binding shares one element budget
+across roots, descendants, and repeat expansion and checks cooperative
+cancellation/progress at element boundaries. Layout has a total spatial
+comparison budget in addition to bounded reflow. Canonical-root filesystem
+reads reject traversal and escaping links, open without following a substituted
+final symlink/reparse point, enforce the caller's byte cap, and revalidate the
+sandbox path around the read. Export cancellation occurs before caller-visible
+output.
+
+Reliability gates include exact SVG visual and collision-mask snapshots,
+fixed-point geometry property tests, and separate fuzz targets for the bounded
+YAML/bind/layout pipeline, arbitrary Unicode and oversized text, corrupt raster
+assets, absurd sizes/overlaps/circular anchors, and malformed, circular, or
+over-depth include graphs. Invalid input may fail with a typed error but must
+not panic, loop forever, or allocate without an explicit bound.
 
 Debugging remains a derived read-only layer. `DebugOverlay` provides bounded
 1/5/10/20-point grids, rulers, coordinates, IDs, distinct bounds, anchors,

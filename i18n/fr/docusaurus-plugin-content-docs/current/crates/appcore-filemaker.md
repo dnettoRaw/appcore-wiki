@@ -126,8 +126,9 @@ CSV streaming et masques PNG/PDF/SVG/JSON. Les modes préparés échouent
 explicitement ou figurent dans `ExportLossReport`.
 
 Chaque format de document écrit vers un writer fourni par l'appelant et offre
-aussi des octets bornés en mémoire ; le CSV de dataset possède les deux mêmes
-interfaces. Le DPI ne concerne que PNG/JPEG et la qualité uniquement JPEG. PNG
+aussi des octets bornés en mémoire ; le CSV de dataset streame ses lignes par
+les deux mêmes interfaces. Le DPI ne concerne que PNG/JPEG et la qualité
+uniquement JPEG. PNG
 préserve la transparence, tandis que JPEG enregistre l'aplatissement alpha du
 style ou de l'image avant une sortie stricte. Le HTML fixe ne déclare pas la
 capacité sémantique. PDF émet des métadonnées déterministes de titre, creator et
@@ -146,6 +147,23 @@ template/données/patches canoniques, digests des assets référencés et des
 polices enregistrées. `LayoutEngine::resolve_cached` ne résout qu'en cas de
 miss du `SceneCache` borné, renvoie des scènes immuables partagées pour
 render-many et rejette les anciennes versions d'engine.
+
+Le travail sur entrée hostile possède des bornes explicites. Le binding partage
+un seul budget d'éléments entre racines, descendants et expansion des repeats,
+avec annulation/progression coopérative aux frontières d'élément. Le layout a
+un budget total de comparaisons spatiales en plus du reflow borné. Les lectures
+filesystem sous racine canonique rejettent traversal et liens sortants, ouvrent
+sans suivre un symlink/reparse point final substitué, appliquent la limite
+d'octets et revalident le sandbox autour de la lecture. L'annulation d'export
+précède toute sortie visible par l'appelant.
+
+Les gates de fiabilité comprennent des snapshots exacts du SVG visuel et du
+masque de collision, des properties de géométrie fixed-point et des cibles fuzz
+séparées pour le pipeline YAML/bind/layout borné, l'Unicode arbitraire et les
+textes trop grands, les assets raster corrompus, tailles absurdes/overlaps/
+anchors circulaires et graphes d'include malformés, circulaires ou trop
+profonds. Une entrée invalide peut échouer avec une erreur typée, mais ne doit
+jamais provoquer panic, boucle infinie ou allocation sans borne explicite.
 
 Le debug reste une couche dérivée en lecture seule. `DebugOverlay` fournit des
 grilles bornées de 1/5/10/20 points, règles, coordonnées, IDs, bounds distincts,
