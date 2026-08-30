@@ -9,6 +9,12 @@ AppCore para documentos declarativos, canvases vetoriais e datasets. Está em
 prévia no código-fonte e não foi publicado no crates.io; publicação é uma
 decisão separada do mantenedor.
 
+Se você está começando no formato, siga o
+[guia YAML passo a passo](./appcore-filemaker-yaml.md). Ele parte do cabeçalho
+mínimo e avança por dados, estilos, vetores, tabelas, papéis de página, imagens,
+colisão, componentes e preflight estrito. O final traz a referência completa de
+campos e identifica os nodes reservados que ainda não estão implementados.
+
 YAML estrito `filemaker: "1.0"`, dados tipados e patches atômicos compilam para
 IR tipada. Fontes e assets explícitos são medidos antes do layout fixed-point,
 colisão/reflow por geometria e construção da `ResolvedScene` imutável.

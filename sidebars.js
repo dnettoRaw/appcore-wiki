@@ -53,6 +53,7 @@ const futureRoadmap = [
   'architecture/future-architecture',
   'crates/appcore-ai',
   'crates/appcore-filemaker',
+  'crates/appcore-filemaker-yaml',
   'crates/appcore-filemaker-ai',
   'crates/appcore-filemaker-cli',
   'crates/appcore-ui',

@@ -9,6 +9,12 @@ compiler for declarative documents, vector canvases, and datasets. It is in
 source preview and has not been published to crates.io; publication is a
 separate maintainer decision.
 
+New to the template format? Follow the
+[step-by-step YAML guide](./appcore-filemaker-yaml.md) to build a document from
+the minimum header through data, styles, vectors, tables, page roles, images,
+collision, components, and strict preflight. It also contains a complete field
+reference and marks reserved nodes that are not implemented yet.
+
 Strict `filemaker: "1.0"` YAML, typed data, and atomic patches compile to typed
 IR. Explicit fonts and assets are measured before fixed-point layout,
 geometry-first collision/reflow, and immutable `ResolvedScene` construction.
