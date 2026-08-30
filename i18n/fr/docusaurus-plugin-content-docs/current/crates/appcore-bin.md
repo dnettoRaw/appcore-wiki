@@ -64,7 +64,7 @@ Les applications utilisent le module public `application` et évitent internals.
 
 AC-023 a mesuré le consumer packagé minimal et conservé cet ownership combiné
 façade/composition pour 1.x. Voir la
-[décision d'ownership de la façade](/fr/architecture/appcore-bin-facade).
+[décision d'ownership de la façade](/architecture/appcore-bin-facade).
 
 ## `1.0.2-rc` : génération HTTP supervisée
 
@@ -77,7 +77,7 @@ ni worker de reload détaché n'est créé. Les routes stables et le chemin 1.0 
 Cette intégration établit prepare, commutation atomique, drain borné et rollback
 sur le même listener. Elle ne surveille pas les manifests V1 et ne lie pas
 silencieusement une autre adresse. Voir
-[reload coordonné](/fr/architecture/reload).
+[reload coordonné](/architecture/reload).
 
 ## Intégration AI expérimentale disponible dans les sources
 

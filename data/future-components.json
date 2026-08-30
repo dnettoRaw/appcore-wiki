@@ -22,6 +22,36 @@
       "related_future": []
     },
     {
+      "name": "appcore-filemaker",
+      "slug": "appcore-filemaker",
+      "status": "Alpha",
+      "category": "Experimental",
+      "summary": "Deterministic compiler for declarative documents, vector canvases and bounded datasets.",
+      "horizon": "0.1.0-alpha.1 source preview; not published",
+      "related_existing": ["appcore-ai"],
+      "related_future": ["appcore-ui"]
+    },
+    {
+      "name": "appcore-filemaker-ai",
+      "slug": "appcore-filemaker-ai",
+      "status": "Alpha",
+      "category": "Experimental",
+      "summary": "Optional bounded appcore-ai tool bridge for deterministic FileMaker sessions.",
+      "horizon": "0.1.0-alpha.1 source preview; not published",
+      "related_existing": ["appcore-ai", "appcore-filemaker"],
+      "related_future": []
+    },
+    {
+      "name": "appcore-filemaker-cli",
+      "slug": "appcore-filemaker-cli",
+      "status": "Alpha",
+      "category": "Experimental",
+      "summary": "Bounded command-line process adapter for FileMaker compilation, diagnostics and export.",
+      "horizon": "0.1.0-alpha.1 source preview; not published",
+      "related_existing": ["appcore-args", "appcore-filemaker"],
+      "related_future": []
+    },
+    {
       "name": "appcore-ui",
       "slug": "appcore-ui",
       "status": "In Design",

@@ -33,6 +33,9 @@ promotion n'est automatique parce qu'un crate apparaît dans le dépôt Runtime.
 | Composant | Statut | Frontière |
 | --- | --- | --- |
 | [appcore-sync-sqlite](/crates/appcore-sync-sqlite) | Alpha | `0.1.0-alpha.2` publiée pour la persistance facultative de l'état sync du Runtime, avec les contrats coordonnés `2.0.0-alpha.1`. |
+| [appcore-filemaker](/crates/appcore-filemaker) | Alpha | Aperçu source `0.1.0-alpha.1` non publié pour compilation déterministe de documents, canvases et datasets. |
+| [appcore-filemaker-ai](/crates/appcore-filemaker-ai) | Alpha | Bridge d'outils facultatif et borné non publié ; l'IA reste hors du compilateur déterministe. |
+| [appcore-filemaker-cli](/crates/appcore-filemaker-cli) | Alpha | Adaptateur de processus borné et non publié pour compilation, diagnostic et export explicite. |
 
 ## In Design
 

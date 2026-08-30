@@ -34,6 +34,9 @@ Runtime.
 | Componente | Status | Fronteira |
 | --- | --- | --- |
 | [appcore-sync-sqlite](/crates/appcore-sync-sqlite) | Alpha | `0.1.0-alpha.2` publicada para persistência opcional do estado de sync do Runtime, usando os contratos coordenados `2.0.0-alpha.1`. |
+| [appcore-filemaker](/crates/appcore-filemaker) | Alpha | Prévia `0.1.0-alpha.1` não publicada para compilação determinística de documentos, canvases e datasets. |
+| [appcore-filemaker-ai](/crates/appcore-filemaker-ai) | Alpha | Bridge opcional e limitado não publicado; IA permanece fora do compiler determinístico. |
+| [appcore-filemaker-cli](/crates/appcore-filemaker-cli) | Alpha | Adapter de processo limitado e não publicado para compilação, diagnóstico e export explícito. |
 
 ## In Design
 
