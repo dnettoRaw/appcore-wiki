@@ -21,6 +21,12 @@ expansion or data binding fail explicitly. `filemaker_set` and typed patches
 accept transactional `set_style`; export overrides remain paint-only and
 cannot change layout.
 
+Inspection accepts an element ID or a page and returns the retained structured
+geometry/reflow trace. Debug-mask tool input explicitly declares page and
+collision/layout/visual/combined view, while free-region input declares its
+minimum dimensions; these accepted arguments are no longer hidden behind empty
+tool schemas.
+
 Direct AppCore dependencies are `appcore-ai` and `appcore-filemaker`. AI policy
 and orchestration remain outside the deterministic compiler.
 

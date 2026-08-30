@@ -21,6 +21,12 @@ champs nécessitant expansion du compilateur ou binding échouent explicitement.
 `filemaker_set` et les patches typés acceptent `set_style` transactionnel ; les
 overrides d'export restent limités à la peinture et ne changent pas le layout.
 
+L'inspection accepte un ID d'élément ou une page et renvoie la trace structurée
+de géométrie/reflow conservée. L'entrée du masque debug déclare explicitement
+page et vue collision/layout/visual/combined, tandis que les régions libres
+déclarent leurs dimensions minimales ; ces arguments acceptés ne sont plus
+cachés par des schémas vides.
+
 Les dépendances AppCore directes sont `appcore-ai` et `appcore-filemaker`. Policy
 et orchestration IA restent hors du compilateur déterministe.
 

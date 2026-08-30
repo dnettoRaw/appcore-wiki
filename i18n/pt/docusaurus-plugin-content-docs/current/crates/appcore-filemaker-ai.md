@@ -21,6 +21,12 @@ estrito e compacto identificado por `type`, ou uma IR completa identificada por
 `filemaker_set` e patches tipados aceitam `set_style` transacional; overrides de
 export permanecem somente pintura e não alteram layout.
 
+Inspeção aceita um ID de elemento ou uma página e retorna o trace estruturado
+de geometria/reflow preservado. O input de debug mask declara explicitamente
+página e view collision/layout/visual/combined, enquanto free regions declara
+suas dimensões mínimas; esses argumentos aceitos não ficam mais ocultos por
+schemas vazios.
+
 As dependências AppCore diretas são `appcore-ai` e `appcore-filemaker`. Policy e
 orquestração de IA permanecem fora do compiler determinístico.
 

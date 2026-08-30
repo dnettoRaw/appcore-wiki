@@ -19,6 +19,12 @@ coordonnées, primitives et commandes de path sémantiques Canvas, graphiques
 avancés préparés, overrides export limités à la peinture et ordre layer/z-index
 indépendant de la collision.
 
+`debug TEMPLATE --grid 1|5|10|20 --view combined` émet l'overlay complet et non
+mutant. `mask` exporte la géométrie collision/layout/visual/combined en PNG,
+PDF, SVG ou JSON stable occupied/free/collisions/overflow. `inspect` et
+`explain` exposent géométrie source, anchors, région, mesure, collision,
+page/reflow et provenance conservées par la scène résolue.
+
 Les dépendances AppCore directes sont `appcore-args` et `appcore-filemaker`.
 
 Documentation maintenue par le crate : [guide](https://github.com/dnettoRaw/AppCore-Runtime/blob/beta/crates/appcore-filemaker-cli/wiki/guide.fr.md),

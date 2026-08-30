@@ -125,6 +125,16 @@ Les sorties sont PDF éditable/flattened, SVG, PNG, JPEG, HTML sémantique/fixe,
 CSV streaming et masques PNG/PDF/SVG/JSON. Les modes préparés échouent
 explicitement ou figurent dans `ExportLossReport`.
 
+Le debug reste une couche dérivée en lecture seule. `DebugOverlay` fournit des
+grilles bornées de 1/5/10/20 points, règles, coordonnées, IDs, bounds distincts,
+anchors, régions résolues, géométrie safe/collision, exclusions et crosshairs
+sans changer layout ni ordre de peinture. Les masques
+collision/layout/visual/combined dérivent leurs rectangles occupés et libres
+par vue et exportent PNG, PDF, SVG ou un JSON stable
+occupied/free/collisions/overflow. `inspect` et `explain` conservent une trace
+structurée des x/y/width/height source, anchors, région, mesure, policy de
+collision, page/reflow et provenance.
+
 Le core déterministe ne dépend pas de l'IA. `appcore-filemaker-ai` est un bridge
 optionnel de 20 outils sur `appcore-ai`; `appcore-filemaker-cli` est l'adaptateur
 processus borné. Exemples et preuves se trouvent sur la branche Runtime `beta`.
