@@ -125,6 +125,16 @@ Les sorties sont PDF éditable/flattened, SVG, PNG, JPEG, HTML sémantique/fixe,
 CSV streaming et masques PNG/PDF/SVG/JSON. Les modes préparés échouent
 explicitement ou figurent dans `ExportLossReport`.
 
+Chaque format de document écrit vers un writer fourni par l'appelant et offre
+aussi des octets bornés en mémoire ; le CSV de dataset possède les deux mêmes
+interfaces. Le DPI ne concerne que PNG/JPEG et la qualité uniquement JPEG. PNG
+préserve la transparence, tandis que JPEG enregistre l'aplatissement alpha du
+style ou de l'image avant une sortie stricte. Le HTML fixe ne déclare pas la
+capacité sémantique. PDF émet des métadonnées déterministes de titre, creator et
+producer ; le PDF éditable embarque les subsets exacts de glyphes et les maps
+Unicode. PDF Hybrid, liens, bookmarks, accessibilité tagged, PDF/A, WebP, XLSX,
+ZPL et ESC/POS restent des contrats préparés explicites.
+
 Le debug reste une couche dérivée en lecture seule. `DebugOverlay` fournit des
 grilles bornées de 1/5/10/20 points, règles, coordonnées, IDs, bounds distincts,
 anchors, régions résolues, géométrie safe/collision, exclusions et crosshairs

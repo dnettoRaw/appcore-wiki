@@ -27,6 +27,13 @@ page et vue collision/layout/visual/combined, tandis que les régions libres
 déclarent leurs dimensions minimales ; ces arguments acceptés ne sont plus
 cachés par des schémas vides.
 
+La découverte des capabilities sépare les exporters implémentés des WebP,
+XLSX, ZPL, ESC/POS, PDF/A, PDF Hybrid, liens, bookmarks et accessibilité tagged
+préparés. Son contrat d'export nomme les writers de l'appelant ou les octets
+bornés, les rapports de perte strict/best-effort, le DPI raster uniquement, les
+métadonnées PDF déterministes et les subsets de polices du PDF éditable, afin
+que le modèle ne déduise pas une sortie indisponible.
+
 Les dépendances AppCore directes sont `appcore-ai` et `appcore-filemaker`. Policy
 et orchestration IA restent hors du compilateur déterministe.
 

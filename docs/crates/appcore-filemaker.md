@@ -117,6 +117,15 @@ Implemented outputs are editable/flattened PDF, SVG, PNG, JPEG, semantic/fixed
 HTML, streaming CSV, and PNG/PDF/SVG/JSON debug masks. Prepared modes and nodes
 fail explicitly or enter `ExportLossReport`; no silent fallback is allowed.
 
+Every document format streams to a caller-owned writer and also offers bounded
+in-memory bytes; dataset CSV has the same two interfaces. DPI applies only to
+PNG/JPEG and quality only to JPEG. PNG preserves transparency, while JPEG
+records style or image-alpha flattening before strict output. Fixed HTML does
+not advertise semantic capability. PDF emits deterministic title, creator, and
+producer metadata; editable PDF embeds exact glyph subsets and Unicode maps.
+Hybrid PDF, links, bookmarks, tagged accessibility, PDF/A, WebP, XLSX, ZPL, and
+ESC/POS remain explicit prepared contracts.
+
 Debugging remains a derived read-only layer. `DebugOverlay` provides bounded
 1/5/10/20-point grids, rulers, coordinates, IDs, distinct bounds, anchors,
 resolved regions, safe/collision geometry, exclusions, and crosshairs without

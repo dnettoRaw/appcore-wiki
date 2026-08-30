@@ -27,6 +27,12 @@ collision/layout/visual/combined view, while free-region input declares its
 minimum dimensions; these accepted arguments are no longer hidden behind empty
 tool schemas.
 
+Capability discovery separates implemented exporters from prepared WebP,
+XLSX, ZPL, ESC/POS, PDF/A, Hybrid PDF, links, bookmarks, and tagged
+accessibility. Its export contract names caller-owned writers or bounded bytes,
+strict/best-effort loss reports, raster-only DPI, deterministic PDF metadata,
+and editable-PDF font subsets, so a model cannot infer unsupported output.
+
 Direct AppCore dependencies are `appcore-ai` and `appcore-filemaker`. AI policy
 and orchestration remain outside the deterministic compiler.
 

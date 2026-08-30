@@ -24,6 +24,12 @@ PNG, PDF, SVG ou JSON estável occupied/free/collisions/overflow. `inspect` e
 `explain` expõem geometria de origem, anchors, region, medição, colisão,
 página/reflow e provenance preservadas pela cena resolvida.
 
+`capabilities --json` separa formatos implementados de WebP, XLSX, ZPL,
+ESC/POS, PDF/A, PDF Hybrid, links, bookmarks e acessibilidade tagged preparados.
+`schema --json` também declara os contratos de writer/bytes limitados, perdas
+strict/best-effort, DPI somente raster, metadados PDF determinísticos e subsets
+de fonts.
+
 As dependências AppCore diretas são `appcore-args` e `appcore-filemaker`.
 
 Documentação mantida pelo crate: [guia](https://github.com/dnettoRaw/AppCore-Runtime/blob/beta/crates/appcore-filemaker-cli/wiki/guide.pt.md),
