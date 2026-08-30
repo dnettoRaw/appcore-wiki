@@ -135,6 +135,18 @@ producer ; le PDF éditable embarque les subsets exacts de glyphes et les maps
 Unicode. PDF Hybrid, liens, bookmarks, accessibilité tagged, PDF/A, WebP, XLSX,
 ZPL et ESC/POS restent des contrats préparés explicites.
 
+La validation possède des étapes explicites de schéma, données typées, layout
+résolu et preflight conscient de l'exporter. Les warnings bornés sont
+first-class ; strict les rejette et la troncature du rapport échoue fermée. Le
+preflight détecte les écarts binding, asset, glyphe, collision, overflow, DPI
+effectif, vector/CMYK/alpha JPEG, police éditable et accessibilité demandée.
+
+Les fingerprints déterministes cadrent versions schéma et engine,
+template/données/patches canoniques, digests des assets référencés et des
+polices enregistrées. `LayoutEngine::resolve_cached` ne résout qu'en cas de
+miss du `SceneCache` borné, renvoie des scènes immuables partagées pour
+render-many et rejette les anciennes versions d'engine.
+
 Le debug reste une couche dérivée en lecture seule. `DebugOverlay` fournit des
 grilles bornées de 1/5/10/20 points, règles, coordonnées, IDs, bounds distincts,
 anchors, régions résolues, géométrie safe/collision, exclusions et crosshairs

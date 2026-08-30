@@ -33,6 +33,11 @@ accessibility. Its export contract names caller-owned writers or bounded bytes,
 strict/best-effort loss reports, raster-only DPI, deterministic PDF metadata,
 and editable-PDF font subsets, so a model cannot infer unsupported output.
 
+`filemaker_validate` returns bounded layout issues and explicit truncation.
+`filemaker_preflight` declares its actual format, fidelity, mode, page, DPI,
+strict, and accessibility inputs. Schema discovery names the four validation
+stages, complete fingerprint inputs, and resolve-on-miss immutable caching.
+
 Direct AppCore dependencies are `appcore-ai` and `appcore-filemaker`. AI policy
 and orchestration remain outside the deterministic compiler.
 

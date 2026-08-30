@@ -126,6 +126,18 @@ producer metadata; editable PDF embeds exact glyph subsets and Unicode maps.
 Hybrid PDF, links, bookmarks, tagged accessibility, PDF/A, WebP, XLSX, ZPL, and
 ESC/POS remain explicit prepared contracts.
 
+Validation has explicit schema, typed-data, resolved-layout, and
+exporter-aware preflight stages. Bounded warnings are first-class; strict mode
+rejects them and report truncation fails closed. Preflight detects binding,
+asset, glyph, collision, overflow, effective-DPI, vector/CMYK/JPEG-alpha,
+editable-font, and requested-accessibility gaps.
+
+Deterministic fingerprints frame schema and engine versions, canonical
+template/data/patches, referenced asset digests, and registered font digests.
+`LayoutEngine::resolve_cached` resolves only on a bounded `SceneCache` miss,
+returns immutable shared scenes for render-many, and rejects stale engine
+versions.
+
 Debugging remains a derived read-only layer. `DebugOverlay` provides bounded
 1/5/10/20-point grids, rulers, coordinates, IDs, distinct bounds, anchors,
 resolved regions, safe/collision geometry, exclusions, and crosshairs without

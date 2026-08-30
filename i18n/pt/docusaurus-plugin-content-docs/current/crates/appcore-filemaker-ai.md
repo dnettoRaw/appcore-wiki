@@ -34,6 +34,12 @@ limitados, loss reports strict/best-effort, DPI somente raster, metadados PDF
 determinísticos e subsets de fonts no PDF editável, impedindo o modelo de
 inferir um output indisponível.
 
+`filemaker_validate` retorna issues de layout limitadas e truncamento explícito.
+`filemaker_preflight` declara seus inputs reais de formato, fidelity, modo,
+página, DPI, strict e acessibilidade. Discovery do schema nomeia as quatro
+etapas de validação, inputs completos do fingerprint e cache imutável
+resolve-on-miss.
+
 As dependências AppCore diretas são `appcore-ai` e `appcore-filemaker`. Policy e
 orquestração de IA permanecem fora do compiler determinístico.
 

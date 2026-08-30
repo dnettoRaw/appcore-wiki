@@ -30,6 +30,12 @@ ZPL, ESC/POS, PDF/A, Hybrid PDF, links, bookmarks, and tagged accessibility.
 `schema --json` also states the writer/bounded-byte, strict/best-effort loss,
 raster-only DPI, deterministic PDF metadata, and font-subset contracts.
 
+`check`, `validate`, and `preflight` are separate schema, resolved-layout, and
+exporter-aware boundaries. JSON retains bounded warnings and explicit
+`truncated`; strict rejects warnings and truncation fails closed. Schema
+discovery also lists typed-data validation, complete fingerprint inputs, and
+bounded immutable resolve-on-miss caching.
+
 Its direct AppCore dependencies are `appcore-args` and `appcore-filemaker`.
 
 Crate-owned documentation: [guide](https://github.com/dnettoRaw/AppCore-Runtime/blob/beta/crates/appcore-filemaker-cli/wiki/guide.en.md),

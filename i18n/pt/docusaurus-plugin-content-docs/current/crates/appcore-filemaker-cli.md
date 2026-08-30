@@ -30,6 +30,12 @@ ESC/POS, PDF/A, PDF Hybrid, links, bookmarks e acessibilidade tagged preparados.
 strict/best-effort, DPI somente raster, metadados PDF determinísticos e subsets
 de fonts.
 
+`check`, `validate` e `preflight` são fronteiras separadas de schema, layout
+resolvido e exporter. JSON preserva warnings limitados e `truncated` explícito;
+strict rejeita warnings e truncamento falha fechado. Discovery do schema também
+lista validação de dados tipados, inputs completos do fingerprint e cache
+imutável limitado resolve-on-miss.
+
 As dependências AppCore diretas são `appcore-args` e `appcore-filemaker`.
 
 Documentação mantida pelo crate: [guia](https://github.com/dnettoRaw/AppCore-Runtime/blob/beta/crates/appcore-filemaker-cli/wiki/guide.pt.md),

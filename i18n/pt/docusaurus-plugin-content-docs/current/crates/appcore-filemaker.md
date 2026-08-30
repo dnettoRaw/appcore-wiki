@@ -131,6 +131,18 @@ subsets exatos de glyphs e mapas Unicode. PDF Hybrid, links, bookmarks,
 acessibilidade tagged, PDF/A, WebP, XLSX, ZPL e ESC/POS permanecem contratos
 preparados explícitos.
 
+A validação tem etapas explícitas de schema, dados tipados, layout resolvido e
+preflight consciente do exporter. Warnings limitados são first-class; strict os
+rejeita e truncamento do report falha fechado. Preflight detecta gaps de
+binding, asset, glyph, colisão, overflow, DPI efetivo, vector/CMYK/alpha JPEG,
+font editável e acessibilidade solicitada.
+
+Fingerprints determinísticos enquadram versões de schema e engine,
+template/dados/patches canônicos, digests dos assets referenciados e das fonts
+registradas. `LayoutEngine::resolve_cached` resolve somente em miss do
+`SceneCache` limitado, retorna cenas imutáveis compartilhadas para render-many
+e rejeita versões antigas do engine.
+
 Debug permanece uma layer derivada e somente leitura. `DebugOverlay` fornece
 grids limitados de 1/5/10/20 pontos, rulers, coordenadas, IDs, bounds distintos,
 anchors, regions resolvidas, geometria safe/collision, exclusões e crosshairs

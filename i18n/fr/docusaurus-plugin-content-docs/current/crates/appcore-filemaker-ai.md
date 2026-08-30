@@ -34,6 +34,12 @@ bornés, les rapports de perte strict/best-effort, le DPI raster uniquement, les
 métadonnées PDF déterministes et les subsets de polices du PDF éditable, afin
 que le modèle ne déduise pas une sortie indisponible.
 
+`filemaker_validate` renvoie les issues layout bornées et la troncature
+explicite. `filemaker_preflight` déclare ses véritables entrées format,
+fidelity, mode, page, DPI, strict et accessibilité. La découverte du schéma
+nomme les quatre étapes de validation, les entrées complètes du fingerprint et
+le cache immuable resolve-on-miss.
+
 Les dépendances AppCore directes sont `appcore-ai` et `appcore-filemaker`. Policy
 et orchestration IA restent hors du compilateur déterministe.
 
