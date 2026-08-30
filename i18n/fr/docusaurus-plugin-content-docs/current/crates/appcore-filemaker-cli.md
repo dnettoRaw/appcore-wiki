@@ -29,6 +29,10 @@ mutant. `mask` exporte la géométrie collision/layout/visual/combined en PNG,
 PDF, SVG ou JSON stable occupied/free/collisions/overflow. `inspect` et
 `explain` exposent géométrie source, anchors, région, mesure, collision,
 page/reflow et provenance conservées par la scène résolue.
+`free-regions` interroge les rectangles libres bornés. `--patch` répétable
+applique des patches runtime JSON ordonnés, et `--font-fallback` fixe l'ordre
+exact des polices enregistrées. `render --format csv` exporte une table liée
+sans inventer de layout graphique pour les lignes dataset.
 
 `capabilities --json` sépare les formats implémentés des WebP, XLSX, ZPL,
 ESC/POS, PDF/A, PDF Hybrid, liens, bookmarks et accessibilité tagged préparés.

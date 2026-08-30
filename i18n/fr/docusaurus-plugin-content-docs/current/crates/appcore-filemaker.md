@@ -36,6 +36,9 @@ restent séparés. `MemoryResolver` et `FileResolver` à racine canonique
 implémentent la résolution bornée des assets, templates et polices.
 `FontManager::register_from` enregistre une police logique exacte sous la
 limite d'octets de l'appelant sans jamais parcourir les polices de l'hôte.
+L'ordre explicite de fallback fait partie du fingerprint. SVG et HTML
+incorporent les familles réellement choisies dans les glyph runs résolus, y
+compris les cellules de table.
 
 La cascade complète est defaults → theme → template → style
 component/nommé/inline développé → règles data conditionnelles ordonnées →
@@ -153,6 +156,8 @@ template/données/patches canoniques, digests des assets référencés et des
 polices enregistrées. `LayoutEngine::resolve_cached` ne résout qu'en cas de
 miss du `SceneCache` borné, renvoie des scènes immuables partagées pour
 render-many et rejette les anciennes versions d'engine.
+Le batch ordonné complet de patches a une limite globale ; remove/replace
+rejettent tout subtree cible contenant un descendant locked.
 
 Le travail sur entrée hostile possède des bornes explicites. Le binding partage
 un seul budget d'éléments entre racines, descendants et expansion des repeats,

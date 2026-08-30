@@ -11,10 +11,14 @@ não foi publicado no crates.io.
 O bridge declara 20 tools exatas com schemas fechados iguais à execução, aplica
 limites de chamadas, argumentos, patches limitados também pelo core e bytes de
 resultado, e verifica a policy editable/locked do template em subtrees
-destrutivas antes de mutações atômicas. Documentos candidatos validam e resolvem
-antes do commit; sequências de patch são a próxima revision. Consultas não
+destrutivas antes de mutações atômicas. Documentos candidatos validam e modelos
+gráficos resolvem antes do commit; sequências de patch são a próxima revision. Consultas não
 alteram revision. Tools de artifact retornam base64 limitado em memória e nunca
 escolhem um path no filesystem.
+`filemaker_export` também seleciona uma tabela de dataset vinculada e retorna
+CSV limitado; sessões de dataset nunca fabricam uma página gráfica. O loop
+recomendado testado executa create, patch, inspect, validate, preview, debug
+mask e export.
 
 Capabilities fornecem chamadas restantes e contexto compacto de purpose/rules
 e IDs editable/locked. Substituir um documento confiável também substituiria

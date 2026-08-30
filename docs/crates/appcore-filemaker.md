@@ -34,6 +34,8 @@ typed colors; fill backgrounds, stroke borders, and opacity remain separate.
 `MemoryResolver` and canonical-root `FileResolver` implement bounded asset,
 template, and font lookup. `FontManager::register_from` registers an exact
 logical font under the caller's byte cap and never scans host fonts.
+The ordered fallback list is part of the fingerprint. SVG and HTML embed the
+families actually selected in resolved glyph runs, including table cells.
 
 The complete cascade is defaults → theme → template → expanded
 component/named/inline style → ordered conditional data rules → transactional
@@ -144,6 +146,8 @@ template/data/patches, referenced asset digests, and registered font digests.
 `LayoutEngine::resolve_cached` resolves only on a bounded `SceneCache` miss,
 returns immutable shared scenes for render-many, and rejects stale engine
 versions.
+The complete ordered patch batch is globally bounded, and remove/replace
+operations reject a target subtree containing any locked descendant.
 
 Hostile-input work is bounded explicitly. Binding shares one element budget
 across roots, descendants, and repeat expansion and checks cooperative

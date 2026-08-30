@@ -12,9 +12,12 @@ Le bridge déclare 20 outils exacts avec schémas fermés identiques à l'exécu
 borne appels, arguments, patches également plafonnés par le core et octets de
 résultat, puis applique la policy editable/locked du template aux subtrees
 destructifs avant toute mutation atomique. Les documents candidats sont validés
-et résolus avant commit ; la séquence de patch est la prochaine revision. Les
+et les modèles graphiques résolus avant commit ; la séquence de patch est la prochaine revision. Les
 requêtes ne changent pas la revision. Les outils d'artifact renvoient du base64
 borné en mémoire sans choisir de path filesystem.
+`filemaker_export` choisit aussi une table dataset liée et renvoie un CSV borné ;
+une session dataset ne fabrique jamais de page graphique. La boucle recommandée
+testée exécute create, patch, inspect, validate, preview, debug mask et export.
 
 Les capabilities fournissent les appels restants et un contexte compact des
 purpose/rules et IDs editable/locked. Remplacer un document de confiance

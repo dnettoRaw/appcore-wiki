@@ -35,6 +35,9 @@ continuam separados. `MemoryResolver` e `FileResolver` com raiz canônica
 implementam busca limitada de assets, templates e fontes.
 `FontManager::register_from` registra uma fonte lógica exata sob o limite de
 bytes do chamador e nunca varre as fontes do host.
+A ordem explícita de fallback faz parte do fingerprint. SVG e HTML incorporam
+as famílias realmente escolhidas nos glyph runs resolvidos, inclusive células
+de tabela.
 
 A cascata completa é defaults → theme → template → style expandido de
 component/nome/inline → regras condicionais de dados ordenadas → `SetStyle`
@@ -149,6 +152,8 @@ template/dados/patches canônicos, digests dos assets referenciados e das fonts
 registradas. `LayoutEngine::resolve_cached` resolve somente em miss do
 `SceneCache` limitado, retorna cenas imutáveis compartilhadas para render-many
 e rejeita versões antigas do engine.
+O batch ordenado completo de patches tem limite global; remove/replace rejeitam
+um subtree alvo que contenha qualquer descendente locked.
 
 Trabalho sobre input hostil tem limites explícitos. O binding compartilha um
 único orçamento de elementos entre raízes, descendentes e expansão de repeats,

@@ -30,6 +30,10 @@ non-mutating overlay. `mask` exports collision/layout/visual/combined geometry
 as PNG, PDF, SVG, or stable occupied/free/collisions/overflow JSON. `inspect`
 and `explain` expose source geometry, anchors, region, measurement, collision,
 page/reflow, and provenance retained by the resolved scene.
+`free-regions` queries bounded available rectangles. Repeatable `--patch`
+applies ordered runtime patch JSON, while `--font-fallback` defines the exact
+registered fallback order. `render --format csv` exports one selected bound
+table without inventing graphical layout for dataset rows.
 
 `capabilities --json` separates implemented formats from prepared WebP, XLSX,
 ZPL, ESC/POS, PDF/A, Hybrid PDF, links, bookmarks, and tagged accessibility.

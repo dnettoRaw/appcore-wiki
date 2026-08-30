@@ -11,9 +11,12 @@ preview and has not been published to crates.io.
 The bridge declares 20 exact tools with closed execution-matched schemas,
 enforces call, argument, core-capped patch, and result-byte budgets, and applies
 template editable/locked policy across destructive subtrees before atomic
-mutations. Candidate documents validate and resolve before commit; patch
+mutations. Candidate documents validate and graphical models resolve before commit; patch
 sequences equal the next revision. Queries do not change revision. Artifact
 tools return bounded in-memory base64 and never select a filesystem path.
+`filemaker_export` also selects a bound dataset table and returns bounded CSV;
+dataset sessions never fabricate a graphical page. The tested recommended loop
+executes create, patch, inspect, validate, preview, debug mask, and export.
 
 Capabilities provide remaining calls plus compact purpose/rules and
 editable/locked document context. Replacing a trusted document would also
