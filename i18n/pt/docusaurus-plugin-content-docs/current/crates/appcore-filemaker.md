@@ -208,6 +208,3 @@ incluída, sem depender de fontes do host. O código Rust não embute YAML nem J
 Documentação mantida pelo crate: [guia](https://github.com/dnettoRaw/AppCore-Runtime/blob/beta/crates/appcore-filemaker/wiki/guide.pt.md),
 [exemplo básico](https://github.com/dnettoRaw/AppCore-Runtime/blob/beta/crates/appcore-filemaker/wiki/examples/basic.pt.md) e
 [exemplo intermediário](https://github.com/dnettoRaw/AppCore-Runtime/blob/beta/crates/appcore-filemaker/wiki/examples/intermediate.pt.md).
-O [plano de implementação M0-M12](https://github.com/dnettoRaw/AppCore-Runtime/blob/beta/crates/appcore-filemaker/wiki/implementation-milestones.pt.md)
-registra API, módulos, aceitação, testes, benchmark/fuzz e riscos de cada
-incremento; ele não autoriza publicação nem tags.
