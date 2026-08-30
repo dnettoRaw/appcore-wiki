@@ -8,7 +8,7 @@ sidebar_position: 23
 :::caution Public beta
 `appcore-ai 0.1.0-beta.3` is published on crates.io. Its API may change during
 the beta line, and docs.rs may take time to finish a new release build. It does
-not add fields to frozen V1 manifests.
+not add fields to stable V1 manifests.
 :::
 
 `appcore-ai` is the bounded, backend-neutral AI execution core for AppCore. It

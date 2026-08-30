@@ -71,7 +71,7 @@ n'expose jamais de SQL arbitraire ni de tables applicatives.
 
 Le provider accepte des processus locaux indépendants sur un filesystem au
 locking fiable. Les partages réseau, SQLite multi-host et la sélection
-automatique par le manifest V1 gelé sont hors contrat. Un schéma interne
+automatique par le manifest V1 stable sont hors contrat. Un schéma interne
 inconnu ou futur retourne `NO MORE SUPPORTED PLEASE UPDATE` ; aucun format du
 file provider n'est importé par inférence. Voir
 [l'aperçu `appcore-sync-sqlite`](../crates/appcore-sync-sqlite).

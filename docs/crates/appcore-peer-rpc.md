@@ -82,7 +82,7 @@ to 256 bytes. The client rejects contradictory known metadata. Unknown codes
 discard their remote message/hint and become one observable, terminal
 `unknown` result.
 
-Frozen V1 responses keep their existing JSON shape. The client maps only exact
+Stable V1 responses keep their existing JSON shape. The client maps only exact
 host codes to `PeerRpcError::RemoteRejected`; only exact endpoint/replay
 capacity rejections enter the existing bounded retry loop. No substring or
 free-form message controls retry. V2 frame acknowledgement ambiguity still

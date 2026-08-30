@@ -28,6 +28,22 @@ commands; `appcore-args` faz parsing de CLI sem executar comandos do Runtime.
 
 `appcore-bin` é o único composition root concreto para aplicações. Contratos não dependem de implementações, e código de negócio não deve importar módulos privados do host.
 
+## Testes de fuzz
+
+O repositório-fonte possui um workspace privado central com 12 alvos limitados
+para fronteiras que recebem texto ou bytes não confiáveis. Ele cobre parsing de
+CLI, manifests e identificadores, framing HTTP, mensagens distribuídas,
+containers DNT, requests da API, tokens de segurança, paths de storage,
+envelopes de sync, Peer RPC, DTOs do gateway e descritores de update.
+`appcore-ai` e `appcore-filemaker` mantêm workspaces especializados junto das
+suas implementações.
+
+Execute `appcore-dev test fuzz` para compilar todos os workspaces de fuzz com
+dependências travadas. Cada alvo rejeita entradas maiores que 256 KiB antes de
+chamar a fronteira. Código de ciclo de vida com estado continua coberto por
+testes determinísticos, de propriedades, concorrência e integração, pois bytes
+aleatórios não representam bem essas invariantes.
+
 ## Limitations
 
 - Este mapa explica ownership; use o [catálogo de crates](/crates/) para

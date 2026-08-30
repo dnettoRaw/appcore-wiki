@@ -82,7 +82,7 @@ protocolo a 256 bytes. O client rejeita metadata conhecida contraditória. Code
 desconhecido descarta mensagem/hint remotos e vira um único resultado
 observável e terminal `unknown`.
 
-Responses V1 congelados preservam o JSON existente. O client mapeia apenas
+Responses V1 estáveis preservam o JSON existente. O client mapeia apenas
 codes exatos do host para `PeerRpcError::RemoteRejected`; somente rejeições
 exatas de endpoint/capacidade de replay entram no retry limitado existente.
 Nenhuma substring ou mensagem livre controla retry. Ambiguidade do ACK de um

@@ -31,7 +31,12 @@ Toolchain Rust minimale : `1.89`. Une application doit normalement dépendre de
 Prereleases publiées : `appcore-ai 0.1.0-beta.3`, le graphe Runtime en
 `2.0.0-alpha.1`, `appcore-transport 1.1.0-alpha.1` et l'intégration facultative
 `appcore-sync-sqlite 0.1.0-alpha.2`. Aucune ne modifie le contrat de manifest
-V1 gelé.
+V1 stable.
+
+Le V1 stable est une promesse de compatibilité, pas un gel fonctionnel de tout
+le dépôt. AppCore peut continuer à ajouter des capacités Runtime génériques et
+des crates versionnés indépendamment tout en gardant les contrats V1 cohérents ;
+un contrat incompatible exige une nouvelle version explicite.
 
 ## Et Ensuite
 

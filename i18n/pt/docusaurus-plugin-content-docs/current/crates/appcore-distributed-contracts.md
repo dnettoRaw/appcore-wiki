@@ -63,4 +63,4 @@ alpha permanece uma prerelease opt-in.
 protocolo à família V2 explícita. Metadata conhecida é validada como uma única
 matriz. Code desconhecido vira `unknown` terminal sem reter texto ou retry hint
 remoto. `PeerRpcRemoteErrorV1` é um decoder exato separado para o campo string
-V1 congelado; ele não negocia nem cria tráfego V2.
+V1 estável; ele não negocia nem cria tráfego V2.

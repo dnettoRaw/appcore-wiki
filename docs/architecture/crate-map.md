@@ -35,6 +35,21 @@ Start from the host and move downward. `appcore-bin` composes concrete runtime i
 
 If a crate owns a wire format or manifest type, treat it as compatibility-sensitive. If it owns a provider implementation, treat it as deployment-sensitive. If it owns business registration facades, treat it as application-facing.
 
+## Fuzz testing
+
+The source repository has a private central fuzz workspace with 12 bounded
+targets for untrusted text and byte boundaries. It covers CLI parsing,
+manifests and identifiers, HTTP framing, distributed messages, DNT containers,
+API requests, security tokens, storage paths, sync envelopes, Peer RPC,
+gateway DTOs and update descriptors. `appcore-ai` and `appcore-filemaker` keep
+specialized fuzz workspaces next to their implementations.
+
+Run `appcore-dev test fuzz` to compile every fuzz workspace with its locked
+dependencies. A target rejects inputs larger than 256 KiB before invoking the
+boundary. Stateful lifecycle code remains in deterministic, property,
+concurrency and integration tests because random bytes do not represent those
+invariants usefully.
+
 ## Limitations
 
 - This map explains ownership boundaries; use the [crate catalog](/crates/)

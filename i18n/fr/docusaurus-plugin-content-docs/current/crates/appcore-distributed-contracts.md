@@ -63,4 +63,4 @@ explicites ; l'alpha reste une prerelease opt-in.
 protocole à la famille V2 explicite. Les métadonnées connues sont validées comme
 une matrice unique. Un code inconnu devient `unknown` terminal sans conserver
 texte ou retry hint distant. `PeerRpcRemoteErrorV1` est un décodeur exact séparé
-du champ string V1 figé; il ne négocie ni ne crée de trafic V2.
+du champ string V1 stable; il ne négocie ni ne crée de trafic V2.

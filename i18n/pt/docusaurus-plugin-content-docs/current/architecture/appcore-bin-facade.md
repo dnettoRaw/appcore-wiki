@@ -29,7 +29,7 @@ gerou um binário de 10.242.592 bytes e ocupou 481.808 KiB no target Cargo novo.
 O custo de compilação é real, mas separar apenas traits da facade não remove o
 grafo do host do executável: `run_application` ainda precisa alcançar a
 composition root concreta. A divisão adicionaria um crate ou mudaria o caminho
-público congelado sem demonstrar benefício no artefato.
+público estável sem demonstrar benefício no artefato.
 
 ## Reavaliação
 

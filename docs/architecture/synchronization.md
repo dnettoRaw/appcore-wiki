@@ -142,7 +142,7 @@ tables.
 
 The provider supports independent local processes on a filesystem with
 reliable locking. Network shares, multi-host SQLite and automatic selection by
-the frozen V1 manifest are outside the contract. Unknown or future internal
+the stable V1 manifest are outside the contract. Unknown or future internal
 schemas return `NO MORE SUPPORTED PLEASE UPDATE`; there is no inferred import
 from file-provider formats. See the
 [`appcore-sync-sqlite` preview](../crates/appcore-sync-sqlite).

@@ -61,5 +61,5 @@ alpha remains an opt-in prerelease.
 `retry_after_ms`/`correlation_id` and a protocol-owned redacted message to the
 explicit V2 family. Known metadata is validated as one matrix. Unknown codes
 normalize to terminal `unknown` without retaining the remote text or retry
-hint. `PeerRpcRemoteErrorV1` is a separate exact decoder for the frozen V1
+hint. `PeerRpcRemoteErrorV1` is a separate exact decoder for the stable V1
 string field; it does not negotiate or construct V2 traffic.

@@ -10,7 +10,7 @@ Pós-1.0 **`0.1.0-alpha.2`** ·
 [crates.io](https://crates.io/crates/appcore-sync-sqlite/0.1.0-alpha.2) ·
 [docs.rs](https://docs.rs/crate/appcore-sync-sqlite/0.1.0-alpha.2) ·
 [código-fonte público](https://github.com/dnettoRaw/app-core-public/tree/beta/crates/appcore-sync-sqlite) ·
-não selecionável pelo manifest V1 congelado nem registrada pelo `appcore-bin`.
+não selecionável pelo manifest V1 estável nem registrada pelo `appcore-bin`.
 :::
 
 **Responsabilidade:** persistência SQLite opcional e limitada para estado de

@@ -28,6 +28,22 @@ les services en processus sans dépendre du dispatch de commandes ;
 
 `appcore-bin` est le seul composition root concret pour les applications. Les contrats ne dépendent pas des implémentations, et le code métier ne doit pas importer de modules privés du host.
 
+## Tests de fuzz
+
+Le dépôt source contient un workspace privé central avec 12 cibles bornées
+pour les frontières qui reçoivent du texte ou des octets non fiables. Il couvre
+le parsing CLI, les manifests et identifiants, le framing HTTP, les messages
+distribués, les conteneurs DNT, les requêtes API, les jetons de sécurité, les
+chemins de storage, les enveloppes de sync, Peer RPC, les DTO du gateway et les
+descripteurs d'update. `appcore-ai` et `appcore-filemaker` conservent leurs
+workspaces spécialisés près de leurs implémentations.
+
+Exécuter `appcore-dev test fuzz` compile tous les workspaces de fuzz avec leurs
+dépendances verrouillées. Chaque cible rejette les entrées de plus de 256 KiB
+avant d'appeler la frontière. Le code de cycle de vie avec état reste couvert
+par des tests déterministes, de propriétés, de concurrence et d'intégration,
+car des octets aléatoires ne représentent pas utilement ces invariants.
+
 ## Limitations
 
 - Cette carte explique l'ownership ; utiliser le

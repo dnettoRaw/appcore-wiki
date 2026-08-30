@@ -8,7 +8,7 @@ sidebar_position: 23
 :::caution Beta publique
 `appcore-ai 0.1.0-beta.3` est publié sur crates.io. L'API peut changer pendant
 la beta et docs.rs peut prendre du temps pour terminer le build d'une nouvelle
-release. Elle n'ajoute aucun champ aux manifests V1 gelés.
+release. Elle n'ajoute aucun champ aux manifests V1 stables.
 :::
 
 `appcore-ai` est le core d'exécution IA borné et indépendant du backend. Il

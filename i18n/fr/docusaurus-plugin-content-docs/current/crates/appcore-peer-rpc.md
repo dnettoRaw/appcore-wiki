@@ -83,7 +83,7 @@ protocole à 256 octets. Le client rejette les métadonnées connues
 contradictoires. Un code inconnu abandonne message/hint distants et devient un
 unique résultat `unknown`, observable et terminal.
 
-Les réponses V1 figées conservent leur JSON. Le client mappe uniquement les
+Les réponses V1 stables conservent leur JSON. Le client mappe uniquement les
 codes exacts du host vers `PeerRpcError::RemoteRejected`; seuls les rejets
 exacts endpoint/capacité replay entrent dans le retry borné existant. Aucune
 sous-chaîne ou message libre ne contrôle le retry. L'ambiguïté d'un ACK V2

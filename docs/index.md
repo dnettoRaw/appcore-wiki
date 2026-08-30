@@ -30,8 +30,13 @@ Minimum Rust toolchain: `1.89`. Applications should normally depend on
 
 Published prereleases: `appcore-ai 0.1.0-beta.3`, the Runtime graph at
 `2.0.0-alpha.1`, `appcore-transport 1.1.0-alpha.1`, and the optional
-`appcore-sync-sqlite 0.1.0-alpha.2` integration. None changes the frozen V1
+`appcore-sync-sqlite 0.1.0-alpha.2` integration. None changes the stable V1
 manifest contract.
+
+Stable V1 is a compatibility promise, not a repository-wide feature freeze.
+AppCore may continue to add generic Runtime capabilities and independently
+versioned crates while existing V1 contracts remain coherent; incompatible
+contracts require a new explicit version.
 
 ## What's Next
 
