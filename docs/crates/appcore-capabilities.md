@@ -31,4 +31,12 @@ manifest descriptors before dispatch. Use `CapabilityRegistry` only when a real
 local handler is available. Catalog and resolver share request, write-mode and
 leadership enforcement, so a host does not need to rescan manifests locally.
 
+The default resolver scans borrowed peer and descriptor references, retains
+only the first compatible fallback and clones only the selected provider. Its
+compatibility check uses the descriptor that already matched instead of
+rescanning a copied list of every advertised name. A custom
+`CapabilitySelectionPolicy` continues
+to receive the complete owned candidate slice required by the stable public
+trait.
+
 **Maturity:** stable routing profile.

@@ -31,4 +31,12 @@ descritores do manifesto antes do dispatch. Use `CapabilityRegistry` apenas
 quando houver um handler local real. Catálogo e resolver compartilham
 enforcement de request, modo de escrita e liderança.
 
+O resolver padrão percorre referências emprestadas de peer e descriptor,
+retém somente o primeiro fallback compatível e clona apenas o provider
+selecionado. A compatibilidade usa o descriptor já encontrado em vez de
+percorrer uma cópia de todos os nomes anunciados. Uma
+`CapabilitySelectionPolicy`
+customizada continua recebendo o slice owned completo exigido pelo trait
+público estável.
+
 **Maturidade:** perfil de roteamento estável.

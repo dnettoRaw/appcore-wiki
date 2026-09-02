@@ -31,4 +31,12 @@ autoriser les descripteurs du manifeste avant le dispatch. Utilisez
 `CapabilityRegistry` uniquement avec un vrai handler local. Catalogue et
 resolver partagent l'enforcement de request, mode d'écriture et leadership.
 
+Le resolver par défaut parcourt des références empruntées de peer et de
+descriptor, ne conserve que le premier fallback compatible et clone uniquement
+le provider retenu. La compatibilité utilise le descriptor déjà trouvé au lieu
+de parcourir une copie de tous les noms annoncés. Une
+`CapabilitySelectionPolicy`
+personnalisée continue de recevoir le slice owned complet exigé par le trait
+public stable.
+
 **Maturité :** profil de routage stable.
