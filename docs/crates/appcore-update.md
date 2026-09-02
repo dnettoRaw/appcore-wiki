@@ -41,5 +41,9 @@ descriptors, pass a non-retaining 1 MiB sizing check, and serialize directly to
 the atomic temporary file through a fixed 16 KiB buffer. Their V1 JSON encoding
 is unchanged.
 
+The file provider scans the decoded bounded index once and retains only the
+best semantic version and its descriptor. It does not build or sort a second
+candidate list; equal versions preserve the first index entry.
+
 **Maturity:** stable lifecycle; remote supply chains require signed
 provenance and deployment trust roots.

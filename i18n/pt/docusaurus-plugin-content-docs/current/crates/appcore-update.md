@@ -38,5 +38,9 @@ Ponteiros active/previous e receipts de ativação pendentes emprestam seus
 descriptors, passam por sizing sem retenção sob 1 MiB e serializam diretamente
 no temporário atômico com buffer fixo de 16 KiB. O JSON V1 não mudou.
 
+O file provider percorre o índice limitado decodificado uma vez e retém somente
+a melhor versão semântica e seu descriptor. Ele não cria nem ordena uma segunda
+lista de candidatos; versões iguais preservam a primeira entrada do índice.
+
 **Maturidade:** lifecycle estável; supply chain remoto exige assinatura,
 provenance e trust roots.

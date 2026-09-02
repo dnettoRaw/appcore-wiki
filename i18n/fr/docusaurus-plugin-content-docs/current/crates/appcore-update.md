@@ -41,5 +41,10 @@ leurs descriptors, passent un sizing sans rétention sous 1 Mio et sérialisent
 directement dans le temporaire atomique avec un buffer fixe de 16 Kio. Leur
 JSON V1 reste inchangé.
 
+Le file provider parcourt une seule fois l'index borné décodé et ne retient que
+la meilleure version sémantique et son descriptor. Il ne construit ni ne trie
+une seconde liste de candidats ; à version égale, la première entrée reste
+prioritaire.
+
 **Maturité :** lifecycle stable; supply chain distant exige signature,
 provenance et trust roots.
