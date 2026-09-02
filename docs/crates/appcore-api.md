@@ -44,6 +44,11 @@ materializes only that page after releasing them, instead of deep-cloning both
 complete 10,000-item queues. Selecting 1,000 of 10,000 measured 2.06 us p50 and
 11.88 MiB peak RSS, versus 4.16 ms and 20.33 MiB for the old full copies.
 
+`runtime.events` follows the same snapshot boundary, caps the newest page at
+1,000 and continues to omit opaque payloads from its unchanged response.
+Selecting 1,000 of 10,000 events measured 2.39 us p50 and 8.48 MiB peak RSS,
+versus 2.09 ms and 14.59 MiB for cloning the complete history.
+
 The configured payload bound applies to the complete HTTP body before Axum
 deserializes JSON. Protected routes accept exactly one well-formed bearer
 `Authorization` header; duplicates fail closed.

@@ -49,6 +49,12 @@ página mais nova após liberar o lock. Uma seleção de 1.000 em 10.000 mediu
 2,06 us p50 e 11,88 MiB de RSS pico, contra 4,16 ms e 20,33 MiB para cópias
 owned integrais.
 
+O `EventBus` local ao processo retém separadamente no máximo 10.000 eventos e
+16 MiB por padrão. `stats` expõe bytes atuais/de pico, evictions e rejeições de
+eventos grandes; `snapshot().recent(limit)` empresta uma página estável.
+Selecionar 1.000 de 10.000 eventos mediu 2,39 us p50 e 8,48 MiB de RSS pico,
+contra 2,09 ms e 14,59 MiB do método compatível de cópia integral.
+
 Aplicações novas usam re-exports de `appcore_bin::application`; não montam o
 core manualmente. Mantenha I/O adapters e comportamento de domínio fora.
 

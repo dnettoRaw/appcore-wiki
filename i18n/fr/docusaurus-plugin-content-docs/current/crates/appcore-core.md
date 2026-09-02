@@ -50,6 +50,12 @@ seulement la page la plus récente après libération du lock. Une sélection de
 1 000 sur 10 000 a mesuré 2,06 us p50 et 11,88 Mio de RSS de pic, contre 4,16 ms
 et 20,33 Mio pour les copies owned complètes.
 
+L'`EventBus` local au processus retient séparément au plus 10 000 événements et
+16 Mio par défaut. `stats` expose les octets courants/de pic, les évictions et
+les rejets d'événements trop grands ; `snapshot().recent(limit)` emprunte une
+page stable. Sélectionner 1 000 sur 10 000 événements a mesuré 2,39 us p50 et
+8,48 Mio de RSS de pic, contre 2,09 ms et 14,59 Mio pour la copie complète.
+
 Les nouvelles applications utilisent les re-exports de
 `appcore_bin::application`; elles n'assemblent pas le core. Garder I/O adapters
 et comportement domaine hors de ce crate.

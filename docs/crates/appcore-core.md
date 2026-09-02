@@ -48,6 +48,12 @@ snapshot types expose `recent(limit)` so callers can borrow only a newest page
 after releasing the state lock. A 1,000-of-10,000 selection measured 2.06 us
 p50 and 11.88 MiB peak RSS, versus 4.16 ms and 20.33 MiB for full owned copies.
 
+The process-local `EventBus` separately retains at most 10,000 events and
+16 MiB by default. `stats` exposes current/peak bytes, evictions and oversized
+event rejections; `snapshot().recent(limit)` borrows a stable newest page.
+Selecting 1,000 of 10,000 events measured 2.39 us p50 and 8.48 MiB peak RSS,
+versus 2.09 ms and 14.59 MiB for the compatible full-copy method.
+
 New applications consume these re-exports through
 `appcore_bin::application`; they do not assemble the core manually. Keep I/O
 adapters and domain behavior outside this crate.

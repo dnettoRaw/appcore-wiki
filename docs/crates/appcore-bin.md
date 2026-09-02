@@ -32,6 +32,10 @@ optional auth-server grant tooling.
 `Vec` or deep-cloned audit list. Failed serialization or writing removes the
 new incomplete file, and an existing path is never overwritten.
 
+Diagnostics expose `audit_memory` and `event_bus` pressure with current, peak
+and maximum bytes plus evictions and oversized-item rejections. These counters
+contain no audit messages or opaque event payloads.
+
 Both binaries parse bounded UTF-8 input through `appcore-args`. Generated help,
 validation and dynamic Bash, Zsh, Fish and PowerShell completion share one
 declarative command specification; command execution remains in this crate.

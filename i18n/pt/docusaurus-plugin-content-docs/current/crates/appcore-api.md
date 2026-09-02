@@ -45,6 +45,11 @@ profundamente as duas filas completas de 10.000 itens. Selecionar 1.000 de
 10.000 mediu 2,06 us p50 e 11,88 MiB de RSS pico, contra 4,16 ms e 20,33 MiB
 das cópias integrais antigas.
 
+`runtime.events` segue a mesma fronteira de snapshot, limita a página mais nova
+a 1.000 e continua omitindo payloads opacos da resposta inalterada. Selecionar
+1.000 de 10.000 eventos mediu 2,39 us p50 e 8,48 MiB de RSS pico, contra
+2,09 ms e 14,59 MiB para clonar o histórico completo.
+
 O limite configurado aplica-se ao corpo HTTP completo antes de o Axum
 desserializar o JSON. Rotas protegidas aceitam exatamente um header
 `Authorization` bearer bem formado; duplicatas falham de forma fechada.

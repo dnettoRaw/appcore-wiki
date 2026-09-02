@@ -46,6 +46,11 @@ libération, au lieu de cloner en profondeur les deux files complètes de 10 000
 éléments. Sélectionner 1 000 sur 10 000 a mesuré 2,06 us p50 et 11,88 Mio de RSS
 de pic, contre 4,16 ms et 20,33 Mio pour les anciennes copies complètes.
 
+`runtime.events` suit la même frontière de snapshot, limite la page récente à
+1 000 et continue d'omettre les payloads opaques de sa réponse inchangée.
+Sélectionner 1 000 sur 10 000 événements a mesuré 2,39 us p50 et 8,48 Mio de RSS
+de pic, contre 2,09 ms et 14,59 Mio pour cloner tout l'historique.
+
 La limite configurée s'applique au corps HTTP complet avant la
 désérialisation JSON par Axum. Les routes protégées acceptent exactement un
 header bearer `Authorization` bien formé; les doublons échouent fermés.
