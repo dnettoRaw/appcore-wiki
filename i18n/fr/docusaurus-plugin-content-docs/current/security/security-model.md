@@ -22,6 +22,11 @@ Le replay est traité par couches : idempotency key pour commands, séquence/che
 
 DNT authentifie le contexte et chiffre le payload. Peer RPC valide tenant, cluster, core, protocole, expiry, nonce, hash et token bound. Gateway valide connexion et mesh request. Update valide policy, signature, checksum et health gate.
 
+Les fichiers secret structurés utilisés au démarrage Auth Server, par les auth
+grants et l'inspection status sont limités à 64 Kio. Un metadata trop grand
+échoue avant l'allocation, un octet sentinelle détecte la croissance concurrente
+et le owner d'input est expurgé et remis à zéro après parsing.
+
 ## Statut du provider Windows DPAPI
 
 AC-009 a accepté `windows-dpapi-user-v1` pour la ligne de développement

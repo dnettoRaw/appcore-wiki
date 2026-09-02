@@ -36,6 +36,11 @@ Replay protection appears in multiple layers:
 
 Runtime file formats reject symlinks and path traversal where the provider owns the boundary. Several stores use owner-only directories or files on Unix, explicit locks, bounded reads, temporary files, atomic replacement, and parent-directory sync.
 
+Host-owned structured secret files used by Auth Server startup, auth grants and
+secret-status inspection are limited to 64 KiB. Metadata above the limit fails
+before allocation, one sentinel byte detects concurrent growth, and the input
+owner is redacted and zeroized after parsing.
+
 This does not make an unsafe host safe. If the operating system account is compromised, local runtime files can be attacked outside AppCore's process.
 
 ## Why does DNT bind context?
