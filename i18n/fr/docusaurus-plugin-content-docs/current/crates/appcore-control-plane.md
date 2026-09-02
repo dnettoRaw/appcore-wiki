@@ -36,5 +36,12 @@ Le profil fichier limite l'état et le backup à 16 MiB et rejette tout état
 malformé ou futur. L'arithmétique d'expiration et d'epoch est vérifiée;
 l'épuisement de l'epoch échoue fermé au lieu de réutiliser un fencing token.
 
+`InMemoryControlPlane` utilise par défaut 65 536 inscriptions/slots de lease
+combinés et un budget estimé de 16 Mio retenus. `with_limits` peut réduire les
+deux ; `stats` expose les octets actuels/de pic, les comptes et les admissions
+rejetées. Le rejet est atomique, donc un enregistrement existant reste
+utilisable. L'état fichier conserve la frontière JSON V1 de 16 Mio et limite
+aussi l'état décodé à 262 144 enregistrements et 64 Mio.
+
 **Maturité :** contrats et références stables; l'exploitation du service
 externe appartient au déploiement.
