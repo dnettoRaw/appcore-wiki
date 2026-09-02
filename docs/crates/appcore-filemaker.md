@@ -179,6 +179,11 @@ derive view-specific occupied and free rectangles and export PNG, PDF, SVG, or
 stable occupied/free/collisions/overflow JSON. `inspect` and `explain` retain a
 structured trace of source x/y/width/height, anchors, region, measurement,
 collision policy, page/reflow, and provenance.
+Mask JSON and SVG first count under `max_output_bytes` without retaining the
+output, reject an oversized result before touching the destination, and then
+serialize directly to the caller's writer. The
+`collision_mask_json_4m` workload measures an exact 4,188,826-byte output with
+idle, peak, and retained RSS checkpoints.
 
 The deterministic core does not depend on AI. `appcore-filemaker-ai` is an
 optional 20-tool bridge over `appcore-ai`; `appcore-filemaker-cli` is the
