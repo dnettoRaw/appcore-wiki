@@ -109,6 +109,14 @@ disconnect and heartbeat pruning update the primary map, capability registry
 and indexes under the same tenant lock. Saturating rebuild and inconsistency
 counters expose index health without unbounded labels.
 
+In the current Runtime beta, the reverse capability registry shares one
+immutable name owner across all worker advertisements in a tenant while
+preserving the direct routing index. `capabilities_for_iter` provides a stable
+borrowed view and `stats` reports only distinct names, workers, advertisements
+and unique UTF-8 name bytes. Removing the final advertiser releases the shared
+name. At the 1,024-worker/64-capability limits on Apple M1, peak RSS fell from
+30.20 to 27.70 MiB and p50 lookup from 55.53 to 50.22 ns.
+
 ## `1.0.2-rc`: Redis HA registry
 
 This is development status, not functionality in the stable `1.0.0` package.

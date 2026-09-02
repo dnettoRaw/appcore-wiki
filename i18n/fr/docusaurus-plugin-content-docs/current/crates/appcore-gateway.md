@@ -114,6 +114,14 @@ disconnect et prune heartbeat mettent à jour map primaire, registre de
 capabilities et index sous le même verrou tenant. Des compteurs saturés de
 rebuild et d'incohérence exposent la santé sans labels non bornés.
 
+Dans la beta Runtime actuelle, l'index inverse des capabilities partage un seul
+owner immuable du nom entre toutes les annonces worker d'un tenant, tout en
+préservant l'index direct de routage. `capabilities_for_iter` fournit une vue
+empruntée stable et `stats` rapporte uniquement noms distincts, workers,
+annonces et octets UTF-8 uniques. Le départ du dernier annonceur libère le nom
+partagé. Aux limites de 1 024 workers/64 capabilities sur Apple M1, le pic RSS
+est passé de 30,20 à 27,70 Mio et le lookup p50 de 55,53 à 50,22 ns.
+
 ## `1.0.2-rc` : registre HA Redis
 
 Ceci décrit l'état de développement, pas une fonctionnalité du paquet stable

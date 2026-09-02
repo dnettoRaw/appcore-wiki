@@ -110,6 +110,14 @@ disconnect e prune de heartbeat atualizam mapa primário, registry de
 capabilities e índices sob o mesmo lock do tenant. Contadores saturados de
 rebuild e inconsistência expõem saúde sem labels ilimitadas.
 
+Na beta atual do Runtime, o índice reverso de capabilities compartilha um único
+owner imutável do nome entre todos os anúncios de workers de um tenant,
+preservando o índice direto de roteamento. `capabilities_for_iter` fornece uma
+visão estável emprestada e `stats` informa somente nomes distintos, workers,
+anúncios e bytes UTF-8 únicos. Remover o último anunciante libera o nome
+compartilhado. Nos limites de 1.024 workers/64 capabilities em Apple M1, o RSS
+pico caiu de 30,20 para 27,70 MiB e o lookup p50 de 55,53 para 50,22 ns.
+
 ## `1.0.2-rc`: registry HA Redis
 
 Este é o estado de desenvolvimento, não uma funcionalidade do pacote estável
