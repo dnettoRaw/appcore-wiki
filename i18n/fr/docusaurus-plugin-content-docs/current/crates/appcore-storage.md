@@ -59,6 +59,10 @@ consommateur. Le snapshot conserve ses paths triés nécessaires sans seconde
 liste globale ; health ne garde qu'un compteur, cleanup seulement les
 temporaires correspondants et la validation des symlinks aucune entrée. La
 profondeur reste plafonnée à 128.
+La vérification du snapshot compte également les fichiers réels de manière
+incrémentale et emprunte le path précédent pendant le contrôle de l'ordre ; elle
+ne construit pas un second inventaire de paths et ne clone pas un path par
+entrée.
 
 ## Preflight de capacités post-1.0
 

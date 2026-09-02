@@ -55,6 +55,9 @@ only the bounded 16,384-directory work stack and consumer-owned results.
 Snapshot creation keeps its required sorted file paths without a second global
 entry list; health retains only a counter, cleanup only matching temporary
 paths, and symlink validation no entries at all. The depth ceiling remains 128.
+Snapshot verification also counts actual files incrementally and borrows the
+previous manifest path while checking order; it does not build a second path
+inventory or clone one path per entry.
 
 ## Post-1.0 capability preflight
 

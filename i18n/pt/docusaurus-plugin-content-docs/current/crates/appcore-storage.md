@@ -58,6 +58,9 @@ O snapshot mantém seus paths ordenados necessários sem uma segunda lista globa
 de entradas; health retém somente um contador, cleanup apenas os temporários
 correspondentes e a validação de symlink nenhuma entrada. O teto de profundidade
 continua 128.
+A verificação do snapshot também conta arquivos reais incrementalmente e
+empresta o path anterior ao conferir a ordem; ela não cria um segundo inventário
+de paths nem clona um path por entrada.
 
 ## Preflight de capacidades pós-1.0
 
