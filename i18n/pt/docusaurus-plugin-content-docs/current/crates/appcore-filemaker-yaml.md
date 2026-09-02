@@ -185,8 +185,11 @@ Cores aceitam nomes estáveis, hexadecimal, `rgb(...)`, `rgba(...)`,
 - `expand`: aumenta a caixa medida;
 - `error`: falha se não couber.
 
-`writing_mode: vertical` é reservado e reporta perda explícita; use
-`horizontal` no contrato implementado.
+`writing_mode` aceita `horizontal` (padrão) ou `vertical`. No modo vertical, o
+texto quebra pelo limite de altura, cada coluna é moldada de cima para baixo e
+as colunas avançam da direita para a esquerda. PDF, SVG, PNG/JPEG e HTML usam
+as mesmas colunas e runs resolvidos, sem reflow no exporter; PDF e raster usam
+os avanços dos glyphs diretamente.
 
 ## 6. Desenhe formas vetoriais
 
@@ -614,10 +617,11 @@ o bridge não pode alterar.
 | `z_index` | ordem dentro da layer |
 | `collision` | override de colisão do elemento |
 
-Nem todo campo serve para todo tipo. `text_options` só é válido em `text`;
-`table` e um `binding` de array são obrigatórios em `table`; comandos `path`
-só são válidos em `line`, `path` ou `polygon`; uma tabela não aceita children
-ou slots.
+Nem todo campo serve para todo tipo. `text_options` vale em `text`; tabelas
+aceitam somente `min_font_size`, `line_height` e `writing_mode`, pois o planner
+da tabela controla overflow e limites de linhas das células. `table` e um
+`binding` de array são obrigatórios em `table`; comandos `path` só são válidos
+em `line`, `path` ou `polygon`; uma tabela não aceita children ou slots.
 
 ## Ordem recomendada de trabalho
 

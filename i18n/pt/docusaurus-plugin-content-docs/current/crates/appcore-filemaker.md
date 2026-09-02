@@ -65,8 +65,9 @@ Elementos de texto declaram layout por `text_options`. Overflow aceita `wrap`,
 `shrink`, `ellipsis`, `clip`, `expand` e `error`, com `max_lines` limitado,
 `min_font_size` absoluto e `line_height` fixed-point. Medição e expansão
 ocorrem antes da colisão; clipping é geometria resolvida; SVG e HTML renderizam
-os runs moldados/truncados. Escrita vertical e emoji colorido são perdas
-explícitas do exporter até serem implementados.
+os runs moldados/truncados. `writing_mode: vertical` implementa colunas de cima
+para baixo que avançam da direita para a esquerda em PDF, SVG, PNG/JPEG e HTML.
+Emoji colorido continua uma perda explícita até ser implementado.
 
 Geometria declarativa também atravessa YAML e IR sem alteração. `constraints`
 carrega mínimo, preferido, máximo e aspect ratio largura/altura fixed-point;

@@ -161,8 +161,11 @@ Les couleurs acceptent noms stables, hex, `rgb(...)`, `rgba(...)`, `gray(...)`,
 
 `overflow` vaut `wrap`, `shrink`, `ellipsis`, `clip`, `expand` ou `error`.
 `shrink` s'arrête à `min_font_size`; `max_lines` est borné; `line_height` est
-un multiplicateur en millionièmes. L'écriture verticale est réservée ; utilisez
-`horizontal` pour le chemin V1 implémenté.
+un multiplicateur en millionièmes. `writing_mode` vaut `horizontal` (par
+défaut) ou `vertical`. Le texte vertical est coupé selon la hauteur, chaque
+colonne est façonnée de haut en bas et les colonnes avancent de droite à gauche.
+PDF, SVG, PNG/JPEG et HTML utilisent les mêmes colonnes et runs résolus sans
+reflow ; PDF et raster utilisent directement les avances des glyphes.
 
 ## 6. Dessinez des vecteurs sémantiques
 
@@ -543,8 +546,10 @@ page accepte les listes `background`, `header`, `footer`.
 | `layer`, `z_index` | ordre de peinture |
 | `collision` | override de collision |
 
-Les champs sont liés au type : `text_options` seulement sur `text`; `table` et
-un `binding` de tableau sont obligatoires pour `table`; `path` seulement sur
+Les champs sont liés au type : `text_options` s'applique à `text`; une table
+n'accepte que `min_font_size`, `line_height` et `writing_mode`, car son planner
+contrôle l'overflow et les limites de lignes des cellules. `table` et un
+`binding` de tableau sont obligatoires pour `table`; `path` seulement sur
 `line`, `path`, `polygon`; une table n'accepte ni children ni slots.
 
 ## Ordre de travail recommandé
