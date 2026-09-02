@@ -41,13 +41,12 @@ descriptors, pass a non-retaining 1 MiB sizing check, and serialize directly to
 the atomic temporary file through a fixed 16 KiB buffer. Their V1 JSON encoding
 is unchanged.
 
-The file provider scans the decoded bounded index once and retains only the
-best semantic version and its descriptor. It does not build or sort a second
-candidate list; equal versions preserve the first index entry.
-The index is deserialized directly through a fixed 16 KiB buffered reader, so
-its complete encoded bytes never coexist with the descriptor vector. A 1 MiB
-preflight and one non-retained sentinel byte reject declared oversize and
-concurrent growth.
+The file provider streams the bounded index once and retains only the best
+semantic version and its descriptor. Each descriptor is validated and then
+discarded or selected while the JSON array is decoded, so neither a descriptor
+vector nor a sorted candidate list is retained. Equal versions preserve the
+first index entry. A fixed 16 KiB reader, 1 MiB preflight and one non-retained
+sentinel byte reject declared oversize and concurrent growth.
 
 **Maturity:** stable lifecycle; remote supply chains require signed
 provenance and deployment trust roots.
