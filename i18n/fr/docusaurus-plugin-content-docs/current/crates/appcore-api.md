@@ -66,6 +66,12 @@ les chaînes d'identité. Le dispatch blocking prend possession des requêtes
 command/query. L'audit query ne conserve que l'ID et le nom bornés pendant le
 traitement du payload.
 
+`CommandTokenVerifier` possède aussi des méthodes additives pour les requêtes
+empruntées. Leurs defaults matérialisent `RequestValidationDetails` et appellent
+les méthodes owned existantes, donc les verifiers existants gardent leur
+comportement. Le verifier du Runtime les surcharge pour hasher directement le
+texte ou le JSON structuré, sans copie owned du payload.
+
 `HttpCommandAuth::default()` exige l'authentification et échoue fermé tant
 qu'aucun vérificateur de token n'est configuré. Seul
 `insecure_local_for_testing()` désactive explicitement l'authentification

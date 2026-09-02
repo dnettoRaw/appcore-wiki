@@ -63,6 +63,12 @@ does not copy its peer lists, DNS seeds, paths or identity strings. Blocking
 dispatch takes ownership of command/query requests. Query audit keeps only the
 bounded query ID and name while the payload is in flight.
 
+`CommandTokenVerifier` also has additive borrowed request methods. Their
+defaults materialize `RequestValidationDetails` and call the existing owned
+methods, so existing verifiers keep their behavior. The Runtime verifier
+overrides them to hash text or structured JSON directly without an owned
+payload copy.
+
 `HttpCommandAuth::default()` requires authentication and fails closed until a
 token verifier is configured. Only `insecure_local_for_testing()` explicitly
 disables command/query authentication for controlled local tests. `/v1/health`
