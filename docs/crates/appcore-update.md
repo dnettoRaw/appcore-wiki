@@ -44,6 +44,10 @@ is unchanged.
 The file provider scans the decoded bounded index once and retains only the
 best semantic version and its descriptor. It does not build or sort a second
 candidate list; equal versions preserve the first index entry.
+The index is deserialized directly through a fixed 16 KiB buffered reader, so
+its complete encoded bytes never coexist with the descriptor vector. A 1 MiB
+preflight and one non-retained sentinel byte reject declared oversize and
+concurrent growth.
 
 **Maturity:** stable lifecycle; remote supply chains require signed
 provenance and deployment trust roots.

@@ -45,6 +45,10 @@ Le file provider parcourt une seule fois l'index borné décodé et ne retient q
 la meilleure version sémantique et son descriptor. Il ne construit ni ne trie
 une seconde liste de candidats ; à version égale, la première entrée reste
 prioritaire.
+L'index est désérialisé directement par un reader doté d'un buffer fixe de 16
+Kio ; ses octets encodés complets ne coexistent donc pas avec le vecteur de
+descriptors. Un preflight de 1 Mio et un octet sentinelle non retenu rejettent
+une taille déclarée excessive et une croissance concurrente.
 
 **Maturité :** lifecycle stable; supply chain distant exige signature,
 provenance et trust roots.
