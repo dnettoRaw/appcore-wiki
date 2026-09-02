@@ -34,6 +34,11 @@ Peer request, response, outbound and HTTP DTO `Debug` output reports payload
 lengths and omits opaque bytes, credentials, nonce/idempotency values and remote
 error details.
 
+The process-local `BoundedReplayStore` validates every nonce at 128 bytes,
+bounds both live entries and estimated retained bytes, and never permits a
+default ceiling above 32 MiB. Operators can select a tighter ceiling and read
+current, peak, maximum and rejection counters without exposing nonce values.
+
 **Maturity:** stable peer protocol V1 surface.
 
 ## Bounded V2 codec

@@ -34,6 +34,12 @@ Le `Debug` des DTO peer request, response, outbound et HTTP expose les tailles
 et omet bytes opaques, credentials, valeurs nonce/idempotence et details
 d'erreur distante.
 
+Le `BoundedReplayStore` local au processus valide chaque nonce avec une limite
+de 128 octets, borne entrées actives et octets retenus estimés et n'autorise
+jamais un plafond par défaut supérieur à 32 Mio. L'opérateur peut choisir un
+plafond plus strict et consulter octets courants, pic, maximum et rejets sans
+exposer les nonces.
+
 **Maturité :** surface peer V1 stable.
 
 ## Codec V2 borné
