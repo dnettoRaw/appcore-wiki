@@ -39,6 +39,13 @@ HTTP et le peer RPC libèrent le mutex d'état du host avant d'appeler
 l'endpoint. Les queries indépendantes s'exécutent donc en parallèle et un
 enregistrement tardif échoue avec `router_frozen`.
 
+La query intégrée `runtime.audit` limite chaque réponse aux 1 000 éléments les
+plus récents. Elle capture des snapshots partagés des enregistrements et
+entrées sous des locks courts, puis matérialise seulement cette page après leur
+libération, au lieu de cloner en profondeur les deux files complètes de 10 000
+éléments. Sélectionner 1 000 sur 10 000 a mesuré 2,06 us p50 et 11,88 Mio de RSS
+de pic, contre 4,16 ms et 20,33 Mio pour les anciennes copies complètes.
+
 La limite configurée s'applique au corps HTTP complet avant la
 désérialisation JSON par Axum. Les routes protégées acceptent exactement un
 header bearer `Authorization` bien formé; les doublons échouent fermés.

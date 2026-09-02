@@ -38,6 +38,13 @@ endpoints imutáveis por `Arc`; facade direta, HTTP e peer RPC liberam o mutex d
 estado do host antes de chamar o endpoint. Queries independentes executam em
 paralelo, e registro tardio falha com `router_frozen`.
 
+A query interna `runtime.audit` limita cada resposta aos 1.000 itens mais novos.
+Ela captura snapshots compartilhados dos registros e entradas sob locks curtos
+e materializa somente essa página após liberá-los, em vez de clonar
+profundamente as duas filas completas de 10.000 itens. Selecionar 1.000 de
+10.000 mediu 2,06 us p50 e 11,88 MiB de RSS pico, contra 4,16 ms e 20,33 MiB
+das cópias integrais antigas.
+
 O limite configurado aplica-se ao corpo HTTP completo antes de o Axum
 desserializar o JSON. Rotas protegidas aceitam exatamente um header
 `Authorization` bearer bem formado; duplicatas falham de forma fechada.

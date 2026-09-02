@@ -44,6 +44,12 @@ en profondeur et reste stable après des mutations ultérieures. La fixture
 pretty-JSON mesurée contenait 10 000 entrées et 2 996 676 octets, avec 1,12 ms
 p50 et 6,42 Mio de RSS de pic sur Apple M1.
 
+`records_snapshot` fournit la vue correspondante des enregistrements command.
+Les deux types de snapshot exposent `recent(limit)` afin que le caller emprunte
+seulement la page la plus récente après libération du lock. Une sélection de
+1 000 sur 10 000 a mesuré 2,06 us p50 et 11,88 Mio de RSS de pic, contre 4,16 ms
+et 20,33 Mio pour les copies owned complètes.
+
 Les nouvelles applications utilisent les re-exports de
 `appcore_bin::application`; elles n'assemblent pas le core. Garder I/O adapters
 et comportement domaine hors de ce crate.

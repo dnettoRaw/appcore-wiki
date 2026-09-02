@@ -43,6 +43,11 @@ deep-cloning it and stays stable after later log mutations. The measured
 10,000-entry pretty-JSON fixture was 2,996,676 bytes, with 1.12 ms p50 and
 6.42 MiB peak RSS on Apple M1.
 
+`records_snapshot` provides the corresponding command-record view. Both
+snapshot types expose `recent(limit)` so callers can borrow only a newest page
+after releasing the state lock. A 1,000-of-10,000 selection measured 2.06 us
+p50 and 11.88 MiB peak RSS, versus 4.16 ms and 20.33 MiB for full owned copies.
+
 New applications consume these re-exports through
 `appcore_bin::application`; they do not assemble the core manually. Keep I/O
 adapters and domain behavior outside this crate.
