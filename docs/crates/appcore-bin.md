@@ -26,6 +26,12 @@ resolved volume/environment values and `ApplicationTaskRegistry`.
 commands, local paths/lifecycle, server entry points, build information and
 optional auth-server grant tooling.
 
+`appcore-bin export --out PATH` measures the diagnostics pretty JSON under a
+64 MiB ceiling before it creates the output. It then serializes through a fixed
+64 KiB buffer and the shared immutable audit snapshot, without a complete result
+`Vec` or deep-cloned audit list. Failed serialization or writing removes the
+new incomplete file, and an existing path is never overwritten.
+
 Both binaries parse bounded UTF-8 input through `appcore-args`. Generated help,
 validation and dynamic Bash, Zsh, Fish and PowerShell completion share one
 declarative command specification; command execution remains in this crate.

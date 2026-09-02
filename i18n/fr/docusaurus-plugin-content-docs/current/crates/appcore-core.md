@@ -38,6 +38,12 @@ pic, évictions et rejets ; `write_jsonl` transmet un snapshot copy-on-write
 partagé après libération du lock d'état. L'adaptateur compatible `export_jsonl`
 retourne intentionnellement une String owned.
 
+Utilisez `entries_snapshot` pour obtenir un tableau JSON structuré. La vue
+immuable implémente `Serialize`, partage le stockage retenu au lieu de le cloner
+en profondeur et reste stable après des mutations ultérieures. La fixture
+pretty-JSON mesurée contenait 10 000 entrées et 2 996 676 octets, avec 1,12 ms
+p50 et 6,42 Mio de RSS de pic sur Apple M1.
+
 Les nouvelles applications utilisent les re-exports de
 `appcore_bin::application`; elles n'assemblent pas le core. Garder I/O adapters
 et comportement domaine hors de ce crate.

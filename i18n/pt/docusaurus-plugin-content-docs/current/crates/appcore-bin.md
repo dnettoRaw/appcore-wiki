@@ -24,6 +24,12 @@ volumes/environment resolvidos e `ApplicationTaskRegistry`.
 **API de host:** bootstrap/config errors/results, CLI, paths/lifecycle local,
 server entry points, build info e ferramentas opcionais de auth-server.
 
+`appcore-bin export --out CAMINHO` dimensiona o pretty JSON de diagnóstico sob
+um teto de 64 MiB antes de criar a saída. Depois, serializa com buffer fixo de
+64 KiB e snapshot de auditoria imutável compartilhado, sem um `Vec` do resultado
+completo nem clone profundo da lista. Falha de serialização ou escrita remove o
+novo arquivo incompleto e um caminho existente nunca é sobrescrito.
+
 Os dois binários processam entrada UTF-8 limitada por `appcore-args`. Ajuda,
 validação e completion dinâmica para Bash, Zsh, Fish e PowerShell compartilham
 uma especificação declarativa; a execução permanece neste crate.

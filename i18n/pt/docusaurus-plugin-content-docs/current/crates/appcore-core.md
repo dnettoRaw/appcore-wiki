@@ -37,6 +37,12 @@ evictions e rejections; `write_jsonl` transmite um snapshot copy-on-write
 compartilhado depois de liberar o lock de estado. O adaptador compatível
 `export_jsonl` retorna intencionalmente uma String owned.
 
+Use `entries_snapshot` para obter um array JSON estruturado. A visão imutável
+implementa `Serialize`, compartilha o armazenamento retido em vez de cloná-lo
+profundamente e permanece estável após mutações posteriores. A fixture
+pretty-JSON medida tinha 10.000 entradas e 2.996.676 bytes, com 1,12 ms p50 e
+6,42 MiB de RSS pico no Apple M1.
+
 Aplicações novas usam re-exports de `appcore_bin::application`; não montam o
 core manualmente. Mantenha I/O adapters e comportamento de domínio fora.
 
