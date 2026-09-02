@@ -36,5 +36,10 @@ atomique du composant final existe sous Unix. Les autres plateformes conservent
 les checks metadata mais dépendent de la frontière filesystem du déploiement
 contre les races de reparse.
 
+Les pointers active/previous et les receipts d'activation pending empruntent
+leurs descriptors, passent un sizing sans rétention sous 1 Mio et sérialisent
+directement dans le temporaire atomique avec un buffer fixe de 16 Kio. Leur
+JSON V1 reste inchangé.
+
 **Maturité :** lifecycle stable; supply chain distant exige signature,
 provenance et trust roots.

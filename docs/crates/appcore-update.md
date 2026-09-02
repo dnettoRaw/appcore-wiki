@@ -36,5 +36,10 @@ match the descriptor exactly; it is never replaced. Atomic final-component no-fo
 implemented on Unix. Other platforms retain metadata checks but require their
 deployment filesystem boundary to prevent reparse races.
 
+Active/previous pointers and pending activation receipts borrow their
+descriptors, pass a non-retaining 1 MiB sizing check, and serialize directly to
+the atomic temporary file through a fixed 16 KiB buffer. Their V1 JSON encoding
+is unchanged.
+
 **Maturity:** stable lifecycle; remote supply chains require signed
 provenance and deployment trust roots.

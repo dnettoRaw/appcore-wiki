@@ -34,5 +34,9 @@ exatamente ao descriptor; nunca é substituído. O no-follow atômico do
 componente final existe em Unix. Outras plataformas mantêm checks de metadata,
 mas dependem da fronteira do filesystem do deployment contra races de reparse.
 
+Ponteiros active/previous e receipts de ativação pendentes emprestam seus
+descriptors, passam por sizing sem retenção sob 1 MiB e serializam diretamente
+no temporário atômico com buffer fixo de 16 KiB. O JSON V1 não mudou.
+
 **Maturidade:** lifecycle estável; supply chain remoto exige assinatura,
 provenance e trust roots.
