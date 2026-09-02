@@ -15,6 +15,9 @@ They reject an output resolving to the input template. `migrate` is reserved
 and fails without modifying input; future mutation requires an explicit flag
 and contract. Every command has concise human output plus stable JSON for
 automation.
+Both stdout modes end with one newline and stop at 512 MiB. Pretty JSON is sized
+before output and serialized directly through a fixed 16 KiB buffer, avoiding a
+second complete output string.
 
 `capabilities --json` publishes the stable exit matrix: 0 success, 2
 validation, 64 usage, 65 data, 66 missing input, 69 unavailable, 70 software,

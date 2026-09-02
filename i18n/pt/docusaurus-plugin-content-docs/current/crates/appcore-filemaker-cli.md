@@ -13,6 +13,9 @@ exceto por artifacts de output explícitos. `render` e `mask` publicam arquivos
 atomicamente e rejeitam output que resolve para o template de input. `migrate`
 é reservado e falha sem alterar input; mutação futura exige flag e contrato
 explícitos. Todo comando tem output humano conciso e JSON estável para automação.
+Os dois modos de stdout terminam com uma newline e param em 512 MiB. Pretty JSON
+é dimensionado antes do output e serializado direto por um buffer fixo de
+16 KiB, evitando uma segunda string completa.
 
 `capabilities --json` publica a matriz estável: 0 sucesso, 2 validação, 64 uso,
 65 dados, 66 input ausente, 69 indisponível, 70 software, 73 não pode criar, 74

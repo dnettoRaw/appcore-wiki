@@ -14,6 +14,9 @@ les fichiers atomiquement et rejettent une sortie résolue vers le template
 d'entrée. `migrate` est réservé et échoue sans modifier l'entrée ; toute
 mutation future exige flag et contrat explicites. Chaque commande fournit un
 texte humain concis et un JSON stable pour l'automatisation.
+Les deux modes stdout se terminent par une newline et s'arrêtent à 512 Mio. Le
+pretty JSON est dimensionné avant la sortie puis sérialisé directement via un
+buffer fixe de 16 Kio, sans seconde string complète.
 
 `capabilities --json` publie la matrice stable : 0 succès, 2 validation, 64
 usage, 65 données, 66 entrée absente, 69 indisponible, 70 software, 73 création
