@@ -30,10 +30,11 @@ fixe de 64 Kio et le snapshot d'audit immuable partagé, sans `Vec` du résultat
 complet ni clonage profond de la liste. Un échec de sérialisation ou d'écriture
 supprime le nouveau fichier incomplet et un chemin existant n'est jamais écrasé.
 
-Les diagnostics exposent la pression `audit_memory` et `event_bus` avec les
-octets courants, de pic et maximum, ainsi que les évictions et rejets d'éléments
-trop grands. Ces compteurs ne contiennent ni message d'audit ni payload opaque
-d'événement.
+Les diagnostics exposent la pression `audit_memory`, `event_bus`,
+`observation_memory` et `metric_memory` avec octets courants, de pic et maximum,
+ainsi que les évictions ou rejets d'admission. L'export des observations et
+métriques part de snapshots immuables partagés, pas de clonages profonds des
+historiques. Ces compteurs ne contiennent ni message d'audit ni payload opaque.
 
 Les deux binaires traitent une entrée UTF-8 bornée avec `appcore-args`. L'aide,
 la validation et la complétion dynamique Bash, Zsh, Fish et PowerShell

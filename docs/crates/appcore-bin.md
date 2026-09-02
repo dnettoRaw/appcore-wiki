@@ -32,9 +32,11 @@ optional auth-server grant tooling.
 `Vec` or deep-cloned audit list. Failed serialization or writing removes the
 new incomplete file, and an existing path is never overwritten.
 
-Diagnostics expose `audit_memory` and `event_bus` pressure with current, peak
-and maximum bytes plus evictions and oversized-item rejections. These counters
-contain no audit messages or opaque event payloads.
+Diagnostics expose `audit_memory`, `event_bus`, `observation_memory` and
+`metric_memory` pressure with current, peak and maximum bytes plus eviction or
+admission-rejection counters. Observation and metric export start from
+immutable shared snapshots rather than first deep-cloning the retained
+histories. These counters contain no audit messages or opaque event payloads.
 
 Both binaries parse bounded UTF-8 input through `appcore-args`. Generated help,
 validation and dynamic Bash, Zsh, Fish and PowerShell completion share one

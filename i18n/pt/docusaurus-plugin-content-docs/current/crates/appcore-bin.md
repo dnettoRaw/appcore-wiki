@@ -30,9 +30,12 @@ um teto de 64 MiB antes de criar a saída. Depois, serializa com buffer fixo de
 completo nem clone profundo da lista. Falha de serialização ou escrita remove o
 novo arquivo incompleto e um caminho existente nunca é sobrescrito.
 
-Os diagnósticos expõem a pressão de `audit_memory` e `event_bus` com bytes
-atuais, de pico e máximos, além de evictions e rejeições de itens grandes. Esses
-contadores não contêm mensagens de auditoria nem payloads opacos de eventos.
+Os diagnósticos expõem pressão de `audit_memory`, `event_bus`,
+`observation_memory` e `metric_memory` com bytes atuais, de pico e máximos,
+além de evictions ou rejeições de admissão. A exportação de observações e
+métricas começa por snapshots imutáveis compartilhados, não por clones
+profundos dos históricos. Esses contadores não contêm mensagens de auditoria
+nem payloads opacos.
 
 Os dois binários processam entrada UTF-8 limitada por `appcore-args`. Ajuda,
 validação e completion dinâmica para Bash, Zsh, Fish e PowerShell compartilham

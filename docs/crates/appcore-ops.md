@@ -24,6 +24,13 @@ logger implementations, metric counters and in-memory metrics,
 availability reports and compatibility reexports for
 `appcore-supervisor::managed_services`.
 
+The process-local observation sink retains at most 65,536 events and 16 MiB;
+the metric registry retains at most 4,096 names, 128 bytes per name and 1 MiB
+aggregate. Both expose count/byte pressure and immutable shared snapshots while
+keeping the owned snapshot APIs compatible. Oversized observations are not
+retained but still reach the at most 32 configured drains. The in-memory logger
+also retains at most 4,096 records and 8 MiB and exposes `shared_records`.
+
 Use it for generic operational signals. New service lifecycle code uses
 `appcore-supervisor` directly. Do not add vendor SDK lock-in or application
 business metrics to the Runtime crate.

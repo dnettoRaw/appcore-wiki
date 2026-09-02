@@ -23,6 +23,14 @@ metric counters, `ObservationEvent`/`ObservationSink`, file sink borné,
 availability report et reexports de compatibilité pour
 `appcore-supervisor::managed_services`.
 
+Le sink d'observations local au processus retient au plus 65 536 événements et
+16 Mio ; le registre de métriques retient au plus 4 096 noms, 128 octets par
+nom et 1 Mio agrégé. Tous deux exposent pression de comptage/octets et snapshots
+immuables partagés tout en conservant les API de snapshot owned. Une observation
+trop grande n'est pas retenue mais atteint toujours les 32 drains configurés au
+maximum. Le logger mémoire retient aussi au plus 4 096 enregistrements et 8 Mio
+et expose `shared_records`.
+
 À utiliser pour signaux génériques. Le nouveau code lifecycle utilise
 `appcore-supervisor` directement. Ne pas ajouter de SDK vendor ni métriques
 métier applicatives au crate.
