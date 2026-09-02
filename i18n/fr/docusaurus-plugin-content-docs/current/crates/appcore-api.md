@@ -55,6 +55,11 @@ La limite configurée s'applique au corps HTTP complet avant la
 désérialisation JSON par Axum. Les routes protégées acceptent exactement un
 header bearer `Authorization` bien formé; les doublons échouent fermés.
 
+La validation de query structurée transmet le JSON à un writer compteur borné.
+Elle applique ainsi la limite exacte d'octets sérialisés sans conserver un
+`Vec<u8>` encodé, tandis que la méthode publique `payload_bytes()` reste
+compatible. Le chemin HTTP ne valide qu'une fois avant le dispatch blocking.
+
 `HttpCommandAuth::default()` exige l'authentification et échoue fermé tant
 qu'aucun vérificateur de token n'est configuré. Seul
 `insecure_local_for_testing()` désactive explicitement l'authentification
