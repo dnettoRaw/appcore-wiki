@@ -52,6 +52,11 @@ before dispatch and renewed while work runs. Callbacks receive
 when owners can compete. Recovery remains at-least-once until the cycle receipt
 commits; callbacks and business workflow data are never serialized.
 
+Current source validates loaded task, definition, owner and claim fields by
+borrowing them and compares ordering with the last converted record. A maximum
+1,024-record unclaimed snapshot avoids 3,072 temporary string allocations
+without changing the V1 format or checks.
+
 This API is source status only. Do not infer that it is available from the
 stable `1.0.0` package shown above.
 

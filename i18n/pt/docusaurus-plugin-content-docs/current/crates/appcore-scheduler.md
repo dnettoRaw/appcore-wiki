@@ -53,6 +53,11 @@ protegido quando houver owners concorrentes. O recovery continua at-least-once
 até o commit do receipt; callbacks e dados de workflow da aplicação nunca são
 serializados.
 
+O source atual valida campos de task, definition, owner e claim por empréstimo
+e compara a ordenação com o último record convertido. Um snapshot máximo de
+1.024 records sem claims evita 3.072 alocações temporárias de strings sem mudar
+o formato ou as verificações V1.
+
 Esta API descreve apenas o status do source. Não presuma que ela esteja
 disponível no pacote estável `1.0.0` indicado acima.
 

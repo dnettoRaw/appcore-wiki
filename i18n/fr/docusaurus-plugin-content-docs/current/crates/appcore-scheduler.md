@@ -55,6 +55,11 @@ protégé quand plusieurs owners sont possibles. La récupération reste
 at-least-once jusqu'au commit du receipt ; callbacks et données de workflow de
 l'application ne sont jamais sérialisés.
 
+Le source actuel valide les champs task, definition, owner et claim par emprunt
+et compare l'ordre avec le dernier record converti. Un snapshot maximal de
+1 024 records sans claims évite 3 072 allocations temporaires de chaînes sans
+modifier le format ni les contrôles V1.
+
 Cette API décrit uniquement l'état du source. Elle ne doit pas être considérée
 comme disponible dans le paquet stable `1.0.0` indiqué ci-dessus.
 
