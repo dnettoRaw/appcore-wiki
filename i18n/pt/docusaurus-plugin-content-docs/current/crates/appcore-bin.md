@@ -24,6 +24,11 @@ volumes/environment resolvidos e `ApplicationTaskRegistry`.
 **API de host:** bootstrap/config errors/results, CLI, paths/lifecycle local,
 server entry points, build info e ferramentas opcionais de auth-server.
 
+Referências de secret `file:` do deployment aplicam teto de 64 KiB mais um byte
+sentinela para crescimento concorrente. Bytes rejeitados são limpos, e o
+whitespace aceito é removido na mesma alocação antes de movê-la para seu owner
+redacted e zeroizing.
+
 `appcore-bin export --out CAMINHO` dimensiona o pretty JSON de diagnóstico sob
 um teto de 64 MiB antes de criar a saída. Depois, serializa com buffer fixo de
 64 KiB e snapshot de auditoria imutável compartilhado, sem um `Vec` do resultado

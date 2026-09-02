@@ -26,6 +26,11 @@ resolved volume/environment values and `ApplicationTaskRegistry`.
 commands, local paths/lifecycle, server entry points, build information and
 optional auth-server grant tooling.
 
+Deployment `file:` secret references enforce a 64 KiB ceiling plus one
+sentinel byte for concurrent growth. Rejected bytes are cleared, and accepted
+whitespace is trimmed in place before the allocation moves into its redacted,
+zeroizing owner.
+
 `appcore-bin export --out PATH` measures the diagnostics pretty JSON under a
 64 MiB ceiling before it creates the output. It then serializes through a fixed
 64 KiB buffer and the shared immutable audit snapshot, without a complete result

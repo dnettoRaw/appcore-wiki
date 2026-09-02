@@ -24,6 +24,11 @@ volumes/environment résolus et `ApplicationTaskRegistry`.
 **API host :** bootstrap/config errors/results, CLI, paths/lifecycle local,
 server entry points, build info et outils auth-server optionnels.
 
+Les références secret `file:` du deployment appliquent un plafond de 64 Kio
+plus un octet sentinelle contre la croissance concurrente. Les octets rejetés
+sont effacés et les espaces acceptés sont supprimés dans la même allocation
+avant son transfert au owner expurgé et zeroizing.
+
 `appcore-bin export --out CHEMIN` mesure le pretty JSON de diagnostic sous un
 plafond de 64 Mio avant de créer la sortie. Il sérialise ensuite avec un buffer
 fixe de 64 Kio et le snapshot d'audit immuable partagé, sans `Vec` du résultat
