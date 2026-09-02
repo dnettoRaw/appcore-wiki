@@ -30,6 +30,11 @@ basés sur DNT sans exposer le plaintext au code de routage.
 `with_timeout_ms` pour le délai V1 uniforme ou `with_timeouts` pour des délais
 indépendants de connexion/admission, de lecture et d'écriture.
 
+L'encodage wire V1 emprunte l'identité source, le message et les événements
+pendant l'écriture de la `String` de sortie requise. Il ne conserve pas un batch
+cloné à côté de cette sortie et préserve le JSON V1 owned exact ainsi que la
+validation du node source.
+
 À utiliser pour réplication compatible, ordonnée et hash-chaînée. Ne pas
 contourner identité/protocole ni l'interpréter comme RAFT, multi-master ou
 résolution de conflits métier.

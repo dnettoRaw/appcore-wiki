@@ -30,6 +30,10 @@ packages without exposing plaintext to routing code.
 `with_timeout_ms` for the uniform V1 deadline or `with_timeouts` for independent
 connect/admission, read and write deadlines.
 
+V1 wire encoding borrows the source identity, message and events while writing
+the required output string. It does not retain a cloned batch beside that
+output, and preserves the exact owned V1 JSON and source-node validation.
+
 Use it for compatible, ordered, hash-chained replication. Do not bypass
 identity/protocol checks or reinterpret it as RAFT, multi-master consensus or a
 business conflict resolver.

@@ -30,6 +30,10 @@ baseados em DNT sem expor plaintext ao código de roteamento.
 `with_timeout_ms` para o deadline V1 uniforme ou `with_timeouts` para deadlines
 independentes de conexão/admissão, leitura e escrita.
 
+O encode wire V1 empresta identidade de origem, mensagem e eventos enquanto
+grava a `String` de saída exigida. Ele não retém um batch clonado ao lado dessa
+saída e preserva o JSON V1 owned exato e a validação do node de origem.
+
 Use para replicação compatível, ordenada e hash-chained. Não ignore identidade
 ou protocolo nem trate como RAFT, multi-master ou resolvedor de conflito de
 negócio.
