@@ -52,6 +52,13 @@ raiz protegida pelo proprietário: a troca maliciosa de um diretório ancestral
 por outro processo da mesma conta durante a operação permanece fora desta
 boundary portátil.
 
+O traversal visita no máximo 200.000 entradas incrementalmente, retendo apenas
+a pilha limitada de 16.384 diretórios e os resultados exigidos pelo consumidor.
+O snapshot mantém seus paths ordenados necessários sem uma segunda lista global
+de entradas; health retém somente um contador, cleanup apenas os temporários
+correspondentes e a validação de symlink nenhuma entrada. O teto de profundidade
+continua 128.
+
 ## Preflight de capacidades pós-1.0
 
 `StorageCapabilityDescriptorV1` define sete garantias exatas: transactions,

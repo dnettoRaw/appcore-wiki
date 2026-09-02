@@ -50,6 +50,12 @@ revalidated under the process lock. The one-process profile still assumes an
 owner-protected root: a hostile same-account process replacing an ancestor
 directory during an operation remains outside this portable boundary.
 
+Tree traversal visits at most 200,000 entries incrementally while retaining
+only the bounded 16,384-directory work stack and consumer-owned results.
+Snapshot creation keeps its required sorted file paths without a second global
+entry list; health retains only a counter, cleanup only matching temporary
+paths, and symlink validation no entries at all. The depth ceiling remains 128.
+
 ## Post-1.0 capability preflight
 
 `StorageCapabilityDescriptorV1` defines seven exact guarantees: transactions,

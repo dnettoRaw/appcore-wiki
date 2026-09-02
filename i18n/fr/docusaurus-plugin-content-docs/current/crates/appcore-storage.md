@@ -53,6 +53,13 @@ protégé par son propriétaire: le remplacement hostile d'un répertoire ancêt
 par un autre processus du même compte pendant l'opération reste hors de cette
 boundary portable.
 
+La traversée visite au maximum 200 000 entrées de manière incrémentale, en ne
+retenant que la pile bornée de 16 384 répertoires et les résultats requis par le
+consommateur. Le snapshot conserve ses paths triés nécessaires sans seconde
+liste globale ; health ne garde qu'un compteur, cleanup seulement les
+temporaires correspondants et la validation des symlinks aucune entrée. La
+profondeur reste plafonnée à 128.
+
 ## Preflight de capacités post-1.0
 
 `StorageCapabilityDescriptorV1` définit sept garanties exactes: transactions,
