@@ -32,6 +32,12 @@ the same file provider; they do not change the storage backend contract.
 Sealed reads derive a complete-envelope bound from `SealedStoragePolicy` and
 reject oversized files before allocating the file buffer.
 
+Complete snapshots retain their bounded file inventory, but their 16 MiB V1
+manifest no longer needs a complete encoded buffer beside it. Pretty JSON is
+serialized directly through a bounded 16 KiB writer into an exclusive atomic
+temporary and deserialized through a bounded 16 KiB reader. Exact-limit input
+remains valid and one non-retained byte detects concurrent growth.
+
 Use it when an application or Runtime service needs the documented local-first
 storage profile. Keep domain schemas and tables outside. Unsupported
 transactions fail explicitly.

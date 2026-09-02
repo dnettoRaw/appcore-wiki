@@ -33,6 +33,13 @@ Leituras seladas derivam o limite do envelope completo de
 `SealedStoragePolicy` e rejeitam arquivos grandes demais antes de alocar o
 buffer do arquivo.
 
+Snapshots completos mantêm seu inventário limitado de arquivos, mas o manifest
+V1 de 16 MiB não precisa mais de um buffer codificado completo ao lado dele. O
+pretty JSON é serializado diretamente por um writer limitado de 16 KiB para um
+temporário atômico exclusivo e desserializado por um reader limitado de 16 KiB.
+Input exatamente no limite continua válido e um byte não retido detecta
+crescimento concorrente.
+
 Use quando aplicação ou serviço precisa do perfil local-first documentado.
 Mantenha schemas e tabelas de domínio fora. Transações não suportadas falham.
 

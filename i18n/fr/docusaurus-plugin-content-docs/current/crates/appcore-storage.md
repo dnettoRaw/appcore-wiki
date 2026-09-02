@@ -33,6 +33,13 @@ Les lectures scellées dérivent une limite d'enveloppe complète depuis
 `SealedStoragePolicy` et rejettent les fichiers trop grands avant l'allocation
 du buffer fichier.
 
+Les snapshots complets conservent leur inventaire borné de fichiers, mais leur
+manifest V1 de 16 Mio n'exige plus un buffer encodé complet à ses côtés. Le
+pretty JSON est sérialisé directement par un writer borné de 16 Kio vers un
+temporaire atomique exclusif, puis désérialisé par un reader borné de 16 Kio.
+Une entrée exactement à la limite reste valide et un octet non retenu détecte
+la croissance concurrente.
+
 À utiliser pour le profil local-first documenté. Garder schémas et tables
 domaine hors du Runtime. Les transactions non supportées échouent.
 
