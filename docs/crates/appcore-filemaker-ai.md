@@ -14,6 +14,9 @@ template editable/locked policy across destructive subtrees before atomic
 mutations. Candidate documents validate and graphical models resolve before commit; patch
 sequences equal the next revision. Queries do not change revision. Artifact
 tools return bounded in-memory base64 and never select a filesystem path.
+Result sizing serializes into a non-retaining limited counter, stops on the
+first byte beyond `max_result_bytes`, and never allocates a second complete JSON
+buffer merely to enforce policy.
 `filemaker_export` also selects a bound dataset table and returns bounded CSV;
 dataset sessions never fabricate a graphical page. The tested recommended loop
 executes create, patch, inspect, validate, preview, debug mask, and export.

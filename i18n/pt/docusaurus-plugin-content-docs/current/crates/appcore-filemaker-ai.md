@@ -15,6 +15,9 @@ destrutivas antes de mutações atômicas. Documentos candidatos validam e model
 gráficos resolvem antes do commit; sequências de patch são a próxima revision. Consultas não
 alteram revision. Tools de artifact retornam base64 limitado em memória e nunca
 escolhem um path no filesystem.
+O dimensionamento do resultado serializa em um contador limitado que não retém
+bytes, para no primeiro byte além de `max_result_bytes` e não aloca um segundo
+JSON completo apenas para aplicar a policy.
 `filemaker_export` também seleciona uma tabela de dataset vinculada e retorna
 CSV limitado; sessões de dataset nunca fabricam uma página gráfica. O loop
 recomendado testado executa create, patch, inspect, validate, preview, debug

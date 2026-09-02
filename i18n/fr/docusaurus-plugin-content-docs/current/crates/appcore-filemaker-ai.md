@@ -15,6 +15,9 @@ destructifs avant toute mutation atomique. Les documents candidats sont validés
 et les modèles graphiques résolus avant commit ; la séquence de patch est la prochaine revision. Les
 requêtes ne changent pas la revision. Les outils d'artifact renvoient du base64
 borné en mémoire sans choisir de path filesystem.
+Le dimensionnement du résultat sérialise vers un compteur borné qui ne conserve
+aucun octet, s'arrête au premier octet au-delà de `max_result_bytes` et n'alloue
+pas un second JSON complet uniquement pour appliquer la policy.
 `filemaker_export` choisit aussi une table dataset liée et renvoie un CSV borné ;
 une session dataset ne fabrique jamais de page graphique. La boucle recommandée
 testée exécute create, patch, inspect, validate, preview, debug mask et export.
