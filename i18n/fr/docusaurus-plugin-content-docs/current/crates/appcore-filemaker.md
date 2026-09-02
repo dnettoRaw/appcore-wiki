@@ -192,11 +192,14 @@ par vue et exportent PNG, PDF, SVG ou un JSON stable
 occupied/free/collisions/overflow. `inspect` et `explain` conservent une trace
 structurée des x/y/width/height source, anchors, région, mesure, policy de
 collision, page/reflow et provenance.
-Le JSON et le SVG du masque comptent d'abord sous `max_output_bytes` sans retenir
-la sortie, rejettent un résultat excessif avant de toucher la destination, puis
-sérialisent directement dans le writer de l'appelant. Le workload
-`collision_mask_json_4m` mesure une sortie exacte de 4 188 826 octets avec des
-checkpoints RSS idle, pic et retenu.
+Le JSON, le SVG et le PDF du masque comptent d'abord sous `max_output_bytes`
+sans retenir la sortie, rejettent un résultat excessif avant de toucher la
+destination, puis sérialisent directement dans le writer de l'appelant. PDF
+émet des objets indépendants, un stream de commandes fixed-point de taille
+exacte et son xref sans buffer de page ni de fichier complet.
+`collision_mask_json_4m` mesure une sortie exacte de 4 188 826 octets ;
+`collision_mask_pdf_100k` mesure 100 000 rectangles et un PDF exact de 1 800 626
+octets avec checkpoints RSS idle, pic et retenu.
 
 Le core déterministe ne dépend pas de l'IA. `appcore-filemaker-ai` est un bridge
 optionnel de 20 outils sur `appcore-ai`; `appcore-filemaker-cli` est l'adaptateur
