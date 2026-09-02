@@ -31,6 +31,10 @@ sentinel byte for concurrent growth. Rejected bytes are cleared, and accepted
 whitespace is trimmed in place before the allocation moves into its redacted,
 zeroizing owner.
 
+The `auth-required` marker uses a fixed 1,025-byte stack buffer. It accepts at
+most 1 KiB and fails closed on growth, invalid UTF-8, non-regular files and
+symlinks without allocating the complete marker on the heap.
+
 `appcore-bin export --out PATH` measures the diagnostics pretty JSON under a
 64 MiB ceiling before it creates the output. It then serializes through a fixed
 64 KiB buffer and the shared immutable audit snapshot, without a complete result

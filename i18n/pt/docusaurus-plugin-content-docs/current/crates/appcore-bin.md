@@ -29,6 +29,10 @@ sentinela para crescimento concorrente. Bytes rejeitados são limpos, e o
 whitespace aceito é removido na mesma alocação antes de movê-la para seu owner
 redacted e zeroizing.
 
+O marker `auth-required` usa um buffer fixo de 1.025 bytes na stack. Ele aceita
+no máximo 1 KiB e falha fechado em crescimento, UTF-8 inválido, arquivo não
+regular e symlink, sem alocar o marker completo no heap.
+
 `appcore-bin export --out CAMINHO` dimensiona o pretty JSON de diagnóstico sob
 um teto de 64 MiB antes de criar a saída. Depois, serializa com buffer fixo de
 64 KiB e snapshot de auditoria imutável compartilhado, sem um `Vec` do resultado
