@@ -31,6 +31,11 @@ en parallèle ; une même clé idempotente n'admet toujours qu'une exécution. L
 shutdown ferme l'admission atomiquement avant le drainage borné des commandes
 admises.
 
+`RuntimeLifecycle` conserve un seul enum d'état `Copy` sous son mutex et
+applique les 12 transitions stables exactes par une fonction totale. Aucun nom
+validé ni table de transitions n'est alloué par instance. La `StateMachine`
+publique générique reste disponible et inchangée pour les états applicatifs.
+
 L'`AuditLog` local au processus borne ses snapshots de commandes et d'entrées
 génériques à 10 000 éléments et à un budget partagé par défaut de 16 Mio.
 `with_max_bytes` peut réduire le budget ; `stats` expose les octets courants/de

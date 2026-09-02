@@ -30,6 +30,11 @@ possui handlers por `Arc`. Handlers independentes executam em paralelo; uma
 chave idempotente ainda admite no máximo uma execução. O shutdown fecha a
 admissão atomicamente antes da drenagem limitada dos comandos admitidos.
 
+`RuntimeLifecycle` guarda um único enum de estado `Copy` no mutex e aplica as
+12 transições estáveis exatas por uma função total. Nenhum nome validado ou
+tabela de transições é alocado por instância. A `StateMachine` pública genérica
+continua disponível e inalterada para estados pertencentes à aplicação.
+
 O `AuditLog` local ao processo limita os snapshots de commands e entradas
 genéricas a 10.000 itens e um orçamento padrão compartilhado de 16 MiB.
 `with_max_bytes` pode apertar o orçamento; `stats` expõe bytes atuais/de pico,

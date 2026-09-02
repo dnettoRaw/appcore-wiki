@@ -30,6 +30,11 @@ owns handlers through `Arc`. Independent handlers execute concurrently; one
 idempotency key still admits at most one execution. Shutdown closes admission
 atomically before a bounded drain of admitted commands.
 
+`RuntimeLifecycle` stores one `Copy` state enum under its mutex and applies the
+exact 12 stable edges through a total transition function. It allocates no
+validated names or transition table per instance. The generic public
+`StateMachine` remains available and unchanged for application-owned states.
+
 The process-local `AuditLog` bounds its command and generic-entry snapshots by
 10,000 items and one shared 16 MiB default budget. `with_max_bytes` can tighten
 the budget; `stats` exposes current/peak bytes, evictions and rejections;
