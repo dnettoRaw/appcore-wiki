@@ -31,6 +31,12 @@ keeping the owned snapshot APIs compatible. Oversized observations are not
 retained but still reach the at most 32 configured drains. The in-memory logger
 also retains at most 4,096 records and 8 MiB and exposes `shared_records`.
 
+In the current Runtime beta, `FileObservationSink::flush` uses one 30-second
+deadline for both admission to its bounded queue and the worker's durability
+acknowledgement. `flush_timeout` accepts a smaller positive deadline. A full
+queue or stalled worker returns `TimedOut`; a flush already queued may finish
+safely after the caller's deadline.
+
 Use it for generic operational signals. New service lifecycle code uses
 `appcore-supervisor` directly. Do not add vendor SDK lock-in or application
 business metrics to the Runtime crate.

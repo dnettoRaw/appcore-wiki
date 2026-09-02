@@ -31,6 +31,12 @@ demais não são retidas, mas continuam chegando aos no máximo 32 drains
 configurados. O logger em memória também retém no máximo 4.096 registros e 8
 MiB e expõe `shared_records`.
 
+Na beta atual do Runtime, `FileObservationSink::flush` usa um único deadline de
+30 segundos para admission na fila limitada e acknowledgement durável do
+worker. `flush_timeout` aceita um prazo positivo menor. Fila cheia ou worker
+travado retorna `TimedOut`; um flush já enfileirado pode terminar com segurança
+depois do deadline do caller.
+
 Use para sinais operacionais genéricos. Código novo de lifecycle usa
 `appcore-supervisor` diretamente. Não adicione SDK de vendor nem métricas de
 negócio da aplicação ao crate.
