@@ -33,8 +33,9 @@ JSON de patches de runtime ordenados, e `--font-fallback` define a ordem exata
 das fonts registradas. `render --format csv` exporta uma tabela vinculada sem
 inventar layout gráfico para linhas de dataset.
 
-`capabilities --json` separa formatos implementados de WebP, XLSX, ZPL,
-ESC/POS, PDF/A, PDF Hybrid, links, bookmarks e acessibilidade tagged preparados.
+`capabilities --json` expõe PDF editável, flattened e híbrido. Hybrid adiciona
+texto Unicode invisível e subsetado sobre outlines determinísticos. WebP, XLSX,
+ZPL, ESC/POS, PDF/A, links, bookmarks e acessibilidade tagged continuam preparados.
 `schema --json` também declara os contratos de writer/bytes limitados, perdas
 strict/best-effort, DPI somente raster, metadados PDF determinísticos e subsets
 de fonts.

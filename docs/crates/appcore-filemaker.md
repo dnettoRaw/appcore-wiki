@@ -115,13 +115,13 @@ headers, row and cell rectangles, data styles, group continuity, totals, and
 shaped cell text are fixed before export. Continuations use the normal global
 page and collision bounds; exporters do not measure or repaginate them.
 
-Editable/flattened PDF, SVG, PNG/JPEG, and semantic/fixed HTML now render those
+Editable/flattened/hybrid PDF, SVG, PNG/JPEG, and semantic/fixed HTML now render those
 resolved fragments directly. PDF font usage includes every cell run, SVG and
 HTML include data-style fonts, and raster output outlines the same shaped
 glyphs. Preflight validates table structure, cell bounds, text diagnostics,
 and embedded-font requirements before export.
 
-Implemented outputs are editable/flattened PDF, SVG, PNG, JPEG, semantic/fixed
+Implemented outputs are editable/flattened/hybrid PDF, SVG, PNG, JPEG, semantic/fixed
 HTML, streaming CSV, and PNG/PDF/SVG/JSON debug masks. Prepared modes and nodes
 fail explicitly or enter `ExportLossReport`; no silent fallback is allowed.
 
@@ -132,14 +132,16 @@ while JPEG
 records style or image-alpha flattening before strict output. Fixed HTML does
 not advertise semantic capability. PDF emits deterministic title, creator, and
 producer metadata; editable PDF embeds exact glyph subsets and Unicode maps.
-Hybrid PDF, links, bookmarks, tagged accessibility, PDF/A, WebP, XLSX, ZPL, and
-ESC/POS remain explicit prepared contracts.
+Hybrid PDF paints deterministic outlines and adds invisible subsetted Unicode
+text at the resolved glyph coordinates for search, selection, and extraction.
+Links, bookmarks, tagged accessibility, PDF/A, WebP, XLSX, ZPL, and ESC/POS
+remain explicit prepared contracts.
 
 Validation has explicit schema, typed-data, resolved-layout, and
 exporter-aware preflight stages. Bounded warnings are first-class; strict mode
 rejects them and report truncation fails closed. Preflight detects binding,
 asset, glyph, collision, overflow, effective-DPI, vector/CMYK/JPEG-alpha,
-editable-font, and requested-accessibility gaps.
+embedded-font requirements for editable/hybrid PDF, and requested-accessibility gaps.
 
 Deterministic fingerprints frame schema and engine versions, canonical
 template/data/patches, referenced asset digests, and registered font digests.

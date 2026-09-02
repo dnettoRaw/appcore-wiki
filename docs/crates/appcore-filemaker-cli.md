@@ -35,8 +35,9 @@ applies ordered runtime patch JSON, while `--font-fallback` defines the exact
 registered fallback order. `render --format csv` exports one selected bound
 table without inventing graphical layout for dataset rows.
 
-`capabilities --json` separates implemented formats from prepared WebP, XLSX,
-ZPL, ESC/POS, PDF/A, Hybrid PDF, links, bookmarks, and tagged accessibility.
+`capabilities --json` exposes editable, flattened, and hybrid PDF. Hybrid adds
+invisible subsetted Unicode text over deterministic outlines. WebP, XLSX, ZPL,
+ESC/POS, PDF/A, links, bookmarks, and tagged accessibility remain prepared.
 `schema --json` also states the writer/bounded-byte, strict/best-effort loss,
 raster-only DPI, deterministic PDF metadata, and font-subset contracts.
 

@@ -119,14 +119,14 @@ headers repetidos, retângulos de linha/célula, estilos de dados, continuidade 
 grupo, totais e texto moldado são fixados antes do export. Continuações usam os
 limites globais normais de páginas e colisão; exporters não medem nem repaginam.
 
-PDF editável/flattened, SVG, PNG/JPEG e HTML semântico/fixo agora renderizam
+PDF editável/flattened/híbrido, SVG, PNG/JPEG e HTML semântico/fixo agora renderizam
 esses fragments resolvidos diretamente. O uso de fontes no PDF inclui cada run
 de célula, SVG e HTML incluem as fontes dos estilos de dados, e o raster contorna
 os mesmos glyphs moldados. O preflight valida estrutura da tabela, limites das
 células, diagnósticos de texto e requisitos de fontes incorporadas antes do
 export.
 
-Os outputs implementados são PDF editável/flattened, SVG, PNG, JPEG,
+Os outputs implementados são PDF editável/flattened/híbrido, SVG, PNG, JPEG,
 HTML semântico/fixo, CSV streaming e máscaras PNG/PDF/SVG/JSON. Modos e nodes
 preparados falham explicitamente ou entram em `ExportLossReport`.
 
@@ -137,15 +137,16 @@ se aplica somente a PNG/JPEG e qualidade somente a JPEG. PNG preserva
 transparência, enquanto JPEG registra flattening de alpha de style ou imagem
 antes do output strict. HTML fixo não anuncia capability semântica. PDF emite
 metadados determinísticos de título, creator e producer; PDF editável embute
-subsets exatos de glyphs e mapas Unicode. PDF Hybrid, links, bookmarks,
-acessibilidade tagged, PDF/A, WebP, XLSX, ZPL e ESC/POS permanecem contratos
-preparados explícitos.
+subsets exatos de glyphs e mapas Unicode. PDF Hybrid pinta outlines
+determinísticos e acrescenta texto Unicode invisível e subsetado nas coordenadas resolvidas dos
+glyphs para busca, seleção e extração. Links, bookmarks, acessibilidade tagged,
+PDF/A, WebP, XLSX, ZPL e ESC/POS permanecem contratos preparados explícitos.
 
 A validação tem etapas explícitas de schema, dados tipados, layout resolvido e
 preflight consciente do exporter. Warnings limitados são first-class; strict os
 rejeita e truncamento do report falha fechado. Preflight detecta gaps de
 binding, asset, glyph, colisão, overflow, DPI efetivo, vector/CMYK/alpha JPEG,
-font editável e acessibilidade solicitada.
+font incorporada para PDF editável/híbrido e acessibilidade solicitada.
 
 Fingerprints determinísticos enquadram versões de schema e engine,
 template/dados/patches canônicos, digests dos assets referenciados e das fonts

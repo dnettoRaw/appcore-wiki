@@ -38,11 +38,12 @@ collision/layout/visual/combined view, while free-region input declares its
 minimum dimensions; these accepted arguments are no longer hidden behind empty
 tool schemas.
 
-Capability discovery separates implemented exporters from prepared WebP,
-XLSX, ZPL, ESC/POS, PDF/A, Hybrid PDF, links, bookmarks, and tagged
-accessibility. Its export contract names caller-owned writers or bounded bytes,
+Capability discovery exposes editable, flattened, and hybrid PDF. Hybrid paints
+deterministic outlines plus invisible subsetted Unicode text for search,
+selection, and extraction. WebP, XLSX, ZPL, ESC/POS, PDF/A, links, bookmarks,
+and tagged accessibility remain prepared. Its export contract names caller-owned writers or bounded bytes,
 strict/best-effort loss reports, raster-only DPI, deterministic PDF metadata,
-and editable-PDF font subsets, so a model cannot infer unsupported output.
+and PDF font subsets, so a model cannot infer unsupported output.
 
 `filemaker_validate` returns bounded layout issues and explicit truncation.
 `filemaker_preflight` declares its actual format, fidelity, mode, page, DPI,

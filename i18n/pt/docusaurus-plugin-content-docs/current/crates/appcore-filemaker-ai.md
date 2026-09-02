@@ -40,11 +40,12 @@ página e view collision/layout/visual/combined, enquanto free regions declara
 suas dimensões mínimas; esses argumentos aceitos não ficam mais ocultos por
 schemas vazios.
 
-A descoberta de capabilities separa exporters implementados de WebP, XLSX,
-ZPL, ESC/POS, PDF/A, PDF Hybrid, links, bookmarks e acessibilidade tagged
-preparados. Seu contrato de export nomeia writers do chamador ou bytes
+A descoberta de capabilities expõe PDF editável, flattened e híbrido. Hybrid
+pinta outlines determinísticos e texto Unicode invisível e subsetado para busca,
+seleção e extração. WebP, XLSX, ZPL, ESC/POS, PDF/A, links, bookmarks e
+acessibilidade tagged continuam preparados. Seu contrato de export nomeia writers do chamador ou bytes
 limitados, loss reports strict/best-effort, DPI somente raster, metadados PDF
-determinísticos e subsets de fonts no PDF editável, impedindo o modelo de
+determinísticos e subsets de fonts no PDF, impedindo o modelo de
 inferir um output indisponível.
 
 `filemaker_validate` retorna issues de layout limitadas e truncamento explícito.

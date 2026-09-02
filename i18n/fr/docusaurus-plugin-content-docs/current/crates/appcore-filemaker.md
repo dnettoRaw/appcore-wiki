@@ -124,13 +124,13 @@ groupe, totaux et texte façonné sont fixés avant export. Les continuations
 respectent les bornes globales de pages et collision ; les exporters ne mesurent
 ni ne repaginent.
 
-PDF éditable/flattened, SVG, PNG/JPEG et HTML sémantique/fixe rendent maintenant
+PDF éditable/flattened/hybride, SVG, PNG/JPEG et HTML sémantique/fixe rendent maintenant
 directement ces fragments résolus. L'usage des polices PDF inclut chaque run de
 cellule, SVG et HTML incluent les polices des styles data, et le raster trace les
 mêmes glyphes façonnés. Le preflight valide structure de table, bornes des
 cellules, diagnostics de texte et exigences de polices incorporées avant export.
 
-Les sorties sont PDF éditable/flattened, SVG, PNG, JPEG, HTML sémantique/fixe,
+Les sorties sont PDF éditable/flattened/hybride, SVG, PNG, JPEG, HTML sémantique/fixe,
 CSV streaming et masques PNG/PDF/SVG/JSON. Les modes préparés échouent
 explicitement ou figurent dans `ExportLossReport`.
 
@@ -142,14 +142,17 @@ préserve la transparence, tandis que JPEG enregistre l'aplatissement alpha du
 style ou de l'image avant une sortie stricte. Le HTML fixe ne déclare pas la
 capacité sémantique. PDF émet des métadonnées déterministes de titre, creator et
 producer ; le PDF éditable embarque les subsets exacts de glyphes et les maps
-Unicode. PDF Hybrid, liens, bookmarks, accessibilité tagged, PDF/A, WebP, XLSX,
-ZPL et ESC/POS restent des contrats préparés explicites.
+Unicode. PDF Hybrid peint des contours déterministes et ajoute un texte Unicode
+invisible et subsetté aux coordonnées résolues des glyphes pour la recherche,
+la sélection et l'extraction. Liens, bookmarks, accessibilité tagged, PDF/A,
+WebP, XLSX, ZPL et ESC/POS restent des contrats préparés explicites.
 
 La validation possède des étapes explicites de schéma, données typées, layout
 résolu et preflight conscient de l'exporter. Les warnings bornés sont
 first-class ; strict les rejette et la troncature du rapport échoue fermée. Le
 preflight détecte les écarts binding, asset, glyphe, collision, overflow, DPI
-effectif, vector/CMYK/alpha JPEG, police éditable et accessibilité demandée.
+effectif, vector/CMYK/alpha JPEG, police incorporée pour PDF editable/hybride et
+accessibilité demandée.
 
 Les fingerprints déterministes cadrent versions schéma et engine,
 template/données/patches canoniques, digests des assets référencés et des
