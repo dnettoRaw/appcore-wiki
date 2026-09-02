@@ -38,6 +38,12 @@ les callbacks acceptés avec annulation coopérative ; les callbacks doivent
 consulter `TaskContext::is_cancelled()` car les threads Rust ne reçoivent pas de
 timeout forcé.
 
+Chaque parcours des tâches dues conserve un top-k limité aux slots de dispatch
+disponibles. Le max-heap préserve la priorité décroissante, l'échéance la plus
+proche et l'ordre d'enregistrement, et ne clone que les identifiants retenus.
+Avec les limites absolues de configuration, même 65 536 tâches dues ne
+conservent pas plus de 128 candidats au lieu de matérialiser l'ensemble complet.
+
 ## `1.0.2-rc` : récupération opt-in
 
 La version candidate `1.0.2-rc` implémente la frontière

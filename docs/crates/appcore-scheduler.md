@@ -37,6 +37,13 @@ the limit and pressure. Shutdown drains accepted callbacks with cooperative
 cancellation; callbacks must check `TaskContext::is_cancelled()` because Rust
 threads are not forcibly timed out.
 
+Each due-task scan retains a bounded top-k no larger than the currently
+available dispatch slots. Its max-heap preserves descending priority, earlier
+deadline and registration order while cloning only selected task IDs. The
+absolute configuration limits therefore retain at most 128 candidate records
+when all 65,536 registered tasks are due, rather than materializing the full
+set.
+
 ## `1.0.2-rc`: opt-in recovery
 
 The `1.0.2-rc` candidate implements the `SchedulerStateProvider` V1

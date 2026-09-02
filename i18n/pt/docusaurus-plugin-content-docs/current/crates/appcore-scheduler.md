@@ -36,6 +36,12 @@ expõem o limite e a pressão. O shutdown drena callbacks aceitos com cancelamen
 cooperativo; callbacks devem consultar `TaskContext::is_cancelled()` porque
 threads Rust não recebem timeout forçado.
 
+Cada varredura de tasks devidas retém um top-k limitado aos slots de despacho
+disponíveis. O max-heap preserva prioridade decrescente, deadline mais cedo e
+ordem de registro, clonando somente os IDs selecionados. Com os limites
+absolutos de configuração, mesmo 65.536 tasks devidas retêm no máximo 128
+records candidatos em vez de materializar o conjunto completo.
+
 ## `1.0.2-rc`: recovery opt-in
 
 O candidato `1.0.2-rc` implementa a fronteira
