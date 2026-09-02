@@ -58,6 +58,11 @@ therefore enforces the exact serialized-byte limit without retaining an encoded
 `Vec<u8>`, while the public `payload_bytes()` method remains compatible. The
 HTTP path validates once before the request crosses into blocking dispatch.
 
+The router owns one shared immutable `RuntimeStaticInfo`; cloning request state
+does not copy its peer lists, DNS seeds, paths or identity strings. Blocking
+dispatch takes ownership of command/query requests. Query audit keeps only the
+bounded query ID and name while the payload is in flight.
+
 `HttpCommandAuth::default()` requires authentication and fails closed until a
 token verifier is configured. Only `insecure_local_for_testing()` explicitly
 disables command/query authentication for controlled local tests. `/v1/health`

@@ -59,6 +59,12 @@ limitado. Assim, aplica o limite exato de bytes serializados sem reter um
 `Vec<u8>` codificado, mantendo compatível o método público `payload_bytes()`.
 O caminho HTTP valida uma vez antes de cruzar o dispatch blocking.
 
+O router possui um único `RuntimeStaticInfo` imutável compartilhado; clonar o
+estado do request não copia listas de peers, seeds DNS, paths ou strings de
+identidade. O dispatch blocking recebe ownership dos requests de command/query.
+O audit de query mantém somente o ID e o nome limitados enquanto o payload está
+em trânsito.
+
 `HttpCommandAuth::default()` exige autenticação e falha fechado até que um
 verificador de token seja configurado. Apenas
 `insecure_local_for_testing()` desativa explicitamente a autenticação de
