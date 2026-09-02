@@ -39,7 +39,10 @@ deployment filesystem boundary to prevent reparse races.
 Active/previous pointers and pending activation receipts borrow their
 descriptors, pass a non-retaining 1 MiB sizing check, and serialize directly to
 the atomic temporary file through a fixed 16 KiB buffer. Their V1 JSON encoding
-is unchanged.
+is unchanged. Reads also deserialize directly through a fixed 16 KiB bounded
+reader instead of retaining a complete encoded byte vector beside the decoded
+pointer or receipt. Missing files, I/O failures and decode failures remain
+distinct so the pending-activation upgrade wall is preserved.
 
 The file provider streams the bounded index once and retains only the best
 semantic version and its descriptor. Each descriptor is validated and then

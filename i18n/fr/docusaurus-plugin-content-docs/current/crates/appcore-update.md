@@ -39,7 +39,10 @@ contre les races de reparse.
 Les pointers active/previous et les receipts d'activation pending empruntent
 leurs descriptors, passent un sizing sans rétention sous 1 Mio et sérialisent
 directement dans le temporaire atomique avec un buffer fixe de 16 Kio. Leur
-JSON V1 reste inchangé.
+lecture désérialise aussi directement par un reader borné fixe de 16 Kio, sans
+conserver un vecteur complet d'octets encodés avec le pointer ou receipt décodé.
+L'absence, l'échec d'I/O et l'échec de décodage restent distincts afin de
+préserver l'upgrade wall de l'activation pending. Le JSON V1 reste inchangé.
 
 Le file provider parcourt une seule fois l'index borné en streaming et ne
 retient que la meilleure version sémantique et son descriptor. Chaque

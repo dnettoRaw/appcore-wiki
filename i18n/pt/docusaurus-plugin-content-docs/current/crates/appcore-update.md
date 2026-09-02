@@ -36,7 +36,11 @@ mas dependem da fronteira do filesystem do deployment contra races de reparse.
 
 Ponteiros active/previous e receipts de ativação pendentes emprestam seus
 descriptors, passam por sizing sem retenção sob 1 MiB e serializam diretamente
-no temporário atômico com buffer fixo de 16 KiB. O JSON V1 não mudou.
+no temporário atômico com buffer fixo de 16 KiB. As leituras também
+desserializam diretamente por um reader limitado fixo de 16 KiB, sem manter um
+vetor completo dos bytes codificados junto ao pointer ou receipt decodificado.
+Arquivo ausente, falha de I/O e falha de decode continuam distintos, preservando
+o upgrade wall da ativação pendente. O JSON V1 não mudou.
 
 O file provider percorre o índice limitado em streaming uma vez e retém somente
 a melhor versão semântica e seu descriptor. Cada descriptor é validado e então
