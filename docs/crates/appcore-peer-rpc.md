@@ -25,6 +25,9 @@ pooled and standard one-shot transports; HTTP state and host.
 
 Use `PooledPeerRpcTransport` to reuse bounded per-origin connections.
 `StdPeerRpcTransport` preserves the V1 one-shot `Connection: close` behavior.
+Both consume the owned HTTP DTO body allocation. Uncompressed V1 and exact V2
+bodies retain the same `Vec<u8>` through `HttpRequest`, without a complete clone
+at the transport boundary.
 
 Use it only after tenant, cluster, source, target, protocol, expiry, nonce and
 payload integrity can be established. `AllowPeerAuthenticator` is for tests,
