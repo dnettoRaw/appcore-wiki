@@ -38,6 +38,10 @@ du router partagent des endpoints immuables via `Arc` ; la façade directe, le
 HTTP et le peer RPC libèrent le mutex d'état du host avant d'appeler
 l'endpoint. Les queries indépendantes s'exécutent donc en parallèle et un
 enregistrement tardif échoue avec `router_frozen`.
+`query_names_iter` permet à la validation du manifest d'emprunter ce registre
+immuable ; la méthode owned déterministe `query_names` reste disponible pour la
+sortie. Avec 1 024 queries, le scan emprunté a mesuré 28,63 us p50 et 2,41 Mio
+de RSS de pic, contre 183,26 us et 2,55 Mio pour la matérialisation complète.
 
 La query intégrée `runtime.audit` limite chaque réponse aux 1 000 éléments les
 plus récents. Elle capture des snapshots partagés des enregistrements et

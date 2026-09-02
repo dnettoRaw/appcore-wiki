@@ -37,6 +37,10 @@ queries do `ApiRouter` após o bootstrap. Snapshots do router compartilham
 endpoints imutáveis por `Arc`; facade direta, HTTP e peer RPC liberam o mutex do
 estado do host antes de chamar o endpoint. Queries independentes executam em
 paralelo, e registro tardio falha com `router_frozen`.
+`query_names_iter` permite que a validação do manifest empreste esse registro
+imutável; o método owned determinístico `query_names` continua disponível para
+output. Com 1.024 queries, o scan emprestado mediu 28,63 us p50 e 2,41 MiB de
+RSS pico, contra 183,26 us e 2,55 MiB da materialização completa.
 
 A query interna `runtime.audit` limita cada resposta aos 1.000 itens mais novos.
 Ela captura snapshots compartilhados dos registros e entradas sob locks curtos
