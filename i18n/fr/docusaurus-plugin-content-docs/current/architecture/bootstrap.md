@@ -11,6 +11,11 @@ Le host lit `application.toml` et `deployment.toml` ou les overrides `APPCORE_AP
 
 Les chemins sont canonicalisés, le TOML est parsé dans des contrats versionnés et les deux manifests doivent partager le même `application_id`. Les entrées supprimées, comme `runtime.toml` ou les configs anciennes avec `app_id` sans `manifest_version`, échouent avec `NO MORE SUPPORTED PLEASE UPDATE`.
 
+Chaque fichier Application ou Deployment Manifest est limité à 1 Mio. Le host
+vérifie les metadata avant l'allocation et lit via `Take(limit + 1)` ; un
+fichier trop grand, en croissance concurrente ou avec un UTF-8 invalide échoue
+fermé avant la composition des providers.
+
 ```mermaid
 flowchart TD
     Load[Charger manifests] --> Context[Résoudre DeploymentContext]
