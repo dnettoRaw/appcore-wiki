@@ -99,6 +99,10 @@ defensive thread-failure quarantine. Safe snapshots contain lifecycle state,
 bind addresses and counters only. Direct users of
 `spawn_heartbeat_pruner` must retain and await the returned join handle.
 
+HA federation transfers each admitted request to its bounded blocking worker,
+then moves the encoded JSON buffer directly into `HttpRequest`. The complete
+inner Peer RPC payload is not cloned at either ownership boundary.
+
 Worker and client connection hashes use canonical V2 binary framing and carry
 a `v2:` marker. Earlier unversioned hashes are not interchangeable; token
 issuers and Gateway consumers must be upgraded together.

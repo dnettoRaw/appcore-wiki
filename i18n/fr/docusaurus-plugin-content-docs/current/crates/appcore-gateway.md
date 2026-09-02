@@ -103,6 +103,10 @@ reste seulement une quarantaine defensive de panne thread. Les snapshots surs
 contiennent uniquement lifecycle, adresses de bind et compteurs. Les utilisateurs directs de `spawn_heartbeat_pruner` doivent
 conserver et attendre le join handle retourne.
 
+La fédération HA transfère chaque request admise à son worker blocking borné,
+puis déplace directement le buffer JSON encodé dans `HttpRequest`. Le payload
+Peer RPC interne complet n'est cloné à aucune de ces frontières d'ownership.
+
 Les hashes de connexion worker et client utilisent un framing binaire
 canonique V2 avec le marqueur `v2:`. Les anciens hashes sans version ne sont
 pas interchangeables; émetteurs de token et consommateurs Gateway doivent être
