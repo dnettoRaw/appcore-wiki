@@ -157,7 +157,10 @@ accessibilité demandée.
 
 Les fingerprints déterministes cadrent versions schéma et engine,
 template/données/patches canoniques, digests des assets référencés et des
-polices enregistrées. `LayoutEngine::resolve_cached` ne résout qu'en cas de
+polices enregistrées. Les champs JSON canoniques utilisent une passe de
+dimensionnement suivie d'un hachage SHA-256 direct sous le budget agrégé
+`max_output_bytes`, en conservant le framing V1 sans retenir un buffer JSON
+complet. `LayoutEngine::resolve_cached` ne résout qu'en cas de
 miss du `SceneCache` borné, renvoie des scènes immuables partagées pour
 render-many et rejette les anciennes versions d'engine.
 Le batch ordonné complet de patches a une limite globale ; remove/replace

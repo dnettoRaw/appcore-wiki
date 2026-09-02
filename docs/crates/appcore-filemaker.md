@@ -146,6 +146,9 @@ embedded-font requirements for editable/hybrid PDF, and requested-accessibility 
 
 Deterministic fingerprints frame schema and engine versions, canonical
 template/data/patches, referenced asset digests, and registered font digests.
+Canonical JSON fields use a sizing pass followed by direct SHA-256 hashing
+under the aggregate `max_output_bytes` budget, preserving the V1 framing
+without retaining a complete JSON buffer.
 `LayoutEngine::resolve_cached` resolves only on a bounded `SceneCache` miss,
 returns immutable shared scenes for render-many, and rejects stale engine
 versions.

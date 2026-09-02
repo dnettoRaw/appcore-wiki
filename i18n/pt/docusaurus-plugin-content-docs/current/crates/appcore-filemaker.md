@@ -151,7 +151,10 @@ font incorporada para PDF editável/híbrido e acessibilidade solicitada.
 
 Fingerprints determinísticos enquadram versões de schema e engine,
 template/dados/patches canônicos, digests dos assets referenciados e das fonts
-registradas. `LayoutEngine::resolve_cached` resolve somente em miss do
+registradas. Campos JSON canônicos usam uma passagem de dimensionamento seguida
+de hashing SHA-256 direto sob o budget agregado `max_output_bytes`, preservando
+o framing V1 sem reter um buffer JSON completo.
+`LayoutEngine::resolve_cached` resolve somente em miss do
 `SceneCache` limitado, retorna cenas imutáveis compartilhadas para render-many
 e rejeita versões antigas do engine.
 O batch ordenado completo de patches tem limite global; remove/replace rejeitam
