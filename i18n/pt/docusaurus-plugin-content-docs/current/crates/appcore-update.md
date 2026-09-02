@@ -26,8 +26,9 @@ preparation/outcome, health check e fault injection.
 Use para binários ou artefatos opacos. O Runtime valida identidade, versão,
 protocolo, checksum e trust, sem entender código ou schema.
 
-Leituras de arquivo são limitadas e rejeitam componente final não regular. A
-ativação revalida tamanho e SHA-256 do staged e cria hard link para um path de
+Leituras de arquivo verificam tamanho antes de alocar, usam scratch fixo de 16
+KiB mais um byte sentinela não retido e rejeitam componente final não regular.
+A ativação revalida tamanho e SHA-256 do staged e cria hard link para um path de
 build imutável. Um path existente só é reutilizado quando os bytes correspondem
 exatamente ao descriptor; nunca é substituído. O no-follow atômico do
 componente final existe em Unix. Outras plataformas mantêm checks de metadata,

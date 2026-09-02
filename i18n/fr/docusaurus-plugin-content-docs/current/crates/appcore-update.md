@@ -26,10 +26,12 @@ preparation/outcome, health check et fault injection.
 À utiliser pour binaires ou artefacts opaques. Le Runtime valide identité,
 version, protocole, checksum et trust sans comprendre code ou schéma.
 
-Les lectures fichier sont bornées et rejettent un composant final non régulier.
-L'activation revalide taille et SHA-256 du staged, puis crée un hard link vers
-un path de build immuable. Un path existant n'est réutilisé que si ses octets
-correspondent exactement au descriptor; il n'est jamais remplacé. Le no-follow
+Les lectures fichier vérifient la taille avant l'allocation, utilisent un
+scratch fixe de 16 Kio plus un octet sentinelle non retenu et rejettent un
+composant final non régulier. L'activation revalide taille et SHA-256 du staged,
+puis crée un hard link vers un path de build immuable. Un path existant n'est
+réutilisé que si ses octets correspondent exactement au descriptor; il n'est
+jamais remplacé. Le no-follow
 atomique du composant final existe sous Unix. Les autres plateformes conservent
 les checks metadata mais dépendent de la frontière filesystem du déploiement
 contre les races de reparse.

@@ -28,10 +28,11 @@ Use it for application binaries or opaque artifacts. The Runtime validates
 identity, version, protocol, checksum and trust but never understands
 application code or schema.
 
-File reads are bounded and reject non-regular final components. Activation
-revalidates staged size and SHA-256, then hard-links the staged file to an
-immutable build path. An existing path is reused only when its bytes match the
-descriptor exactly; it is never replaced. Atomic final-component no-follow is
+File reads preflight size before allocation, use a fixed 16 KiB scratch buffer
+plus one non-retained sentinel byte, and reject non-regular final components.
+Activation revalidates staged size and SHA-256, then hard-links the staged file
+to an immutable build path. An existing path is reused only when its bytes
+match the descriptor exactly; it is never replaced. Atomic final-component no-follow is
 implemented on Unix. Other platforms retain metadata checks but require their
 deployment filesystem boundary to prevent reparse races.
 
