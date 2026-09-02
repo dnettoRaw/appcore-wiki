@@ -31,6 +31,13 @@ en parallèle ; une même clé idempotente n'admet toujours qu'une exécution. L
 shutdown ferme l'admission atomiquement avant le drainage borné des commandes
 admises.
 
+L'`AuditLog` local au processus borne ses snapshots de commandes et d'entrées
+génériques à 10 000 éléments et à un budget partagé par défaut de 16 Mio.
+`with_max_bytes` peut réduire le budget ; `stats` expose les octets courants/de
+pic, évictions et rejets ; `write_jsonl` transmet un snapshot copy-on-write
+partagé après libération du lock d'état. L'adaptateur compatible `export_jsonl`
+retourne intentionnellement une String owned.
+
 Les nouvelles applications utilisent les re-exports de
 `appcore_bin::application`; elles n'assemblent pas le core. Garder I/O adapters
 et comportement domaine hors de ce crate.

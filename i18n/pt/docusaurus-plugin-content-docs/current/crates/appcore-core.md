@@ -30,6 +30,13 @@ possui handlers por `Arc`. Handlers independentes executam em paralelo; uma
 chave idempotente ainda admite no máximo uma execução. O shutdown fecha a
 admissão atomicamente antes da drenagem limitada dos comandos admitidos.
 
+O `AuditLog` local ao processo limita os snapshots de commands e entradas
+genéricas a 10.000 itens e um orçamento padrão compartilhado de 16 MiB.
+`with_max_bytes` pode apertar o orçamento; `stats` expõe bytes atuais/de pico,
+evictions e rejections; `write_jsonl` transmite um snapshot copy-on-write
+compartilhado depois de liberar o lock de estado. O adaptador compatível
+`export_jsonl` retorna intencionalmente uma String owned.
+
 Aplicações novas usam re-exports de `appcore_bin::application`; não montam o
 core manualmente. Mantenha I/O adapters e comportamento de domínio fora.
 
