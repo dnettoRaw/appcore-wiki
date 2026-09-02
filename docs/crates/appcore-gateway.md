@@ -33,6 +33,11 @@ for encrypted payload routing.
 > `pending_request_count` for observation and let `EnvelopeRouter` own their
 > generation-bound lifecycle. No compatibility alias or mirror map is provided.
 
+The private directory stores 32 immutable copy-on-write shard generations.
+Admission, heartbeat and HA scans clone only those 32 `Arc` handles and release
+all shard locks before inspecting shared tenant partitions; no complete tenant
+list is allocated or cloned.
+
 The gateway resolves a tenant from the deployment-owned domain suffix or an
 explicit local-test query parameter, authenticates connections when configured,
 routes Peer RPC envelopes and mesh-relayed Peer RPC HTTP requests only inside

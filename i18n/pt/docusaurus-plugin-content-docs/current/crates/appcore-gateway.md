@@ -34,6 +34,11 @@ reexportados para roteamento de payload cifrado.
 > observação e deixe o `EnvelopeRouter` controlar o lifecycle vinculado à
 > generation. Não existe alias de compatibilidade nem mapa-espelho.
 
+O diretório privado armazena 32 gerações imutáveis de shards copy-on-write.
+Scans de admissão, heartbeat e HA copiam somente esses 32 handles `Arc` e
+liberam todos os locks dos shards antes de inspecionar as partições
+compartilhadas; nenhuma lista completa de tenants é alocada ou clonada.
+
 O gateway resolve o tenant pelo sufixo de dominio definido pelo deployment ou
 por parametro de query usado em teste local, autentica conexoes quando
 configurado, roteia envelopes Peer RPC e requests HTTP Peer RPC via mesh relay

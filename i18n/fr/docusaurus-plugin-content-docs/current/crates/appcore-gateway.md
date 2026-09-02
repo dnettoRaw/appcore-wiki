@@ -34,6 +34,11 @@ pour router des payloads chiffrés.
 > pour l'observation et laissez `EnvelopeRouter` gérer leur lifecycle lié à la
 > generation. Aucun alias historique ni map miroir n'est fourni.
 
+Le répertoire privé stocke 32 générations de shards immuables en copy-on-write.
+Les scans d'admission, heartbeat et HA ne copient que ces 32 handles `Arc` et
+libèrent tous les verrous de shard avant d'inspecter les partitions partagées ;
+aucune liste complète de tenants n'est allouée ou clonée.
+
 Le gateway résout le tenant depuis le suffixe de domaine défini par le
 deployment ou depuis un paramètre de query réservé aux tests locaux, authentifie
 les connexions lorsque configuré, route les enveloppes Peer RPC et les requests
