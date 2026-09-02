@@ -66,6 +66,9 @@ The router owns one shared immutable `RuntimeStaticInfo`; cloning request state
 does not copy its peer lists, DNS seeds, paths or identity strings. Blocking
 dispatch takes ownership of command/query requests. Query audit keeps only the
 bounded query ID and name while the payload is in flight.
+Owned command paths call `CommandRequest::into_envelope`, preserving V1
+validation while moving the existing UTF-8 allocation into `CommandEnvelope`.
+The compatible `to_envelope` method remains available to borrowed callers.
 
 `CommandTokenVerifier` also has additive borrowed request methods. Their
 defaults materialize `RequestValidationDetails` and call the existing owned

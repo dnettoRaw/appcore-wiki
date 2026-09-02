@@ -69,6 +69,9 @@ de la requête ne copie ni les listes de peers, ni les seeds DNS, ni les paths o
 les chaînes d'identité. Le dispatch blocking prend possession des requêtes
 command/query. L'audit query ne conserve que l'ID et le nom bornés pendant le
 traitement du payload.
+Les chemins command owned appellent `CommandRequest::into_envelope`, conservent
+la validation V1 et déplacent l'allocation UTF-8 existante dans
+`CommandEnvelope`. `to_envelope` reste disponible aux callers empruntés.
 
 `CommandTokenVerifier` possède aussi des méthodes additives pour les requêtes
 empruntées. Leurs defaults matérialisent `RequestValidationDetails` et appellent

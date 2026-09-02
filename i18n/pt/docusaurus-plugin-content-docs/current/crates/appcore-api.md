@@ -68,6 +68,9 @@ estado do request não copia listas de peers, seeds DNS, paths ou strings de
 identidade. O dispatch blocking recebe ownership dos requests de command/query.
 O audit de query mantém somente o ID e o nome limitados enquanto o payload está
 em trânsito.
+Os caminhos owned de command chamam `CommandRequest::into_envelope`, preservam
+a validação V1 e movem a alocação UTF-8 existente para `CommandEnvelope`. O
+método compatível `to_envelope` permanece para callers emprestados.
 
 `CommandTokenVerifier` também possui métodos aditivos para requests emprestados.
 Os defaults materializam `RequestValidationDetails` e chamam os métodos owned
