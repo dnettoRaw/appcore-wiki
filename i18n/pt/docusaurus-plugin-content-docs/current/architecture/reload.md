@@ -22,6 +22,12 @@ Um request aceito mantém sua geração até terminar. A camada de reload não o
 move nem o repete. Falha de saúde após a troca ou de drain restaura a geração
 anterior, fecha a admissão com falha e executa limpeza limitada. Reloads
 concorrentes ou obsoletos falham explicitamente.
+Uma geração com falha e requests ocupa o único slot em drain. Outro reload
+falha até o último permit liberar esse Router, impedindo que timeouts repetidos
+acumulem gerações de routing desligadas.
+Cancelar o future de reload após a troca restaura sincronicamente a geração
+anterior e move requests já admitidos pelo candidato para o mesmo slot limitado
+em drain.
 
 ## Ownership e limites
 
@@ -32,6 +38,8 @@ o serviço gerenciado `http` existente. O Supervisor atual continua sendo o
 Prazos de health e drain são limitados a 60 segundos. Snapshots expõem apenas
 contadores de geração, in-flight, transação, sucesso, falha e rollback. Eles
 nunca contêm payloads, tokens, IDs de request ou tenant nem endereços.
+`generation_snapshot` expõe uma geração ativa e no máximo uma em drain, com
+admissão e in-flight, sem reter histórico.
 
 Leadership não deriva da geração de routing. Commands continuam validando o
 lease e fencing atuais, então o reload não cria dois epochs válidos.

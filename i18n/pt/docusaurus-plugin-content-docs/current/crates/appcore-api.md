@@ -87,6 +87,12 @@ routing. Requests já aceitos mantêm o Router original até a conclusão; a
 geração anterior é drenada com prazo. Falha de saúde ou drain restaura a geração
 anterior e fecha a admissão da geração com falha.
 
+O owner retém no máximo uma geração ativa e uma em drain. Uma geração com
+falha e requests bloqueia outro reload até seu último permit liberar o Router.
+`generation_snapshot` informa admissão e in-flight ativa/em drain sem dados de
+request nem histórico ilimitado. Cancelar após a troca restaura a geração
+anterior sincronicamente.
+
 O ponteiro ativo é lock-free, prazos são limitados a 60 segundos e o snapshot
 contém apenas contadores de geração, in-flight, sucesso, falha e rollback. A
 composition root pode transferir um listener TCP já ligado para validar o bind

@@ -22,6 +22,12 @@ Une requête acceptée garde sa génération jusqu'à sa fin. La couche de reloa
 la déplace ni ne la répète. Un échec de santé après commutation ou de drain
 restaure la génération précédente, ferme l'admission défaillante et effectue un
 nettoyage borné. Les reloads concurrents ou obsolètes échouent explicitement.
+Une génération défaillante avec des requêtes occupe l'unique slot en drain. Un
+autre reload échoue jusqu'à ce que le dernier permit libère ce Router, empêchant
+les timeouts répétés d'accumuler des générations de routing détachées.
+L'annulation du future de reload après la commutation restaure synchroniquement
+la génération précédente et place les requêtes candidates déjà admises dans ce
+même slot borné en drain.
 
 ## Ownership et limites
 
@@ -32,6 +38,8 @@ owner du lifecycle et le redémarrage du processus reste externe.
 Les délais health et drain sont plafonnés à 60 secondes. Les snapshots exposent
 seulement génération, in-flight, transaction, succès, échec et rollback. Ils ne
 contiennent jamais payloads, tokens, IDs de requête ou tenant ni adresses.
+`generation_snapshot` expose une génération active et au plus une en drain,
+avec admission et in-flight, sans conserver d'historique.
 
 Le leadership ne dérive pas de la génération de routing. Les commands valident
 toujours le lease et le fencing actuels ; le reload ne crée donc pas deux epochs

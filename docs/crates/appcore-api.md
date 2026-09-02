@@ -85,6 +85,12 @@ routing switch. Requests already accepted retain their original Router until
 completion; the old generation drains under a deadline. Failed health or drain
 restores the prior generation and closes failed-generation admission.
 
+The owner retains at most one active and one retiring generation. A failed
+generation with requests blocks another reload until its final permit releases
+the Router. `generation_snapshot` reports active/retiring admission and
+in-flight counts without request data or an unbounded history. Cancelling after
+the switch synchronously restores the previous generation.
+
 The active pointer is lock-free, deadlines are capped at 60 seconds and the
 snapshot contains only generation, in-flight, success, failure and rollback
 counters. A composition root may transfer an already bound TCP listener for

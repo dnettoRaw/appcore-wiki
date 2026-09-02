@@ -88,6 +88,13 @@ Les requêtes déjà acceptées gardent leur Router initial jusqu'à leur fin ; 
 génération précédente est drainée sous délai. Un échec de santé ou de drain
 restaure l'ancienne génération et ferme l'admission de la génération défaillante.
 
+Le owner conserve au plus une génération active et une en drain. Une génération
+défaillante avec des requêtes bloque un autre reload jusqu'à ce que son dernier
+permit libère le Router. `generation_snapshot` rapporte l'admission et
+l'in-flight actif/en drain sans données de requête ni historique non borné. Une
+annulation après la commutation restaure synchroniquement la génération
+précédente.
+
 Le pointeur actif est lock-free, les délais sont plafonnés à 60 secondes et le
 snapshot contient uniquement les compteurs génération, in-flight, succès,
 échec et rollback. La composition root peut transférer un listener TCP déjà lié
