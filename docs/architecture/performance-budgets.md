@@ -36,7 +36,12 @@ report preserves the tradeoff rather than treating churn as resident memory.
 Moving identity-chunk ownership through encoder, frame and assembler then cut
 64 MiB stream requested bytes from 1,072,617,252 to 938,399,524 (-12.51%) and
 allocation operations by 7.39%, with +0.22% p99 and -0.21% process peak RSS.
-The fixed workload now fails above 960 MiB cumulative requested bytes.
+That ownership checkpoint failed above 960 MiB cumulative requested bytes.
+Phase attribution then showed 662,732,479 requested bytes in encoding. A fixed
+stack-only incompressibility probe reduced total stream requests from
+938,404,175 to 342,886,735 (-63.57%) and allocations by 47.83%. Two full-probe
+runs improved p99 by 15.38–16.14%, while compressible fixtures retained gzip.
+The gate is now 384 MiB.
 
 SQLite reports separate startup, append, point-read, fixture-construction,
 outbox-enqueue, backup and integrity-check allocation intervals. The 512-entry

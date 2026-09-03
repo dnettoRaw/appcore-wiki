@@ -39,7 +39,12 @@ Le transfert d'ownership des chunks identity entre encoder, frame et assembler
 a réduit les octets demandés par le stream de 64 Mio de 1 072 617 252 à
 938 399 524 (-12,51 %) et les allocations de 7,39 %, avec +0,22 % au p99 et
 -0,21 % au RSS de pic du processus. Le workload fixe échoue maintenant au-delà
-de 960 Mio demandés cumulativement.
+Ce checkpoint d'ownership échouait au-delà de 960 Mio demandés cumulativement.
+L'attribution par phase a ensuite montré 662 732 479 octets demandés pendant
+l'encodage. Une sonde fixe d'incompressibilité sur stack a réduit le total du
+stream de 938 404 175 à 342 886 735 (-63,57 %) et les allocations de 47,83 %.
+Deux runs de la sonde complète ont amélioré le p99 de 15,38 à 16,14 %, tout en
+gardant gzip pour les fixtures compressibles. Le gate est maintenant de 384 Mio.
 
 SQLite rapporte des intervalles d'allocation séparés pour startup, append,
 lecture ponctuelle, construction des fixtures, enqueue outbox, backup et

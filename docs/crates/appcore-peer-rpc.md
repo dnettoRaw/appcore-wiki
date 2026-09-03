@@ -66,7 +66,9 @@ Sequence, exact decoded size, chunk and aggregate SHA-256, deadline,
 cancellation and quota after gzip decompression fail closed. A failed commit
 never exposes the partial sink as complete. Identity chunks move the same owned
 allocation from source to frame to assembler instead of cloning decoded bytes
-at either boundary.
+at either boundary. A fixed stack-only full-chunk probe suppresses speculative
+gzip only when the chunk appears already incompressible; structured
+compressible chunks still use gzip.
 
 `PeerRpcStreamRegistry` owns partial sessions under exact session and decoded
 byte quotas. It writes request chunks to exclusive files in an existing

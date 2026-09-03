@@ -69,7 +69,9 @@ d'entiers. Séquence, taille décodée exacte, SHA-256 par chunk et total, deadl
 annulation et quota après gzip échouent de manière fermée. Un commit échoué
 n'expose jamais le sink partiel comme complet. Les chunks identity déplacent la
 même allocation owned de la source à la frame puis à l'assembler, sans cloner
-les octets décodés à chaque frontière.
+les octets décodés à chaque frontière. Une sonde fixe sur stack sur tout le
+chunk évite le gzip spéculatif uniquement s'il semble déjà incompressible ;
+les chunks structurés compressibles utilisent toujours gzip.
 
 `PeerRpcStreamRegistry` possède les sessions partielles sous des quotas exacts
 de sessions et d'octets décodés. Les chunks de requête utilisent des fichiers

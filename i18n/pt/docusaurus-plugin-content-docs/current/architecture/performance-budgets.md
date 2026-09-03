@@ -36,7 +36,12 @@ preserva esse tradeoff em vez de confundir churn com memória residente.
 Mover ownership dos chunks identity pelo encoder, frame e assembler reduziu os
 bytes solicitados no stream de 64 MiB de 1.072.617.252 para 938.399.524
 (-12,51%) e as alocações em 7,39%, com +0,22% no p99 e -0,21% no RSS pico do
-processo. O workload fixo agora falha acima de 960 MiB cumulativos solicitados.
+processo. Esse checkpoint de ownership falhava acima de 960 MiB cumulativos.
+A atribuição por fase mostrou então 662.732.479 bytes solicitados no encode. Uma
+sonda de incompressibilidade fixa em stack reduziu o total do stream de
+938.404.175 para 342.886.735 (-63,57%) e as alocações em 47,83%. Dois runs da
+sonda completa melhoraram o p99 entre 15,38% e 16,14%, mantendo gzip nas
+fixtures compressíveis. O gate agora é 384 MiB.
 
 SQLite relata intervalos separados de alocação para startup, append, leitura
 pontual, construção das fixtures, enqueue da outbox, backup e integrity check.

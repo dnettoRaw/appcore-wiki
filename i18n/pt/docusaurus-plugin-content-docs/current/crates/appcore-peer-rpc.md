@@ -66,7 +66,9 @@ inteiros. Sequência, tamanho decodificado exato, SHA-256 por chunk e total,
 deadline, cancelamento e quota após gzip falham fechados. Commit com falha nunca
 expõe o sink parcial como completo. Chunks identity movem a mesma alocação owned
 da source para o frame e para o assembler, sem clonar bytes decodificados em
-cada boundary.
+cada boundary. Uma sonda fixa em stack sobre todo o chunk evita gzip
+especulativo apenas quando ele parece já incompressível; chunks estruturados
+compressíveis ainda usam gzip.
 
 `PeerRpcStreamRegistry` controla sessões parciais com quotas exatas de sessões
 e bytes decodificados. Chunks de requisição usam arquivos exclusivos em um
