@@ -52,7 +52,9 @@ partagent une spécification déclarative; l'exécution reste dans ce crate.
 Le manifeste distribué final alimente un catalogue unique
 `appcore-capabilities` pendant le bootstrap. La façade directe, le HTTP
 applicatif et le peer RPC utilisent le même owner pour l'enforcement de
-déclaration, mode, idempotence, écriture opérationnelle et leadership. Les
+déclaration, mode, idempotence, écriture opérationnelle et leadership. Le
+dispatch de commande peer déplace l'allocation du payload V1 validé dans
+`CommandEnvelope`, sans clone du body applicatif complet. Les
 queries de statut Runtime restent un comportement explicite du host.
 
 Sur la ligne de maintenance 1.0 actuelle, les handlers de la façade directe,

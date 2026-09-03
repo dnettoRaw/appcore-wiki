@@ -29,6 +29,12 @@ Both consume the owned HTTP DTO body allocation. Uncompressed V1 and exact V2
 bodies retain the same `Vec<u8>` through `HttpRequest`, without a complete clone
 at the transport boundary.
 
+On ingress, `decode_peer_rpc_envelope_json` enforces the encoded ceiling and
+deserializes an uncompressed V1 body directly from borrowed HTTP bytes. The
+Runtime then moves the decoded payload allocation into `CommandEnvelope`. A
+five-process 4 MiB workload reduced p50 from 53.06 to 52.35 ms, peak RSS from
+35.80 to 23.81 MiB and workload RSS delta by 39.52%.
+
 Use it only after tenant, cluster, source, target, protocol, expiry, nonce and
 payload integrity can be established. `AllowPeerAuthenticator` is for tests,
 not remote production.

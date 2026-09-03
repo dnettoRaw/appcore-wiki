@@ -53,7 +53,9 @@ uma especificação declarativa; a execução permanece neste crate.
 O manifesto distribuído final alimenta um único catálogo de
 `appcore-capabilities` durante o bootstrap. Facade direta, HTTP de aplicação e
 peer RPC usam o mesmo owner para enforcement de declaração, mode,
-idempotência, escrita operacional e liderança. Queries de status do Runtime
+idempotência, escrita operacional e liderança. O dispatch de command peer move
+a alocação do payload V1 validado para `CommandEnvelope`, sem clone do body
+completo da aplicação. Queries de status do Runtime
 permanecem comportamento explícito do host.
 
 Na linha de manutenção 1.0 atual, handlers da facade direta, HTTP de aplicação

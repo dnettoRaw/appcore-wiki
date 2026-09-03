@@ -54,7 +54,9 @@ declarative command specification; command execution remains in this crate.
 The final distributed manifest feeds one `appcore-capabilities` catalog during
 bootstrap. Direct facade, application HTTP and peer RPC dispatch use that same
 owner for declaration, mode, idempotency, operational-write and leadership
-enforcement. Runtime-owned status queries remain explicit host behavior.
+enforcement. Peer command dispatch moves the validated V1 payload allocation
+into `CommandEnvelope` without a complete application-body clone. Runtime-owned
+status queries remain explicit host behavior.
 
 On the current 1.0 maintenance line, direct facade, application HTTP and peer
 RPC handlers execute without retaining the shared host mutex. Independent

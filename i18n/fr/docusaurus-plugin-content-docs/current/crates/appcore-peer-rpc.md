@@ -30,6 +30,13 @@ Les deux consomment l'allocation owned du body du DTO HTTP. Les bodies V1 non
 compressés et V2 exacts conservent le même `Vec<u8>` dans `HttpRequest`, sans
 clone intégral à la frontière du transport.
 
+À l'entrée, `decode_peer_rpc_envelope_json` applique le plafond encodé et
+désérialise le body V1 non compressé directement depuis les octets HTTP
+empruntés. Le Runtime déplace ensuite l'allocation du payload décodé vers
+`CommandEnvelope`. Un workload de 4 Mio sur cinq processus a réduit le p50 de
+53,06 à 52,35 ms, le RSS de pic de 35,80 à 23,81 Mio et le delta RSS de workload
+de 39,52 %.
+
 À utiliser uniquement si tenant, cluster, source, cible, protocole, expiry,
 nonce et intégrité sont établis. `AllowPeerAuthenticator` est réservé aux tests.
 
