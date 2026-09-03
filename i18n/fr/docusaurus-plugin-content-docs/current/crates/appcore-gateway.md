@@ -106,6 +106,8 @@ conserver et attendre le join handle retourne.
 La fédération HA transfère chaque request admise à son worker blocking borné,
 puis déplace directement le buffer JSON encodé dans `HttpRequest`. Le payload
 Peer RPC interne complet n'est cloné à aucune de ces frontières d'ownership.
+Le credential externe utilise `json_payload_hash` pour transmettre le JSON
+canonique à SHA-256 ; le hashing ne conserve aucun second body encodé complet.
 
 Les hashes de connexion worker et client utilisent un framing binaire
 canonique V2 avec le marqueur `v2:`. Les anciens hashes sans version ne sont

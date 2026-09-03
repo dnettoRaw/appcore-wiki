@@ -103,6 +103,8 @@ diretos de `spawn_heartbeat_pruner` devem guardar e aguardar o join handle.
 A federação HA transfere cada request admitido para seu worker blocking
 limitado e depois move o buffer JSON codificado diretamente para `HttpRequest`.
 O payload Peer RPC interno completo não é clonado nessas fronteiras de owner.
+A credential externa usa `json_payload_hash` para transmitir o JSON canônico
+ao SHA-256; o hashing não retém um segundo body codificado completo.
 
 Hashes de conexão de worker e client usam framing binário canônico V2 e levam
 o marcador `v2:`. Hashes anteriores sem versão não são intercambiáveis;

@@ -71,7 +71,8 @@ Activez les routes HTTP signées uniquement avec
 `query_stream_v2` et `command_stream_v2` lient chaque body JSON exact à un
 bearer token et déplacent request/response une frame à la fois. Le JSON
 canonique est sérialisé directement dans SHA-256 pour cette liaison, sans
-conserver un second body encodé complet à côté de la frame. L'admission open
+conserver un second body encodé complet à côté de la frame. Les dépendants
+réutilisent ce chemin byte-exact via `json_payload_hash`. L'admission open
 vérifie tenant, cluster, cible, trace, deadline, idempotence command et nonce
 replay borné. Les frames ambiguës ne sont pas répétées; l'annulation best effort
 est soutenue par le nettoyage autoritaire de la deadline.

@@ -102,6 +102,8 @@ bind addresses and counters only. Direct users of
 HA federation transfers each admitted request to its bounded blocking worker,
 then moves the encoded JSON buffer directly into `HttpRequest`. The complete
 inner Peer RPC payload is not cloned at either ownership boundary.
+The outer credential uses `json_payload_hash` to stream canonical JSON into
+SHA-256, so hashing retains no second complete encoded body.
 
 Worker and client connection hashes use canonical V2 binary framing and carry
 a `v2:` marker. Earlier unversioned hashes are not interchangeable; token
