@@ -61,6 +61,11 @@ counter instead of allocating a second encoded message. For a valid 4 MiB batch
 on Apple M1, p50 fell from 23.55 ms to 10.92 ms and peak RSS from 45.73 MiB to
 17.52 MiB; page boundaries and `pending_bytes` remain exact.
 
+`FileSyncOutbox` now measures receipt JSON and serializes it directly through a
+fixed 64 KiB writer. The maximum escaped 1,024-ID fixture is 2,086,913 bytes and
+is no longer retained as an additional production `Vec`; scans borrow IDs that
+do not require JSON unescaping.
+
 The receiver's fixed 10,000-ID processed-batch window also shares each
 `batch_id` between duplicate lookup and oldest-first eviction. Applying 10,000
 batches with 128-byte IDs on Apple M1 measured 58.27 ms p50 and reduced peak RSS

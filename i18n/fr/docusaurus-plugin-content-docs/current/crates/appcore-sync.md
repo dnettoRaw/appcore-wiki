@@ -65,6 +65,11 @@ valide de 4 Mio sur Apple M1, le p50 est passé de 23,55 ms à 10,92 ms et le RS
 de pic de 45,73 Mio à 17,52 Mio ; les limites de page et `pending_bytes` restent
 exactes.
 
+`FileSyncOutbox` mesure maintenant le JSON du receipt et le sérialise directement
+avec un writer fixe de 64 Kio. Le fixture maximal de 1 024 IDs échappés contient
+2 086 913 octets et n'est plus retenu dans un `Vec` de production
+supplémentaire ; le scan emprunte les IDs sans déséchappement JSON.
+
 La fenêtre fixe des 10 000 IDs traités du receiver partage aussi chaque
 `batch_id` entre la recherche de doublons et l'éviction du plus ancien.
 L'application de 10 000 batches avec des IDs de 128 octets sur Apple M1 a
