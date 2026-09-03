@@ -31,6 +31,12 @@ Opaque-content and Peer RPC wire serialization is unchanged. Their `Debug`
 implementations expose lengths and routing metadata instead of opaque payload
 bytes, nonce/idempotency values or remote error details.
 
+`OpaqueEnvelopeDeduplicator` keeps one shared allocation per accepted message
+ID across membership and FIFO-order indexes. Duplicate outcomes, eviction and
+the public API are unchanged. Retaining 65,536 distinct 128-byte IDs on Apple
+M1 reduced p50 from 37.55 ms to 32.83 ms and peak RSS from 35.86 MiB to
+27.25 MiB.
+
 **Maturity:** stable V1 wire contract; serialized compatibility is strict.
 
 ## Peer RPC V2 chunk frames

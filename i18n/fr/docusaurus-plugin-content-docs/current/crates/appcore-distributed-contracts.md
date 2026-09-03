@@ -31,6 +31,12 @@ La serialisation wire opaque-content et Peer RPC reste inchangee. Le `Debug`
 expose tailles et metadonnees de routage, sans bytes du payload opaque, valeurs
 nonce/idempotence ou details d'erreur distante.
 
+`OpaqueEnvelopeDeduplicator` conserve une allocation partagée par ID de message
+accepté entre les index d'appartenance et d'ordre FIFO. Le résultat duplicate,
+l'éviction et l'API publique ne changent pas. La rétention de 65 536 IDs
+distincts de 128 octets sur Apple M1 a réduit le p50 de 37,55 ms à 32,83 ms et
+le RSS de pic de 35,86 Mio à 27,25 Mio.
+
 **Maturité :** contrat wire V1 stable à compatibilité stricte.
 
 ## Frames chunked Peer RPC V2
