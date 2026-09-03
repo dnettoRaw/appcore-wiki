@@ -201,6 +201,14 @@ exacte et son xref sans buffer de page ni de fichier complet.
 `collision_mask_pdf_100k` mesure 100 000 rectangles et un PDF exact de 1 800 626
 octets avec checkpoints RSS idle, pic et retenu.
 
+Le macrobenchmark `a4_report_export_matrix` mesure le pipeline A4 maintenu de
+deux pages comme une opération bornée : décodage YAML et données typées, patch
+runtime, mesure/layout/collision/reflow, preflight et neuf sorties streamées. Il
+couvre PDF éditable, flattened et hybride ; SVG ; HTML sémantique et fixe ;
+PNG ; JPEG avec pertes best-effort explicites ; et CSV du dataset. Trois
+échantillons isolés du commit propre sur Apple M1 ont mesuré 70,56 ms p50,
+71,34 ms p95, 0,22 ms de MAD et 10,64 Mio de RSS de pic.
+
 Le core déterministe ne dépend pas de l'IA. `appcore-filemaker-ai` est un bridge
 optionnel de 20 outils sur `appcore-ai`; `appcore-filemaker-cli` est l'adaptateur
 processus borné. Exemples et preuves se trouvent sur la branche Runtime `beta`.

@@ -193,6 +193,14 @@ ou arquivo completo. `collision_mask_json_4m` mede um output exato de 4.188.826
 bytes; `collision_mask_pdf_100k` mede 100.000 retângulos e um PDF exato de
 1.800.626 bytes com checkpoints RSS idle, pico e retido.
 
+O macrobenchmark `a4_report_export_matrix` mede o pipeline A4 mantido de duas
+páginas como uma operação limitada: decoding de YAML e dados tipados, patch em
+runtime, medição/layout/colisão/reflow, preflight e nove outputs em streaming.
+Ele cobre PDF editável, flattened e híbrido; SVG; HTML semântico e fixo; PNG;
+JPEG com losses best-effort explícitos; e CSV do dataset. Três amostras isoladas
+do commit limpo no Apple M1 mediram 70,56 ms p50, 71,34 ms p95, MAD de 0,22 ms
+e 10,64 MiB de RSS pico.
+
 O core determinístico não depende de IA. `appcore-filemaker-ai` é um bridge
 opcional de 20 tools sobre `appcore-ai`; `appcore-filemaker-cli` é o adaptador
 de processo limitado. Exemplos e evidências estão na branch `beta` do Runtime.
