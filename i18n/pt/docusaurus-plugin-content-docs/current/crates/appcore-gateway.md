@@ -117,8 +117,9 @@ M1 reduziram o p50 do hash worker em 7,77%, o delta de RSS da workload em 22,73%
 e o delta retido em 19,05%; o p50 do hash client caiu 19,54%.
 
 Cada tenant mantém índices diretos e limitados por Core ID e por
-`(cluster_id, core_id)`. O lookup de roteamento é O(1); register, reconnect,
-disconnect e prune de heartbeat atualizam mapa primário, registry de
+`(cluster_id, core_id)`. O lookup comum com Core único é O(1); Core IDs
+duplicados usam scan limitado pelo teto de workers do tenant. Register,
+reconnect, disconnect e prune de heartbeat atualizam mapa primário, registry de
 capabilities e índices sob o mesmo lock do tenant. Contadores saturados de
 rebuild e inconsistência expõem saúde sem labels ilimitadas.
 
@@ -215,6 +216,13 @@ distribuição ordenada estável. No teto de 1.024 workers, cinco amostras relea
 calibradas no Apple M1 reduziram o p50 round-robin de 468,86 para 335,56 us
 (-28,43%) e o p95 de 471,98 para 339,67 us (-28,03%). Somente o resultado owned
 selecionado clona sua chave.
+
+O lookup de candidatos usa agora o índice existente por Core sem construir
+chaves tuple owned de installation/Core. Um scan exato limitado a 1.024 workers
+preserva a identidade quando instalações compartilham um Core ID. Em execuções
+equivalentes da certificação Gateway completa, allocs caíram de 7.439.239 para
+810.640 (-89,10%), bytes solicitados caíram 45,21% e o p99 de seleção melhorou
+entre 15,63% e 20,87%.
 
 ## `1.0.4-rc`: telemetria limitada de roteamento
 

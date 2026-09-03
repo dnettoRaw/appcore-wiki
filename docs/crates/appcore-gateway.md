@@ -116,7 +116,8 @@ p50 by 7.77%, workload RSS delta by 22.73% and retained delta by 19.05%; the
 client-hash p50 fell 19.54%.
 
 Each tenant keeps bounded direct worker indexes by Core ID and by
-`(cluster_id, core_id)`. Routing lookup is O(1); register, reconnect,
+`(cluster_id, core_id)`. The common unique-Core lookup is O(1); duplicate Core
+IDs use a scan bounded by the tenant worker ceiling. Register, reconnect,
 disconnect and heartbeat pruning update the primary map, capability registry
 and indexes under the same tenant lock. Saturating rebuild and inconsistency
 counters expose index health without unbounded labels.
@@ -212,6 +213,13 @@ one compact borrowed buffer to preserve stable ordered distribution. At the
 1,024-worker ceiling, five calibrated Apple M1 release samples reduced
 round-robin p50 from 468.86 to 335.56 us (-28.43%) and p95 from 471.98 to
 339.67 us (-28.03%). Only the selected owned result clones its key.
+
+Candidate lookup now uses the existing Core index without constructing owned
+installation/Core tuple keys. An exact scan bounded by 1,024 workers preserves
+identity when installations share a Core ID. In matched complete Gateway
+certification runs, allocation operations fell from 7,439,239 to 810,640
+(-89.10%), requested bytes fell 45.21%, and selection p99 improved by 15.63% to
+20.87%.
 
 ## `1.0.4-rc`: bounded routing telemetry
 

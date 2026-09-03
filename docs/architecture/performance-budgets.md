@@ -15,8 +15,17 @@ appcore-dev cert bottlenecks
 The release-profile command writes
 `builds/certification/bottlenecks.json`. The report records the exact source
 commit, dirty state, toolchain, OS, architecture, p50/p95/p99, throughput, wall
-time and peak resident memory. Linux and Windows CI execute the same gate and
-publish the JSON artifact.
+time and peak resident memory. It also counts requested Rust heap bytes,
+allocation/deallocation operations, live peak and retained growth for every
+subsystem. Linux and Windows CI execute the same gate and publish the JSON
+artifact.
+
+RSS remains mandatory because the Rust counters exclude allocator metadata,
+native libraries, memory mappings, kernel buffers and device memory. Counter
+saturation fails closed. Each fixed workload is limited to a 64 MiB live-heap
+delta and 4 MiB retained growth; the complete process retains the wider RSS and
+heap catastrophe ceilings. The first Apple M1 release calibration observed a
+29,476,637-byte live peak and 139,611 bytes of retained Rust heap growth.
 
 ## Fixed workloads
 

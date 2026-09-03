@@ -122,9 +122,10 @@ delta RSS du workload de 22,73 % et le delta retenu de 19,05 % ; le p50 du hash
 client a baissé de 19,54 %.
 
 Chaque tenant conserve des index directs et bornés par Core ID et par
-`(cluster_id, core_id)`. Le lookup de routage est O(1) ; register, reconnect,
-disconnect et prune heartbeat mettent à jour map primaire, registre de
-capabilities et index sous le même verrou tenant. Des compteurs saturés de
+`(cluster_id, core_id)`. Le lookup courant avec un Core unique est O(1) ; les
+Core IDs dupliqués utilisent un scan borné par le plafond de workers du tenant.
+Register, reconnect, disconnect et prune heartbeat mettent à jour map primaire,
+registre de capabilities et index sous le même verrou tenant. Des compteurs saturés de
 rebuild et d'incohérence exposent la santé sans labels non bornés.
 
 Dans la beta Runtime actuelle, l'index inverse des capabilities partage un seul
@@ -223,6 +224,13 @@ distribution ordonnée stable. Au plafond de 1 024 workers, cinq échantillons
 release calibrés sur Apple M1 ont réduit le p50 round-robin de 468,86 à
 335,56 us (-28,43 %) et le p95 de 471,98 à 339,67 us (-28,03 %). Seul le
 résultat owned sélectionné clone sa clé.
+
+Le lookup des candidats utilise maintenant l'index Core existant sans
+construire de clés tuple owned installation/Core. Un scan exact limité à 1 024
+workers préserve l'identité lorsque des installations partagent un Core ID. Sur
+des exécutions équivalentes de la certification Gateway complète, les
+allocations sont passées de 7 439 239 à 810 640 (-89,10 %), les octets demandés
+ont baissé de 45,21 % et le p99 de sélection de 15,63 % à 20,87 %.
 
 ## `1.0.4-rc` : télémétrie de routage bornée
 

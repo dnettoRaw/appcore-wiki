@@ -15,8 +15,18 @@ appcore-dev cert bottlenecks
 La commande en profil release écrit
 `builds/certification/bottlenecks.json`. Le rapport contient le commit exact,
 l'état dirty, la toolchain, le système, l'architecture, p50/p95/p99, le débit,
-le temps total et le pic de mémoire résidente. Le CI Linux et Windows exécute
-le même gate et publie l'artefact JSON.
+le temps total et le pic de mémoire résidente. Il compte aussi les octets
+demandés au heap Rust, les opérations d'allocation/désallocation, le pic vivant
+et la rétention par sous-système. Le CI Linux et Windows exécute le même gate et
+publie l'artefact JSON.
+
+Le RSS reste obligatoire car les compteurs Rust excluent les métadonnées de
+l'allocator, les bibliothèques natives, les memory mappings, les buffers kernel
+et la mémoire des devices. La saturation des compteurs échoue fermée. Chaque
+workload fixe est limité à 64 Mio de delta de heap vivant et 4 Mio de croissance
+retenue ; le processus complet conserve les plafonds de catastrophe RSS et heap
+plus larges. La première calibration release Apple M1 a observé un pic vivant
+de 29 476 637 octets et 139 611 octets de croissance retenue du heap Rust.
 
 ## Charges fixes
 
