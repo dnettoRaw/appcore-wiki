@@ -31,6 +31,8 @@ decision to apply any generated result.
 | Distributed | experimental Swarm contracts; no production Peer RPC adapter is claimed |
 
 The default feature set contains no ML framework or HTTP adapter.
+Lightweight Unicode whitespace normalization writes directly into its bounded
+output `String`; it does not retain an intermediate list of every input word.
 
 Local cache activation is also memory-bounded when the artifact already
 exists. Idempotent stores and concurrent writer races open the regular file
@@ -312,6 +314,10 @@ explicitly, and measured 1.91 MiB peak (-75.61%) and 1.89 MiB retained RSS
 For a representative 4 MiB Candle classifier, moving decoded buffers and
 reserving memory before reads reduced five-process median load time from 1.701
 to 1.368 ms (-19.56%) and median peak RSS from 20.16 to 16.11 MiB (-20.08%).
+
+For a 1 MiB lightweight input containing 524,288 one-byte words, removing the
+intermediate `Vec<&str>` reduced five-process median normalization time from
+4.823 to 3.337 ms (-30.80%) and median peak RSS from 12.98 to 3.88 MiB (-70.16%).
 
 The repository-local verdict is **READY FOR BETA** within the documented scope.
 Windows/Linux physical execution, sustained real-model accelerator soak and a

@@ -31,6 +31,8 @@ de la validation métier et de toute décision d'appliquer un résultat génér�
 | Distribué | contrats Swarm expérimentaux, aucun adapter Peer RPC production revendiqué |
 
 La compilation par défaut n'inclut ni framework ML ni adapter HTTP.
+La normalisation lightweight des espaces Unicode écrit directement dans sa
+`String` de sortie bornée, sans retenir une liste intermédiaire de mots.
 
 L'activation du cache local reste aussi bornée en mémoire lorsque l'artefact
 existe déjà. Les stores idempotents et les courses entre writers ouvrent le
@@ -300,6 +302,10 @@ Pour un classificateur Candle représentatif de 4 Mio, déplacer les buffers
 décodés et réserver la mémoire avant lecture a réduit la médiane de cinq
 processus de 1,701 à 1,368 ms (-19,56 %) et le RSS pic médian de 20,16 à
 16,11 Mio (-20,08 %).
+
+Pour une entrée lightweight de 1 Mio avec 524 288 mots d'un octet, supprimer le
+`Vec<&str>` intermédiaire a réduit la médiane de cinq processus de 4,823 à
+3,337 ms (-30,80 %) et le RSS pic médian de 12,98 à 3,88 Mio (-70,16 %).
 
 Le verdict local est **READY FOR BETA** dans le périmètre documenté. Exécution
 physique Windows/Linux, soak réel sur accélérateurs et adapter Swarm Peer RPC

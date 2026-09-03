@@ -31,6 +31,8 @@ domínio e decisão de aplicar qualquer resultado gerado.
 | Distribuído | contratos Swarm experimentais; sem claim de adapter Peer RPC de produção |
 
 O build default não inclui framework de ML nem adapter HTTP.
+A normalização lightweight de whitespace Unicode escreve direto em sua
+`String` de saída limitada, sem reter uma lista intermediária de palavras.
 
 A ativação do cache local também é limitada em memória quando o artefato já
 existe. Stores idempotentes e corridas entre writers abrem o arquivo regular
@@ -295,6 +297,10 @@ Para um classificador Candle representativo de 4 MiB, mover os buffers
 decodificados e reservar memória antes da leitura reduziu a mediana de cinco
 processos de 1,701 para 1,368 ms (-19,56%) e o RSS pico mediano de 20,16 para
 16,11 MiB (-20,08%).
+
+Para um input lightweight de 1 MiB com 524.288 palavras de um byte, remover o
+`Vec<&str>` intermediário reduziu a mediana de cinco processos de 4,823 para
+3,337 ms (-30,80%) e o RSS pico mediano de 12,98 para 3,88 MiB (-70,16%).
 
 O veredito local é **READY FOR BETA** dentro do escopo documentado. Execução
 física Windows/Linux, soak real em aceleradores e adapter Swarm Peer RPC de
