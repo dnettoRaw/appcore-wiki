@@ -30,6 +30,10 @@ immuables partagés tout en conservant les API de snapshot owned. Une observatio
 trop grande n'est pas retenue mais atteint toujours les 32 drains configurés au
 maximum. Le logger mémoire retient aussi au plus 4 096 enregistrements et 8 Mio
 et expose `shared_records`.
+La beta actuelle du Runtime stocke la configuration des drains dans une
+génération immuable copy-on-write. Chaque observation partage un pointeur de
+génération au lieu de cloner jusqu'à 32 handles de drain, et les callbacks
+s'exécutent toujours après la libération du lock de configuration.
 
 Dans la beta Runtime actuelle, `FileObservationSink::flush` utilise un seul
 deadline de 30 secondes pour l'admission dans la file bornée et

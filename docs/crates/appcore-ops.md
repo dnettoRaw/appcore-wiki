@@ -30,6 +30,10 @@ aggregate. Both expose count/byte pressure and immutable shared snapshots while
 keeping the owned snapshot APIs compatible. Oversized observations are not
 retained but still reach the at most 32 configured drains. The in-memory logger
 also retains at most 4,096 records and 8 MiB and exposes `shared_records`.
+The current Runtime beta stores drain configuration as an immutable
+copy-on-write generation. Each observation shares one generation pointer
+instead of cloning as many as 32 drain handles, and callbacks still run after
+the configuration lock is released.
 
 In the current Runtime beta, `FileObservationSink::flush` uses one 30-second
 deadline for both admission to its bounded queue and the worker's durability
