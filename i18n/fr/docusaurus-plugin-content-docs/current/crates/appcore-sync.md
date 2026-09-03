@@ -67,6 +67,8 @@ ID de peer.
 trié de sequence vers record, avec offsets, tailles et digests. Les payloads
 ne sont décodés que pour la page ou l'événement demandé ; un log de 256 Mio
 n'est jamais matérialisé comme une seconde collection de payloads en mémoire.
+Le journal en mémoire utilise le même index plat trié et une recherche binaire,
+sans le surcoût des buckets de hash pour les journaux locaux bornés.
 
 :::warning Mise à jour de l'outbox dans `1.0.2-rc`
 Dans la version candidate `1.0.2-rc`, `FileSyncOutbox` accepte uniquement le

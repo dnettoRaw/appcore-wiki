@@ -63,6 +63,8 @@ records não vazios e 256 bytes UTF-8 por ID de peer.
 ordenado de sequence para record, com offsets, tamanhos e digests. Payloads só
 são decodificados para a página ou evento solicitado; um log de 256 MiB nunca
 é materializado como uma segunda coleção de payloads na memória.
+O log em memória usa o mesmo índice plano ordenado e busca binária, evitando o
+overhead de buckets de hash nos logs locais limitados.
 
 :::warning Atualização da outbox no `1.0.2-rc`
 No `1.0.2-rc`, `FileSyncOutbox` aceita apenas o journal binário explícito

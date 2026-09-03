@@ -64,6 +64,8 @@ UTF-8 bytes per peer ID.
 sequence-to-record vector with offsets, lengths and digests. Payloads are
 decoded only for the requested page or event, so a 256 MiB log is never
 materialized as a second in-memory payload collection.
+The in-memory log uses the same flat sorted index and binary-search lookup,
+avoiding hash-bucket overhead for bounded local logs.
 
 :::warning Next-major outbox update
 The `1.0.2-rc` `FileSyncOutbox` accepts only the explicit
