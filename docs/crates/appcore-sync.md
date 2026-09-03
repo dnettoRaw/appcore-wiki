@@ -35,6 +35,12 @@ V1 wire encoding borrows the source identity, message and events while writing
 the required output string. It does not retain a cloned batch beside that
 output, and preserves the exact owned V1 JSON and source-node validation.
 
+The `1.0.2-rc` snapshot API can consume owned sequence/payload pairs with
+`ReplicationSnapshot::try_from_records`, moving each payload into the portable
+V1 value. `ReplicationSnapshot::validate` checks the complete contract through
+a shared reference, so persistent providers do not need a cloned payload
+collection before restore.
+
 Use it for compatible, ordered, hash-chained replication. Do not bypass
 identity/protocol checks or reinterpret it as RAFT, multi-master consensus or a
 business conflict resolver.

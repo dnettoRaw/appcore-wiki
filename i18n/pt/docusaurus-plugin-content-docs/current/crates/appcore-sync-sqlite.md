@@ -43,6 +43,13 @@ da página é selecionada antes de ler BLOBs, stats não contêm payload e recei
 parciais exatos são transacionais. Database conhecido em schema V1 migra
 atomicamente. Schemas desconhecidos e futuros continuam na update wall;
 rollback exige o backup verificado anterior à migração.
+
+A criação do snapshot portável agora move os payloads do database para o
+snapshot. O restore valida e insere por referências compartilhadas e rejeita
+bytes de payload agregados acima do orçamento configurado antes de remover rows
+existentes. Um workload de 32 MiB no Apple M1 reduziu o p50 de 466,80 para
+396,00 ms e o RSS pico de 108,97 para 73,84 MiB ao eliminar duas réplicas
+temporárias dos payloads.
 :::
 
 ## Limites certificados

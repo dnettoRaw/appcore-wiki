@@ -35,6 +35,12 @@ O encode wire V1 empresta identidade de origem, mensagem e eventos enquanto
 grava a `String` de saída exigida. Ele não retém um batch clonado ao lado dessa
 saída e preserva o JSON V1 owned exato e a validação do node de origem.
 
+A API de snapshot do `1.0.2-rc` consome pares sequence/payload owned com
+`ReplicationSnapshot::try_from_records` e move cada payload para o valor V1
+portável. `ReplicationSnapshot::validate` verifica o contrato completo por uma
+referência compartilhada, portanto providers persistentes não precisam clonar
+a coleção de payloads antes do restore.
+
 Use para replicação compatível, ordenada e hash-chained. Não ignore identidade
 ou protocolo nem trate como RAFT, multi-master ou resolvedor de conflito de
 negócio.

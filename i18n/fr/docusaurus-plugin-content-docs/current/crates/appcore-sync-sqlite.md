@@ -45,6 +45,13 @@ stats ne contiennent aucun payload et les receipts partiels exacts sont
 transactionnels. Une database connue en schéma V1 migre atomiquement. Les
 schémas inconnus et futurs restent bloqués par l'update wall ; le rollback
 exige la sauvegarde vérifiée antérieure à la migration.
+
+La création du snapshot portable déplace maintenant les payloads de la database
+dans le snapshot. Le restore valide et insère via des références partagées et
+rejette les octets agrégés au-delà du budget configuré avant de supprimer les
+rows existantes. Un workload de 32 Mio sur Apple M1 a réduit le p50 de 466,80 à
+396,00 ms et le RSS de pic de 108,97 à 73,84 Mio en supprimant deux répliques
+temporaires des payloads.
 :::
 
 ## Limites certifiées

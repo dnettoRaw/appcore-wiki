@@ -42,6 +42,12 @@ before reading BLOBs, stats contain no payload, and exact partial receipts are
 transactional. A known schema V1 database migrates atomically. Unknown and
 future schemas still hit the update wall; rollback requires the verified
 pre-migration backup.
+
+Portable snapshot creation now moves database payloads into the snapshot.
+Restore validates and inserts through shared references, and rejects aggregate
+payload bytes above the configured database budget before deleting existing
+rows. A 32 MiB Apple M1 workload reduced p50 from 466.80 to 396.00 ms and peak
+RSS from 108.97 to 73.84 MiB by removing two temporary payload replicas.
 :::
 
 ## Certified bounds

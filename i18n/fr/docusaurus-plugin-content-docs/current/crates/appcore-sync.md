@@ -36,6 +36,12 @@ pendant l'écriture de la `String` de sortie requise. Il ne conserve pas un batc
 cloné à côté de cette sortie et préserve le JSON V1 owned exact ainsi que la
 validation du node source.
 
+L'API de snapshot de `1.0.2-rc` consomme les paires sequence/payload owned avec
+`ReplicationSnapshot::try_from_records` et déplace chaque payload dans la
+valeur V1 portable. `ReplicationSnapshot::validate` vérifie le contrat complet
+par une référence partagée ; les providers persistants n'ont donc pas besoin de
+cloner la collection de payloads avant le restore.
+
 À utiliser pour réplication compatible, ordonnée et hash-chaînée. Ne pas
 contourner identité/protocole ni l'interpréter comme RAFT, multi-master ou
 résolution de conflits métier.
