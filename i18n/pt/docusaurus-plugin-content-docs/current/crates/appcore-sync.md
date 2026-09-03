@@ -57,6 +57,11 @@ um mapa canônico ordenado, mas o transmite à substituição atômica sem uma
 segunda string do tamanho do arquivo. Os limites públicos são 8 MiB, 65.536
 records não vazios e 256 bytes UTF-8 por ID de peer.
 
+`FileReplicationLog` percorre uma linha limitada por vez e mantém um vetor
+ordenado de sequence para record, com offsets, tamanhos e digests. Payloads só
+são decodificados para a página ou evento solicitado; um log de 256 MiB nunca
+é materializado como uma segunda coleção de payloads na memória.
+
 :::warning Atualização da outbox no `1.0.2-rc`
 No `1.0.2-rc`, `FileSyncOutbox` aceita apenas o journal binário explícito
 `appcore-sync-outbox-v2`. Arquivos V1, sem versão ou futuros falham com

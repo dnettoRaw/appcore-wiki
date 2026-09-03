@@ -60,6 +60,11 @@ au remplacement atomique sans seconde string de la taille du fichier. Les
 limites publiques sont 8 Mio, 65 536 records non vides et 256 octets UTF-8 par
 ID de peer.
 
+`FileReplicationLog` parcourt une ligne bornée à la fois et conserve un vecteur
+trié de sequence vers record, avec offsets, tailles et digests. Les payloads
+ne sont décodés que pour la page ou l'événement demandé ; un log de 256 Mio
+n'est jamais matérialisé comme une seconde collection de payloads en mémoire.
+
 :::warning Mise à jour de l'outbox dans `1.0.2-rc`
 Dans la version candidate `1.0.2-rc`, `FileSyncOutbox` accepte uniquement le
 journal binaire explicite `appcore-sync-outbox-v2`. Les fichiers V1, sans

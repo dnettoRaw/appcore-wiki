@@ -57,6 +57,11 @@ sorted map but streams it to the atomic replacement without a second
 file-sized string. Public limits are 8 MiB, 65,536 non-empty records and 256
 UTF-8 bytes per peer ID.
 
+`FileReplicationLog` scans one bounded line at a time and keeps a sorted
+sequence-to-record vector with offsets, lengths and digests. Payloads are
+decoded only for the requested page or event, so a 256 MiB log is never
+materialized as a second in-memory payload collection.
+
 :::warning Next-major outbox update
 The `1.0.2-rc` `FileSyncOutbox` accepts only the explicit
 `appcore-sync-outbox-v2` binary journal. V1, unversioned and future files fail
