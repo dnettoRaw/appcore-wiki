@@ -40,7 +40,10 @@ L'API de snapshot de `1.0.2-rc` consomme les paires sequence/payload owned avec
 `ReplicationSnapshot::try_from_records` et déplace chaque payload dans la
 valeur V1 portable. `ReplicationSnapshot::validate` vérifie le contrat complet
 par une référence partagée ; les providers persistants n'ont donc pas besoin de
-cloner la collection de payloads avant le restore.
+cloner la collection de payloads avant le restore. Les consommateurs mémoire qui
+possèdent le snapshot peuvent utiliser
+`InMemoryReplicationLog::restore_snapshot_owned` pour le valider et déplacer
+les payloads directement dans le log sans deux collections résidentes.
 
 À utiliser pour réplication compatible, ordonnée et hash-chaînée. Ne pas
 contourner identité/protocole ni l'interpréter comme RAFT, multi-master ou

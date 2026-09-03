@@ -40,6 +40,9 @@ The `1.0.2-rc` snapshot API can consume owned sequence/payload pairs with
 V1 value. `ReplicationSnapshot::validate` checks the complete contract through
 a shared reference, so persistent providers do not need a cloned payload
 collection before restore.
+Memory consumers that own the snapshot can use
+`InMemoryReplicationLog::restore_snapshot_owned` to validate it and move
+payloads directly into the log without retaining two payload collections.
 
 Use it for compatible, ordered, hash-chained replication. Do not bypass
 identity/protocol checks or reinterpret it as RAFT, multi-master consensus or a
