@@ -78,6 +78,8 @@ Vertical and horizontal flow containers support `start`, `center`, `end`,
 `space_between`, `space_around`, and `space_evenly`. Non-start distribution
 requires explicit, preferred, or aspect-derived primary sizes; ambiguous auto
 measurement and overflow fail before collision.
+Distributed flow planning counts visible children in two bounded passes without
+allocating a temporary reference list, preserving the same spacing results.
 
 Top-level named `exclusions` define non-painted, page-relative rectangles that
 must remain inside the trim box. They repeat within the global geometry budget

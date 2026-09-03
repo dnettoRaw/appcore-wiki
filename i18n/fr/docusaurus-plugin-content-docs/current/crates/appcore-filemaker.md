@@ -82,6 +82,9 @@ Les conteneurs flow verticaux et horizontaux acceptent `start`, `center`,
 `end`, `space_between`, `space_around` et `space_evenly`. Toute distribution
 autre que start exige une taille primaire explicite, préférée ou dérivée du
 ratio ; mesure auto ambiguë et overflow échouent avant la collision.
+La planification des flux distribués compte les enfants visibles en deux passes
+bornées, sans allouer de liste temporaire de références et en conservant le
+même espacement.
 
 Les `exclusions` nommées au niveau racine définissent des rectangles relatifs à
 la page, non peints et obligatoirement contenus dans la trim box. Elles se
