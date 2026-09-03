@@ -45,4 +45,10 @@ transfere ID, capability, payload, chave de idempotência e trace diretamente
 para seu DTO de saída. Callers e invokers customizados que usam o contrato
 emprestado permanecem compatíveis.
 
+A execução default de `handle`, `handle_local` e `handle_owned` empresta o
+provider do registry ou record de discovery selecionado durante enforcement e
+dispatch. Isso evita clonar identidade, endpoints, capabilities e metadata de
+um peer para uma chamada transitória. `resolve()` mantém seu resultado owned,
+e selectors customizados mantêm o contrato completo de candidatos owned.
+
 **Maturidade:** perfil de roteamento estável.

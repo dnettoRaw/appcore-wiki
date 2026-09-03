@@ -45,4 +45,10 @@ the Peer RPC adapter transfers the request ID, capability, payload,
 idempotency key and trace directly into its outbound DTO. Existing borrowed
 callers and custom invokers remain compatible.
 
+Default `handle`, `handle_local` and `handle_owned` execution borrows the
+selected registry provider or discovery record through enforcement and
+dispatch. This avoids cloning a peer's identity, endpoints, capabilities and
+metadata for a transient call. `resolve()` retains its owned result, and custom
+selectors retain their complete owned candidate contract.
+
 **Maturity:** stable routing profile.

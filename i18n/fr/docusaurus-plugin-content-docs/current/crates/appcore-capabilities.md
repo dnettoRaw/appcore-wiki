@@ -45,4 +45,11 @@ l'adapter Peer RPC transfère l'ID, la capability, le payload, la clé
 d'idempotence et la trace directement dans son DTO sortant. Les callers et
 invokers personnalisés qui utilisent le contrat emprunté restent compatibles.
 
+L'exécution par défaut de `handle`, `handle_local` et `handle_owned` emprunte
+le provider du registry ou le record de discovery sélectionné pendant
+l'enforcement et le dispatch. Cela évite de cloner l'identité, les endpoints,
+les capabilities et la metadata d'un peer pour un appel transitoire.
+`resolve()` conserve son résultat owned, et les selectors personnalisés
+conservent le contrat complet des candidats owned.
+
 **Maturité :** profil de routage stable.
