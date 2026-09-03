@@ -27,6 +27,13 @@ completo mantém os tetos maiores de catástrofe de RSS e heap. A primeira
 calibração release no Apple M1 observou pico vivo de 29.476.637 bytes e 139.611
 bytes de crescimento retido no heap Rust.
 
+Peer RPC relata intervalos de alocação separados para V1, stream V2, codecs V2
+e erros tipados. Base64 JSON com scratch fixo e decode emprestado reduziram os
+bytes solicitados em 8,75% no workload completo, 7,20% no stream V2 e 21,36%
+nos codecs em runs pareados no Apple M1. Pico e heap retido não mudaram;
+operações de alocação subiram 5,44% e o p99 do stream 1,69%, portanto o relatório
+preserva esse tradeoff em vez de confundir churn com memória residente.
+
 ## Cargas fixas
 
 - startup manifest-first e dispatch concorrente de commands e queries;

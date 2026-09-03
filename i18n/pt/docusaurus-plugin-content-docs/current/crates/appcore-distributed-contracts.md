@@ -49,7 +49,10 @@ tamanho/quantidade de chunks e deadline; cada chunk vincula sequência, tamanho
 decodificado exato e digest; commit vincula o digest do payload decodificado
 completo. Bytes codificados usam uma string JSON base64 canônica, não array de
 inteiros. V1 e V2 permanecem em módulos e rotas separados, sem detecção,
-conversão ou fallback.
+conversão ou fallback. O encode legível emite base64 com buffers scratch fixos
+de 3 KiB de entrada e 4 KiB de saída; o decode empresta a string JSON codificada
+quando possível antes de alocar os bytes decodificados. Fixtures exatas não
+mudam.
 
 A representação binária opt-in envolve os mesmos DTOs V2 com marcador fixo
 `APCRPC2B`, versão do codec, tipo frame/reply e tamanho Postcard exato. Bytes de

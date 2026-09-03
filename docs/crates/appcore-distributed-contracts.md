@@ -48,7 +48,10 @@ frame family. Open binds aggregate decoded bytes, chunk size/count and deadline;
 each chunk binds sequence, exact decoded length and digest; commit binds the
 complete decoded payload digest. Encoded chunk bytes use a canonical base64 JSON
 string rather than an integer array. V1 and V2 stay in separate modules and
-routes, with no detection, conversion or fallback.
+routes, with no detection, conversion or fallback. Human-readable encoding
+emits base64 through fixed 3 KiB input and 4 KiB output scratch buffers;
+decoding borrows the encoded JSON string when supported before allocating the
+decoded bytes. Exact fixtures do not change.
 
 The opt-in binary representation wraps the same V2 DTOs with the fixed
 `APCRPC2B` marker, codec version, frame/reply kind and exact Postcard length.

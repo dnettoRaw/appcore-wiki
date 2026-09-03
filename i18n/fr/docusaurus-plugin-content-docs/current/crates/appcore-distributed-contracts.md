@@ -49,6 +49,10 @@ chunks et deadline; chaque chunk lie séquence, taille décodée exacte et diges
 commit lie le digest du payload décodé complet. Les octets encodés utilisent
 une chaîne JSON base64 canonique, pas un tableau d'entiers. V1 et V2 restent
 dans des modules et routes séparés, sans détection, conversion ni fallback.
+L'encodage lisible émet le base64 avec des buffers scratch fixes de 3 Kio en
+entrée et 4 Kio en sortie; le décodage emprunte la chaîne JSON encodée lorsque
+possible avant d'allouer les octets décodés. Les fixtures exactes ne changent
+pas.
 
 La représentation binaire opt-in encadre les mêmes DTO V2 avec le marqueur fixe
 `APCRPC2B`, la version codec, le type frame/reply et la taille Postcard exacte.

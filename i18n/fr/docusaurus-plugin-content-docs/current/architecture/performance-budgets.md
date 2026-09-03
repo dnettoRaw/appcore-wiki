@@ -28,6 +28,14 @@ retenue ; le processus complet conserve les plafonds de catastrophe RSS et heap
 plus larges. La première calibration release Apple M1 a observé un pic vivant
 de 29 476 637 octets et 139 611 octets de croissance retenue du heap Rust.
 
+Peer RPC rapporte des intervalles d'allocation séparés pour V1, le stream V2,
+les codecs V2 et les erreurs typées. Le base64 JSON avec scratch fixe et le
+décodage emprunté ont réduit les octets demandés de 8,75 % sur le workload
+complet, 7,20 % sur le stream V2 et 21,36 % sur les codecs dans des runs
+appariés Apple M1. Le pic et le heap retenu ne changent pas; les opérations
+d'allocation augmentent de 5,44 % et le p99 stream de 1,69 %, donc le rapport
+conserve ce compromis sans confondre churn et mémoire résidente.
+
 ## Charges fixes
 
 - startup manifest-first et dispatch concurrent des commands et queries ;

@@ -27,6 +27,13 @@ delta and 4 MiB retained growth; the complete process retains the wider RSS and
 heap catastrophe ceilings. The first Apple M1 release calibration observed a
 29,476,637-byte live peak and 139,611 bytes of retained Rust heap growth.
 
+Peer RPC reports non-overlapping allocation intervals for V1, V2 streaming, V2
+codecs and typed errors. Fixed-scratch JSON base64 and borrowed decode reduced
+requested bytes by 8.75% for the complete workload, 7.20% for V2 streaming and
+21.36% for codecs in matched Apple M1 runs. Peak and retained heap did not
+change; allocation operations rose 5.44% and stream p99 rose 1.69%, so the
+report preserves the tradeoff rather than treating churn as resident memory.
+
 ## Fixed workloads
 
 - manifest-first startup plus concurrent command and query dispatch;
