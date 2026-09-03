@@ -85,6 +85,8 @@ ratio ; mesure auto ambiguë et overflow échouent avant la collision.
 La planification des flux distribués compte les enfants visibles en deux passes
 bornées, sans allouer de liste temporaire de références et en conservant le
 même espacement.
+Le fingerprint trie les références empruntées aux noms d'assets, évitant les
+chaînes clonées pendant la résolution déterministe.
 
 Les `exclusions` nommées au niveau racine définissent des rectangles relatifs à
 la page, non peints et obligatoirement contenus dans la trim box. Elles se

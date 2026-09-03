@@ -83,6 +83,8 @@ auto-medição ambígua e overflow falham antes da colisão.
 O planejamento de flow distribuído conta os filhos visíveis em duas passagens
 limitadas, sem alocar uma lista temporária de referências e preservando o mesmo
 espaçamento.
+O fingerprint ordena referências emprestadas aos nomes de assets, evitando
+strings clonadas durante a resolução determinística.
 
 `exclusions` nomeadas no nível superior definem retângulos relativos à página
 que não são pintados e devem ficar dentro do trim box. Elas repetem dentro do
