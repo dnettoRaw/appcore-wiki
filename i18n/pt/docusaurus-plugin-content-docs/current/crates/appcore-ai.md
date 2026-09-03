@@ -125,6 +125,13 @@ backend, modalidade, qualidade, privacidade e requisitos de recurso. Backends
 decidem como executar a request, mas o runtime continua dono de admission,
 cancelamento, health, observabilidade e policy.
 
+`ModelRegistryLimits` torna explícita a retenção de metadata: modelos,
+localizações por modelo, localizações agregadas e bytes contabilizados possuem
+tetos configuráveis abaixo dos máximos fixos de segurança. Iteradores iniciais
+e adições posteriores excessivos falham antes da retenção ou copy-on-write,
+enquanto duplicatas continuam idempotentes. `ModelRegistry::pressure` expõe
+contagens e bytes atuais/de pico e rejeições sem labels de alta cardinalidade.
+
 A execução pode ser local, remota ou delegada a swarm experimental:
 
 ```rust
@@ -268,6 +275,12 @@ routing, scaling de registry/scheduler, batching, artifacts, Candle/training e
 passou de 96,417 us para 21,958 us p50 e batch Candle 32 de 68,959 us para
 31,041 us. O relatório também mantém visíveis regressões de batch pequeno e o custo
 intencional da proteção no-follow.
+
+Um workload separado com 65.536 localizações de peers antes retinha todas as
+entradas e alcançava 7,83 MiB de RSS pico/retido. Com admissão limitada, ele
+retém o máximo default de 128 por modelo, rejeita o restante explicitamente e
+mediu 1,91 MiB de RSS pico (-75,61%) e 1,89 MiB retido (-75,86%) em cinco
+processos Apple M1.
 
 O veredito local é **READY FOR BETA** dentro do escopo documentado. Execução
 física Windows/Linux, soak real em aceleradores e adapter Swarm Peer RPC de

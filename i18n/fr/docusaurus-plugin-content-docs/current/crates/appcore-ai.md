@@ -125,6 +125,14 @@ modalité, qualité, confidentialité et exigences de ressources. Les backends
 décident comment exécuter la request, mais le runtime possède encore admission,
 annulation, health, observabilité et policy.
 
+`ModelRegistryLimits` rend la rétention de metadata explicite : modèles,
+localisations par modèle, total des localisations et octets comptabilisés ont
+des plafonds configurables sous des maxima de sécurité fixes. Les itérateurs
+initiaux et ajouts ultérieurs excessifs échouent avant rétention ou
+copy-on-write, tandis que les doublons restent idempotents.
+`ModelRegistry::pressure` expose comptes/octets courants et de pic ainsi que
+les rejets sans labels de haute cardinalité.
+
 L'exécution peut être locale, distante ou déléguée à un swarm expérimental :
 
 ```rust
@@ -272,6 +280,12 @@ Candle/training et 1–1 000 candidats Swarm. Sur l'Apple M1 documenté, resolve
 chaud à 32 routes passe de 96,417 us à 21,958 us p50 et batch Candle 32 de
 68,959 us à 31,041 us. Le rapport conserve aussi les régressions petit batch et le
 coût volontaire de la protection no-follow.
+
+Un workload séparé de 65 536 localisations peer retenait auparavant toutes les
+entrées et atteignait 7,83 Mio de RSS pic/retenu. Avec l'admission bornée, il
+retient le maximum par défaut de 128 par modèle, rejette explicitement le reste
+et a mesuré 1,91 Mio de RSS pic (-75,61 %) et 1,89 Mio retenu (-75,86 %) sur
+cinq processus Apple M1.
 
 Le verdict local est **READY FOR BETA** dans le périmètre documenté. Exécution
 physique Windows/Linux, soak réel sur accélérateurs et adapter Swarm Peer RPC

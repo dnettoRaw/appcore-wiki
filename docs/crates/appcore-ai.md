@@ -126,6 +126,13 @@ privacy and resource requirements. Backend SPI implementations decide how to
 execute a request, but the runtime still owns admission, cancellation, health,
 observability and policy.
 
+`ModelRegistryLimits` makes metadata retention explicit: models, locations per
+model, aggregate locations and accounted location bytes all have configurable
+ceilings below fixed safety maxima. Oversized initial iterators and later
+additions fail before retention or copy-on-write, while duplicate additions
+remain idempotent. `ModelRegistry::pressure` exposes current/peak counts and
+bytes plus rejected admissions without high-cardinality labels.
+
 Execution can be local, remote or delegated to an experimental swarm:
 
 ```rust
@@ -286,6 +293,12 @@ M1 reference run, warm resolution over 32 routes improved from 96.417 us to
 21.958 us p50, and Candle batch 32 from 68.959 us to 31.041 us. The report also
 shows small-batch regressions and the intentional cost of no-follow
 artifact checks.
+
+A separate 65,536-peer-location pressure workload previously retained every
+entry and reached 7.83 MiB peak/retained RSS. With bounded model-location
+admission it retains the default maximum of 128 per model, rejects the rest
+explicitly, and measured 1.91 MiB peak (-75.61%) and 1.89 MiB retained RSS
+(-75.86%) across five Apple M1 processes.
 
 The repository-local verdict is **READY FOR BETA** within the documented scope.
 Windows/Linux physical execution, sustained real-model accelerator soak and a
