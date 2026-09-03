@@ -34,7 +34,9 @@ only verified new files; restore never replaces a live database.
 Outbox enqueue computes the exact canonical JSON size and writes directly to an
 incremental SQLite BLOB. Duplicate checks, page reads and startup integrity
 validation also stream BLOB content, avoiding an additional encoded
-record-sized `Vec<u8>` beside the owned message.
+record-sized `Vec<u8>` beside the owned message. Read and write scratch follows
+the encoded size with fixed 64 KiB and 1 MiB ceilings, so small records do not
+reserve maximum buffers.
 
 Its declared storage guarantees are transactions, locking, snapshot, online
 backup and multi-process operation on one local filesystem. Streaming,
@@ -63,6 +65,13 @@ was 1.086 ms at 3,729 operations/s and read p99 was 0.583 ms at 6,578
 operations/s. A verified 3,182,592-byte online backup took 73.870 ms; the full
 integrity scan took 15.675 ms. All 14 conformance tests also passed on Linux
 arm64 and amd64; Windows GNU cross-check and Clippy passed.
+
+The current certification isolates seven SQLite allocation phases. In 512
+small-record enqueues, the provider requested 255,676 Rust heap bytes with no
+retained growth and measured 141,791 ns p99, below explicit 2 MiB and 250 ms
+gates. Right-sized BLOB scratch reduced requested bytes for the full SQLite
+workload from 578,081,344 to 8,251,670 (-98.57%) and peak live-heap delta from
+1,083,528 to 233,600 bytes (-78.44%).
 
 The provider uses the coordinated `appcore-sync` and `appcore-storage`
 `2.0.0-alpha.1` contracts. Stable `1.0.0` applications do not select it

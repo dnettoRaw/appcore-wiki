@@ -34,6 +34,14 @@ nos codecs em runs pareados no Apple M1. Pico e heap retido não mudaram;
 operações de alocação subiram 5,44% e o p99 do stream 1,69%, portanto o relatório
 preserva esse tradeoff em vez de confundir churn com memória residente.
 
+SQLite relata intervalos separados de alocação para startup, append, leitura
+pontual, construção das fixtures, enqueue da outbox, backup e integrity check.
+O enqueue de 512 records pequenos tem gates de 2 MiB solicitados no heap Rust e
+250 ms p99. O scratch proporcional do BLOB incremental reduziu bytes solicitados
+no workload completo de 578.081.344 para 8.251.670 (-98,57%) e o delta de heap
+vivo de 1.083.528 para 233.600 bytes (-78,44%); o enqueue solicitou 255.676
+bytes, não reteve crescimento e mediu 141.791 ns p99.
+
 ## Cargas fixas
 
 - startup manifest-first e dispatch concorrente de commands e queries;

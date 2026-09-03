@@ -57,10 +57,11 @@ Use the [inbound TLS sidecar profile](./inbound-tls-sidecar) for certificate
 rotation. It keeps the Runtime listener stable and adds no second Runtime
 routing path.
 
-The current `appcore-api 1.0.2-rc` candidate implements same-listener routing and accepts ownership
-of a pre-bound TCP listener. Address-changing composition and external
-cross-platform certification remain pending. This API is not available from
-the stable `1.0.0` package.
+The current `appcore-api 1.0.2-rc` candidate implements same-listener routing,
+and `appcore-bin` composes it as the existing supervised HTTP service over a
+pre-bound TCP listener. Address-changing composition, a coordinated
+configuration trigger and external cross-platform certification remain post-GA
+work. This API is not available from the stable `1.0.0` package.
 
 ## Evidence
 

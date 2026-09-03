@@ -55,10 +55,11 @@ Use o [perfil sidecar TLS de entrada](./inbound-tls-sidecar) para rotação de
 certificado. Ele mantém o listener do Runtime estável e não cria um segundo
 caminho de routing no Runtime.
 
-O candidato atual `appcore-api 1.0.2-rc` implementa routing no mesmo listener e aceita um listener
-TCP pré-ligado. Composição com mudança de endereço e certificação externa
-multiplataforma permanecem pendentes. A API não está disponível no pacote
-estável `1.0.0`.
+O candidato atual `appcore-api 1.0.2-rc` implementa routing no mesmo listener, e
+o `appcore-bin` o compõe como o serviço HTTP supervisionado existente sobre um
+TCP listener pré-ligado. Composição com mudança de endereço, gatilho coordenado
+de configuração e certificação externa multiplataforma continuam como trabalho
+pós-GA. A API não está disponível no pacote estável `1.0.0`.
 
 ## Evidência
 

@@ -34,6 +34,14 @@ requested bytes by 8.75% for the complete workload, 7.20% for V2 streaming and
 change; allocation operations rose 5.44% and stream p99 rose 1.69%, so the
 report preserves the tradeoff rather than treating churn as resident memory.
 
+SQLite reports separate startup, append, point-read, fixture-construction,
+outbox-enqueue, backup and integrity-check allocation intervals. The 512-entry
+small-record enqueue is gated at 2 MiB requested Rust heap and 250 ms p99.
+Right-sized incremental BLOB scratch reduced complete-workload requested bytes
+from 578,081,344 to 8,251,670 (-98.57%) and peak live-heap delta from 1,083,528
+to 233,600 bytes (-78.44%); enqueue itself requested 255,676 bytes, retained no
+growth and measured 141,791 ns p99.
+
 ## Fixed workloads
 
 - manifest-first startup plus concurrent command and query dispatch;

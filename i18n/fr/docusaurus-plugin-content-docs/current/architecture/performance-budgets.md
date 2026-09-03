@@ -36,6 +36,14 @@ appariés Apple M1. Le pic et le heap retenu ne changent pas; les opérations
 d'allocation augmentent de 5,44 % et le p99 stream de 1,69 %, donc le rapport
 conserve ce compromis sans confondre churn et mémoire résidente.
 
+SQLite rapporte des intervalles d'allocation séparés pour startup, append,
+lecture ponctuelle, construction des fixtures, enqueue outbox, backup et
+integrity check. L'enqueue de 512 petits records est borné à 2 Mio demandés au
+heap Rust et 250 ms p99. Le scratch ajusté du BLOB incrémental a réduit les
+octets demandés par le workload complet de 578 081 344 à 8 251 670 (-98,57 %)
+et le delta de heap vivant de 1 083 528 à 233 600 octets (-78,44 %) ; l'enqueue
+a demandé 255 676 octets, sans croissance retenue, et mesuré 141 791 ns p99.
+
 ## Charges fixes
 
 - startup manifest-first et dispatch concurrent des commands et queries ;

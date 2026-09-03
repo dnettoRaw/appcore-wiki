@@ -37,7 +37,9 @@ L'enqueue outbox calcule la taille exacte du JSON canonique, puis écrit
 directement dans un BLOB SQLite incrémental. Les contrôles de doublons, lectures
 de pages et validations d'intégrité au startup transmettent aussi le contenu du
 BLOB, évitant un `Vec<u8>` encodé supplémentaire de la taille du record à côté
-du message owned.
+du message owned. Le scratch de lecture et d'écriture suit la taille encodée,
+avec des plafonds de 64 Kio et 1 Mio ; les petits records ne réservent pas les
+buffers maximaux.
 
 Les garanties déclarées sont transactions, locking, snapshot, sauvegarde en
 ligne et fonctionnement multiprocessus sur un filesystem local. Streaming,
@@ -69,6 +71,13 @@ le p99 de lecture de 0,583 ms à 6 578 opérations/s. La sauvegarde en ligne
 vérifiée de 3 182 592 octets a pris 73,870 ms ; le contrôle d'intégrité complet
 15,675 ms. Les 14 tests de conformité ont aussi réussi sous Linux arm64 et
 amd64 ; le check croisé et Clippy Windows GNU ont réussi.
+
+La certification actuelle isole sept phases d'allocation SQLite. Pour 512
+enqueues de petits records, le provider a demandé 255 676 octets du heap Rust
+sans rétention et mesuré 141 791 ns p99, sous les gates explicites de 2 Mio et
+250 ms. Le scratch ajusté a réduit les octets demandés par le workload SQLite
+complet de 578 081 344 à 8 251 670 (-98,57 %) et le delta de heap vivant de
+1 083 528 à 233 600 octets (-78,44 %).
 
 Le provider utilise les contrats coordonnés `appcore-sync` et `appcore-storage`
 `2.0.0-alpha.1`. Les applications stables `1.0.0` ne le sélectionnent pas
