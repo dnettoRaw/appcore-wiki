@@ -39,9 +39,11 @@ envelopes de sync, Peer RPC, DTOs do gateway e descritores de update.
 suas implementações.
 
 Execute `appcore-dev test fuzz` para compilar todos os workspaces de fuzz com
-dependências travadas. Cada alvo rejeita entradas maiores que 256 KiB antes de
-chamar a fronteira. Código de ciclo de vida com estado continua coberto por
-testes determinísticos, de propriedades, concorrência e integração, pois bytes
+dependências travadas. O mesmo gate usa os lockfiles commitados dos consumers
+externos SDK e three-artifact e falha em vez de atualizar silenciosamente uma
+fixture. Cada alvo rejeita entradas maiores que 256 KiB antes de chamar a
+fronteira. Código de ciclo de vida com estado continua coberto por testes
+determinísticos, de propriedades, concorrência e integração, pois bytes
 aleatórios não representam bem essas invariantes.
 
 ## Limitations

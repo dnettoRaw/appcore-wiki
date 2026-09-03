@@ -45,7 +45,9 @@ gateway DTOs and update descriptors. `appcore-ai` and `appcore-filemaker` keep
 specialized fuzz workspaces next to their implementations.
 
 Run `appcore-dev test fuzz` to compile every fuzz workspace with its locked
-dependencies. A target rejects inputs larger than 256 KiB before invoking the
+dependencies. The same test gate uses the committed lockfiles for the external
+SDK and three-artifact consumers, and fails instead of updating a fixture
+silently. A target rejects inputs larger than 256 KiB before invoking the
 boundary. Stateful lifecycle code remains in deterministic, property,
 concurrency and integration tests because random bytes do not represent those
 invariants usefully.

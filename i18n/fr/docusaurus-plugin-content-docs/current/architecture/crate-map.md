@@ -39,10 +39,13 @@ descripteurs d'update. `appcore-ai` et `appcore-filemaker` conservent leurs
 workspaces spécialisés près de leurs implémentations.
 
 Exécuter `appcore-dev test fuzz` compile tous les workspaces de fuzz avec leurs
-dépendances verrouillées. Chaque cible rejette les entrées de plus de 256 KiB
-avant d'appeler la frontière. Le code de cycle de vie avec état reste couvert
-par des tests déterministes, de propriétés, de concurrence et d'intégration,
-car des octets aléatoires ne représentent pas utilement ces invariants.
+dépendances verrouillées. Le même gate utilise les lockfiles commités des
+consumers externes SDK et three-artifact et échoue au lieu de modifier
+silencieusement une fixture. Chaque cible rejette les entrées de plus de
+256 KiB avant d'appeler la frontière. Le code de cycle de vie avec état reste
+couvert par des tests déterministes, de propriétés, de concurrence et
+d'intégration, car des octets aléatoires ne représentent pas utilement ces
+invariants.
 
 ## Limitations
 
