@@ -52,6 +52,14 @@ valide tout le batch, l'arithmétique de sequence et chaque limite de record
 avant toute mutation du log ou checkpoint; un événement final invalide ne
 laisse pas d'append partiel.
 
+Dans `1.0.2-rc`, `FileSyncCheckpointStore` parcourt une ligne V1 bornée à la
+fois avec un reader fixe de 16 Kio. Le démarrage ne conserve aucune map
+décodée ; le lookup valide tout le fichier et ne possède que le hash
+correspondant. Une mutation construit une map canonique triée, mais la transmet
+au remplacement atomique sans seconde string de la taille du fichier. Les
+limites publiques sont 8 Mio, 65 536 records non vides et 256 octets UTF-8 par
+ID de peer.
+
 :::warning Mise à jour de l'outbox dans `1.0.2-rc`
 Dans la version candidate `1.0.2-rc`, `FileSyncOutbox` accepte uniquement le
 journal binaire explicite `appcore-sync-outbox-v2`. Les fichiers V1, sans

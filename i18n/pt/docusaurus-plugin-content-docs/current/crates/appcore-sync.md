@@ -50,6 +50,13 @@ checkpoint são validados na escrita e na leitura. O receiver valida o batch
 completo, a aritmética de sequence e cada limite de record antes de alterar log
 ou checkpoint; um evento inválido no fim não deixa append parcial.
 
+No `1.0.2-rc`, `FileSyncCheckpointStore` percorre uma linha V1 limitada por vez
+com reader fixo de 16 KiB. O startup não retém mapa decodificado; o lookup
+valida todo o arquivo e possui somente o hash correspondente. A mutação monta
+um mapa canônico ordenado, mas o transmite à substituição atômica sem uma
+segunda string do tamanho do arquivo. Os limites públicos são 8 MiB, 65.536
+records não vazios e 256 bytes UTF-8 por ID de peer.
+
 :::warning Atualização da outbox no `1.0.2-rc`
 No `1.0.2-rc`, `FileSyncOutbox` aceita apenas o journal binário explícito
 `appcore-sync-outbox-v2`. Arquivos V1, sem versão ou futuros falham com

@@ -50,6 +50,13 @@ and hashes are validated on write and load. A receiver validates the complete
 batch, sequence arithmetic and every record bound before any log or checkpoint
 mutation, so a late invalid event cannot leave a partial append.
 
+In `1.0.2-rc`, `FileSyncCheckpointStore` scans one bounded V1 line at a time
+through a fixed 16 KiB reader. Startup retains no decoded map; lookup validates
+the whole file and owns only the matching hash. Mutation builds one canonical
+sorted map but streams it to the atomic replacement without a second
+file-sized string. Public limits are 8 MiB, 65,536 non-empty records and 256
+UTF-8 bytes per peer ID.
+
 :::warning Next-major outbox update
 The `1.0.2-rc` `FileSyncOutbox` accepts only the explicit
 `appcore-sync-outbox-v2` binary journal. V1, unversioned and future files fail
