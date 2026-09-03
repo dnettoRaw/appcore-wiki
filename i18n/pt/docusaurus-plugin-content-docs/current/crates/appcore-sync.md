@@ -55,4 +55,10 @@ Consumidores novos usam `pending_page`, `outbox_stats` e
 `flush_pending_with_progress`; o wire peer V1 permanece inalterado.
 :::
 
+`InMemorySyncOutbox` mede os bytes JSON exatos com um writer contador protegido
+contra overflow, sem alocar uma segunda mensagem codificada. Para um batch
+válido de 4 MiB no Apple M1, o p50 caiu de 23,55 ms para 10,92 ms e o RSS pico
+de 45,73 MiB para 17,52 MiB; limites de página e `pending_bytes` permanecem
+exatos.
+
 **Maturidade:** perfil conservador estável com decode V1 estrito.
