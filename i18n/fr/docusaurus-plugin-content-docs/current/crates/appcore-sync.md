@@ -64,4 +64,10 @@ valide de 4 Mio sur Apple M1, le p50 est passé de 23,55 ms à 10,92 ms et le RS
 de pic de 45,73 Mio à 17,52 Mio ; les limites de page et `pending_bytes` restent
 exactes.
 
+La fenêtre fixe des 10 000 IDs traités du receiver partage aussi chaque
+`batch_id` entre la recherche de doublons et l'éviction du plus ancien.
+L'application de 10 000 batches avec des IDs de 128 octets sur Apple M1 a
+mesuré 58,27 ms p50 et réduit le RSS de pic de 17,45 Mio à 15,27 Mio sans
+modifier les résultats.
+
 **Maturité :** profil conservateur stable avec décodage V1 strict.

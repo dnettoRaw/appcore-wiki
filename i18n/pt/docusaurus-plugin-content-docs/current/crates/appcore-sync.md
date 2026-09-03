@@ -61,4 +61,9 @@ válido de 4 MiB no Apple M1, o p50 caiu de 23,55 ms para 10,92 ms e o RSS pico
 de 45,73 MiB para 17,52 MiB; limites de página e `pending_bytes` permanecem
 exatos.
 
+A janela fixa de 10.000 IDs processados do receiver também compartilha cada
+`batch_id` entre lookup de duplicata e eviction do mais antigo. Aplicar 10.000
+batches com IDs de 128 bytes no Apple M1 mediu 58,27 ms p50 e reduziu RSS pico
+de 17,45 MiB para 15,27 MiB sem mudar os resultados.
+
 **Maturidade:** perfil conservador estável com decode V1 estrito.
