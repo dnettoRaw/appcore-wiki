@@ -109,6 +109,12 @@ ao SHA-256; o hashing não retém um segundo body codificado completo.
 Hashes de conexão de worker e client usam framing binário canônico V2 e levam
 o marcador `v2:`. Hashes anteriores sem versão não são intercambiáveis;
 emissores de token e consumidores Gateway devem ser atualizados juntos.
+O hashing agora empresta todos os campos de validação. No formato máximo de 64
+capabilities de worker com 128 bytes, ele escreve direto no output hexadecimal
+exigido de 17 KiB sem manter o frame binário anterior de 8,5 KiB nem uma segunda
+string de 17 KiB usada só pelo hash. Cinco amostras release calibradas no Apple
+M1 reduziram o p50 do hash worker em 7,77%, o delta de RSS da workload em 22,73%
+e o delta retido em 19,05%; o p50 do hash client caiu 19,54%.
 
 Cada tenant mantém índices diretos e limitados por Core ID e por
 `(cluster_id, core_id)`. O lookup de roteamento é O(1); register, reconnect,

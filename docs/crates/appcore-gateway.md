@@ -108,6 +108,12 @@ SHA-256, so hashing retains no second complete encoded body.
 Worker and client connection hashes use canonical V2 binary framing and carry
 a `v2:` marker. Earlier unversioned hashes are not interchangeable; token
 issuers and Gateway consumers must be upgraded together.
+Hashing now borrows all validation fields. At the maximum 64 x 128-byte worker
+capability shape, it writes directly into the required 17 KiB hexadecimal
+output without retaining the former 8.5 KiB binary frame or a second 17 KiB
+hash-only string. Five calibrated Apple M1 release samples reduced worker-hash
+p50 by 7.77%, workload RSS delta by 22.73% and retained delta by 19.05%; the
+client-hash p50 fell 19.54%.
 
 Each tenant keeps bounded direct worker indexes by Core ID and by
 `(cluster_id, core_id)`. Routing lookup is O(1); register, reconnect,

@@ -113,6 +113,13 @@ Les hashes de connexion worker et client utilisent un framing binaire
 canonique V2 avec le marqueur `v2:`. Les anciens hashes sans version ne sont
 pas interchangeables; émetteurs de token et consommateurs Gateway doivent être
 mis à jour ensemble.
+Le hashing emprunte désormais tous les champs de validation. Pour la forme
+maximale de 64 capabilities worker de 128 octets, il écrit directement dans la
+sortie hexadécimale requise de 17 Kio sans conserver l'ancien frame binaire de
+8,5 Kio ni une seconde chaîne de 17 Kio réservée au hash. Cinq échantillons
+release calibrés sur Apple M1 ont réduit le p50 du hash worker de 7,77 %, le
+delta RSS du workload de 22,73 % et le delta retenu de 19,05 % ; le p50 du hash
+client a baissé de 19,54 %.
 
 Chaque tenant conserve des index directs et bornés par Core ID et par
 `(cluster_id, core_id)`. Le lookup de routage est O(1) ; register, reconnect,
