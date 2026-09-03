@@ -68,7 +68,9 @@ exactes.
 `FileSyncOutbox` mesure maintenant le JSON du receipt et le sérialise directement
 avec un writer fixe de 64 Kio. Le fixture maximal de 1 024 IDs échappés contient
 2 086 913 octets et n'est plus retenu dans un `Vec` de production
-supplémentaire ; le scan emprunte les IDs sans déséchappement JSON.
+supplémentaire ; le scan emprunte les IDs sans déséchappement JSON. Les IDs
+indexés sont aussi partagés avec l'état transactionnel du scan du tail ; refresh
+clone des handles plutôt que chaque identifiant en attente.
 
 La fenêtre fixe des 10 000 IDs traités du receiver partage aussi chaque
 `batch_id` entre la recherche de doublons et l'éviction du plus ancien.
