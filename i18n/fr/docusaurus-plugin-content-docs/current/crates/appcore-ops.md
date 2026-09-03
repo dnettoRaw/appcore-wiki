@@ -40,6 +40,10 @@ une seule fois. Le hub mémoire transmet ce payload immuable via
 métriques évitent les copies profondes, tandis que les implémentations
 existantes owned utilisent automatiquement le comportement compatible par
 défaut.
+Les noms d'attributs sensibles sont examinés par un parcours des octets ASCII
+insensible à la casse et sans allocation. La politique conservatrice sur les
+sous-chaînes reste inchangée, sans allouer une `String` en minuscules pour
+chaque attribut.
 
 Dans la beta Runtime actuelle, `FileObservationSink::flush` utilise un seul
 deadline de 30 secondes pour l'admission dans la file bornée et

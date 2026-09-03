@@ -39,6 +39,9 @@ in-memory hub forwards that immutable payload through
 `ObservationSink::emit_shared`; the built-in memory, file and metric sinks avoid
 deep copies, while existing owned-only sink implementations use the compatible
 default automatically.
+Sensitive attribute names are screened with an allocation-free ASCII
+case-insensitive byte scan. The conservative substring policy remains
+unchanged, without allocating a lowercase `String` for every attribute.
 
 In the current Runtime beta, `FileObservationSink::flush` uses one 30-second
 deadline for both admission to its bounded queue and the worker's durability

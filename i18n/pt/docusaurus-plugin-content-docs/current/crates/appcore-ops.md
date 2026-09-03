@@ -39,6 +39,9 @@ vez. O hub em memória encaminha esse payload imutável por
 `ObservationSink::emit_shared`; os sinks internos de memória, arquivo e
 métricas evitam cópias profundas, enquanto implementações existentes que
 aceitam apenas ownership usam automaticamente o default compatível.
+Nomes de atributos sensíveis são verificados por uma varredura de bytes ASCII
+case-insensitive sem alocação. A política conservadora de substrings permanece
+igual, sem alocar uma `String` em minúsculas para cada atributo.
 
 Na beta atual do Runtime, `FileObservationSink::flush` usa um único deadline de
 30 segundos para admission na fila limitada e acknowledgement durável do
