@@ -32,6 +32,12 @@ domínio e decisão de aplicar qualquer resultado gerado.
 
 O build default não inclui framework de ML nem adapter HTTP.
 
+A ativação do cache local também é limitada em memória quando o artefato já
+existe. Stores idempotentes e corridas entre writers abrem o arquivo regular
+sem seguir links, verificam o tamanho exato, comparam e calculam SHA-256
+incrementalmente com um buffer fixo de 16 KiB. O artefato completo owned pelo
+caller não é duplicado.
+
 ## Backends e modelos aceitos
 
 | Feature | Engine/formato | Escopo real |

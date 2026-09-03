@@ -32,6 +32,12 @@ de la validation métier et de toute décision d'appliquer un résultat génér�
 
 La compilation par défaut n'inclut ni framework ML ni adapter HTTP.
 
+L'activation du cache local reste aussi bornée en mémoire lorsque l'artefact
+existe déjà. Les stores idempotents et les courses entre writers ouvrent le
+fichier régulier sans suivre les liens, vérifient sa taille exacte, le comparent
+et calculent SHA-256 incrémentalement avec un buffer fixe de 16 Kio. L'artefact
+complet owned par le caller n'est pas dupliqué.
+
 ## Backends et modèles acceptés
 
 | Feature | Moteur/format | Portée réelle |

@@ -32,6 +32,12 @@ decision to apply any generated result.
 
 The default feature set contains no ML framework or HTTP adapter.
 
+Local cache activation is also memory-bounded when the artifact already
+exists. Idempotent stores and concurrent writer races open the regular file
+without following links, verify its exact size, compare it and calculate
+SHA-256 incrementally with a fixed 16 KiB buffer. They do not duplicate the
+complete caller-owned artifact.
+
 ## Backend and model support
 
 | Feature | Engines or format | Actual scope |
