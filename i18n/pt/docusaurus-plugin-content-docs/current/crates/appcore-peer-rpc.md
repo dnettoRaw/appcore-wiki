@@ -30,6 +30,12 @@ Ambos consomem a alocação owned do body do DTO HTTP. Corpos V1 sem compressão
 V2 exatos mantêm o mesmo `Vec<u8>` através de `HttpRequest`, sem clone integral
 na fronteira do transporte.
 
+O client V1 move um payload outbound owned para um envelope mantido durante os
+retries limitados. Cada retry ainda renova campos temporais, nonce, vínculo do
+token e codificação HTTP. Com payload de 4 MiB em cinco processos release no
+Apple M1, p50 ficou em +0,08%, RSS pico caiu 7,21%, delta RSS da workload caiu
+9,02% e delta RSS retido caiu 7,99%.
+
 Na entrada, `decode_peer_rpc_envelope_json` aplica o teto codificado e
 desserializa o body V1 sem compressão diretamente dos bytes HTTP emprestados. O
 Runtime move depois a alocação do payload decodificado para `CommandEnvelope`.

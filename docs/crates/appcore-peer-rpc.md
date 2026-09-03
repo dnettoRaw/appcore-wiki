@@ -29,6 +29,12 @@ Both consume the owned HTTP DTO body allocation. Uncompressed V1 and exact V2
 bodies retain the same `Vec<u8>` through `HttpRequest`, without a complete clone
 at the transport boundary.
 
+The V1 client moves an owned outbound payload into one envelope retained across
+bounded retries. Each retry still refreshes temporal fields, nonce, token
+binding, and HTTP encoding. With a 4 MiB payload across five Apple M1 release
+processes, p50 stayed within +0.08%, peak RSS fell 7.21%, workload RSS delta
+fell 9.02%, and retained RSS delta fell 7.99%.
+
 On ingress, `decode_peer_rpc_envelope_json` enforces the encoded ceiling and
 deserializes an uncompressed V1 body directly from borrowed HTTP bytes. The
 Runtime then moves the decoded payload allocation into `CommandEnvelope`. A
