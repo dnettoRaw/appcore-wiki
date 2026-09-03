@@ -27,6 +27,11 @@ Use `PooledHttpTransport` para chamadas reutilizáveis sem autenticação.
 `BearerHttpTransport` também possui um cliente reutilizável e limitado.
 Mantenha `StdHttpTransport` somente onde o comportamento V1 one-shot com
 `Connection: close` for necessário.
+`HttpControlPlaneClient` converte um body codificado uma vez em
+`SharedHttpControlPlaneRequest` e o empresta entre retries limitados. Os
+transports internos reutilizam a mesma alocação imutável; transports externos
+existentes mantêm o fallback owned compatível. Os dois owners de request omitem
+os bytes do body no `Debug`.
 
 Use para coordenação distribuída sem payload de negócio. Perfil file exige
 locks/storage certificados. Perfil remoto exige TLS e autenticação do

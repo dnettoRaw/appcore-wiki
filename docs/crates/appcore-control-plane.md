@@ -28,6 +28,11 @@ Use `PooledHttpTransport` for reusable unauthenticated calls.
 `BearerHttpTransport` also owns a reusable bounded client. Keep
 `StdHttpTransport` only where the V1 one-shot `Connection: close` behavior is
 required.
+`HttpControlPlaneClient` converts an encoded body once into a
+`SharedHttpControlPlaneRequest` and borrows it across bounded retries. Built-in
+transports reuse the same immutable body allocation; existing external
+transports retain the compatible owned fallback. Both request owners omit body
+bytes from `Debug` output.
 
 Use it to implement distributed coordination without business payloads.
 File-backed profiles require certified locking/storage semantics. Remote
