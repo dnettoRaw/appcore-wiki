@@ -35,7 +35,9 @@ nonce/idempotencia ou detalhes de erro remoto.
 mensagem aceito entre os índices de membership e ordem FIFO. Resultado de
 duplicata, eviction e API pública não mudam. Reter 65.536 IDs distintos de 128
 bytes no Apple M1 reduziu p50 de 37,55 ms para 32,83 ms e RSS pico de 35,86 MiB
-para 27,25 MiB.
+para 27,25 MiB. Validação de transporte e deduplicação rejeitam IDs vazios,
+caracteres de controle e IDs acima de `MAX_OPAQUE_MESSAGE_ID_BYTES` (1.024
+bytes UTF-8) antes da retenção.
 
 **Maturidade:** contrato wire V1 estável e compatibilidade estrita.
 

@@ -35,7 +35,9 @@ bytes, nonce/idempotency values or remote error details.
 ID across membership and FIFO-order indexes. Duplicate outcomes, eviction and
 the public API are unchanged. Retaining 65,536 distinct 128-byte IDs on Apple
 M1 reduced p50 from 37.55 ms to 32.83 ms and peak RSS from 35.86 MiB to
-27.25 MiB.
+27.25 MiB. Transport validation and deduplication reject empty IDs, control
+characters and IDs above `MAX_OPAQUE_MESSAGE_ID_BYTES` (1,024 UTF-8 bytes)
+before retention.
 
 **Maturity:** stable V1 wire contract; serialized compatibility is strict.
 

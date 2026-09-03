@@ -24,7 +24,8 @@ wire V1; replication logs/snapshots; checkpoints et outbox mémoire/fichier;
 receiver state/ack; follower client; transport HTTP; peer discovery; retry,
 métriques et `SyncError`.
 Les contrats content-envelope opaque sont réexportés pour les paquets sync
-basés sur DNT sans exposer le plaintext au code de routage.
+basés sur DNT sans exposer le plaintext au code de routage. Leur limite publique
+de rétention `MAX_OPAQUE_MESSAGE_ID_BYTES` est de 1 024 octets UTF-8.
 
 `HttpSyncTransport` possède un client HTTP réutilisable et borné. Utilisez
 `with_timeout_ms` pour le délai V1 uniforme ou `with_timeouts` pour des délais

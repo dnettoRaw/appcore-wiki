@@ -35,7 +35,9 @@ nonce/idempotence ou details d'erreur distante.
 accepté entre les index d'appartenance et d'ordre FIFO. Le résultat duplicate,
 l'éviction et l'API publique ne changent pas. La rétention de 65 536 IDs
 distincts de 128 octets sur Apple M1 a réduit le p50 de 37,55 ms à 32,83 ms et
-le RSS de pic de 35,86 Mio à 27,25 Mio.
+le RSS de pic de 35,86 Mio à 27,25 Mio. La validation transport et la
+déduplication rejettent les IDs vides, les caractères de contrôle et les IDs
+dépassant `MAX_OPAQUE_MESSAGE_ID_BYTES` (1 024 octets UTF-8) avant rétention.
 
 **Maturité :** contrat wire V1 stable à compatibilité stricte.
 
