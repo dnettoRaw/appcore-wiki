@@ -33,6 +33,10 @@ bytes solicitados em 8,75% no workload completo, 7,20% no stream V2 e 21,36%
 nos codecs em runs pareados no Apple M1. Pico e heap retido não mudaram;
 operações de alocação subiram 5,44% e o p99 do stream 1,69%, portanto o relatório
 preserva esse tradeoff em vez de confundir churn com memória residente.
+Mover ownership dos chunks identity pelo encoder, frame e assembler reduziu os
+bytes solicitados no stream de 64 MiB de 1.072.617.252 para 938.399.524
+(-12,51%) e as alocações em 7,39%, com +0,22% no p99 e -0,21% no RSS pico do
+processo. O workload fixo agora falha acima de 960 MiB cumulativos solicitados.
 
 SQLite relata intervalos separados de alocação para startup, append, leitura
 pontual, construção das fixtures, enqueue da outbox, backup e integrity check.

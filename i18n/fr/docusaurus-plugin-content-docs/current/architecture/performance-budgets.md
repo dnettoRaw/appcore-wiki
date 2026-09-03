@@ -35,6 +35,11 @@ complet, 7,20 % sur le stream V2 et 21,36 % sur les codecs dans des runs
 appariés Apple M1. Le pic et le heap retenu ne changent pas; les opérations
 d'allocation augmentent de 5,44 % et le p99 stream de 1,69 %, donc le rapport
 conserve ce compromis sans confondre churn et mémoire résidente.
+Le transfert d'ownership des chunks identity entre encoder, frame et assembler
+a réduit les octets demandés par le stream de 64 Mio de 1 072 617 252 à
+938 399 524 (-12,51 %) et les allocations de 7,39 %, avec +0,22 % au p99 et
+-0,21 % au RSS de pic du processus. Le workload fixe échoue maintenant au-delà
+de 960 Mio demandés cumulativement.
 
 SQLite rapporte des intervalles d'allocation séparés pour startup, append,
 lecture ponctuelle, construction des fixtures, enqueue outbox, backup et

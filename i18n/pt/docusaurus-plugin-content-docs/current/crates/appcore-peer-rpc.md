@@ -64,7 +64,9 @@ são 64 KiB decodificados por chunk, 96 KiB codificados, 64 MiB agregados e
 1.024 chunks. Bytes codificados usam string JSON base64 canônica, nunca array de
 inteiros. Sequência, tamanho decodificado exato, SHA-256 por chunk e total,
 deadline, cancelamento e quota após gzip falham fechados. Commit com falha nunca
-expõe o sink parcial como completo.
+expõe o sink parcial como completo. Chunks identity movem a mesma alocação owned
+da source para o frame e para o assembler, sem clonar bytes decodificados em
+cada boundary.
 
 `PeerRpcStreamRegistry` controla sessões parciais com quotas exatas de sessões
 e bytes decodificados. Chunks de requisição usam arquivos exclusivos em um

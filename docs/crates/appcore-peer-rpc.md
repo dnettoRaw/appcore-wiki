@@ -64,7 +64,9 @@ encoded chunks at 96 KiB, the aggregate at 64 MiB and chunk count at 1,024.
 Encoded bytes use a canonical base64 JSON string, never an integer array.
 Sequence, exact decoded size, chunk and aggregate SHA-256, deadline,
 cancellation and quota after gzip decompression fail closed. A failed commit
-never exposes the partial sink as complete.
+never exposes the partial sink as complete. Identity chunks move the same owned
+allocation from source to frame to assembler instead of cloning decoded bytes
+at either boundary.
 
 `PeerRpcStreamRegistry` owns partial sessions under exact session and decoded
 byte quotas. It writes request chunks to exclusive files in an existing

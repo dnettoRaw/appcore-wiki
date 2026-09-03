@@ -33,6 +33,10 @@ requested bytes by 8.75% for the complete workload, 7.20% for V2 streaming and
 21.36% for codecs in matched Apple M1 runs. Peak and retained heap did not
 change; allocation operations rose 5.44% and stream p99 rose 1.69%, so the
 report preserves the tradeoff rather than treating churn as resident memory.
+Moving identity-chunk ownership through encoder, frame and assembler then cut
+64 MiB stream requested bytes from 1,072,617,252 to 938,399,524 (-12.51%) and
+allocation operations by 7.39%, with +0.22% p99 and -0.21% process peak RSS.
+The fixed workload now fails above 960 MiB cumulative requested bytes.
 
 SQLite reports separate startup, append, point-read, fixture-construction,
 outbox-enqueue, backup and integrity-check allocation intervals. The 512-entry

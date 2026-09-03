@@ -67,7 +67,9 @@ explicitement sélectionné un chunk borné à la fois. Les limites par défaut 
 Les octets encodés utilisent une chaîne JSON base64 canonique, jamais un tableau
 d'entiers. Séquence, taille décodée exacte, SHA-256 par chunk et total, deadline,
 annulation et quota après gzip échouent de manière fermée. Un commit échoué
-n'expose jamais le sink partiel comme complet.
+n'expose jamais le sink partiel comme complet. Les chunks identity déplacent la
+même allocation owned de la source à la frame puis à l'assembler, sans cloner
+les octets décodés à chaque frontière.
 
 `PeerRpcStreamRegistry` possède les sessions partielles sous des quotas exacts
 de sessions et d'octets décodés. Les chunks de requête utilisent des fichiers
