@@ -34,6 +34,11 @@ A beta atual do Runtime guarda a configuração de drains como uma geração
 imutável copy-on-write. Cada observação compartilha um ponteiro da geração, em
 vez de clonar até 32 handles de drain, e os callbacks continuam executando após
 liberar o lock de configuração.
+`SharedObservationEvent::new` aplica redaction e limites de campos uma única
+vez. O hub em memória encaminha esse payload imutável por
+`ObservationSink::emit_shared`; os sinks internos de memória, arquivo e
+métricas evitam cópias profundas, enquanto implementações existentes que
+aceitam apenas ownership usam automaticamente o default compatível.
 
 Na beta atual do Runtime, `FileObservationSink::flush` usa um único deadline de
 30 segundos para admission na fila limitada e acknowledgement durável do

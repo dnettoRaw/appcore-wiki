@@ -34,6 +34,11 @@ The current Runtime beta stores drain configuration as an immutable
 copy-on-write generation. Each observation shares one generation pointer
 instead of cloning as many as 32 drain handles, and callbacks still run after
 the configuration lock is released.
+`SharedObservationEvent::new` applies redaction and field limits once. The
+in-memory hub forwards that immutable payload through
+`ObservationSink::emit_shared`; the built-in memory, file and metric sinks avoid
+deep copies, while existing owned-only sink implementations use the compatible
+default automatically.
 
 In the current Runtime beta, `FileObservationSink::flush` uses one 30-second
 deadline for both admission to its bounded queue and the worker's durability
