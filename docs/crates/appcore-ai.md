@@ -104,6 +104,11 @@ The built-in unauthenticated transport rejects credentials.
   custom transport both declare and implement streaming. After an event is
   emitted, a transient failure is returned instead of mixing a fallback route's output.
 
+The bounded decoder parses complete coalesced SSE frames directly from borrowed
+transport chunks. It retains only an incomplete tail between calls and compacts
+an accumulated pending buffer once per chunk, without a temporary `Vec` or
+repeated body shift for every frame.
+
 These changes are tracked publicly in
 [issue #1](https://github.com/dnettoRaw/app-core-public/issues/1).
 

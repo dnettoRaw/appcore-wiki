@@ -103,6 +103,11 @@ transport intégré refuse les credentials.
   déclarent et l'implémentent. Après un événement, un échec transitoire est
   retourné sans mélanger la sortie d'une route fallback.
 
+Le décodeur borné analyse les frames SSE complets et coalescés directement
+depuis les chunks empruntés au transport. Il ne retient qu'une queue incomplète
+entre les appels et compacte le buffer en attente une fois par chunk, sans
+`Vec` temporaire ni déplacement répété du body pour chaque frame.
+
 Le travail est suivi publiquement dans
 [l'issue #1](https://github.com/dnettoRaw/app-core-public/issues/1).
 

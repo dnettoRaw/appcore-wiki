@@ -103,6 +103,11 @@ rejeita credenciais.
   declaram e implementam streaming. Depois de emitir um evento, uma falha
   transitória é retornada sem misturar output de uma rota fallback.
 
+O decoder limitado analisa frames SSE completos e coalescidos diretamente dos
+chunks emprestados pelo transporte. Ele retém somente uma cauda incompleta entre
+chamadas e compacta o buffer pendente uma vez por chunk, sem `Vec` temporário ou
+deslocamento repetido do body para cada frame.
+
 O trabalho é acompanhado publicamente na
 [issue #1](https://github.com/dnettoRaw/app-core-public/issues/1).
 
