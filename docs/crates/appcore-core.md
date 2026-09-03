@@ -54,11 +54,14 @@ after releasing the state lock. A 1,000-of-10,000 selection measured 2.06 us
 p50 and 11.88 MiB peak RSS, versus 4.16 ms and 20.33 MiB for full owned copies.
 
 With an attached `FileOperationalJournal`, live audit entries and safe restored
-entries retain one shared immutable operational record. Restore validates one
-entry at a time and creates a bounded redacted replacement only for unsafe
-content. Owned APIs, snapshot JSON and V1 persistence remain unchanged. A
-paired real-fsync 3 MiB workload reduced p50 from 4.04 to 2.92 s (-27.83%),
-peak RSS from 8.67 to 5.44 MiB (-37.30%) and retained memory by 47.93%.
+entries retain one shared immutable operational record. Journal load validates
+the hash chain, checks audit text without allocating, sanitizes only unsafe
+content and atomically rewrites it before exposure. Later log attachment copies
+only bounded `Arc` handles. Owned APIs, snapshot JSON and V1 persistence remain
+unchanged. A single attachment over 384 safe entries (about 3 MiB) reduced p50
+from 12.26 ms to 86.50 us (-99.29%), peak RSS by 0.57% and workload RSS by
+1.72% on Apple M1. The separate real-fsync workload retains its earlier 27.83%
+p50, 37.30% peak-RSS and 47.93% retained-memory improvements.
 
 The process-local `EventBus` separately retains at most 10,000 events and
 16 MiB by default. `stats` exposes current/peak bytes, evictions and oversized

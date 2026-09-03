@@ -57,11 +57,15 @@ et 20,33 Mio pour les copies owned complètes.
 
 Avec un `FileOperationalJournal` attaché, les nouvelles entrées d'audit et les
 entrées restaurées sûres conservent un seul enregistrement opérationnel
-immuable partagé. La restauration valide une entrée à la fois et crée un
-remplacement borné et expurgé uniquement pour un contenu dangereux. Les API
-owned, le JSON du snapshot et la persistance V1 restent inchangés. Une charge
-fsync appariée de 3 Mio a réduit le p50 de 4,04 à 2,92 s (-27,83 %), le RSS de
-pic de 8,67 à 5,44 Mio (-37,30 %) et la mémoire retenue de 47,93 %.
+immuable partagé. Le chargement du journal valide la chaîne de hash, vérifie le
+texte audit sans allocation, assainit uniquement le contenu à risque et le
+réécrit atomiquement avant de l'exposer. Les attachements suivants du log ne
+copient que des handles `Arc` bornés. Les API owned, le JSON du snapshot et la
+persistance V1 restent inchangés. Un seul attachement de 384 entrées sûres
+(environ 3 Mio) a réduit le p50 de 12,26 ms à 86,50 us (-99,29 %), le RSS de
+pic de 0,57 % et le RSS de la charge de 1,72 % sur Apple M1. La charge fsync
+séparée conserve les gains antérieurs de 27,83 % en p50, 37,30 % en RSS de pic
+et 47,93 % en mémoire retenue.
 
 L'`EventBus` local au processus retient séparément au plus 10 000 événements et
 16 Mio par défaut. `stats` expose les octets courants/de pic, les évictions et

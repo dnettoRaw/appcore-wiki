@@ -56,11 +56,14 @@ owned integrais.
 
 Com um `FileOperationalJournal` anexado, entradas de audit novas e entradas
 seguras restauradas retêm um único registro operacional imutável compartilhado.
-O restore valida uma entrada por vez e cria uma substituição limitada e
-redigida somente para conteúdo inseguro. APIs owned, JSON do snapshot e
-persistência V1 não mudam. Uma carga pareada de fsync com 3 MiB reduziu p50 de
-4,04 para 2,92 s (-27,83%), RSS pico de 8,67 para 5,44 MiB (-37,30%) e memória
-retida em 47,93%.
+A leitura do journal valida a hash chain, verifica o texto de audit sem alocar,
+sanitiza apenas conteúdo inseguro e o regrava atomicamente antes de expô-lo.
+Anexações posteriores do log copiam somente handles `Arc` limitados. APIs
+owned, JSON do snapshot e persistência V1 não mudam. Uma única anexação sobre
+384 entradas seguras (cerca de 3 MiB) reduziu p50 de 12,26 ms para 86,50 us
+(-99,29%), RSS pico em 0,57% e RSS da carga em 1,72% no Apple M1. A carga
+separada com fsync conserva os ganhos anteriores de 27,83% em p50, 37,30% em
+RSS pico e 47,93% em memória retida.
 
 O `EventBus` local ao processo retém separadamente no máximo 10.000 eventos e
 16 MiB por padrão. `stats` expõe bytes atuais/de pico, evictions e rejeições de
