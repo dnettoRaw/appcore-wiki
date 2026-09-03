@@ -55,6 +55,14 @@ seulement la page la plus récente après libération du lock. Une sélection de
 1 000 sur 10 000 a mesuré 2,06 us p50 et 11,88 Mio de RSS de pic, contre 4,16 ms
 et 20,33 Mio pour les copies owned complètes.
 
+Avec un `FileOperationalJournal` attaché, les nouvelles entrées d'audit et les
+entrées restaurées sûres conservent un seul enregistrement opérationnel
+immuable partagé. La restauration valide une entrée à la fois et crée un
+remplacement borné et expurgé uniquement pour un contenu dangereux. Les API
+owned, le JSON du snapshot et la persistance V1 restent inchangés. Une charge
+fsync appariée de 3 Mio a réduit le p50 de 4,04 à 2,92 s (-27,83 %), le RSS de
+pic de 8,67 à 5,44 Mio (-37,30 %) et la mémoire retenue de 47,93 %.
+
 L'`EventBus` local au processus retient séparément au plus 10 000 événements et
 16 Mio par défaut. `stats` expose les octets courants/de pic, les évictions et
 les rejets d'événements trop grands ; `snapshot().recent(limit)` emprunte une
