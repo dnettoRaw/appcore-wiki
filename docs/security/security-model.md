@@ -53,6 +53,15 @@ Update security combines descriptor policy, cryptographic authenticity, artifact
 
 Unsigned local artifacts are not a production default. They require a dedicated compile-time feature and strict local file validation.
 
+## How are lockfile-only advisories handled?
+
+An advisory is not ignored merely because a feature is expected to be off.
+`rust_decimal` declares optional `rkyv` 0.7 support upstream, so Cargo records
+that package in lockfile metadata while FileMaker enables only `std` and string
+Serde. Before accepting `RUSTSEC-2026-0235` as lockfile-only, the release gate
+checks every workspace feature, target, and dependency edge and requires
+`rkyv` to be absent. Activating it makes the gate fail before the exception.
+
 ## Windows DPAPI provider status
 
 AC-009 has accepted `windows-dpapi-user-v1` for the post-1.0 development line.
