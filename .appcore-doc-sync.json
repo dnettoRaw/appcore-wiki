@@ -1,9 +1,9 @@
 {
   "schemaVersion": 1,
-  "acceptedAt": "2026-09-03T08:23:28.213Z",
-  "runtimeCommit": "b2ee459228fa602e74ee3e447a629881893ca4c4",
+  "acceptedAt": "2026-09-03T08:24:59.289Z",
+  "runtimeCommit": "fa1300bcfb8283ba3a9b4eff104c89bb4fe52ffb",
   "runtimeRemote": "git@github.com:dnettoRaw/AppCore-Runtime.git",
-  "relevantDigest": "61f4dfa98f4a3f2b1c0044e956fa8b03a04930e98974fd77eafe9a698a8466aa",
+  "relevantDigest": "020e268ac6133d1b9d87ef4b6544ee0955784fc17f8c9bd7ef03540b0b609788",
   "publicCrateGraphDigest": "0355389b7f13e7c1f91a4c4b670214d68de04e830fd1dbe11768f9ca3952a33a",
   "files": {
     "AGENTS.md": "06d814018e24b57be1a9449f90e06d571a760efc3329babec5211a4c2db392df",
@@ -465,7 +465,7 @@
     "release/peer-rpc-wire-errors-v2.md": "20131a75d77982ae55c5819f150d2d79328787d4aa5fa7d2656ce8b55e1bab3f",
     "release/scheduler-state-provider-v1.md": "323c1369c69ae889886484d1001dc727d3bbdb77e985612f4a9d3baf38d05fd8",
     "release/sqlite-sync-provider-v1.md": "24e08ef746ce887c8b55716bd993745dadea130da33d6742bea767c7a89df413",
-    "release/storage-capability-descriptor-v1.md": "1554e1acf3320d15cee702fcfe848c60574cdb4b32ef7e054ca71461da3e9543",
+    "release/storage-capability-descriptor-v1.md": "e89835b2e98181224a6cb93d036b2ffe4191882433c25958f98786d54e368c71",
     "release/windows-dpapi-secret-provider-v1.md": "d58e4b06bd34ecba34ed8e8118d262c737193b9063118fda4cf8cd819ced7cd5",
     "tests/three-artifact-app/Cargo.toml": "392c1794b65c01687b7202fc3ad32c222de567a50dc98e088528026060ba1b23",
     "tests/three-artifact-app/README.md": "0f6e70cafaf00e35a0be4d28ec39892e062db1910ec991781f59d3c78898419c",
