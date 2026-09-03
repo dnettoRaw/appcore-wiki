@@ -59,6 +59,12 @@ O `EventBus` local ao processo retém separadamente no máximo 10.000 eventos e
 eventos grandes; `snapshot().recent(limit)` empresta uma página estável.
 Selecionar 1.000 de 10.000 eventos mediu 2,39 us p50 e 8,48 MiB de RSS pico,
 contra 2,09 ms e 14,59 MiB do método compatível de cópia integral.
+Quando um `FileOperationalJournal` está anexado, ele e o bus retêm uma única
+alocação imutável compartilhada do registro de evento. O restore copia apenas
+handles `Arc` limitados; APIs owned, JSON do snapshot e formato V1 do journal
+não mudam. Uma carga real de fsync com 3 MiB reduziu o RSS pico de 8,11 para
+5,08 MiB (-37,38%) e a memória retida em 48,00%, com p50 dominado por disco
+dentro de +0,95%.
 
 Aplicações novas usam re-exports de `appcore_bin::application`; não montam o
 core manualmente. Mantenha I/O adapters e comportamento de domínio fora.

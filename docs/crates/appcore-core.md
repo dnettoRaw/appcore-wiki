@@ -58,6 +58,11 @@ The process-local `EventBus` separately retains at most 10,000 events and
 event rejections; `snapshot().recent(limit)` borrows a stable newest page.
 Selecting 1,000 of 10,000 events measured 2.39 us p50 and 8.48 MiB peak RSS,
 versus 2.09 ms and 14.59 MiB for the compatible full-copy method.
+When a `FileOperationalJournal` is attached, it and the bus retain one shared
+immutable event record allocation. Restore copies only bounded `Arc` handles;
+owned APIs, snapshot JSON and the V1 journal format do not change. A real-fsync
+3 MiB workload reduced peak RSS from 8.11 to 5.08 MiB (-37.38%) and retained
+workload memory by 48.00%, with disk-dominated p50 within +0.95%.
 
 New applications consume these re-exports through
 `appcore_bin::application`; they do not assemble the core manually. Keep I/O
