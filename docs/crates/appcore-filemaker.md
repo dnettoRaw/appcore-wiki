@@ -96,6 +96,8 @@ after the final total is known. Components, styles, binding, patches,
 inspection, and every scene exporter honor the same contract. Resolved elements
 retain a `collidable` flag so overlays do not create false collisions, consume
 free regions, or alter pagination.
+Page-layer resolution traverses active elements lazily per physical page, so
+role selection does not allocate a temporary reference list.
 
 Restartable `Dataset` streams can stop at the bounded auto-column sample
 without scanning the remainder. Tables resolve fixed, sampled-auto, and

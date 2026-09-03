@@ -99,6 +99,8 @@ só é resolvido quando o total final é conhecido. Componentes, estilos, bindin
 patches, inspeção e todos os exporters da cena respeitam o mesmo contrato.
 Elementos resolvidos mantêm um flag `collidable` para que overlays não criem
 colisões falsas, consumam regiões livres ou alterem a paginação.
+As camadas de página percorrem os elementos ativos de forma lazy por página
+física, sem alocar uma lista temporária de referências.
 
 Streams `Dataset` reiniciáveis param na amostra limitada da coluna auto sem
 varrer o restante. Tabelas resolvem larguras fixed, auto por amostra e flex

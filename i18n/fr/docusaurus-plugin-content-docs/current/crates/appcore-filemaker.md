@@ -103,6 +103,10 @@ respectent le même contrat. Les éléments résolus conservent un flag
 `collidable` afin que les overlays ne créent pas de fausses collisions, ne
 consomment pas les régions libres et ne modifient pas la pagination.
 
+La résolution des couches parcourt paresseusement les éléments actifs de chaque
+page physique ; la sélection par rôle n'alloue donc pas de liste temporaire de
+références.
+
 Les streams `Dataset` redémarrables s'arrêtent à l'échantillon borné de colonne
 auto sans parcourir le reste. Les tables résolvent largeurs fixed, auto
 échantillonnées et flex pondérées ; paginent lignes fixes ou mesurées par
