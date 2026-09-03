@@ -39,4 +39,10 @@ percorrer uma cópia de todos os nomes anunciados. Uma
 customizada continua recebendo o slice owned completo exigido pelo trait
 público estável.
 
+Use `CapabilityResolver::handle_owned` quando o caller não precisar mais reter
+o request. Policy e handlers locais continuam borrowed, mas o adapter Peer RPC
+transfere ID, capability, payload, chave de idempotência e trace diretamente
+para seu DTO de saída. Callers e invokers customizados que usam o contrato
+emprestado permanecem compatíveis.
+
 **Maturidade:** perfil de roteamento estável.

@@ -39,4 +39,10 @@ rescanning a copied list of every advertised name. A custom
 to receive the complete owned candidate slice required by the stable public
 trait.
 
+Call `CapabilityResolver::handle_owned` when the request no longer needs to be
+retained by its caller. Policy and local-handler behavior remain borrowed, but
+the Peer RPC adapter transfers the request ID, capability, payload,
+idempotency key and trace directly into its outbound DTO. Existing borrowed
+callers and custom invokers remain compatible.
+
 **Maturity:** stable routing profile.
