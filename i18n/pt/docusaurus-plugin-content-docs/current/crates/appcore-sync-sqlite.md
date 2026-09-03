@@ -27,10 +27,16 @@ A documentação do crate está disponível no
 [exemplo intermediário](https://github.com/dnettoRaw/app-core-public/blob/beta/crates/appcore-sync-sqlite/wiki/examples/intermediate.pt.md),
 com variantes em inglês e francês ao lado.
 
-O provider usa schema interno V1 fixo, WAL, `synchronous=FULL`, pool de conexões
+O provider usa schema interno V2 transacional, WAL, `synchronous=FULL`, pool de conexões
 limitado e limites de runtime do SQLite. Schemas desconhecidos, removidos ou
 futuros falham com `NO MORE SUPPORTED PLEASE UPDATE`. Backup e restore publicam
 somente arquivos novos verificados; restore nunca substitui database em uso.
+
+O enqueue da outbox calcula o tamanho exato do JSON canônico e escreve
+diretamente em um BLOB incremental do SQLite. Verificação de duplicatas, reads
+de página e validação de integridade no startup também transmitem o conteúdo do
+BLOB, evitando um `Vec<u8>` codificado adicional do tamanho do record ao lado
+da mensagem owned.
 
 As garantias declaradas são transactions, locking, snapshot, backup online e
 operação multiprocesso em um filesystem local. Streaming, multi-host e shares

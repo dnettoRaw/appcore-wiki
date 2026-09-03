@@ -27,11 +27,17 @@ La documentation du crate est disponible dans le
 [exemple intermédiaire](https://github.com/dnettoRaw/app-core-public/blob/beta/crates/appcore-sync-sqlite/wiki/examples/intermediate.fr.md),
 avec les variantes anglaise et portugaise à côté.
 
-Le provider utilise un schéma interne V1 fixe, WAL, `synchronous=FULL`, un pool
+Le provider utilise un schéma interne V2 transactionnel, WAL, `synchronous=FULL`, un pool
 de connexions borné et les limites runtime de SQLite. Un schéma inconnu,
 supprimé ou futur échoue avec `NO MORE SUPPORTED PLEASE UPDATE`. Sauvegarde et
 restauration ne publient que de nouveaux fichiers vérifiés ; la restauration
 ne remplace jamais une database active.
+
+L'enqueue outbox calcule la taille exacte du JSON canonique, puis écrit
+directement dans un BLOB SQLite incrémental. Les contrôles de doublons, lectures
+de pages et validations d'intégrité au startup transmettent aussi le contenu du
+BLOB, évitant un `Vec<u8>` encodé supplémentaire de la taille du record à côté
+du message owned.
 
 Les garanties déclarées sont transactions, locking, snapshot, sauvegarde en
 ligne et fonctionnement multiprocessus sur un filesystem local. Streaming,

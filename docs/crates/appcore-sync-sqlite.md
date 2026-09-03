@@ -26,10 +26,15 @@ Crate-owned documentation is available as the
 [intermediate example](https://github.com/dnettoRaw/app-core-public/blob/beta/crates/appcore-sync-sqlite/wiki/examples/intermediate.en.md),
 with Portuguese and French variants beside them.
 
-The provider uses a fixed internal schema V1, WAL, `synchronous=FULL`, a
+The provider uses transactional internal schema V2, WAL, `synchronous=FULL`, a
 bounded connection pool and SQLite runtime limits. Unknown, removed or future
 schemas fail with `NO MORE SUPPORTED PLEASE UPDATE`. Backup and restore publish
 only verified new files; restore never replaces a live database.
+
+Outbox enqueue computes the exact canonical JSON size and writes directly to an
+incremental SQLite BLOB. Duplicate checks, page reads and startup integrity
+validation also stream BLOB content, avoiding an additional encoded
+record-sized `Vec<u8>` beside the owned message.
 
 Its declared storage guarantees are transactions, locking, snapshot, online
 backup and multi-process operation on one local filesystem. Streaming,
