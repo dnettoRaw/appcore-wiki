@@ -64,6 +64,8 @@ exatos.
 A janela fixa de 10.000 IDs processados do receiver também compartilha cada
 `batch_id` entre lookup de duplicata e eviction do mais antigo. Aplicar 10.000
 batches com IDs de 128 bytes no Apple M1 mediu 58,27 ms p50 e reduziu RSS pico
-de 17,45 MiB para 15,27 MiB sem mudar os resultados.
+de 17,45 MiB para 15,27 MiB sem mudar os resultados. As fronteiras do receiver
+e da outbox rejeitam IDs vazios, caracteres de controle e IDs acima de 1.024
+bytes UTF-8 antes da retenção; a janela fica limitada por bytes e por quantidade.
 
 **Maturidade:** perfil conservador estável com decode V1 estrito.

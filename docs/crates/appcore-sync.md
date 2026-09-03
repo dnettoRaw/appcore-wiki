@@ -63,6 +63,8 @@ on Apple M1, p50 fell from 23.55 ms to 10.92 ms and peak RSS from 45.73 MiB to
 The receiver's fixed 10,000-ID processed-batch window also shares each
 `batch_id` between duplicate lookup and oldest-first eviction. Applying 10,000
 batches with 128-byte IDs on Apple M1 measured 58.27 ms p50 and reduced peak RSS
-from 17.45 MiB to 15.27 MiB without changing outcomes.
+from 17.45 MiB to 15.27 MiB without changing outcomes. Receiver and outbox
+boundaries reject empty IDs, control characters and IDs above 1,024 UTF-8 bytes
+before retention, so the window is bounded by bytes as well as item count.
 
 **Maturity:** stable conservative profile with strict V1 decoding.

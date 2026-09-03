@@ -68,6 +68,8 @@ La fenêtre fixe des 10 000 IDs traités du receiver partage aussi chaque
 `batch_id` entre la recherche de doublons et l'éviction du plus ancien.
 L'application de 10 000 batches avec des IDs de 128 octets sur Apple M1 a
 mesuré 58,27 ms p50 et réduit le RSS de pic de 17,45 Mio à 15,27 Mio sans
-modifier les résultats.
+modifier les résultats. Les frontières du receiver et de l'outbox rejettent les
+IDs vides, les caractères de contrôle et les IDs de plus de 1 024 octets UTF-8
+avant rétention ; la fenêtre est bornée en octets comme en nombre d'éléments.
 
 **Maturité :** profil conservateur stable avec décodage V1 strict.
