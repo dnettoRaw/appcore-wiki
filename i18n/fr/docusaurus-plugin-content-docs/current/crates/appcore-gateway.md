@@ -209,6 +209,14 @@ a mesuré 17 125 ns p99 pour round-robin, 18 542 ns pour least-inflight et
 exacte, health, capacity et affinity stateless ont réussi. Il s'agit d'une
 preuve locale au dépôt, pas d'une certification production ou multiplateforme.
 
+La sélection emprunte désormais les identités worker. First-available,
+least-inflight et affinity parcourent sans liste de candidats ; round-robin et
+health-weighted conservent un unique buffer compact emprunté pour préserver la
+distribution ordonnée stable. Au plafond de 1 024 workers, cinq échantillons
+release calibrés sur Apple M1 ont réduit le p50 round-robin de 468,86 à
+335,56 us (-28,43 %) et le p95 de 471,98 à 339,67 us (-28,03 %). Seul le
+résultat owned sélectionné clone sa clé.
+
 ## `1.0.4-rc` : télémétrie de routage bornée
 
 Le RC actuel expose un snapshot pull indépendant du fournisseur via

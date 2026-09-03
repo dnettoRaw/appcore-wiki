@@ -202,6 +202,14 @@ para affinity entre 64 workers. As invariantes de distribuição round-robin
 exata, health, capacity e affinity stateless passaram. Isto é evidência local
 do repositório, não certificação de produção ou multiplataforma.
 
+A seleção agora empresta identidades de workers. First-available,
+least-inflight e affinity percorrem sem lista de candidatos; round-robin e
+health-weighted mantêm um único buffer compacto emprestado para preservar a
+distribuição ordenada estável. No teto de 1.024 workers, cinco amostras release
+calibradas no Apple M1 reduziram o p50 round-robin de 468,86 para 335,56 us
+(-28,43%) e o p95 de 471,98 para 339,67 us (-28,03%). Somente o resultado owned
+selecionado clona sua chave.
+
 ## `1.0.4-rc`: telemetria limitada de roteamento
 
 O RC atual expõe um snapshot pull neutro de fornecedor por

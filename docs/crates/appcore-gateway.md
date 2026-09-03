@@ -200,6 +200,13 @@ affinity p99 across 64 workers. Exact round-robin distribution, health,
 capacity and stateless-affinity invariants passed. This is repository-local
 evidence, not production or cross-platform certification.
 
+Selection now borrows worker identities. First-available, least-inflight and
+affinity scan without a candidate list; round-robin and health-weighted retain
+one compact borrowed buffer to preserve stable ordered distribution. At the
+1,024-worker ceiling, five calibrated Apple M1 release samples reduced
+round-robin p50 from 468.86 to 335.56 us (-28.43%) and p95 from 471.98 to
+339.67 us (-28.03%). Only the selected owned result clones its key.
+
 ## `1.0.4-rc`: bounded routing telemetry
 
 The current RC exposes a vendor-neutral pull snapshot through
