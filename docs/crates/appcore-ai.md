@@ -38,6 +38,15 @@ without following links, verify its exact size, compare it and calculate
 SHA-256 incrementally with a fixed 16 KiB buffer. They do not duplicate the
 complete caller-owned artifact.
 
+The optional Candle classifier moves decoded labels, weights and biases into
+loaded state without cloning the complete buffers. `CandleBackend` atomically
+reserves a model slot and declared artifact bytes before store access.
+`new_with_loaded_byte_limit` selects a tighter aggregate ceiling and
+`memory_pressure()` reports current/peak usage and rejected loads. An active
+inference keeps its reservation after `unload` until its tensor lease drops.
+Candle has no generative KV cache; the selected external generative engine must
+bound its own cache.
+
 ## Backend and model support
 
 | Feature | Engines or format | Actual scope |
@@ -299,6 +308,10 @@ entry and reached 7.83 MiB peak/retained RSS. With bounded model-location
 admission it retains the default maximum of 128 per model, rejects the rest
 explicitly, and measured 1.91 MiB peak (-75.61%) and 1.89 MiB retained RSS
 (-75.86%) across five Apple M1 processes.
+
+For a representative 4 MiB Candle classifier, moving decoded buffers and
+reserving memory before reads reduced five-process median load time from 1.701
+to 1.368 ms (-19.56%) and median peak RSS from 20.16 to 16.11 MiB (-20.08%).
 
 The repository-local verdict is **READY FOR BETA** within the documented scope.
 Windows/Linux physical execution, sustained real-model accelerator soak and a

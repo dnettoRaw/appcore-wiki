@@ -38,6 +38,15 @@ fichier régulier sans suivre les liens, vérifient sa taille exacte, le compare
 et calculent SHA-256 incrémentalement avec un buffer fixe de 16 Kio. L'artefact
 complet owned par le caller n'est pas dupliqué.
 
+Le classificateur Candle optionnel déplace labels, poids et biais décodés dans
+l'état chargé sans cloner les buffers complets. `CandleBackend` réserve
+atomiquement un slot et les octets déclarés avant l'accès au store.
+`new_with_loaded_byte_limit` choisit un plafond agrégé inférieur et
+`memory_pressure()` expose usage courant/de pic et loads rejetés. Une inférence
+active conserve sa réservation après `unload` jusqu'à la libération de son
+lease des tensors. Candle n'a pas de KV cache génératif ; le moteur génératif
+externe choisi doit borner son propre cache.
+
 ## Backends et modèles acceptés
 
 | Feature | Moteur/format | Portée réelle |
@@ -286,6 +295,11 @@ entrées et atteignait 7,83 Mio de RSS pic/retenu. Avec l'admission bornée, il
 retient le maximum par défaut de 128 par modèle, rejette explicitement le reste
 et a mesuré 1,91 Mio de RSS pic (-75,61 %) et 1,89 Mio retenu (-75,86 %) sur
 cinq processus Apple M1.
+
+Pour un classificateur Candle représentatif de 4 Mio, déplacer les buffers
+décodés et réserver la mémoire avant lecture a réduit la médiane de cinq
+processus de 1,701 à 1,368 ms (-19,56 %) et le RSS pic médian de 20,16 à
+16,11 Mio (-20,08 %).
 
 Le verdict local est **READY FOR BETA** dans le périmètre documenté. Exécution
 physique Windows/Linux, soak réel sur accélérateurs et adapter Swarm Peer RPC
