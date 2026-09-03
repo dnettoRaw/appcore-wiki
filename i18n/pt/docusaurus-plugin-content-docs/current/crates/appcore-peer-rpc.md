@@ -67,7 +67,9 @@ processo atual. Outras plataformas falham fechadas ao construir o registry.
 Habilite as rotas HTTP assinadas somente com
 `PeerRpcHttpHost::with_v2_stream_registry`; o host default continua V1-only.
 `query_stream_v2` e `command_stream_v2` vinculam cada body JSON exato a um
-bearer token e movem request/response um frame por vez. A admissão do open
+bearer token e movem request/response um frame por vez. O JSON canônico é
+serializado diretamente no SHA-256 dessa vinculação, sem reter um segundo body
+codificado completo ao lado do frame. A admissão do open
 verifica tenant, cluster, target, trace, deadline, idempotência de command e
 nonce replay limitado. Frames ambíguos não são repetidos; cancelamento best
 effort é respaldado pela limpeza autoritativa por deadline.

@@ -67,7 +67,9 @@ owner SID. Unsupported platforms fail closed during registry construction.
 Enable the signed HTTP routes only with
 `PeerRpcHttpHost::with_v2_stream_registry`; the default host remains V1-only.
 `query_stream_v2` and `command_stream_v2` bind each exact JSON body to a bearer
-token and move request/response data one frame at a time. Open admission checks
+token and move request/response data one frame at a time. Canonical JSON is
+serialized directly into SHA-256 for this binding, without retaining a second
+complete encoded body beside the frame. Open admission checks
 tenant, cluster, target, trace, deadline, command idempotency and bounded nonce
 replay. Ambiguous frames are not retried; best-effort cancellation is backed by
 authoritative deadline cleanup.
