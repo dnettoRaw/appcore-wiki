@@ -10,7 +10,15 @@ Stable documentation ID: **ACR-028**.
 `appcore-sdk` is the application-facing facade. It gives business code a small
 manifest-first surface while specialized crates continue to own storage,
 scheduling, synchronization, AI, document generation, and deployment
-integration.
+integration. It replaces the retired `appcore-bin`; the SDK does not preserve
+that crate's host or Runtime CLI.
+
+:::warning Migration from appcore-bin
+The final registry release of `appcore-bin` is only a retirement notice. New
+applications must depend directly on `appcore-sdk`. Existing applications keep
+their manifests and business code, replace `appcore_bin` imports, and let their
+deployment executable own providers, listeners, workers, and shutdown.
+:::
 
 ## Choose it when
 

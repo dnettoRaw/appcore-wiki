@@ -11,6 +11,17 @@ ID stable de documentation : **ACR-028**.
 orientée manifestes tandis que les crates spécialisés gardent la responsabilité
 du stockage, scheduling, sync, AI, documents et déploiement.
 
+Il remplace `appcore-bin`, désormais retiré, sans conserver l'ancien host ni la
+CLI Runtime.
+
+:::warning Migration depuis appcore-bin
+La dernière version de `appcore-bin` sur crates.io n'est qu'un avis de retrait.
+Les nouvelles applications doivent dépendre directement de `appcore-sdk`. Les
+applications existantes conservent leurs manifestes et leur code métier,
+remplacent les imports `appcore_bin` et laissent providers, listeners, workers
+et shutdown à l'exécutable de déploiement.
+:::
+
 Utilisez-le pour démarrer une application externe à trois artefacts,
 implémenter `Application`, enregistrer le comportement ou activer les namespaces
 optionnels. Il n'ouvre aucun listener implicitement, ne choisit pas de provider,

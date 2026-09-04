@@ -1,40 +1,24 @@
 ---
-title: Ownership da facade appcore-bin
+title: Ownership da fachada SDK
 sidebar_position: 13
 ---
 
-# Ownership da facade appcore-bin
+# Ownership da fachada SDK
 
-A AC-023 avaliou mover a facade manifest-first para um crate SDK leve enquanto
-`appcore-bin` continuaria como host do Runtime.
+A decisão AC-023 anterior, que mantinha aplicação e host juntos em
+`appcore-bin`, foi substituída.
 
-## Decisão
+## Decisão atual
 
-`appcore-bin` permanece a facade manifest-first pública e a única composition
-root no contrato 1.x atual. Nenhum crate `appcore-sdk` ou `appcore-runtime` é
-criado.
+`appcore-sdk` possui a fachada pública da aplicação, manifests locais
+canônicos, bridge de registros, logging limitado e namespaces opcionais de
+capabilities. `appcore-bin` foi aposentado e removido do workspace do Runtime.
 
-Aplicações continuam implementando `appcore_bin::application::Application` e
-chamando `appcore_bin::application::run_application`. Isso mantém um único
-owner para manifests, providers, listeners, lifecycle, Supervisor e shutdown,
-preservando o [contrato de três artefatos](./three-artifact-contract).
+O SDK não possui host ou CLI implícito do Runtime. Executáveis de deployment
+controlam providers, listeners, workers, sinais e shutdown. Assim, o código de
+negócio permanece no [contrato de três artefatos](./three-artifact-contract)
+sem transformar o SDK em composition root de processo.
 
-## Evidência
-
-Um build otimizado limpo do consumer mantido de três artefatos no commit
-`a33a934`, com Rust 1.97.1 em macOS arm64, teve 22 pacotes AppCore e 196 pacotes
-no grafo normal. Levou 170,46 segundos, atingiu 693.846.016 bytes de RSS máximo,
-gerou um binário de 10.242.592 bytes e ocupou 481.808 KiB no target Cargo novo.
-
-O custo de compilação é real, mas separar apenas traits da facade não remove o
-grafo do host do executável: `run_application` ainda precisa alcançar a
-composition root concreta. A divisão adicionaria um crate ou mudaria o caminho
-público estável sem demonstrar benefício no artefato.
-
-## Reavaliação
-
-A decisão só pode ser reavaliada em um marco 1.x posterior com consumers reais
-que sejam apenas bibliotecas, um único owner de composição em grafo acíclico,
-evidência de consumer empacotado e SemVer, e redução medida mínima de 20% no
-build limpo ou no grafo. Alias de compatibilidade, migração implícita e segunda
-composition root continuam proibidos.
+Nenhum alias de compatibilidade ou segundo parser preserva `appcore_bin`.
+Aplicações existentes migram diretamente para
+[`appcore-sdk`](/pt/crates/appcore-sdk).
