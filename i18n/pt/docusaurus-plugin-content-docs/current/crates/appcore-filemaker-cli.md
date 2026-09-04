@@ -4,6 +4,8 @@ title: appcore-filemaker-cli — 0.1 beta
 
 # appcore-filemaker-cli
 
+> **BETA PÚBLICA** — `0.1.0-beta.1` está disponível no crates.io para avaliação.
+
 `appcore-filemaker-cli 0.1.0-beta.1` é o adapter de processo limitado do
 `appcore-filemaker`. Está publicado no crates.io como prerelease beta.
 
