@@ -278,8 +278,14 @@ function validateFutureRoadmap(crates) {
     path.join(wikiRoot, 'i18n', 'pt', 'docusaurus-plugin-content-docs', 'current', 'roadmap', 'index.md'),
     path.join(wikiRoot, 'i18n', 'fr', 'docusaurus-plugin-content-docs', 'current', 'roadmap', 'index.md'),
   ];
+  const cratePageDirectories = [
+    path.join(wikiRoot, 'docs', 'crates'),
+    path.join(wikiRoot, 'i18n', 'pt', 'docusaurus-plugin-content-docs', 'current', 'crates'),
+    path.join(wikiRoot, 'i18n', 'fr', 'docusaurus-plugin-content-docs', 'current', 'crates'),
+  ];
 
   for (const component of components) {
+    const version = /\d+\.\d+\.\d+(?:-[0-9A-Za-z.-]+)?/.exec(component.horizon)?.[0];
     for (const file of roadmapPages) {
       const content = fs.readFileSync(file, 'utf8');
       const row = content.split('\n').find((line) => line.startsWith('|') && line.includes(component.name));
@@ -290,9 +296,16 @@ function validateFutureRoadmap(crates) {
       if (!row.includes(`| ${component.status} |`)) {
         errors.push(`${path.relative(wikiRoot, file)} does not expose status ${component.status} for ${component.name}`);
       }
-      const version = /\d+\.\d+\.\d+(?:-[0-9A-Za-z.-]+)?/.exec(component.horizon)?.[0];
       if (version && !row.includes(version)) {
         errors.push(`${path.relative(wikiRoot, file)} does not expose ${component.name} version ${version}`);
+      }
+    }
+    if (version && crateNames.has(component.name)) {
+      for (const directory of cratePageDirectories) {
+        const file = path.join(directory, `${component.name}.md`);
+        if (!fs.readFileSync(file, 'utf8').includes(version)) {
+          errors.push(`${path.relative(wikiRoot, file)} does not expose ${component.name} version ${version}`);
+        }
       }
     }
   }
