@@ -9,7 +9,13 @@ Falhas de segurança no AppCore quase sempre começam quando uma fronteira fica 
 
 Segurança no AppCore é um conjunto de fronteiras: manifests versionados, tokens assinados, secret references, replay protection, payloads limitados, arquivos privados, DNT e diagnostics redigidos.
 
+## Por que tokens assinados não são containers de secrets?
+
 Tokens são assinados, não cifrados. Não coloque secrets em manifests, URLs, logs ou debug output.
+
+Credenciais de Gateway e Peer RPC usam o propósito `peer`. Credenciais de
+conexão do Gateway têm vida curta, uso único e vínculo com a identidade da
+conexão. Tokens de request Peer RPC podem ser vinculados ao hash do envelope.
 
 Hashes vinculados a requests usam o formato SHA-256 canônico `v2:`, com
 separação de domínio, framing por tamanho e presença explícita de campos
@@ -18,14 +24,43 @@ precisam ser atualizados juntos. A autenticação HTTP de command/query falha
 fechada por padrão; apenas o construtor explícito de teste local a desativa, e
 `/v1/health` continua público por contrato.
 
-Replay é tratado em camadas: idempotency key para commands, sequência/checkpoint para sync, nonces para Peer RPC, `jti` single-use para gateway e build/version checks para updates.
+## Onde o replay é bloqueado?
 
-DNT autentica contexto e cifra payload. Peer RPC valida tenant, cluster, core, protocolo, expiry, nonce, hash e token bound. Gateway valida conexão e mesh request. Update valida policy, assinatura, checksum e health gate.
+Replay protection aparece em várias camadas:
+
+- idempotency keys impedem repetição de commands do cliente;
+- sequências e checkpoints impedem registros de replicação duplicados;
+- nonces de Peer RPC impedem envelopes reutilizados;
+- valores `jti` do Gateway impedem credenciais reutilizadas;
+- build IDs e versões impedem reativar o artefato ativo por outro path.
+
+## O que a segurança de filesystem cobre?
+
+Formatos de arquivo do Runtime rejeitam symlinks e path traversal quando o
+provider possui a fronteira. Vários stores usam diretórios ou arquivos apenas
+do owner no Unix, locks explícitos, leituras limitadas, arquivos temporários,
+substituição atômica e sync do diretório pai.
 
 Arquivos estruturados de secret usados pelo startup do Auth Server, auth grants
 e inspeção de status têm teto de 64 KiB. Metadata acima do teto falha antes de
 alocar, um byte sentinela detecta crescimento concorrente e o owner de input é
 redacted e zeroizado depois do parse.
+
+Isso não torna seguro um host inseguro. Se a conta do sistema operacional for
+comprometida, arquivos locais podem ser atacados fora do processo AppCore.
+
+## Por que DNT vincula o contexto?
+
+DNT autentica o header e cifra payload e metadata. Como o header inclui
+application ID, tenant ID opcional, content type, codec ID, key ID e schema
+version, um envelope não pode mudar de contexto sem falhar na verificação.
+
+## Por que segurança de update combina policy e bytes?
+
+Segurança de update combina policy do descriptor, autenticidade criptográfica,
+limites de bytes, integridade SHA-256, staging imutável, health checks de
+activation e rollback. Artefatos locais unsigned exigem uma feature dedicada e
+validação estrita de arquivos; não são default de produção.
 
 ## Como advisories apenas do lockfile são tratadas?
 

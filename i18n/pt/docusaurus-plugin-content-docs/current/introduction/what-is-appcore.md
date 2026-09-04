@@ -37,6 +37,39 @@ flowchart TB
     Executable --> API[API command/query]
 ```
 
+## O que roda quando uma aplicação AppCore inicia
+
+O código da aplicação usa `App::prepare` para validar manifests e reunir os
+registros de negócio. O executável de deployment selecionado então possui a
+composição:
+
+```mermaid
+sequenceDiagram
+    participant Main as main()
+    participant SDK as appcore-sdk
+    participant Contracts as appcore-contracts
+    participant Providers as Provider plan
+    participant Core as appcore-core
+    participant Supervisor as appcore-supervisor
+    participant App as Application
+    participant Deployment as Executável de deployment
+
+    Main->>SDK: prepare(application, manifests)
+    SDK->>Contracts: validar application.toml
+    SDK->>Contracts: validar deployment.toml
+    SDK->>App: configure(DeploymentContext validado)
+    SDK->>Core: registrar commands, events, states, decisions
+    SDK-->>Deployment: registries e callbacks preparados
+    Deployment->>Providers: resolver providers explícitos
+    Deployment->>Supervisor: registrar serviços selecionados
+    Supervisor->>Supervisor: iniciar na ordem das dependências
+    Deployment-->>Main: executar até shutdown ou falha de bootstrap
+```
+
+Se os dois manifests não tiverem a mesma identidade, o bootstrap falha. Uma
+config removida para na update wall com `NO MORE SUPPORTED PLEASE UPDATE`. Um
+provider selecionado e ausente também falha, sem fallback silencioso.
+
 ## Quando usar
 
 Use AppCore quando a aplicação precisa de local-first, cluster, commands/queries explícitos, storage durável, backup/restore, health/status, serviços supervisionados, sync com checkpoints, Peer RPC, gateway ou updates com staging, health gate e rollback.
@@ -51,5 +84,7 @@ Evite quando um servidor HTTP stateless e um banco gerenciado bastam. AppCore n�
 - Deployments ainda precisam escolher providers, paths, secrets e process manager corretamente.
 - O runtime valida envelopes e manifests, mas não prova que handlers de domínio estão corretos.
 - A linha estável 1.0 prefere falha explícita a compatibilidade automática com formatos antigos.
+
+## Leia depois
 
 Próximo capítulo: [contrato de três artefatos](/architecture/three-artifact-contract).

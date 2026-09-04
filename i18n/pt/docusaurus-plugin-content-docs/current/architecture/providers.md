@@ -9,7 +9,14 @@ A mesma aplicação pode rodar no laptop de desenvolvimento, no notebook de uma 
 
 Providers são a fronteira de instalação. O deployment escolhe infraestrutura sem alterar o artefato da aplicação.
 
-`DeploymentProviderPlan` extrai storage, control plane, coordination store, secret provider, jobs, discovery, update, database, peer transport, command transport e adapters.
+## O que o deployment escolhe?
+
+`DeploymentProviderPlan` extrai storage, control plane, coordination store,
+secret provider, jobs, discovery, update, database, peer transport, command
+transport e adapters. O contexto contém somente application ID, installation ID
+e modo do Runtime, nunca secrets.
+
+## Por que não existe fallback implícito?
 
 ```mermaid
 flowchart LR
@@ -28,7 +35,18 @@ pós-1.0. Um descriptor limitado declara garantias exatas em vez de nomes de
 implementação; o provider selecionado deve satisfazer todos os requisitos antes
 de abrir. Veja [preflight de capacidades de storage](/architecture/storage-provider-capabilities).
 
-Provider de coordenação é runtime-owned e não banco de negócio. Secret provider resolve referências depois da validação, mantendo valores fora dos manifests.
+## Para que serve o coordination store?
+
+O coordination store possui metadata de schema do Runtime, incluindo o arquivo
+versionado `coordination-schema.meta`. Ele migra versões anteriores e rejeita
+versões futuras incompatíveis. Não é banco de negócio.
+
+## Por que manifests guardam referências de secrets?
+
+O secret provider resolve referências como `env:APPCORE_EXAMPLE_SECRET` depois
+da validação, mantendo valores fora dos manifests e da aplicação.
+
+## O que um lease em filesystem comprova?
 
 O lease de recurso compartilhado em filesystem persiste um sidecar versionado
 com o maior epoch antes de publicar o lease ativo. Release, restart e aquisição
@@ -37,7 +55,15 @@ todo writer protegido o comparar antes da escrita; filesystems sem lock,
 rename, sync de diretório e coerência de cache confiáveis não evitam split-brain
 sozinhos.
 
-## Limitations
+## O que um provider de produção deve documentar?
+
+- limites de timeout, retry, fila e payload;
+- autenticação e ownership de secrets;
+- health, degradação, persistência e recuperação;
+- migração, compatibilidade e diagnósticos redacted;
+- testes de conformidade e falha.
+
+## Limitações
 
 - Providers não tornam standalone e cluster equivalentes; cada modo tem requisitos próprios.
 - Provider selecionado e ausente falha creation em vez de fallback.
