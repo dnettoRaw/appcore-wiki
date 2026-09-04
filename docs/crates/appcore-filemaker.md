@@ -4,6 +4,8 @@ title: appcore-filemaker — 0.1 beta
 
 # appcore-filemaker
 
+> **BETA PÚBLICA** — `0.1.0-beta.1` está disponível no crates.io para avaliação.
+
 `appcore-filemaker 0.1.0-beta.1` is the official AppCore deterministic
 compiler for declarative documents, vector canvases, and datasets. The
 `0.1.0-beta.1` release is published on crates.io and remains outside the stable
