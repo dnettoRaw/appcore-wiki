@@ -1,12 +1,12 @@
 ---
-title: appcore-filemaker-ai — 0.1 alpha
+title: appcore-filemaker-ai — 0.1 beta
 ---
 
 # appcore-filemaker-ai
 
-`appcore-filemaker-ai 0.1.0-alpha.1` is the optional bounded bridge from
-`appcore-ai` tool calls to deterministic FileMaker sessions. It is a source
-preview and has not been published to crates.io.
+`appcore-filemaker-ai 0.1.0-beta.1` is the optional bounded bridge from
+`appcore-ai` tool calls to deterministic FileMaker sessions. It is published
+on crates.io as a beta prerelease.
 
 The bridge declares 20 exact tools with closed execution-matched schemas,
 enforces call, argument, core-capped patch, and result-byte budgets, and applies

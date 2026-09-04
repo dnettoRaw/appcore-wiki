@@ -1,13 +1,13 @@
 ---
-title: appcore-filemaker — 0.1 alpha
+title: appcore-filemaker — 0.1 beta
 ---
 
 # appcore-filemaker
 
-`appcore-filemaker 0.1.0-alpha.1` is the official AppCore deterministic
-compiler for declarative documents, vector canvases, and datasets. It is in
-source preview and has not been published to crates.io; publication is a
-separate maintainer decision.
+`appcore-filemaker 0.1.0-beta.1` is the official AppCore deterministic
+compiler for declarative documents, vector canvases, and datasets. The
+`0.1.0-beta.1` release is published on crates.io and remains outside the stable
+Runtime graph.
 
 New to the template format? Follow the
 [step-by-step YAML guide](./appcore-filemaker-yaml.md) to build a document from

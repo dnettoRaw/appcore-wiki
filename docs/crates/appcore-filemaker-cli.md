@@ -1,12 +1,11 @@
 ---
-title: appcore-filemaker-cli — 0.1 alpha
+title: appcore-filemaker-cli — 0.1 beta
 ---
 
 # appcore-filemaker-cli
 
-`appcore-filemaker-cli 0.1.0-alpha.1` is the bounded process adapter for
-`appcore-filemaker`. It is a source preview and has not been published to
-crates.io.
+`appcore-filemaker-cli 0.1.0-beta.1` is the bounded process adapter for
+`appcore-filemaker`. It is published on crates.io as a beta prerelease.
 
 The command selects export format; template YAML never does. `check`,
 `validate`, `preflight`, and diagnostic commands are read-only except for

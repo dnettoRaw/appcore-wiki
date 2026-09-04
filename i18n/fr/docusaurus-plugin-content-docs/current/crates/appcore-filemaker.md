@@ -1,13 +1,12 @@
 ---
-title: appcore-filemaker — 0.1 alpha
+title: appcore-filemaker — 0.1 beta
 ---
 
 # appcore-filemaker
 
-`appcore-filemaker 0.1.0-alpha.1` est le compilateur déterministe officiel
-d'AppCore pour documents déclaratifs, canvases vectoriels et datasets. Il est
-en aperçu source et n'est pas publié sur crates.io ; la publication reste une
-décision séparée du mainteneur.
+`appcore-filemaker 0.1.0-beta.1` est le compilateur déterministe officiel
+d'AppCore pour documents déclaratifs, canvases vectoriels et datasets. La
+version `0.1.0-beta.1` est publiée sur crates.io et reste hors du Runtime stable.
 
 Pour découvrir le format, suivez le
 [guide YAML pas à pas](./appcore-filemaker-yaml.md). Il part de l'en-tête

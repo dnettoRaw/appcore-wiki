@@ -1,12 +1,12 @@
 ---
-title: appcore-filemaker-ai — 0.1 alpha
+title: appcore-filemaker-ai — 0.1 beta
 ---
 
 # appcore-filemaker-ai
 
-`appcore-filemaker-ai 0.1.0-alpha.1` é o bridge opcional e limitado entre tools
-do `appcore-ai` e sessões FileMaker determinísticas. É uma prévia no código e
-não foi publicado no crates.io.
+`appcore-filemaker-ai 0.1.0-beta.1` é o bridge opcional e limitado entre tools
+do `appcore-ai` e sessões FileMaker determinísticas. Está publicado no crates.io
+como prerelease beta.
 
 O bridge declara 20 tools exatas com schemas fechados iguais à execução, aplica
 limites de chamadas, argumentos, patches limitados também pelo core e bytes de

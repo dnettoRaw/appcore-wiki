@@ -1,11 +1,11 @@
 ---
-title: appcore-filemaker-cli — 0.1 alpha
+title: appcore-filemaker-cli — 0.1 beta
 ---
 
 # appcore-filemaker-cli
 
-`appcore-filemaker-cli 0.1.0-alpha.1` est l'adaptateur de processus borné de
-`appcore-filemaker`. C'est un aperçu source qui n'est pas publié sur crates.io.
+`appcore-filemaker-cli 0.1.0-beta.1` est l'adaptateur de processus borné de
+`appcore-filemaker`. Il est publié sur crates.io comme prerelease beta.
 
 La commande choisit le format d'export ; le YAML du template ne le choisit
 jamais. `check`, `validate`, `preflight` et les commandes de diagnostic sont en
