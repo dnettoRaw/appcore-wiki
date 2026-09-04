@@ -42,8 +42,15 @@ silenciosamente em deployments estáveis.
 
 ## Ownership da documentação
 
-Cada README deve explicar responsabilidade, não objetivos, contratos públicos,
-menor exemplo útil, limites, comandos de validação e o ID estável da wiki.
+Cada README deve explicar:
+
+- o que o crate possui e deliberadamente não possui;
+- quando um consumer deve selecioná-lo;
+- seus contratos públicos e o menor exemplo útil;
+- limites importantes de recursos, segurança e falha;
+- como executar testes e exemplos focados;
+- onde seu ID estável leva para orientação adicional de arquitetura.
+
 Guias e exemplos específicos ficam em `crates/<nome>/wiki`; arquitetura e
 operação compartilhadas ficam nesta wiki pública.
 

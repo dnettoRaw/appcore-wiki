@@ -316,7 +316,8 @@ revendique pas.
 ## Sécurité, limites et état
 
 - prompts, outputs, endpoints et credentials sont expurgés des diagnostics ;
-- LocalOnly refuse les permissions distantes, qui exigent des grants tenant ;
+- les requests LocalOnly refusent compute et storage distants ;
+- les routes distantes exigent des grants tenant explicites ;
 - files, tentatives, peers, payloads, metadata, tools et artefacts sont bornés ;
 - l'annulation est coopérative ; le worker bloquant borné la transmet à
   l'échange HTTP et les transports streaming la vérifient entre chunks ;

@@ -7,6 +7,10 @@ sidebar_position: 2
 
 O objetivo mensurável do AppCore 1.0 é: uma aplicação roda fornecendo apenas `application.toml`, `deployment.toml` e código de negócio que implementa `appcore_sdk::Application`.
 
+1. `application.toml`
+2. `deployment.toml`
+3. código de negócio implementando `appcore_sdk::Application`
+
 Esse contrato existe para impedir que identidade de aplicação, política de instalação e composição de runtime se misturem no mesmo arquivo. Quando isso acontece, cada instalação vira um fork implícito.
 
 Porque existem três donos diferentes. O autor da aplicação sabe quais commands existem. O operador sabe onde a aplicação roda. O runtime sabe como compor providers, lifecycle e serviços.
@@ -14,6 +18,16 @@ Porque existem três donos diferentes. O autor da aplicação sabe quais command
 ## Application Manifest
 
 É portável e pertence ao autor da aplicação. Declara identidade, versão, vendor, service ID, runtime mínimo, protocolo, capabilities, idempotência, liderança, storage, scheduler, jobs, health e update policy.
+
+Ele possui:
+
+- identidade e versão da aplicação;
+- display name, vendor e service ID;
+- versão mínima do Runtime e protocol version;
+- capabilities e seus modos command/query/stream;
+- requisitos de idempotência e liderança;
+- requisitos de storage, scheduler, jobs, health e update;
+- módulos, feature flags e metadata não sensível.
 
 Não contém provider IDs, paths, endpoints, TLS, tokens, senhas ou chaves.
 
@@ -42,6 +56,17 @@ idempotency_required = true
 ## Deployment Manifest
 
 Pertence ao instalador/operador. Seleciona modo, providers, paths, rede, secret references e watchdog.
+
+Ele possui:
+
+- identidade da instalação;
+- modo standalone ou cluster;
+- providers selecionados;
+- paths de storage e backup;
+- bindings de environment e volumes;
+- listeners de rede e transports;
+- secret references;
+- policy do watchdog do Supervisor.
 
 ```toml
 manifest_version = 1
@@ -72,6 +97,15 @@ Secrets são referências. Paths relativos resolvem a partir do deployment manif
 ## Código de negócio
 
 O código registra commands, events, states, decisions, handlers, queries e tasks. Ele não constrói storage provider, listener HTTP, token provider, scheduler, sync ou supervisor.
+
+O Runtime chama os pontos controlados:
+
+- `configure` recebe bindings validados do deployment;
+- `register_commands` declara nomes de commands;
+- `register_events`, `register_states` e `register_decisions` expõem contratos;
+- `register_handlers` conecta command handlers;
+- `register_queries` registra endpoints sem side effects;
+- `register_tasks` registra definições limitadas de tasks em background.
 
 ```rust
 use appcore_sdk::application::{

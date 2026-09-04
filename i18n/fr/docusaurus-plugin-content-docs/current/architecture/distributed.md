@@ -17,6 +17,20 @@ du credential.
 
 Le file control plane prend un lock, recharge un état validé et borné, supprime les enregistrements expirés, applique une opération et persiste atomiquement.
 
+Chaque opération :
+
+1. prend un file lock du système d'exploitation ;
+2. recharge un état validé et borné ;
+3. supprime les enregistrements expirés selon le clock autoritatif ;
+4. applique exactement une opération ;
+5. persiste atomiquement l'état résultant.
+
+Le control plane enregistre presence, heartbeat, peer discovery et leadership
+par service. Son envelope durable possède format version et taille maximale ;
+une version incompatible échoue à l'update wall au lieu d'être devinée. Il
+répond qui est présent et qui détient un lease, mais ce n'est pas une database
+métier.
+
 Il enregistre présence, heartbeats, discovery et leadership par service. Ce
 n'est pas une base métier. Son état durable possède une version de format et
 une taille maximale ; une version incompatible échoue explicitement.
@@ -38,9 +52,19 @@ sequenceDiagram
     Core->>Store: écriture protégée
 ```
 
-Un ancien leader échoue si le lease est expiré, si le holder, tenant ou cluster
-diffère, ou si l'epoch minimum demandé est plus récent. L'élection choisit un
-holder ; le fencing empêche l'ancien travail de commit après un changement.
+Un ancien leader échoue lorsque :
+
+- le lease a expiré ;
+- le holder core diffère ;
+- tenant ou cluster diffère ;
+- l'epoch minimum demandé est plus récent que le lease courant.
+
+L'élection choisit un holder ; le fencing empêche l'ancien travail de commit
+après un changement.
+
+Un ancien leader qui se réveille avec un epoch périmé voit son commit rejeté
+par le guard. Cette protection distingue une élection observée de la garantie
+que l'ancien travail ne peut plus agir.
 
 ## Pourquoi les providers sont-ils sélectionnés explicitement ?
 
@@ -51,10 +75,30 @@ fallback de distant vers local, cluster vers standalone ou sûr vers non sûr.
 
 ## Que valide Peer RPC avant le dispatch ?
 
+L'envelope lie :
+
+- request ID ;
+- trace ID et trace context facultatif ;
+- protocol version ;
+- source core ;
+- target core ;
+- tenant ;
+- cluster ;
+- timestamp et expiry ;
+- nonce ;
+- capability ;
+- body hash ;
+- idempotency key facultative.
+
 Peer RPC valide request ID, trace, protocole, source/target core, tenant,
 cluster, timestamp, expiry, nonce, capability, body hash et idempotency key
 optionnelle. Le nonce store peut être en mémoire ou sur fichier privé, borné,
 verrouillé et remplacé atomiquement.
+
+La validation borne aussi le payload et contrôle protocol, fenêtre temporelle,
+cohérence du trace et replay du nonce. Le token peer peut se lier au hash
+complet de la request afin qu'un bearer token ne serve pas pour un autre routing
+ou body.
 
 Les rejets V2 sont typés et bornés. Un code fixe détermine phase et si une
 opération idempotente de niveau supérieur peut retenter; le peer ne déclare pas
@@ -93,6 +137,12 @@ flowchart LR
     Worker --> PeerHost[Peer RPC host]
     PeerHost --> App[Runtime dispatcher]
 ```
+
+Les tokens worker et client sont courts, à usage unique et liés à un hash. Le
+hash worker couvre tenant, cluster, installation, core et capabilities ; celui
+du client couvre tenant, cluster et device. Le relay vérifie la concordance de
+la metadata externe avec l'envelope Peer RPC puis borne messages, timeouts et
+files sans interpréter le payload opaque.
 
 Le host utilise un replay store durable et sûr entre processus. Standalone le
 place dans le storage privé ; cluster exige un `paths.gateway_replay` absolu

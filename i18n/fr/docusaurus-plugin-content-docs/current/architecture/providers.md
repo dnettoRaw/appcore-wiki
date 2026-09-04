@@ -11,10 +11,22 @@ Providers sont la frontière d'installation. Le deployment choisit l'infrastruct
 
 ## Que choisit le deployment ?
 
-`DeploymentProviderPlan` extrait storage, control plane, coordination store,
-secret provider, jobs, discovery, update, database, peer transport, command
-transport et adapters. Le contexte ne contient que application ID, installation
-ID et mode Runtime, jamais les secrets.
+`DeploymentProviderPlan` extrait :
+
+- storage ;
+- control plane ;
+- coordination store ;
+- secret provider ;
+- job provider ;
+- peer discovery ;
+- update provider ;
+- database provider ;
+- peer transport ;
+- command transport ;
+- adapters nommés.
+
+Le contexte ne contient que application ID, installation ID et mode Runtime,
+jamais les secrets.
 
 ## Pourquoi n'existe-t-il aucun fallback implicite ?
 
@@ -59,8 +71,10 @@ n'empêche pas seul le split-brain.
 
 - limites de timeout, retry, file et payload ;
 - authentification et ownership des secrets ;
-- health, dégradation, persistance et récupération ;
-- migration, compatibilité et diagnostics expurgés ;
+- health et comportement de dégradation ;
+- garanties de persistance et récupération ;
+- policy de migration et compatibilité ;
+- diagnostics expurgés ;
 - tests de conformité et d'échec.
 
 ## Limites

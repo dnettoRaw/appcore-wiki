@@ -13,7 +13,14 @@ Ele não é web framework, banco de dados, ERP ou plataforma de negócio. Ele é
 
 ## O problema
 
-Backends comuns acumulam infraestrutura escondida: configuração mistura identidade, paths, secrets e endpoints; retries entram nos handlers; jobs rodam fora do ciclo de vida; update troca arquivos antes de provar health; liderança distribuída vira um booleano sem fencing.
+Backends comuns acumulam comportamento oculto do Runtime:
+
+- configuração mistura identidade, paths, secrets, rede e feature toggles;
+- retries entram nos handlers em vez das fronteiras de command;
+- jobs em background iniciam fora da supervisão de lifecycle;
+- writes e backups ficam implícitos no client de database escolhido;
+- liderança distribuída vira booleano em vez de lease com fencing token;
+- updates trocam arquivos antes que o processo novo prove health.
 
 AppCore separa ownership:
 
@@ -75,11 +82,29 @@ provider selecionado e ausente também falha, sem fallback silencioso.
 
 ## Quando usar
 
-Use AppCore quando a aplicação precisa de local-first, cluster, commands/queries explícitos, storage durável, backup/restore, health/status, serviços supervisionados, sync com checkpoints, Peer RPC, gateway ou updates com staging, health gate e rollback.
+Use AppCore quando a aplicação precisa de:
+
+- deployments local-first ou cluster;
+- contratos explícitos de command e query;
+- storage durável e policy de backup;
+- endpoints de health e status pertencentes ao Runtime;
+- serviços supervisionados;
+- sync com validação de sequência e checkpoints;
+- Peer RPC ou relay de Gateway entre cores;
+- updates com autenticidade, staging, activation, health gate e rollback.
 
 ## Quando não usar
 
-Evite quando um servidor HTTP stateless e um banco gerenciado bastam. AppCore não fornece ORM, OAuth, vault gerenciado, terminação TLS universal, RAFT, consenso multi-master ou resolução automática de conflitos de domínio.
+Evite quando um servidor HTTP stateless e um banco gerenciado bastam. AppCore
+intencionalmente não fornece:
+
+- ORM geral;
+- workflows de produto;
+- implementação OAuth;
+- vault gerenciado de produção;
+- terminação TLS inbound para todo deployment;
+- RAFT ou consenso multi-master;
+- resolução automática de conflitos de domínio.
 
 ## Limitations
 
@@ -87,6 +112,11 @@ Evite quando um servidor HTTP stateless e um banco gerenciado bastam. AppCore n�
 - Deployments ainda precisam escolher providers, paths, secrets e process manager corretamente.
 - O runtime valida envelopes e manifests, mas não prova que handlers de domínio estão corretos.
 - A linha estável 1.0 prefere falha explícita a compatibilidade automática com formatos antigos.
+
+Essas omissões são fronteiras de design. Elas mantêm a infraestrutura do
+Runtime reutilizável por aplicações que não compartilham o mesmo domínio de
+negócio. É também por isso que a documentação começa pelos manifests, e não
+por uma lista de crates.
 
 ## Leia depois
 

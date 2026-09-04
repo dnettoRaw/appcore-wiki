@@ -72,8 +72,9 @@ page:
   A/B/C, les formats nord-américains, écran, photo, enveloppe, étiquette,
   thermique et réseaux sociaux.
 - `orientation` vaut `portrait` ou `landscape`.
-- `margin` réserve le layout, `safe` définit la zone sûre et `bleed` la
-  fond perdu.
+- `margin` réserve l'espace de layout.
+- `safe` définit la zone sûre.
+- `bleed` définit la fond perdu hors du trim.
 - `crop_marks` demande les marques de coupe aux exporters compatibles.
 - Pour une taille personnalisée, utilisez `width` et `height` à la place de
   `preset`, jamais avec lui.
@@ -117,7 +118,8 @@ styles:
   card: { fill: "$pale", stroke: "$accent", stroke_width: 1pt }
 ```
 
-- `themes` déclare des thèmes ; `extends` hérite sans cycle.
+- `themes` déclare des thèmes.
+- `extends` hérite d'un autre thème sans cycle.
 - `tokens` expose des valeurs `$nom`.
 - `theme` active un thème.
 - Le `style` racine s'applique au template entier.
@@ -166,6 +168,13 @@ défaut) ou `vertical`. Le texte vertical est coupé selon la hauteur, chaque
 colonne est façonnée de haut en bas et les colonnes avancent de droite à gauche.
 PDF, SVG, PNG/JPEG et HTML utilisent les mêmes colonnes et runs résolus sans
 reflow ; PDF et raster utilisent directement les avances des glyphes.
+
+- `wrap` crée des retours à la ligne ;
+- `shrink` réduit le texte jusqu'à `min_font_size` ;
+- `ellipsis` termine le texte en overflow par une ellipse ;
+- `clip` coupe l'overflow et enregistre un diagnostic ;
+- `expand` agrandit la boîte mesurée ;
+- `error` échoue si le texte ne tient pas.
 
 ## 6. Dessinez des vecteurs sémantiques
 
@@ -317,7 +326,8 @@ explicites ou préférées. `gap` définit l'espacement normal.
 - `columns` fixe l'ordre visuel.
 - `fixed` est exact, `flex` partage le reste et `auto` mesure un échantillon
   borné.
-- `repeat_header` répète l'en-tête ; `group_by` maintient les groupes.
+- `repeat_header` répète l'en-tête après pagination.
+- `group_by` maintient la continuité du groupe.
 - `total_fields` émet les totaux exacts sur la dernière page seulement.
 - `conditional_styles` évalue chaque ligne comme `data`.
 - `auto_sample_rows` borne la mesure.
@@ -349,10 +359,13 @@ page:
         locked: true
 ```
 
-`master`, `first`, `continuation` et `last` acceptent chacun `background`,
-`header`, `footer`. Master se répète ; les trois autres sont liés au rôle de la
-page. `{page}` et `{pages}` sont résolus après pagination. Ces layers ne
-collisionnent pas avec le corps. `locked: true` refuse les patches runtime.
+- `master` apparaît sur chaque page ;
+- `first` apparaît sur la première page ;
+- `continuation` apparaît uniquement sur les pages intermédiaires ;
+- `last` apparaît sur la dernière page si le document en a plusieurs ;
+- `{page}` et `{pages}` sont résolus après pagination ;
+- les layers de page ne collisionnent pas avec le corps ;
+- `locked: true` refuse les patches runtime sur cet élément.
 
 ## 11. Résolvez les images explicitement
 
@@ -397,12 +410,14 @@ elements:
     align_y: center
 ```
 
-`guides` sont des positions nommées. `regions` sont des rectangles nommés avec
-collision facultative. `region` choisit le conteneur. `anchors` vise un guide
-ou le bord d'un élément antérieur, avec offset facultatif. Les constraints sont
-`min_width`, `preferred_width`, `max_width`, `min_height`, `preferred_height`,
-`max_height`, `aspect_ratio` en millionièmes. L'alignement vaut `start`,
-`center`, `end` ; ne combinez pas alignement et coordonnée sur le même axe.
+- `guides` sont des positions nommées ;
+- `regions` sont des rectangles nommés avec override `collision` facultatif ;
+- `region` choisit le conteneur de l'élément ;
+- `anchors` vise un guide ou un bord antérieur, avec offset facultatif ;
+- `constraints` accepte `min_width`, `preferred_width`, `max_width`,
+  `min_height`, `preferred_height`, `max_height`, `aspect_ratio` en millionièmes ;
+- `align_x` et `align_y` valent `start`, `center`, `end` ; ne combinez pas
+  alignement et coordonnée explicite sur le même axe.
 
 ## 13. Appliquez un transform
 

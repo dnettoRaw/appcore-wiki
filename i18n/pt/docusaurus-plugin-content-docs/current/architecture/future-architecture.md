@@ -8,8 +8,7 @@ sidebar_position: 12
 
 :::caution Roadmap conceitual
 Esta página descreve ideias de arquitetura futura. Ela **não** altera a
-arquitetura atual do Runtime, o grafo estável de crates nem os 23 crates estáveis
-públicos disponíveis hoje.
+arquitetura atual do Runtime nem o catálogo atual de crates públicos.
 :::
 
 Trabalho futuro no AppCore segue a mesma regra do Runtime atual: uma crate só
@@ -91,9 +90,16 @@ flowchart LR
 
 ## Não Objetivos
 
-AppCore não pretende virar sistema operacional, banco universal, browser
-engine, framework completo de machine learning, graphics engine reinventada,
-stack própria de criptografia, cloud provider ou monólito.
+AppCore não pretende virar:
+
+- sistema operacional;
+- database universal;
+- browser engine;
+- framework completo de machine learning;
+- graphics engine reinventado;
+- stack criptográfica própria;
+- cloud provider;
+- monólito.
 
 ## Princípios
 

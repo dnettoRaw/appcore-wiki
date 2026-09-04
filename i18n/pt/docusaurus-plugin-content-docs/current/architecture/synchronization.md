@@ -7,17 +7,45 @@ sidebar_position: 5
 
 Imagine uma loja sem internet por oito horas. O operador continua emitindo orçamentos. Quando a rede volta, o runtime precisa saber o que já foi enviado, o que é novo, o que é retry e o que é conflito.
 
+O Runtime precisa responder:
+
+- quais registros foram enviados antes da queda;
+- quais registros são novos;
+- se um reenvio é retry ou payload conflitante;
+- se o batch anterior aceito combina com a chain do sender;
+- de onde o replay deve continuar após um crash.
+
 Sync no AppCore é replicação conservadora leader-to-follower. Não é RAFT, multi-master nem resolvedor de conflitos de domínio.
 
 ## O que acontece quando a loja reconecta?
 
 Commands locais podem continuar conforme a política de storage e command. Quando a rede volta, o receiver não confia no batch: valida identidade, protocolo, sequência, count, tamanho, hash, previous hash e checkpoint.
 
+O receiver verifica:
+
+- compatibilidade da identidade de origem;
+- intervalo de sequence;
+- quantidade declarada de eventos;
+- tamanho do payload;
+- SHA-256 dos eventos;
+- hash do batch anterior;
+- sequences repetidas;
+- estado do checkpoint.
+
 Se a mesma sequência reaparece com o mesmo payload, é retry. Se a mesma sequência reaparece com bytes diferentes, não é retry: é conflito.
 
 ## O que um SyncMessage prova?
 
 Um batch carrega `batch_id`, source node, `sequence_start`, `sequence_end`, event count, hash dos eventos, timestamp, previous batch hash e payloads opacos.
+
+- `batch_id` como identidade idempotente;
+- source node ID;
+- `sequence_start` e `sequence_end` inclusivos;
+- quantidade declarada de eventos;
+- hash de metadata e payloads prefixados por tamanho;
+- creation time;
+- hash opcional do batch anterior;
+- payloads opacos dos eventos.
 
 ```mermaid
 flowchart LR
@@ -31,9 +59,23 @@ flowchart LR
 
 O hash cobre metadata e tamanho dos payloads, não apenas os bytes soltos. Isso impede aceitar o mesmo payload com metadata de sequência diferente.
 
+O batch comprova consistência da replicação no nível do transport. Ele não
+prova que o evento de negócio está semanticamente correto. O Runtime protege
+ordem e integridade; a aplicação continua dona do significado do domínio.
+
 ## Por que manter replication log?
 
 O log file-backed usa marcador `# appcore-replication-log-v1`, limite total, limite por record, sequence map, hash chain, lock e atomic write. Append por sequência é idempotente: mesma sequência e mesmo payload retorna o índice original; mesma sequência e payload diferente é conflito.
+
+Ele:
+
+- usa o marcador estável `# appcore-replication-log-v1`;
+- limita os bytes totais;
+- limita os bytes de cada record;
+- armazena sequence e metadata da hash chain;
+- recarrega e valida records antes de append;
+- usa process locks e writes atômicos;
+- recupera um prefixo válido quando a tail é interrompida.
 
 O log é evidência de replay. Sem log, recovery teria que confiar em projections de aplicação, que podem ter sido compactadas, migradas ou parcialmente reconstruídas.
 
@@ -48,6 +90,10 @@ peer-b=17,
 ```
 
 Sem checkpoint, recovery teria que replayar tudo ou inferir progresso pela projection. AppCore não faz essa inferência.
+
+Replay sozinho não basta porque o log pode ser maior que o ponto útil de
+recovery e projections nem sempre são autoritativas. O checkpoint é uma
+promessa explícita de que os batches até aquela sequence e hash foram aceitos.
 
 ## Como a outbox durável faz recovery?
 

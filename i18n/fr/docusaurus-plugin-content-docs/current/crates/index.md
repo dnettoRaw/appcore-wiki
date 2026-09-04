@@ -42,8 +42,16 @@ silencieusement dans un déploiement stable.
 
 ## Propriété de la documentation
 
-Chaque README explique responsabilité, exclusions, contrats publics, exemple
-minimal, limites, validation et ID stable du wiki. Les guides spécifiques
+Chaque README doit expliquer :
+
+- ce que le crate possède et ne possède volontairement pas ;
+- quand un consumer doit le sélectionner ;
+- ses contrats publics et le plus petit exemple utile ;
+- ses limites importantes de ressources, sécurité et échec ;
+- comment exécuter les tests et exemples ciblés ;
+- où mène son ID stable pour les conseils d'architecture complémentaires.
+
+Les guides spécifiques
 restent dans `crates/<nom>/wiki`; architecture et exploitation communes restent
 dans ce wiki public.
 

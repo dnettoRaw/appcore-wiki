@@ -73,8 +73,9 @@ page:
   North American paper, screens, photos, envelopes, labels, thermal media, and
   social formats.
 - `orientation` is `portrait` or `landscape`.
-- `margin` reserves layout space, `safe` defines the safe inset, and `bleed`
-  extends outside trim.
+- `margin` reserves layout space.
+- `safe` defines the safe inset.
+- `bleed` extends outside trim.
 - `crop_marks` requests marks from compatible exporters.
 - Use `width` and `height` instead of `preset` for a custom size; do not mix
   both modes.
@@ -118,7 +119,8 @@ styles:
   card: { fill: "$pale", stroke: "$accent", stroke_width: 1pt }
 ```
 
-- `themes` declares named themes; `extends` inherits without cycles.
+- `themes` declares named themes.
+- `extends` inherits another theme without cycles.
 - `tokens` provides `$name` values.
 - `theme` chooses one active theme.
 - top-level `style` applies to the complete template.
@@ -167,6 +169,13 @@ millionth multiplier. `writing_mode` is `horizontal` (the default) or
 top to bottom, and advances columns right to left. PDF, SVG, PNG/JPEG, and HTML
 share the resolved columns and shaped runs without exporter-side reflow; PDF
 and raster use the resolved glyph advances directly.
+
+- `wrap` creates line breaks;
+- `shrink` reduces text down to `min_font_size`;
+- `ellipsis` ends overflowing text with an ellipsis;
+- `clip` clips overflow and records a diagnostic;
+- `expand` enlarges the measured box;
+- `error` fails when the text does not fit.
 
 ## 6. Draw semantic vectors
 
@@ -320,7 +329,8 @@ controls normal child spacing.
 - `columns` fixes stable visual order.
 - `fixed` is exact, `flex` shares remaining space, and `auto` measures a bounded
   sample.
-- `repeat_header` repeats after pagination; `group_by` retains group continuity.
+- `repeat_header` repeats the header after pagination.
+- `group_by` retains group continuity.
 - `total_fields` emits checked exact totals only on the last page.
 - `conditional_styles` evaluates against each row as `data`.
 - `auto_sample_rows` bounds measurement.
@@ -352,11 +362,13 @@ page:
         locked: true
 ```
 
-Each of `master`, `first`, `continuation`, and `last` accepts `background`,
-`header`, and `footer`. Master repeats everywhere; first, middle continuation,
-and last are role-specific. `{page}` and `{pages}` resolve after pagination.
-Page layers do not collide with body content. `locked: true` rejects runtime
-patches for that node.
+- `master` appears on every page.
+- `first` appears on the first page.
+- `continuation` appears only on middle pages.
+- `last` appears on the last page when the document has multiple pages.
+- `{page}` and `{pages}` resolve after pagination.
+- page layers do not collide with body content.
+- `locked: true` rejects runtime patches for that node.
 
 ## 11. Resolve images explicitly
 
@@ -401,12 +413,14 @@ elements:
     align_y: center
 ```
 
-`guides` are named positions. `regions` are named rectangles with an optional
-collision override. `region` selects a container. `anchors` reference a guide
-or earlier element edge with an optional offset. Constraints are `min_width`,
-`preferred_width`, `max_width`, `min_height`, `preferred_height`, `max_height`,
-and millionth `aspect_ratio`. Alignment is `start`, `center`, or `end`; do not
-combine alignment and an explicit coordinate on the same axis.
+- `guides` are named positions.
+- `regions` are named rectangles with an optional `collision` override.
+- `region` selects the element's container.
+- `anchors` reference a guide or earlier element edge with an optional offset.
+- `constraints` accepts `min_width`, `preferred_width`, `max_width`,
+  `min_height`, `preferred_height`, `max_height`, and millionth `aspect_ratio`.
+- `align_x` and `align_y` are `start`, `center`, or `end`; do not combine
+  alignment and an explicit coordinate on the same axis.
 
 ## 13. Apply transforms
 

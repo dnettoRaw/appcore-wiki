@@ -7,6 +7,10 @@ sidebar_position: 2
 
 L'objectif mesurable d'AppCore 1.0 est : une application tourne avec seulement `application.toml`, `deployment.toml` et du code métier implémentant `appcore_sdk::Application`.
 
+1. `application.toml`
+2. `deployment.toml`
+3. code métier implémentant `appcore_sdk::Application`
+
 Ce contrat évite de mélanger identité applicative, politique d'installation et composition runtime dans le même fichier. Quand ces responsabilités se mélangent, chaque installation devient un fork implicite.
 
 Parce qu'il y a trois propriétaires. L'auteur connaît les commands. L'opérateur connaît l'environnement. Le runtime sait composer providers, lifecycle et services.
@@ -14,6 +18,16 @@ Parce qu'il y a trois propriétaires. L'auteur connaît les commands. L'opérate
 ## Application Manifest
 
 Portable et détenu par l'auteur de l'application. Il déclare identité, version, vendor, service ID, runtime minimum, protocole, capabilities, idempotence, leadership, storage, scheduler, jobs, health et update policy.
+
+Il possède :
+
+- identité et version de l'application ;
+- display name, vendor et service ID ;
+- version Runtime minimale et protocol version ;
+- capabilities et leurs modes command/query/stream ;
+- exigences d'idempotence et leadership ;
+- exigences storage, scheduler, jobs, health et update ;
+- modules, feature flags et metadata non sensible.
 
 Il ne contient pas provider IDs, chemins, endpoints, TLS, tokens, mots de passe ou clés.
 
@@ -42,6 +56,17 @@ idempotency_required = true
 ## Deployment Manifest
 
 Il appartient à l'installateur/opérateur. Il sélectionne mode, providers, chemins, réseau, secret references et watchdog.
+
+Il possède :
+
+- identité de l'installation ;
+- mode standalone ou cluster ;
+- providers sélectionnés ;
+- chemins storage et backup ;
+- bindings environment et volumes ;
+- listeners réseau et transports ;
+- secret references ;
+- policy du watchdog Supervisor.
 
 ```toml
 manifest_version = 1
@@ -72,6 +97,15 @@ Les secrets sont des références. Les chemins relatifs sont résolus depuis le 
 ## Code métier
 
 Le code enregistre commands, events, states, decisions, handlers, queries et tasks. Il ne construit pas storage provider, listener HTTP, token provider, scheduler, sync ou supervisor.
+
+Le Runtime appelle les points contrôlés :
+
+- `configure` reçoit les bindings validés du deployment ;
+- `register_commands` déclare les noms de commands ;
+- `register_events`, `register_states`, `register_decisions` exposent les contrats ;
+- `register_handlers` connecte les command handlers ;
+- `register_queries` enregistre les endpoints sans side effects ;
+- `register_tasks` enregistre les définitions bornées de tasks en arrière-plan.
 
 ```rust
 use appcore_sdk::application::{

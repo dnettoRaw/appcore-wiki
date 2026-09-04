@@ -11,10 +11,22 @@ Providers são a fronteira de instalação. O deployment escolhe infraestrutura 
 
 ## O que o deployment escolhe?
 
-`DeploymentProviderPlan` extrai storage, control plane, coordination store,
-secret provider, jobs, discovery, update, database, peer transport, command
-transport e adapters. O contexto contém somente application ID, installation ID
-e modo do Runtime, nunca secrets.
+`DeploymentProviderPlan` extrai:
+
+- storage;
+- control plane;
+- coordination store;
+- secret provider;
+- job provider;
+- peer discovery;
+- update provider;
+- database provider;
+- peer transport;
+- command transport;
+- adapters nomeados.
+
+O contexto contém somente application ID, installation ID e modo do Runtime,
+nunca secrets.
 
 ## Por que não existe fallback implícito?
 
@@ -29,6 +41,9 @@ flowchart LR
 ```
 
 Factory é registrada por role e provider ID. Se o par selecionado não existe, creation falha. Não há fallback implícito.
+
+Isso é intencional: um fallback mudaria as garantias de segurança e recovery do
+deployment sem alterar sua configuração declarada.
 
 A seleção de storage também executa preflight explícito de capacidades
 pós-1.0. Um descriptor limitado declara garantias exatas em vez de nomes de
@@ -59,8 +74,10 @@ sozinhos.
 
 - limites de timeout, retry, fila e payload;
 - autenticação e ownership de secrets;
-- health, degradação, persistência e recuperação;
-- migração, compatibilidade e diagnósticos redacted;
+- health e comportamento de degradação;
+- garantias de persistência e recuperação;
+- policy de migração e compatibilidade;
+- diagnósticos redacted;
 - testes de conformidade e falha.
 
 ## Limitações

@@ -9,6 +9,10 @@ Bootstrap commence dans `run_application`. C'est la première frontière de conf
 
 Le host lit `application.toml` et `deployment.toml` ou les overrides `APPCORE_APPLICATION_MANIFEST` et `APPCORE_DEPLOYMENT_MANIFEST`, valide les manifests et crée `ManifestApplicationHost`.
 
+Avant qu'existent listener HTTP, receiver sync, scheduler ou handler
+applicatif, le host décide si l'installation est assez cohérente pour
+s'exécuter.
+
 Les chemins sont canonicalisés, le TOML est parsé dans des contrats versionnés et les deux manifests doivent partager le même `application_id`. Les entrées supprimées, comme `runtime.toml` ou les configs anciennes avec `app_id` sans `manifest_version`, échouent avec `NO MORE SUPPORTED PLEASE UPDATE`.
 
 ## Pourquoi le bootstrap échoue-t-il tôt ?
@@ -18,17 +22,26 @@ vérifie les metadata avant l'allocation et lit via `Take(limit + 1)` ; un
 fichier trop grand, en croissance concurrente ou avec un UTF-8 invalide échoue
 fermé avant la composition des providers.
 
-Les entrées supprimées échouent avant toute conversion de compatibilité. Cet
-échec précoce évite qu'une installation invalide ne démarre qu'une partie de
+Les entrées supprimées échouent avant toute conversion de compatibilité.
+
+- fichier nommé `runtime.toml` ;
+- ancien input contenant `app_id` sans `manifest_version`.
+
+Cet échec précoce évite qu'une installation invalide ne démarre qu'une partie de
 ses services et n'atteigne un état plus difficile à diagnostiquer.
 
 ## Comment les manifests deviennent-ils une configuration Runtime ?
 
-Le Runtime dérive `RuntimeConfig` : application ID devient l'identité de
-l'application ; installation ID participe au regroupement cluster et sync ;
-les IDs node, core et instance appartiennent au Runtime ; le listener vient du
-deployment ; cluster mode active les defaults sync ; payloads et TTLs sont
-bornés ; le watchdog vient de la policy du deployment.
+Le Runtime dérive `RuntimeConfig` :
+
+- application ID devient l'identité de l'application ;
+- installation ID participe au regroupement cluster et sync ;
+- les IDs node, core et instance sont dérivés par le Runtime ;
+- le listener API vient de la première adresse du deployment ;
+- cluster mode active les defaults sync ;
+- les payloads API ont une taille default bornée ;
+- les TTL de token et d'idempotence relèvent de la policy Runtime ;
+- la configuration du watchdog vient de la policy du deployment.
 
 ## Que peut configurer l'application ?
 
@@ -51,6 +64,10 @@ La façade directe, le HTTP applicatif et le Peer RPC utilisent ce même
 catalogue pour contrôler déclaration, mode, idempotence, écriture
 opérationnelle et leadership. Un `CapabilityRegistry` n'existe qu'avec un vrai
 handler local ; les queries de statut Runtime restent explicites dans le host.
+
+L'application reçoit un `DeploymentContext` aux bindings validés, pas le
+manifest brut pour connecter elle-même les providers. Elle enregistre le
+comportement déclaré sans pouvoir choisir ensuite une capability absente.
 
 ## Quand les services Runtime démarrent-ils ?
 

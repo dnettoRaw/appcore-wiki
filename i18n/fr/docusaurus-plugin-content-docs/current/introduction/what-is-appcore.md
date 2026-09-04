@@ -13,7 +13,14 @@ Ce n'est pas un framework web, une base de données, un ERP ou une plateforme m�
 
 ## Le problème
 
-Les backends ordinaires accumulent de l'infrastructure cachée : configuration mélangée avec identité, chemins, secrets et endpoints ; retries dans les handlers ; jobs hors cycle de vie ; update avant preuve de health ; leadership distribué sans fencing.
+Les backends ordinaires accumulent du comportement Runtime caché :
+
+- configuration mêlant identité, chemins, secrets, réseau et feature toggles ;
+- retries dans les handlers plutôt qu'aux frontières de command ;
+- jobs en arrière-plan hors supervision du lifecycle ;
+- writes et backups implicites dans le client de database choisi ;
+- leadership distribué réduit à un booléen plutôt qu'un lease avec fencing ;
+- updates remplaçant les fichiers avant que le nouveau processus prouve sa health.
 
 AppCore sépare l'ownership :
 
@@ -76,11 +83,29 @@ aussi, sans fallback silencieux.
 
 ## Quand l'utiliser
 
-Utilisez AppCore pour local-first, cluster, commands/queries explicites, storage durable, backup/restore, health/status, services supervisés, sync avec checkpoints, Peer RPC, gateway ou updates avec staging, health gate et rollback.
+Utilisez AppCore lorsque l'application exige :
+
+- deployments local-first ou cluster ;
+- contrats command/query explicites ;
+- storage durable et policy de backup ;
+- endpoints health et status appartenant au Runtime ;
+- services Runtime supervisés ;
+- sync avec validation de séquence et checkpoints ;
+- Peer RPC ou relay Gateway entre cores ;
+- updates avec authenticité, staging, activation, health gate et rollback.
 
 ## Quand l'éviter
 
-Évitez-le lorsqu'un serveur HTTP stateless et une base managée suffisent. AppCore ne fournit pas ORM, OAuth, vault managé, terminaison TLS universelle, RAFT, consensus multi-master ou résolution automatique de conflits métier.
+Évitez-le lorsqu'un serveur HTTP stateless et une base managée suffisent.
+AppCore ne fournit volontairement pas :
+
+- ORM général ;
+- workflows produit ;
+- implémentation OAuth ;
+- vault managé de production ;
+- terminaison TLS inbound pour tous les deployments ;
+- RAFT ou consensus multi-master ;
+- résolution automatique des conflits métier.
 
 ## Limitations
 
@@ -88,6 +113,11 @@ Utilisez AppCore pour local-first, cluster, commands/queries explicites, storage
 - Chaque deployment doit encore choisir correctement providers, chemins, secrets et process manager.
 - Le runtime valide manifests et enveloppes ; il ne prouve pas que les handlers métier sont corrects.
 - La ligne stable 1.0 préfère l'échec explicite à la compatibilité automatique avec les anciens formats.
+
+Ces omissions sont des frontières de design. Elles gardent l'infrastructure
+Runtime réutilisable par des applications qui ne partagent pas le même domaine
+métier. C'est aussi pourquoi la documentation commence par les manifests et
+non par une liste de crates.
 
 ## Lire ensuite
 

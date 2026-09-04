@@ -9,9 +9,26 @@ Imagine um core que perdeu rede e acorda atrasado ainda acreditando ser líder. 
 
 Distribuição no AppCore combina control plane, leases, discovery, Peer RPC, gateway mesh relay e providers de coordenação explícitos.
 
+Rede privada não é autenticação. Um node ainda valida tenant, cluster,
+protocol, target core, nonce, expiry, payload hash e vínculo da credencial.
+
 ## Control plane
 
 O file control plane toma lock, recarrega estado validado e limitado, remove registros expirados, aplica uma operação e persiste atomicamente. O estado tem versão de formato e limite de 16 MiB.
+
+Cada operação:
+
+1. toma um file lock do sistema operacional;
+2. recarrega estado validado e limitado;
+3. remove registros expirados usando o clock autoritativo;
+4. aplica exatamente uma operação;
+5. persiste atomicamente o estado resultante.
+
+O control plane registra presence, heartbeat, peer discovery e leadership por
+serviço. Seu envelope durável possui format version e tamanho máximo; versões
+incompatíveis falham na update wall em vez de serem convertidas por tentativa.
+Ele responde quem está presente e quem possui um lease, mas não é database de
+negócio.
 
 ## Leases e fencing
 
@@ -30,7 +47,17 @@ sequenceDiagram
     Core->>Store: write protegido
 ```
 
-Um líder antigo falha se lease expirou, holder mudou, tenant/cluster mudou ou o epoch mínimo é mais novo.
+Um líder antigo falha quando:
+
+- o lease expirou;
+- o holder core é diferente;
+- tenant ou cluster é diferente;
+- o epoch mínimo solicitado é mais novo que o lease atual.
+
+Election escolhe o holder; fencing protege writes após troca de liderança ou
+mensagem atrasada. Se um líder antigo acorda com um epoch anterior, o guard
+rejeita o commit. Apenas acreditar que uma eleição ocorreu não oferece essa
+garantia.
 
 ## Por que providers são selecionados explicitamente?
 
@@ -42,7 +69,27 @@ para inseguro.
 
 ## Peer RPC
 
+O envelope vincula:
+
+- request ID;
+- trace ID e trace context opcional;
+- protocol version;
+- source core;
+- target core;
+- tenant;
+- cluster;
+- timestamp e expiry;
+- nonce;
+- capability;
+- body hash;
+- idempotency key opcional.
+
 O envelope valida request ID, trace, protocolo, source/target core, tenant, cluster, timestamp, expiry, nonce, capability, body hash e idempotency key opcional. Nonces podem ser armazenados em memória ou arquivo privado com lock e atomic write.
+
+A validação limita payload e confere protocol, janela de tempo, consistência do
+trace e replay do nonce. O store em arquivo usa JSON limitado, permissões
+privadas, locks e substituição atômica. O token peer pode se vincular ao hash
+completo do request, impedindo reutilização para outro routing ou body.
 
 Rejeições V2 são tipadas e limitadas. Um code fixo determina phase e se uma
 operação idempotente de nível superior pode fazer retry; o peer não declara
@@ -57,7 +104,7 @@ ou redirecionados.
 Gateway existe para cores com conexão outbound mas sem porta inbound estável. Tokens de conexão são curtos, single-use e bound ao hash da conexão. Mesh relay valida que metadata externa combina com o envelope Peer RPC interno. O gateway nunca interpreta payload de negócio.
 
 A ativação é declarativa. Ao selecionar o adapter no Deployment Manifest, o
-o executável de deployment valida a configuração, inclui e autoriza `runtime.gateway` no
+executável de deployment valida a configuração, inclui e autoriza `runtime.gateway` no
 catálogo compartilhado, reutiliza a segurança do Runtime e registra o Gateway
 como serviço crítico do Supervisor:
 
@@ -80,6 +127,12 @@ flowchart LR
     Worker --> PeerHost[Peer RPC host]
     PeerHost --> App[Runtime dispatcher]
 ```
+
+Tokens de worker e client têm vida curta, uso único e hash vinculado. O hash do
+worker inclui tenant, cluster, installation, core e capabilities; o do client
+inclui tenant, cluster e device. O relay confirma que a metadata externa combina
+com o envelope Peer RPC e limita mensagens, timeouts e filas sem interpretar o
+payload opaco.
 
 O host usa replay store durável e seguro entre processos. Standalone o mantém
 no storage privado; cluster exige `paths.gateway_replay` absoluto apontando

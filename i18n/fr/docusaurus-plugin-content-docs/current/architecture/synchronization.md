@@ -7,11 +7,30 @@ sidebar_position: 5
 
 Imaginez une boutique sans Internet pendant huit heures. L'opérateur continue à créer des devis. Quand le réseau revient, le runtime doit savoir ce qui a déjà été envoyé, ce qui est nouveau, ce qui est retry et ce qui est conflit.
 
+Le Runtime doit répondre :
+
+- quels records ont été envoyés avant la coupure ;
+- quels records sont nouveaux ;
+- si un renvoi est un retry ou un payload conflictuel ;
+- si le batch accepté précédent correspond à la chain du sender ;
+- où reprendre le replay après un crash.
+
 Sync dans AppCore est une réplication conservative leader-to-follower. Ce n'est pas RAFT, multi-master ou un résolveur de conflits métier.
 
 ## Que se passe-t-il à la reconnexion ?
 
 Quand la boutique perd Internet, les commands locales peuvent continuer selon la politique de storage et command. Quand le réseau revient, le receiver valide identité, protocole, séquence, count, taille, hash, previous hash et checkpoint.
+
+Le receiver vérifie :
+
+- compatibilité de l'identité source ;
+- plage de sequence ;
+- nombre d'événements déclaré ;
+- taille du payload ;
+- SHA-256 des événements ;
+- hash du batch précédent ;
+- sequences rejouées ;
+- état du checkpoint.
 
 Même séquence et même payload signifie retry. Même séquence et bytes différents signifie conflit.
 
@@ -21,6 +40,15 @@ Un batch contient `batch_id`, source node, plage de séquences, nombre
 d'événements, hash des metadata et payloads préfixés par leur taille, timestamp,
 previous batch hash facultatif et payloads opaques. Il prouve l'ordre et
 l'intégrité du transport, pas la correction sémantique métier.
+
+- `batch_id` comme identité idempotente ;
+- source node ID ;
+- `sequence_start` et `sequence_end` inclusifs ;
+- nombre d'événements déclaré ;
+- hash des metadata et payloads préfixés par leur taille ;
+- creation time ;
+- hash facultatif du batch précédent ;
+- payloads opaques des événements.
 
 ```mermaid
 flowchart LR
@@ -35,6 +63,16 @@ FollowerLog --> Checkpoint[Checkpoint par peer]
 ## Pourquoi conserver un replication log ?
 
 Le log file-backed utilise `# appcore-replication-log-v1`, limite total, limite par record, sequence map, hash chain, lock et atomic write. Append par séquence est idempotent : même séquence/même payload retourne l'index original ; même séquence/payload différent est un conflit.
+
+Il :
+
+- utilise le marqueur stable `# appcore-replication-log-v1` ;
+- borne le nombre total d'octets ;
+- borne les octets de chaque record ;
+- stocke sequence et metadata de hash chain ;
+- recharge et valide les records avant append ;
+- utilise process locks et writes atomiques ;
+- récupère un préfixe valide si la tail est interrompue.
 
 Le log est la preuve utilisée par replay. Sans lui, recovery devrait faire confiance aux projections applicatives, qui peuvent être compactées, migrées ou reconstruites partiellement.
 

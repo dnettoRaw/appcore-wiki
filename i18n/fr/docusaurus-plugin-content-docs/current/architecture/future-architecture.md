@@ -8,8 +8,7 @@ sidebar_position: 12
 
 :::caution Roadmap conceptuelle
 Cette page décrit des idées d'architecture future. Elle ne modifie **pas**
-l'architecture Runtime actuelle, le graphe stable des crates ni les 23 crates stables
-publics disponibles aujourd'hui.
+l'architecture Runtime actuelle ni le catalogue actuel des crates publics.
 :::
 
 Le travail futur dans AppCore suit la même règle que le Runtime actuel : un
@@ -90,9 +89,16 @@ flowchart LR
 
 ## Non-Objectifs
 
-AppCore ne vise pas à devenir système d'exploitation, base universelle, browser
-engine, framework complet de machine learning, graphics engine réinventé, pile
-crypto propre, cloud provider ou monolithe.
+AppCore ne vise pas à devenir :
+
+- système d'exploitation ;
+- database universelle ;
+- browser engine ;
+- framework complet de machine learning ;
+- graphics engine réinventé ;
+- stack cryptographique propre ;
+- cloud provider ;
+- monolithe.
 
 ## Principes
 

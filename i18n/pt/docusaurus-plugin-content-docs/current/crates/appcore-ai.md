@@ -311,7 +311,8 @@ dois é anunciado por esta beta.
 ## Segurança, limites e status
 
 - prompts, outputs, endpoints e credenciais são redigidos dos diagnósticos;
-- LocalOnly rejeita permissões remotas; rotas remotas exigem grants do tenant;
+- requests LocalOnly rejeitam permissões remotas de compute e storage;
+- rotas remotas exigem grants explícitos do tenant;
 - filas, attempts, peers, payloads, metadata, tools e artifacts são limitados;
 - cancelamento é cooperativo; o worker bloqueante limitado o encaminha para a
   exchange HTTP e transportes streaming o verificam entre chunks;

@@ -7,6 +7,10 @@ sidebar_position: 3
 
 Bootstrap começa em `run_application`. O host lê `application.toml` e `deployment.toml` ou os overrides `APPCORE_APPLICATION_MANIFEST` e `APPCORE_DEPLOYMENT_MANIFEST`, valida os manifests e cria o `ManifestApplicationHost`.
 
+Essa também é a primeira fronteira de confiança. Antes de existir listener
+HTTP, receiver de sync, scheduler ou handler da aplicação, o host decide se a
+instalação é coerente o bastante para executar.
+
 ## Por que o bootstrap falha cedo?
 
 Os paths são canonicalizados, TOML é parseado para contratos versionados e os dois manifests precisam ter o mesmo `application_id`. Entradas removidas, como `runtime.toml` ou configs antigas com `app_id` sem `manifest_version`, falham com `NO MORE SUPPORTED PLEASE UPDATE`.
@@ -17,16 +21,25 @@ teto, crescendo durante a leitura ou com UTF-8 inválido falha fechado antes da
 composição de providers.
 
 Entradas removidas falham antes de qualquer conversão de compatibilidade.
+
+- arquivo chamado `runtime.toml`;
+- input antigo contendo `app_id` sem `manifest_version`.
+
 Falhar cedo impede que uma instalação inválida inicie apenas parte de seus
 serviços e termine em um estado mais difícil de diagnosticar.
 
 ## Como os manifests se tornam configuração do Runtime?
 
-O Runtime deriva `RuntimeConfig`: application ID vira a identidade da
-aplicação; installation ID participa do agrupamento de cluster e sync; IDs de
-node, core e instance pertencem ao Runtime; o listener vem do deployment;
-cluster mode habilita defaults de sync; payloads e TTLs são limitados; e o
-watchdog vem da policy do deployment.
+O Runtime deriva `RuntimeConfig`:
+
+- application ID vira a identidade da aplicação;
+- installation ID participa do agrupamento de cluster e sync;
+- IDs de node, core e instance são derivados pelo Runtime;
+- o listener da API vem do primeiro endereço do deployment;
+- cluster mode habilita defaults de sync;
+- payloads da API possuem tamanho default limitado;
+- TTLs de token e idempotência são policy do Runtime;
+- configuração do watchdog vem da policy do deployment.
 
 ## O que a aplicação pode configurar?
 
@@ -49,6 +62,12 @@ Facade direta, HTTP da aplicação e Peer RPC usam esse mesmo catálogo para
 validar declaração, mode, idempotência, escrita operacional e liderança. Um
 `CapabilityRegistry` só existe quando há handler local real; queries de status
 do Runtime continuam comportamento explícito do host.
+
+A ordem importa. A aplicação recebe `DeploymentContext` com bindings validados,
+não o manifest bruto para conectar providers por conta própria. Ela pode
+registrar commands, queries, handlers, states, decisions e tasks, mas não pode
+escolher uma capability não declarada depois da validação. O manifest continua
+sendo o contrato inspecionável por ferramentas externas.
 
 ## Quando os serviços do Runtime iniciam?
 
