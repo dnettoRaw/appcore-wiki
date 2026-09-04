@@ -7,6 +7,8 @@ sidebar_position: 28
 
 Stable documentation ID: **ACR-028**.
 
+Published release: [`appcore-sdk 1.0.0-rc.1`](https://crates.io/crates/appcore-sdk/1.0.0-rc.1).
+
 `appcore-sdk` is the application-facing facade. It gives business code a small
 manifest-first surface while specialized crates continue to own storage,
 scheduling, synchronization, AI, document generation, and deployment

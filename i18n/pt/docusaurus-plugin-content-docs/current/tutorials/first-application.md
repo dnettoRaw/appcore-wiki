@@ -12,15 +12,16 @@ negócio.
 
 ## 1. Adicione a facade da aplicação
 
-Até a publicação da release atual do SDK, use o checkout local explicitamente:
+Use a release publicada do SDK:
 
 ```toml
 [dependencies]
-appcore-sdk = { path = "../AppCore-Runtime/crates/appcore-sdk" }
+appcore-sdk = "1.0.0-rc.1"
 ```
 
-Depois da publicação, troque somente a origem da dependência pela versão
-lançada de `appcore-sdk`. Não substitua por um crate de host de baixo nível.
+Use uma dependência local por `path` somente durante o desenvolvimento contra
+um checkout do AppCore Runtime. Não substitua o SDK por um crate de host de
+baixo nível.
 
 ## 2. Comprove a aplicação local mínima
 

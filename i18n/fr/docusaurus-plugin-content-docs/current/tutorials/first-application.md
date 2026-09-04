@@ -11,16 +11,16 @@ exactement un Application Manifest, un Deployment Manifest et du code métier.
 
 ## 1. Ajouter la façade applicative
 
-Jusqu’à la publication de la version SDK courante, utilisez explicitement le
-checkout local :
+Utilisez la version publiée du SDK :
 
 ```toml
 [dependencies]
-appcore-sdk = { path = "../AppCore-Runtime/crates/appcore-sdk" }
+appcore-sdk = "1.0.0-rc.1"
 ```
 
-Après publication, remplacez uniquement la source par la version publiée de
-`appcore-sdk`. Ne la remplacez pas par un crate de host de bas niveau.
+Utilisez une dépendance locale par `path` uniquement pendant le développement
+avec un checkout d'AppCore Runtime. Ne remplacez pas le SDK par un crate de host
+de bas niveau.
 
 ## 2. Vérifier l’application locale minimale
 

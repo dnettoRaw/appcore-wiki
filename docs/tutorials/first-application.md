@@ -11,15 +11,15 @@ exactly an Application Manifest, a Deployment Manifest, and business code.
 
 ## 1. Add the application facade
 
-Until the current SDK release is published, use the local checkout explicitly:
+Use the published SDK release:
 
 ```toml
 [dependencies]
-appcore-sdk = { path = "../AppCore-Runtime/crates/appcore-sdk" }
+appcore-sdk = "1.0.0-rc.1"
 ```
 
-After publication, replace only the dependency source with the released
-`appcore-sdk` version. Do not replace it with a low-level host crate.
+Use a local `path` dependency only while developing against an AppCore Runtime
+checkout. Do not replace the SDK with a low-level host crate.
 
 ## 2. Prove the smallest local application
 
