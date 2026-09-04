@@ -253,8 +253,8 @@ function validateFutureRoadmap(crates) {
     components.filter((component) => component.status !== 'Stable').map((component) => component.name),
   );
   const stableCrateCount = crates.filter((crate) => !prereleaseNames.has(crate.name)).length;
-  if (stableCrateCount !== 22) {
-    errors.push(`stable public crate count is ${stableCrateCount}, expected 22 until the Runtime baseline is intentionally promoted`);
+  if (stableCrateCount !== 23) {
+    errors.push(`stable public crate count is ${stableCrateCount}, expected 23 until the Runtime baseline is intentionally promoted`);
   }
 
   for (const component of components) {

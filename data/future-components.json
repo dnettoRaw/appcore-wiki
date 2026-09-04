@@ -7,7 +7,7 @@
       "status": "Beta",
       "category": "Beta",
       "summary": "Adaptive AI runtime boundary for model routing, local or remote inference, resource governance, provenance, security and observable execution.",
-      "horizon": "0.1.0-beta.1 published",
+      "horizon": "0.1.0-beta.3 published",
       "related_existing": ["appcore-capabilities", "appcore-security", "appcore-ops", "appcore-provider"],
       "related_future": ["appcore-agent", "appcore-search", "appcore-jobs"]
     },
@@ -17,37 +17,37 @@
       "status": "Alpha",
       "category": "Experimental",
       "summary": "Optional bounded SQLite persistence for Runtime replication log, outbox, checkpoints, opaque tombstones, integrity and online backup.",
-      "horizon": "0.1.0-alpha.1 development preview; not published",
+      "horizon": "0.1.0-alpha.4 development preview; consult the crate page for publication state",
       "related_existing": ["appcore-sync", "appcore-storage"],
       "related_future": []
     },
     {
       "name": "appcore-filemaker",
       "slug": "appcore-filemaker",
-      "status": "Alpha",
-      "category": "Experimental",
+      "status": "Beta",
+      "category": "Beta",
       "summary": "Deterministic compiler for declarative documents, vector canvases and bounded datasets.",
-      "horizon": "0.1.0-alpha.1 source preview; not published",
+      "horizon": "0.1.0-beta.1 public beta",
       "related_existing": ["appcore-ai"],
       "related_future": ["appcore-ui"]
     },
     {
       "name": "appcore-filemaker-ai",
       "slug": "appcore-filemaker-ai",
-      "status": "Alpha",
-      "category": "Experimental",
+      "status": "Beta",
+      "category": "Beta",
       "summary": "Optional bounded appcore-ai tool bridge for deterministic FileMaker sessions.",
-      "horizon": "0.1.0-alpha.1 source preview; not published",
+      "horizon": "0.1.0-beta.1 public beta",
       "related_existing": ["appcore-ai", "appcore-filemaker"],
       "related_future": []
     },
     {
       "name": "appcore-filemaker-cli",
       "slug": "appcore-filemaker-cli",
-      "status": "Alpha",
-      "category": "Experimental",
+      "status": "Beta",
+      "category": "Beta",
       "summary": "Bounded command-line process adapter for FileMaker compilation, diagnostics and export.",
-      "horizon": "0.1.0-alpha.1 source preview; not published",
+      "horizon": "0.1.0-beta.1 public beta",
       "related_existing": ["appcore-args", "appcore-filemaker"],
       "related_future": []
     },
@@ -58,7 +58,7 @@
       "category": "In Design",
       "summary": "UI surface boundary for HTML/TypeScript pages, native Rust-rendered views, window lifecycle, events, visual state and future page building.",
       "horizon": "Design preview",
-      "related_existing": ["appcore-bin", "appcore-api", "appcore-capabilities"],
+      "related_existing": ["appcore-sdk", "appcore-api", "appcore-capabilities"],
       "related_future": ["appcore-render", "appcore-media", "appcore-device"]
     },
     {
@@ -162,16 +162,6 @@
       "related_future": []
     },
     {
-      "name": "appcore-runtime-sdk",
-      "slug": "appcore-runtime-sdk",
-      "status": "Planned",
-      "category": "Platform Expansion",
-      "summary": "Ergonomic facade over existing runtime surfaces such as app.ai(), app.ui() and app.storage(), not a second runtime implementation.",
-      "horizon": "Platform expansion",
-      "related_existing": ["appcore-bin"],
-      "related_future": ["appcore-ai", "appcore-ui"]
-    },
-    {
       "name": "appcore-events",
       "slug": "appcore-events",
       "status": "Research",
@@ -188,7 +178,7 @@
       "category": "Under Evaluation",
       "summary": "Layering candidate for defaults, file, environment, CLI and deployment config while leaving CLI ownership with appcore-args.",
       "horizon": "Under evaluation",
-      "related_existing": ["appcore-args", "appcore-contracts", "appcore-bin"],
+      "related_existing": ["appcore-args", "appcore-contracts", "appcore-sdk"],
       "related_future": []
     },
     {

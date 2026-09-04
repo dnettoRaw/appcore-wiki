@@ -1,78 +1,110 @@
 ---
-title: Première application
+title: Créer la première application
 sidebar_position: 11
 ---
 
-# Première application
+# Créer la première application
 
-Le but n'est pas de créer un produit complet. Il s'agit de voir la frontière :
-le code métier déclare le comportement, les manifests déclarent le contrat et
-le deployment choisit l'environnement. L'ancien template interne a été retiré ;
-une nouvelle application suit directement le contrat public à trois artefacts.
+Ce tutoriel montre la frontière applicative sans inventer un produit ni cacher
+l’infrastructure Runtime dans le code métier. Une application AppCore possède
+exactement un Application Manifest, un Deployment Manifest et du code métier.
 
-## Installer la façade publiée
+## 1. Ajouter la façade applicative
 
-```bash
-cargo add appcore-bin@1.0.0
+Jusqu’à la publication de la version SDK courante, utilisez explicitement le
+checkout local :
+
+```toml
+[dependencies]
+appcore-sdk = { path = "../AppCore-Runtime/crates/appcore-sdk" }
 ```
 
-C'est le point d'entrée manifest-first publié. Les autres crates publics sont
-disponibles pour les consommateurs bas niveau, l'intégration CLI et les
-adapters provider ; consulter le
-[catalogue des crates](/crates/) avant d'en dépendre directement.
+Après publication, remplacez uniquement la source par la version publiée de
+`appcore-sdk`. Ne la remplacez pas par un crate de host de bas niveau.
 
-L'implémentation minimale enregistre une command et un handler. L'entrée reste petite :
+## 2. Vérifier l’application locale minimale
 
 ```rust
-fn main() {
-    if let Err(error) = appcore_bin::application::run_application(&BackendApplication) {
-        eprintln!("application failed: {error}");
-        std::process::exit(1);
+use appcore_sdk::prelude::*;
+
+fn main() -> AppResult<()> {
+    appcore_sdk::run("example-app", |app| {
+        let log = app.logger().component("startup");
+        log.info("le contexte applicatif est valide");
+        Ok(())
+    })
+}
+```
+
+`run` valide l’identifiant d’application et fournit des manifestes V1 locaux
+canoniques ainsi qu’un log borné. Il n’ouvre aucun listener, ne choisit aucun
+provider et ne démarre pas un host Runtime caché.
+
+## 3. Déclarer le comportement métier
+
+Implémentez `Application` lorsque le déploiement doit enregistrer commands,
+events, queries, decisions, states, handlers ou tasks :
+
+```rust
+use appcore_sdk::application::{CommandName, CommandRegistry, RuntimeResult};
+use appcore_sdk::Application;
+
+struct ExampleApplication;
+
+impl Application for ExampleApplication {
+    fn register_commands(
+        &self,
+        registry: &mut CommandRegistry,
+    ) -> RuntimeResult<()> {
+        registry.register(CommandName::new("example.ping")?)
     }
 }
 ```
 
-La command doit exister dans l'Application Manifest :
+Le processus de déploiement choisi appelle ces hooks lorsqu’il compose les
+services Runtime. Le code applicatif enregistre le comportement ; il ne
+construit pas les internals de stockage, HTTP, sécurité ou Supervisor.
+
+## 4. Ajouter les deux manifestes
+
+`application.toml` déclare l’identité et les exigences portables :
 
 ```toml
+manifest_version = 1
+application_id = "example-app"
+application_version = "1.0.0"
+display_name = "Example App"
+vendor = "example-vendor"
+service_id = "example.ping"
+
+[runtime]
+minimum_runtime_version = "1.0.0"
+protocol_version = "1"
+
 [[capabilities]]
-id = "app.ping"
+id = "example.ping"
 version = "1"
 mode = "command"
+visibility = "local"
+requires_leader = false
 idempotency_required = true
 ```
 
-Le deployment choisit provider et listener :
+`deployment.toml` appartient à l’installation et sélectionne mode, providers,
+chemins, réseau et références de secrets. Il contient des références telles
+que `env:APPCORE_RUNTIME_KEY`, jamais la valeur du secret. Utilisez la
+[fixture complète des trois artefacts](https://github.com/dnettoraw/AppCore-Runtime/tree/beta/tests/three-artifact-app)
+validée au lieu de deviner les champs obligatoires omis.
 
-```toml
-mode = "standalone"
-secrets = { runtime_security = "env:APPCORE_EXAMPLE_SECRET" }
-paths = { storage = "target/runtime/storage", backup = "target/runtime/backups" }
+## 5. N’ajouter que ce qui est nécessaire
 
-[storage]
-provider_id = "file"
+Activez `api`, `scheduler`, `deployment`, `storage`, `sync`, `ai` ou
+`filemaker` uniquement lorsque l’application consomme cette capability. La
+[référence SDK](/fr/crates/appcore-sdk) décrit chaque namespace et le
+[registre stable](/fr/crates/registry) identifie chaque propriétaire de niveau
+inférieur.
 
-[network]
-listen_addresses = ["127.0.0.1:39300"]
-```
-
-Tests suivants : mismatch de manifest, command non déclarée, idempotency absente, path traversal dans storage et shutdown coopératif.
-
-Pour démarrer depuis la racine du projet applicatif, fournir l'enregistrement
-structuré de la clé et pas seulement les octets secrets :
-
-```bash
-now_ms="$(($(date +%s) * 1000))"
-export APPCORE_EXAMPLE_SECRET="$(printf \
-  'key_id=local-%s\ncreated_at_ms=%s\nexpires_at_ms=none\nstatus=active\nsecret=hex:%s\n' \
-  "$now_ms" "$now_ms" "$(openssl rand -hex 32)")"
-cargo run
-```
-
-## Limitations
-
-- L'exemple utilise une command minimale et ne modélise pas un workflow métier.
-- Il suppose la façade publique `appcore_bin::application` et les chemins
-  standards `application.toml`/`deployment.toml`.
-- Il démontre un deployment local standalone, pas un cluster complet.
-- Il ne couvre pas provider custom ni gestion de secrets en production.
+Testez manifestes invalides, commands non déclarées, clé d’idempotence absente,
+échec de provider et arrêt borné dans le déploiement qui héberge l’application.
+L’exemple local `run` ne prouve pas à lui seul HTTP, cluster, stockage ou la
+gestion des secrets de production.

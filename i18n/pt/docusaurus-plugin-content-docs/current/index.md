@@ -24,14 +24,13 @@ Leia como um livro técnico:
 13. [Referência dos crates estáveis e das prévias publicadas](/crates/)
 14. [Roadmap futuro](/roadmap/)
 
-Release estável: `1.0.0`. Todos os 22 crates públicos estão disponíveis no
-crates.io. Toolchain Rust mínima: `1.89`. Aplicações normalmente devem depender
-de `appcore-bin@1.0.0` e usar sua facade `application`.
-
-Prereleases publicadas: `appcore-ai 0.1.0-beta.3`, o grafo Runtime em
-`2.0.0-alpha.1`, `appcore-transport 1.1.0-alpha.1` e a integração opcional
-`appcore-sync-sqlite 0.1.0-alpha.2`. Nenhuma altera o contrato de manifest V1
-estável.
+Release estável: `1.0.0`. O catálogo atual do código-fonte contém 28 crates
+públicos ativos, com versões independentes e maturidade explícita. Toolchain
+Rust mínima: `1.89`. Código de aplicação novo começa por
+[`appcore-sdk`](/pt/crates/appcore-sdk); crates de nível inferior continuam
+disponíveis quando seu contrato precisa ser usado diretamente. Consulte a
+página de cada crate antes de assumir que uma prerelease do código-fonte foi
+publicada.
 
 O V1 estável é uma promessa de compatibilidade, não um congelamento de
 funcionalidades do repositório inteiro. O AppCore pode continuar adicionando
@@ -42,10 +41,11 @@ versão explícita.
 ## O Que Vem Depois
 
 O roadmap futuro acompanha trabalho planejado sem misturá-lo à referência
-estável do Runtime. As prévias publicadas atuais são
-[appcore-ai](/crates/appcore-ai) e
-[appcore-sync-sqlite](/crates/appcore-sync-sqlite); a prévia em design atual é
-[appcore-ui](/crates/appcore-ui). Áreas planejadas de
+atual do Runtime. O trabalho em prerelease inclui
+[appcore-ai](/pt/crates/appcore-ai),
+[appcore-filemaker](/pt/crates/appcore-filemaker) e
+[appcore-sync-sqlite](/pt/crates/appcore-sync-sqlite); a prévia em design atual
+é [appcore-ui](/pt/crates/appcore-ui). Áreas planejadas de
 alta prioridade incluem
 `appcore-test`, `appcore-jobs`, `appcore-search`, `appcore-automation` e
 `appcore-plugin`; veja o [Roadmap futuro](/roadmap/).
