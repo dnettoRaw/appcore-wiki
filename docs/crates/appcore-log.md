@@ -7,6 +7,8 @@ sidebar_position: 27
 
 Stable documentation ID: **ACR-027**.
 
+Published release: [`appcore-log 1.0.0-rc.1`](https://crates.io/crates/appcore-log/1.0.0-rc.1).
+
 `appcore-log` is the bounded structured logging pipeline shared by Runtime
 components and the SDK. It separates severity from V1–V9 verbosity, filters
 before formatting, sanitizes before ordinary sinks, and accounts destination

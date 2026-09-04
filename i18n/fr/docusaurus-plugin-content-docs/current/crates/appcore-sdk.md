@@ -24,13 +24,32 @@ remplacent les imports `appcore_bin` et laissent providers, listeners, workers
 et shutdown à l'exécutable de déploiement.
 :::
 
-Utilisez-le pour démarrer une application externe à trois artefacts,
-implémenter `Application`, enregistrer le comportement ou activer les namespaces
-optionnels. Il n'ouvre aucun listener implicitement, ne choisit pas de provider,
-ne résout pas de secret et ne contrôle pas le processus.
+## Quand l'utiliser
 
-Contrats principaux : `run`, `App`, `Application`, `manifest` et les namespaces
-opt-in. Commencez par le [tutoriel](/fr/tutorials/first-application) et le
-[guide complet du crate](https://github.com/dnettoRaw/app-core-public/tree/beta/appcore-sdk/wiki/guide.fr.md).
+- pour démarrer une application AppCore externe à partir des trois artefacts ;
+- pour implémenter `Application` et enregistrer commands, events, queries,
+  decisions, states, handlers ou tasks ;
+- pour employer les defaults locaux canoniques avant de fournir des manifests
+  V1 explicites ;
+- pour activer des namespaces de capabilities sans composer manuellement un
+  host Runtime.
+
+Il n'ouvre aucun listener implicitement, ne choisit pas de provider, ne résout
+pas de secret et ne contrôle pas le lifecycle du processus. La composition du
+déploiement reste explicite.
+
+## Contrats principaux
+
+- `run` et `App` fournissent le plus petit contexte local validé ;
+- `Application` définit les hooks d'enregistrement appartenant à l'application ;
+- `manifest` réexporte les contrats canoniques de manifest V1 ;
+- les namespaces protégés par features exposent les contrats API, deployment,
+  scheduler, storage, sync, AI et FileMaker ;
+- `App::logging` configure le pipeline borné d'`appcore-log`.
+
+Commencez par le [tutoriel](/fr/tutorials/first-application), le
+[guide en anglais](https://github.com/dnettoRaw/app-core-public/tree/beta/appcore-sdk/wiki/guide.en.md),
+le [guide en portugais](https://github.com/dnettoRaw/app-core-public/tree/beta/appcore-sdk/wiki/guide.pt.md)
+ou le [guide en français](https://github.com/dnettoRaw/app-core-public/tree/beta/appcore-sdk/wiki/guide.fr.md).
 Exécutez ensuite l’[exemple de base](https://github.com/dnettoRaw/app-core-public/tree/beta/appcore-sdk/wiki/examples/basic.fr.md)
 et l’[exemple intermédiaire](https://github.com/dnettoRaw/app-core-public/tree/beta/appcore-sdk/wiki/examples/intermediate.fr.md).

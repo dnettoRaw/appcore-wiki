@@ -1,6 +1,6 @@
 ---
 title: Roadmap future
-description: Composants AppCore prévus ou en recherche qui ne font pas partie des 23 crates stables.
+description: Préreleases publiées, composants prévus et recherche AppCore.
 sidebar_position: 1
 slug: /roadmap/
 ---
@@ -8,10 +8,10 @@ slug: /roadmap/
 # Roadmap future
 
 :::caution Composants futurs
-Cette roadmap sépare les prereleases et composants conceptuels des 23 crates
-publics stables. Les entrées Alpha ou Beta restent opt-in et leur page indique
-si elles sont publiées ; les entrées prévues et de recherche ne doivent pas
-être utilisées comme dépendances.
+Cette roadmap sépare les prereleases et composants conceptuels du catalogue
+actuel des crates publics. Les entrées Alpha, Beta ou RC restent opt-in et leur
+page indique si elles sont publiées ; les entrées prévues et de recherche ne
+doivent pas être utilisées comme dépendances.
 :::
 
 AppCore garde la documentation stable du Runtime séparée du design futur. Les
@@ -27,15 +27,22 @@ promotion n'est automatique parce qu'un crate apparaît dans le dépôt Runtime.
 | Composant | Statut | Frontière |
 | --- | --- | --- |
 | [appcore-ai](/crates/appcore-ai) | Beta | `0.1.0-beta.3` publiée pour routage borné, inférence locale/distante, ressources, provenance, sécurité et exécution observable. |
+| [appcore-filemaker](/crates/appcore-filemaker) | Beta | `0.1.0-beta.1` publiée pour la compilation déterministe de documents, canvases vectoriels et datasets bornés. |
+| [appcore-filemaker-ai](/crates/appcore-filemaker-ai) | Beta | Bridge d'outils facultatif et borné `0.1.0-beta.1` publié ; l'IA reste hors du compilateur déterministe. |
+| [appcore-filemaker-cli](/crates/appcore-filemaker-cli) | Beta | Adaptateur de processus borné `0.1.0-beta.1` publié pour compilation, diagnostic et export explicite. |
+
+## RC
+
+| Composant | Statut | Frontière |
+| --- | --- | --- |
+| [appcore-log](/crates/appcore-log) | RC | Pipeline de logging structuré et borné `1.0.0-rc.1` publié pour les composants Runtime et les applications SDK. |
+| [appcore-sdk](/crates/appcore-sdk) | RC | Façade applicative manifest-first `1.0.0-rc.1` publiée, remplaçant `appcore-bin` désormais retiré. |
 
 ## Alpha
 
 | Composant | Statut | Frontière |
 | --- | --- | --- |
-| [appcore-sync-sqlite](/crates/appcore-sync-sqlite) | Alpha | `0.1.0-alpha.2` publiée pour la persistance facultative de l'état sync du Runtime, avec les contrats coordonnés `2.0.0-alpha.1`. |
-| [appcore-filemaker](/crates/appcore-filemaker) | Alpha | Aperçu source `0.1.0-alpha.1` non publié pour compilation déterministe de documents, canvases et datasets. |
-| [appcore-filemaker-ai](/crates/appcore-filemaker-ai) | Alpha | Bridge d'outils facultatif et borné non publié ; l'IA reste hors du compilateur déterministe. |
-| [appcore-filemaker-cli](/crates/appcore-filemaker-cli) | Alpha | Adaptateur de processus borné et non publié pour compilation, diagnostic et export explicite. |
+| [appcore-sync-sqlite](/crates/appcore-sync-sqlite) | Alpha | `0.1.0-alpha.4` publiée pour la persistance facultative de l'état sync du Runtime. |
 
 ## In Design
 

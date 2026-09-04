@@ -1,6 +1,6 @@
 ---
 title: Future Roadmap
-description: Planned and research AppCore components that are not part of the 23 stable crates.
+description: Published prereleases, planned components, and AppCore research.
 sidebar_position: 1
 slug: /roadmap/
 ---
@@ -8,10 +8,10 @@ slug: /roadmap/
 # Future Roadmap
 
 :::caution Future components
-This roadmap separates prereleases and conceptual components from the 23
-stable public crates. Alpha or Beta entries remain opt-in and their individual
-pages state whether they are published; planned and research entries should not
-be used as dependencies.
+This roadmap separates prereleases and conceptual components from the current
+public crate catalog. Alpha, Beta, or RC entries remain opt-in and their
+individual pages state whether they are published; planned and research
+entries should not be used as dependencies.
 :::
 
 AppCore keeps stable Runtime documentation separate from future design work.
@@ -27,15 +27,22 @@ automatic just because a crate appears in the Runtime repository.
 | Component | Status | Boundary |
 | --- | --- | --- |
 | [appcore-ai](/crates/appcore-ai) | Beta | Published `0.1.0-beta.3` for bounded model routing, local or remote inference, resource governance, provenance, security and observable execution. |
+| [appcore-filemaker](/crates/appcore-filemaker) | Beta | Published `0.1.0-beta.1` deterministic compiler for declarative documents, vector canvases, and bounded datasets. |
+| [appcore-filemaker-ai](/crates/appcore-filemaker-ai) | Beta | Published `0.1.0-beta.1` optional bounded tool bridge; AI remains outside the deterministic compiler. |
+| [appcore-filemaker-cli](/crates/appcore-filemaker-cli) | Beta | Published `0.1.0-beta.1` bounded process adapter for compilation, diagnostics, and explicit export. |
+
+## RC
+
+| Component | Status | Boundary |
+| --- | --- | --- |
+| [appcore-log](/crates/appcore-log) | RC | Published `1.0.0-rc.1` bounded structured logging pipeline for Runtime components and SDK applications. |
+| [appcore-sdk](/crates/appcore-sdk) | RC | Published `1.0.0-rc.1` manifest-first application facade replacing the retired `appcore-bin`. |
 
 ## Alpha
 
 | Component | Status | Boundary |
 | --- | --- | --- |
-| [appcore-sync-sqlite](/crates/appcore-sync-sqlite) | Alpha | Published `0.1.0-alpha.2` optional persistence for Runtime-owned sync state, against the coordinated `2.0.0-alpha.1` Runtime contracts. |
-| [appcore-filemaker](/crates/appcore-filemaker) | Alpha | Unpublished `0.1.0-alpha.1` source preview for deterministic document, canvas, and dataset compilation. |
-| [appcore-filemaker-ai](/crates/appcore-filemaker-ai) | Alpha | Unpublished optional bounded tool bridge; AI remains outside the deterministic compiler. |
-| [appcore-filemaker-cli](/crates/appcore-filemaker-cli) | Alpha | Unpublished bounded process adapter for compilation, diagnostics, and explicit export. |
+| [appcore-sync-sqlite](/crates/appcore-sync-sqlite) | Alpha | Published `0.1.0-alpha.4` optional persistence for Runtime-owned sync state. |
 
 ## In Design
 

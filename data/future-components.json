@@ -12,6 +12,26 @@
       "related_future": ["appcore-agent", "appcore-search", "appcore-jobs"]
     },
     {
+      "name": "appcore-log",
+      "slug": "appcore-log",
+      "status": "RC",
+      "category": "RC",
+      "summary": "Bounded structured logging pipeline shared by Runtime components and SDK applications.",
+      "horizon": "1.0.0-rc.1 published",
+      "related_existing": ["appcore-ops", "appcore-sdk"],
+      "related_future": []
+    },
+    {
+      "name": "appcore-sdk",
+      "slug": "appcore-sdk",
+      "status": "RC",
+      "category": "RC",
+      "summary": "Manifest-first application facade for the three-artifact application contract.",
+      "horizon": "1.0.0-rc.1 published",
+      "related_existing": ["appcore-contracts", "appcore-core", "appcore-log"],
+      "related_future": ["appcore-ui"]
+    },
+    {
       "name": "appcore-sync-sqlite",
       "slug": "appcore-sync-sqlite",
       "status": "Alpha",

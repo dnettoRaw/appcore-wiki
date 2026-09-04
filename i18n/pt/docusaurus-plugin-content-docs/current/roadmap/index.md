@@ -1,6 +1,6 @@
 ---
 title: Roadmap futuro
-description: Componentes AppCore planejados e em pesquisa que não fazem parte dos 23 crates estáveis.
+description: Prereleases publicadas, componentes planejados e pesquisa AppCore.
 sidebar_position: 1
 slug: /roadmap/
 ---
@@ -8,8 +8,8 @@ slug: /roadmap/
 # Roadmap futuro
 
 :::caution Componentes futuros
-Este roadmap separa prereleases e componentes conceituais dos 23 crates
-públicos estáveis. Entradas Alpha ou Beta continuam opt-in, e cada página diz
+Este roadmap separa prereleases e componentes conceituais do catálogo atual de
+crates públicos. Entradas Alpha, Beta ou RC continuam opt-in, e cada página diz
 se houve publicação; entradas planejadas e de pesquisa não devem ser usadas
 como dependências.
 :::
@@ -28,15 +28,22 @@ Runtime.
 | Componente | Status | Fronteira |
 | --- | --- | --- |
 | [appcore-ai](/crates/appcore-ai) | Beta | `0.1.0-beta.3` publicada para routing limitado, inferência local/remota, recursos, provenance, segurança e execução observável. |
+| [appcore-filemaker](/crates/appcore-filemaker) | Beta | `0.1.0-beta.1` publicada para compilação determinística de documentos, canvases vetoriais e datasets limitados. |
+| [appcore-filemaker-ai](/crates/appcore-filemaker-ai) | Beta | Bridge opcional e limitado `0.1.0-beta.1` publicado; IA permanece fora do compiler determinístico. |
+| [appcore-filemaker-cli](/crates/appcore-filemaker-cli) | Beta | Adapter de processo limitado `0.1.0-beta.1` publicado para compilação, diagnóstico e export explícito. |
+
+## RC
+
+| Componente | Status | Fronteira |
+| --- | --- | --- |
+| [appcore-log](/crates/appcore-log) | RC | Pipeline de logging estruturado e limitado `1.0.0-rc.1` publicado para componentes do Runtime e aplicações SDK. |
+| [appcore-sdk](/crates/appcore-sdk) | RC | Facade de aplicação manifest-first `1.0.0-rc.1` publicada, substituindo o `appcore-bin` aposentado. |
 
 ## Alpha
 
 | Componente | Status | Fronteira |
 | --- | --- | --- |
-| [appcore-sync-sqlite](/crates/appcore-sync-sqlite) | Alpha | `0.1.0-alpha.2` publicada para persistência opcional do estado de sync do Runtime, usando os contratos coordenados `2.0.0-alpha.1`. |
-| [appcore-filemaker](/crates/appcore-filemaker) | Alpha | Prévia `0.1.0-alpha.1` não publicada para compilação determinística de documentos, canvases e datasets. |
-| [appcore-filemaker-ai](/crates/appcore-filemaker-ai) | Alpha | Bridge opcional e limitado não publicado; IA permanece fora do compiler determinístico. |
-| [appcore-filemaker-cli](/crates/appcore-filemaker-cli) | Alpha | Adapter de processo limitado e não publicado para compilação, diagnóstico e export explícito. |
+| [appcore-sync-sqlite](/crates/appcore-sync-sqlite) | Alpha | `0.1.0-alpha.4` publicada para persistência opcional do estado de sync do Runtime. |
 
 ## In Design
 
