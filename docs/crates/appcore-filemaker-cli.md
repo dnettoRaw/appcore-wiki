@@ -1,12 +1,11 @@
 ---
-title: appcore-filemaker-cli — 0.1 alpha
+title: appcore-filemaker-cli — 0.1 beta
 ---
 
 # appcore-filemaker-cli
 
-`appcore-filemaker-cli 0.1.0-alpha.1` is the bounded process adapter for
-`appcore-filemaker`. It is a source preview and has not been published to
-crates.io.
+`appcore-filemaker-cli 0.1.0-beta.1` is the bounded process adapter for
+`appcore-filemaker`. It is published on crates.io as a beta prerelease.
 
 The command selects export format; template YAML never does. `check`,
 `validate`, `preflight`, and diagnostic commands are read-only except for
@@ -15,6 +14,9 @@ They reject an output resolving to the input template. `migrate` is reserved
 and fails without modifying input; future mutation requires an explicit flag
 and contract. Every command has concise human output plus stable JSON for
 automation.
+Both stdout modes end with one newline and stop at 512 MiB. Pretty JSON is sized
+before output and serialized directly through a fixed 16 KiB buffer, avoiding a
+second complete output string.
 
 `capabilities --json` publishes the stable exit matrix: 0 success, 2
 validation, 64 usage, 65 data, 66 missing input, 69 unavailable, 70 software,
@@ -30,9 +32,14 @@ non-mutating overlay. `mask` exports collision/layout/visual/combined geometry
 as PNG, PDF, SVG, or stable occupied/free/collisions/overflow JSON. `inspect`
 and `explain` expose source geometry, anchors, region, measurement, collision,
 page/reflow, and provenance retained by the resolved scene.
+`free-regions` queries bounded available rectangles. Repeatable `--patch`
+applies ordered runtime patch JSON, while `--font-fallback` defines the exact
+registered fallback order. `render --format csv` exports one selected bound
+table without inventing graphical layout for dataset rows.
 
-`capabilities --json` separates implemented formats from prepared WebP, XLSX,
-ZPL, ESC/POS, PDF/A, Hybrid PDF, links, bookmarks, and tagged accessibility.
+`capabilities --json` exposes editable, flattened, and hybrid PDF. Hybrid adds
+invisible subsetted Unicode text over deterministic outlines. WebP, XLSX, ZPL,
+ESC/POS, PDF/A, links, bookmarks, and tagged accessibility remain prepared.
 `schema --json` also states the writer/bounded-byte, strict/best-effort loss,
 raster-only DPI, deterministic PDF metadata, and font-subset contracts.
 

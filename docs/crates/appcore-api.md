@@ -32,15 +32,49 @@ Application queries are authorized by the composed capability policy before
 the application router runs. Runtime-owned status queries remain outside the
 application capability catalog.
 
-On the current 1.0 maintenance line, Runtime hosts freeze `ApiRouter` query
+On the current 1.0 line, Runtime hosts freeze `ApiRouter` query
 registration after bootstrap. Router snapshots share immutable endpoints via
 `Arc`; direct facade, HTTP and peer RPC dispatch release the host-state mutex
 before calling an endpoint. Independent queries therefore execute
 concurrently, and late registration fails with `router_frozen`.
+`query_names_iter` lets manifest validation borrow this immutable registry;
+the deterministic owned `query_names` method remains available for output.
+Across 1,024 queries, the borrowed scan measured 28.63 us p50 and 2.41 MiB
+peak RSS versus 183.26 us and 2.55 MiB for full materialization.
+
+The built-in `runtime.audit` query limits each response to at most 1,000 newest
+items. It captures shared record and entry snapshots under short locks and
+materializes only that page after releasing them, instead of deep-cloning both
+complete 10,000-item queues. Selecting 1,000 of 10,000 measured 2.06 us p50 and
+11.88 MiB peak RSS, versus 4.16 ms and 20.33 MiB for the old full copies.
+
+`runtime.events` follows the same snapshot boundary, caps the newest page at
+1,000 and continues to omit opaque payloads from its unchanged response.
+Selecting 1,000 of 10,000 events measured 2.39 us p50 and 8.48 MiB peak RSS,
+versus 2.09 ms and 14.59 MiB for cloning the complete history.
 
 The configured payload bound applies to the complete HTTP body before Axum
 deserializes JSON. Protected routes accept exactly one well-formed bearer
 `Authorization` header; duplicates fail closed.
+
+Structured query validation streams JSON into a bounded counting writer. It
+therefore enforces the exact serialized-byte limit without retaining an encoded
+`Vec<u8>`, while the public `payload_bytes()` method remains compatible. The
+HTTP path validates once before the request crosses into blocking dispatch.
+
+The router owns one shared immutable `RuntimeStaticInfo`; cloning request state
+does not copy its peer lists, DNS seeds, paths or identity strings. Blocking
+dispatch takes ownership of command/query requests. Query audit keeps only the
+bounded query ID and name while the payload is in flight.
+Owned command paths call `CommandRequest::into_envelope`, preserving V1
+validation while moving the existing UTF-8 allocation into `CommandEnvelope`.
+The compatible `to_envelope` method remains available to borrowed callers.
+
+`CommandTokenVerifier` also has additive borrowed request methods. Their
+defaults materialize `RequestValidationDetails` and call the existing owned
+methods, so existing verifiers keep their behavior. The Runtime verifier
+overrides them to hash text or structured JSON directly without an owned
+payload copy.
 
 `HttpCommandAuth::default()` requires authentication and fails closed until a
 token verifier is configured. Only `insecure_local_for_testing()` explicitly
@@ -57,6 +91,12 @@ on the same bound address and pass `/v1/health` before and after one atomic
 routing switch. Requests already accepted retain their original Router until
 completion; the old generation drains under a deadline. Failed health or drain
 restores the prior generation and closes failed-generation admission.
+
+The owner retains at most one active and one retiring generation. A failed
+generation with requests blocks another reload until its final permit releases
+the Router. `generation_snapshot` reports active/retiring admission and
+in-flight counts without request data or an unbounded history. Cancelling after
+the switch synchronously restores the previous generation.
 
 The active pointer is lock-free, deadlines are capped at 60 seconds and the
 snapshot contains only generation, in-flight, success, failure and rollback

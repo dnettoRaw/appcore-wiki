@@ -26,6 +26,21 @@ standard one-shot; HTTP state e host.
 Use `PooledPeerRpcTransport` para reutilizar conexões limitadas por origem.
 `StdPeerRpcTransport` preserva o comportamento V1 one-shot com
 `Connection: close`.
+Ambos consomem a alocação owned do body do DTO HTTP. Corpos V1 sem compressão e
+V2 exatos mantêm o mesmo `Vec<u8>` através de `HttpRequest`, sem clone integral
+na fronteira do transporte.
+
+O client V1 move um payload outbound owned para um envelope mantido durante os
+retries limitados. Cada retry ainda renova campos temporais, nonce, vínculo do
+token e codificação HTTP. Com payload de 4 MiB em cinco processos release no
+Apple M1, p50 ficou em +0,08%, RSS pico caiu 7,21%, delta RSS da workload caiu
+9,02% e delta RSS retido caiu 7,99%.
+
+Na entrada, `decode_peer_rpc_envelope_json` aplica o teto codificado e
+desserializa o body V1 sem compressão diretamente dos bytes HTTP emprestados. O
+Runtime move depois a alocação do payload decodificado para `CommandEnvelope`.
+Um workload de 4 MiB em cinco processos reduziu p50 de 53,06 para 52,35 ms, RSS
+pico de 35,80 para 23,81 MiB e o delta RSS da workload em 39,52%.
 
 Use somente quando tenant, cluster, source, target, protocolo, expiry, nonce e
 integridade podem ser provados. `AllowPeerAuthenticator` é somente teste.
@@ -33,6 +48,11 @@ integridade podem ser provados. `AllowPeerAuthenticator` é somente teste.
 O `Debug` dos DTOs peer request, response, outbound e HTTP mostra tamanhos e
 omite bytes opacos, credenciais, valores de nonce/idempotencia e detalhes de
 erro remoto.
+
+O `BoundedReplayStore` local ao processo valida cada nonce no teto de 128 bytes,
+limita entradas vivas e bytes retidos estimados e nunca aceita teto padrão
+superior a 32 MiB. O operador pode escolher um teto menor e consultar bytes
+atuais, pico, máximo e rejeições sem expor valores de nonce.
 
 **Maturidade:** superfície peer V1 estável.
 
@@ -44,7 +64,11 @@ são 64 KiB decodificados por chunk, 96 KiB codificados, 64 MiB agregados e
 1.024 chunks. Bytes codificados usam string JSON base64 canônica, nunca array de
 inteiros. Sequência, tamanho decodificado exato, SHA-256 por chunk e total,
 deadline, cancelamento e quota após gzip falham fechados. Commit com falha nunca
-expõe o sink parcial como completo.
+expõe o sink parcial como completo. Chunks identity movem a mesma alocação owned
+da source para o frame e para o assembler, sem clonar bytes decodificados em
+cada boundary. Uma sonda fixa em stack sobre todo o chunk evita gzip
+especulativo apenas quando ele parece já incompressível; chunks estruturados
+compressíveis ainda usam gzip.
 
 `PeerRpcStreamRegistry` controla sessões parciais com quotas exatas de sessões
 e bytes decodificados. Chunks de requisição usam arquivos exclusivos em um
@@ -59,7 +83,10 @@ processo atual. Outras plataformas falham fechadas ao construir o registry.
 Habilite as rotas HTTP assinadas somente com
 `PeerRpcHttpHost::with_v2_stream_registry`; o host default continua V1-only.
 `query_stream_v2` e `command_stream_v2` vinculam cada body JSON exato a um
-bearer token e movem request/response um frame por vez. A admissão do open
+bearer token e movem request/response um frame por vez. O JSON canônico é
+serializado diretamente no SHA-256 dessa vinculação, sem reter um segundo body
+codificado completo ao lado do frame. Dependentes reutilizam o caminho
+byte-exato por `json_payload_hash`. A admissão do open
 verifica tenant, cluster, target, trace, deadline, idempotência de command e
 nonce replay limitado. Frames ambíguos não são repetidos; cancelamento best
 effort é respaldado pela limpeza autoritativa por deadline.
@@ -82,7 +109,7 @@ protocolo a 256 bytes. O client rejeita metadata conhecida contraditória. Code
 desconhecido descarta mensagem/hint remotos e vira um único resultado
 observável e terminal `unknown`.
 
-Responses V1 congelados preservam o JSON existente. O client mapeia apenas
+Responses V1 estáveis preservam o JSON existente. O client mapeia apenas
 codes exatos do host para `PeerRpcError::RemoteRejected`; somente rejeições
 exatas de endpoint/capacidade de replay entram no retry limitado existente.
 Nenhuma substring ou mensagem livre controla retry. Ambiguidade do ACK de um

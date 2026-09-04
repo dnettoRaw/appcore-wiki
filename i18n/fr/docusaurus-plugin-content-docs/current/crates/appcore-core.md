@@ -31,6 +31,54 @@ en parallèle ; une même clé idempotente n'admet toujours qu'une exécution. L
 shutdown ferme l'admission atomiquement avant le drainage borné des commandes
 admises.
 
+`RuntimeLifecycle` conserve un seul enum d'état `Copy` sous son mutex et
+applique les 12 transitions stables exactes par une fonction totale. Aucun nom
+validé ni table de transitions n'est alloué par instance. La `StateMachine`
+publique générique reste disponible et inchangée pour les états applicatifs.
+
+L'`AuditLog` local au processus borne ses snapshots de commandes et d'entrées
+génériques à 10 000 éléments et à un budget partagé par défaut de 16 Mio.
+`with_max_bytes` peut réduire le budget ; `stats` expose les octets courants/de
+pic, évictions et rejets ; `write_jsonl` transmet un snapshot copy-on-write
+partagé après libération du lock d'état. L'adaptateur compatible `export_jsonl`
+retourne intentionnellement une String owned.
+
+Utilisez `entries_snapshot` pour obtenir un tableau JSON structuré. La vue
+immuable implémente `Serialize`, partage le stockage retenu au lieu de le cloner
+en profondeur et reste stable après des mutations ultérieures. La fixture
+pretty-JSON mesurée contenait 10 000 entrées et 2 996 676 octets, avec 1,12 ms
+p50 et 6,42 Mio de RSS de pic sur Apple M1.
+
+`records_snapshot` fournit la vue correspondante des enregistrements command.
+Les deux types de snapshot exposent `recent(limit)` afin que le caller emprunte
+seulement la page la plus récente après libération du lock. Une sélection de
+1 000 sur 10 000 a mesuré 2,06 us p50 et 11,88 Mio de RSS de pic, contre 4,16 ms
+et 20,33 Mio pour les copies owned complètes.
+
+Avec un `FileOperationalJournal` attaché, les nouvelles entrées d'audit et les
+entrées restaurées sûres conservent un seul enregistrement opérationnel
+immuable partagé. Le chargement du journal valide la chaîne de hash, vérifie le
+texte audit sans allocation, assainit uniquement le contenu à risque et le
+réécrit atomiquement avant de l'exposer. Les attachements suivants du log ne
+copient que des handles `Arc` bornés. Les API owned, le JSON du snapshot et la
+persistance V1 restent inchangés. Un seul attachement de 384 entrées sûres
+(environ 3 Mio) a réduit le p50 de 12,26 ms à 86,50 us (-99,29 %), le RSS de
+pic de 0,57 % et le RSS de la charge de 1,72 % sur Apple M1. La charge fsync
+séparée conserve les gains antérieurs de 27,83 % en p50, 37,30 % en RSS de pic
+et 47,93 % en mémoire retenue.
+
+L'`EventBus` local au processus retient séparément au plus 10 000 événements et
+16 Mio par défaut. `stats` expose les octets courants/de pic, les évictions et
+les rejets d'événements trop grands ; `snapshot().recent(limit)` emprunte une
+page stable. Sélectionner 1 000 sur 10 000 événements a mesuré 2,39 us p50 et
+8,48 Mio de RSS de pic, contre 2,09 ms et 14,59 Mio pour la copie complète.
+Lorsqu'un `FileOperationalJournal` est attaché, il conserve avec le bus une
+seule allocation immuable partagée de l'enregistrement événement. La
+restauration ne copie que des handles `Arc` bornés ; les API owned, le JSON du
+snapshot et le format V1 du journal ne changent pas. Une charge réelle de fsync
+de 3 Mio a réduit le RSS de pic de 8,11 à 5,08 Mio (-37,38 %) et la mémoire
+retenue de 48,00 %, avec un p50 dominé par le disque dans +0,95 %.
+
 Les nouvelles applications utilisent les re-exports de
 `appcore_bin::application`; elles n'assemblent pas le core. Garder I/O adapters
 et comportement domaine hors de ce crate.

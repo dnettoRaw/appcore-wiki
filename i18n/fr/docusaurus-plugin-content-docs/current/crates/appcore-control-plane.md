@@ -27,6 +27,11 @@ Utilisez `PooledHttpTransport` pour les appels réutilisables sans
 authentification. `BearerHttpTransport` possède aussi un client réutilisable et
 borné. Conservez `StdHttpTransport` uniquement lorsque le comportement V1
 one-shot avec `Connection: close` est requis.
+`HttpControlPlaneClient` convertit un body encodé une seule fois en
+`SharedHttpControlPlaneRequest` et l'emprunte entre les retries bornés. Les
+transports internes réutilisent la même allocation immuable ; les transports
+externes existants conservent le fallback owned compatible. Les deux owners de
+requête omettent les octets du body dans leur sortie `Debug`.
 
 À utiliser pour coordination distribuée sans payload métier. Le profil file
 exige locks/storage certifiés. Le distant exige TLS et authentification du
@@ -35,6 +40,13 @@ déploiement.
 Le profil fichier limite l'état et le backup à 16 MiB et rejette tout état
 malformé ou futur. L'arithmétique d'expiration et d'epoch est vérifiée;
 l'épuisement de l'epoch échoue fermé au lieu de réutiliser un fencing token.
+
+`InMemoryControlPlane` utilise par défaut 65 536 inscriptions/slots de lease
+combinés et un budget estimé de 16 Mio retenus. `with_limits` peut réduire les
+deux ; `stats` expose les octets actuels/de pic, les comptes et les admissions
+rejetées. Le rejet est atomique, donc un enregistrement existant reste
+utilisable. L'état fichier conserve la frontière JSON V1 de 16 Mio et limite
+aussi l'état décodé à 262 144 enregistrements et 64 Mio.
 
 **Maturité :** contrats et références stables; l'exploitation du service
 externe appartient au déploiement.

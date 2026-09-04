@@ -25,6 +25,21 @@ pooled and standard one-shot transports; HTTP state and host.
 
 Use `PooledPeerRpcTransport` to reuse bounded per-origin connections.
 `StdPeerRpcTransport` preserves the V1 one-shot `Connection: close` behavior.
+Both consume the owned HTTP DTO body allocation. Uncompressed V1 and exact V2
+bodies retain the same `Vec<u8>` through `HttpRequest`, without a complete clone
+at the transport boundary.
+
+The V1 client moves an owned outbound payload into one envelope retained across
+bounded retries. Each retry still refreshes temporal fields, nonce, token
+binding, and HTTP encoding. With a 4 MiB payload across five Apple M1 release
+processes, p50 stayed within +0.08%, peak RSS fell 7.21%, workload RSS delta
+fell 9.02%, and retained RSS delta fell 7.99%.
+
+On ingress, `decode_peer_rpc_envelope_json` enforces the encoded ceiling and
+deserializes an uncompressed V1 body directly from borrowed HTTP bytes. The
+Runtime then moves the decoded payload allocation into `CommandEnvelope`. A
+five-process 4 MiB workload reduced p50 from 53.06 to 52.35 ms, peak RSS from
+35.80 to 23.81 MiB and workload RSS delta by 39.52%.
 
 Use it only after tenant, cluster, source, target, protocol, expiry, nonce and
 payload integrity can be established. `AllowPeerAuthenticator` is for tests,
@@ -33,6 +48,11 @@ not remote production.
 Peer request, response, outbound and HTTP DTO `Debug` output reports payload
 lengths and omits opaque bytes, credentials, nonce/idempotency values and remote
 error details.
+
+The process-local `BoundedReplayStore` validates every nonce at 128 bytes,
+bounds both live entries and estimated retained bytes, and never permits a
+default ceiling above 32 MiB. Operators can select a tighter ceiling and read
+current, peak, maximum and rejection counters without exposing nonce values.
 
 **Maturity:** stable peer protocol V1 surface.
 
@@ -44,7 +64,11 @@ encoded chunks at 96 KiB, the aggregate at 64 MiB and chunk count at 1,024.
 Encoded bytes use a canonical base64 JSON string, never an integer array.
 Sequence, exact decoded size, chunk and aggregate SHA-256, deadline,
 cancellation and quota after gzip decompression fail closed. A failed commit
-never exposes the partial sink as complete.
+never exposes the partial sink as complete. Identity chunks move the same owned
+allocation from source to frame to assembler instead of cloning decoded bytes
+at either boundary. A fixed stack-only full-chunk probe suppresses speculative
+gzip only when the chunk appears already incompressible; structured
+compressible chunks still use gzip.
 
 `PeerRpcStreamRegistry` owns partial sessions under exact session and decoded
 byte quotas. It writes request chunks to exclusive files in an existing
@@ -59,7 +83,10 @@ owner SID. Unsupported platforms fail closed during registry construction.
 Enable the signed HTTP routes only with
 `PeerRpcHttpHost::with_v2_stream_registry`; the default host remains V1-only.
 `query_stream_v2` and `command_stream_v2` bind each exact JSON body to a bearer
-token and move request/response data one frame at a time. Open admission checks
+token and move request/response data one frame at a time. Canonical JSON is
+serialized directly into SHA-256 for this binding, without retaining a second
+complete encoded body beside the frame. Dependants can reuse the byte-exact
+path through `json_payload_hash`. Open admission checks
 tenant, cluster, target, trace, deadline, command idempotency and bounded nonce
 replay. Ambiguous frames are not retried; best-effort cancellation is backed by
 authoritative deadline cleanup.
@@ -82,7 +109,7 @@ to 256 bytes. The client rejects contradictory known metadata. Unknown codes
 discard their remote message/hint and become one observable, terminal
 `unknown` result.
 
-Frozen V1 responses keep their existing JSON shape. The client maps only exact
+Stable V1 responses keep their existing JSON shape. The client maps only exact
 host codes to `PeerRpcError::RemoteRejected`; only exact endpoint/replay
 capacity rejections enter the existing bounded retry loop. No substring or
 free-form message controls retry. V2 frame acknowledgement ambiguity still

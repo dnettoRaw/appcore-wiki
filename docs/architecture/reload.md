@@ -22,6 +22,12 @@ An accepted request holds its generation until completion. It is never moved
 or retried by the reload layer. Post-switch health or drain failure restores
 the previous generation, closes failed-generation admission and performs a
 bounded cleanup drain. Concurrent or stale reload attempts fail explicitly.
+A failed generation with requests occupies the single retiring slot. Another
+reload fails until the final permit releases that Router, so repeated timeouts
+cannot accumulate detached routing generations.
+Cancelling the reload future after the switch synchronously restores the
+previous generation and moves any admitted candidate requests into that same
+bounded retiring slot.
 
 ## Ownership and limits
 
@@ -32,6 +38,8 @@ lifecycle owner and process restart stays external.
 Health and drain deadlines are capped at 60 seconds. Snapshots expose only
 generation, in-flight, transaction, success, failure and rollback counters.
 They never contain payloads, tokens, request IDs, tenant IDs or addresses.
+`generation_snapshot` exposes one active and at most one retiring generation,
+including admission and in-flight counts, without retaining a history.
 
 Leadership is not derived from a routing generation. Commands still validate
 their current service lease and fencing contract, so reload cannot create two
@@ -49,10 +57,11 @@ Use the [inbound TLS sidecar profile](./inbound-tls-sidecar) for certificate
 rotation. It keeps the Runtime listener stable and adds no second Runtime
 routing path.
 
-The current `appcore-api 1.0.2-rc` candidate implements same-listener routing and accepts ownership
-of a pre-bound TCP listener. Address-changing composition and external
-cross-platform certification remain pending. This API is not available from
-the stable `1.0.0` package.
+The current `appcore-api 1.0.2-rc` candidate implements same-listener routing,
+and `appcore-bin` composes it as the existing supervised HTTP service over a
+pre-bound TCP listener. Address-changing composition, a coordinated
+configuration trigger and external cross-platform certification remain post-GA
+work. This API is not available from the stable `1.0.0` package.
 
 ## Evidence
 

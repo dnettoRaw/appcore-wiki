@@ -37,10 +37,46 @@ queries do `ApiRouter` após o bootstrap. Snapshots do router compartilham
 endpoints imutáveis por `Arc`; facade direta, HTTP e peer RPC liberam o mutex do
 estado do host antes de chamar o endpoint. Queries independentes executam em
 paralelo, e registro tardio falha com `router_frozen`.
+`query_names_iter` permite que a validação do manifest empreste esse registro
+imutável; o método owned determinístico `query_names` continua disponível para
+output. Com 1.024 queries, o scan emprestado mediu 28,63 us p50 e 2,41 MiB de
+RSS pico, contra 183,26 us e 2,55 MiB da materialização completa.
+
+A query interna `runtime.audit` limita cada resposta aos 1.000 itens mais novos.
+Ela captura snapshots compartilhados dos registros e entradas sob locks curtos
+e materializa somente essa página após liberá-los, em vez de clonar
+profundamente as duas filas completas de 10.000 itens. Selecionar 1.000 de
+10.000 mediu 2,06 us p50 e 11,88 MiB de RSS pico, contra 4,16 ms e 20,33 MiB
+das cópias integrais antigas.
+
+`runtime.events` segue a mesma fronteira de snapshot, limita a página mais nova
+a 1.000 e continua omitindo payloads opacos da resposta inalterada. Selecionar
+1.000 de 10.000 eventos mediu 2,39 us p50 e 8,48 MiB de RSS pico, contra
+2,09 ms e 14,59 MiB para clonar o histórico completo.
 
 O limite configurado aplica-se ao corpo HTTP completo antes de o Axum
 desserializar o JSON. Rotas protegidas aceitam exatamente um header
 `Authorization` bearer bem formado; duplicatas falham de forma fechada.
+
+A validação da query estruturada transmite o JSON para um writer contador
+limitado. Assim, aplica o limite exato de bytes serializados sem reter um
+`Vec<u8>` codificado, mantendo compatível o método público `payload_bytes()`.
+O caminho HTTP valida uma vez antes de cruzar o dispatch blocking.
+
+O router possui um único `RuntimeStaticInfo` imutável compartilhado; clonar o
+estado do request não copia listas de peers, seeds DNS, paths ou strings de
+identidade. O dispatch blocking recebe ownership dos requests de command/query.
+O audit de query mantém somente o ID e o nome limitados enquanto o payload está
+em trânsito.
+Os caminhos owned de command chamam `CommandRequest::into_envelope`, preservam
+a validação V1 e movem a alocação UTF-8 existente para `CommandEnvelope`. O
+método compatível `to_envelope` permanece para callers emprestados.
+
+`CommandTokenVerifier` também possui métodos aditivos para requests emprestados.
+Os defaults materializam `RequestValidationDetails` e chamam os métodos owned
+existentes, portanto verifiers existentes mantêm o comportamento. O verifier do
+Runtime os sobrepõe para hashear texto ou JSON estruturado diretamente, sem uma
+cópia owned do payload.
 
 `HttpCommandAuth::default()` exige autenticação e falha fechado até que um
 verificador de token seja configurado. Apenas
@@ -57,6 +93,12 @@ endereço ligado e passar por `/v1/health` antes e depois de uma troca atômica 
 routing. Requests já aceitos mantêm o Router original até a conclusão; a
 geração anterior é drenada com prazo. Falha de saúde ou drain restaura a geração
 anterior e fecha a admissão da geração com falha.
+
+O owner retém no máximo uma geração ativa e uma em drain. Uma geração com
+falha e requests bloqueia outro reload até seu último permit liberar o Router.
+`generation_snapshot` informa admissão e in-flight ativa/em drain sem dados de
+request nem histórico ilimitado. Cancelar após a troca restaura a geração
+anterior sincronicamente.
 
 O ponteiro ativo é lock-free, prazos são limitados a 60 segundos e o snapshot
 contém apenas contadores de geração, in-flight, sucesso, falha e rollback. A

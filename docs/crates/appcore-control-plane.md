@@ -28,6 +28,11 @@ Use `PooledHttpTransport` for reusable unauthenticated calls.
 `BearerHttpTransport` also owns a reusable bounded client. Keep
 `StdHttpTransport` only where the V1 one-shot `Connection: close` behavior is
 required.
+`HttpControlPlaneClient` converts an encoded body once into a
+`SharedHttpControlPlaneRequest` and borrows it across bounded retries. Built-in
+transports reuse the same immutable body allocation; existing external
+transports retain the compatible owned fallback. Both request owners omit body
+bytes from `Debug` output.
 
 Use it to implement distributed coordination without business payloads.
 File-backed profiles require certified locking/storage semantics. Remote
@@ -36,6 +41,12 @@ profiles require deployment TLS and authentication.
 The file profile caps state and backup input at 16 MiB and rejects malformed or
 future state. Expiry and epoch arithmetic is checked; epoch exhaustion fails
 closed instead of reusing a fencing token.
+
+`InMemoryControlPlane` defaults to 65,536 combined registrations/lease slots
+and a 16 MiB estimated retained-byte budget. `with_limits` can tighten both;
+`stats` exposes current/peak bytes, counts and rejected admissions. Rejection is
+atomic, so an existing record remains usable. File state preserves the 16 MiB
+V1 JSON boundary and also limits decoded state to 262,144 records and 64 MiB.
 
 **Maturity:** stable contracts and reference implementations; external
 service operation is deployment-owned.

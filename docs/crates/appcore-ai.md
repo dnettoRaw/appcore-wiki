@@ -8,7 +8,7 @@ sidebar_position: 23
 :::caution Public beta
 `appcore-ai 0.1.0-beta.3` is published on crates.io. Its API may change during
 the beta line, and docs.rs may take time to finish a new release build. It does
-not add fields to frozen V1 manifests.
+not add fields to stable V1 manifests.
 :::
 
 `appcore-ai` is the bounded, backend-neutral AI execution core for AppCore. It
@@ -31,6 +31,23 @@ decision to apply any generated result.
 | Distributed | experimental Swarm contracts; no production Peer RPC adapter is claimed |
 
 The default feature set contains no ML framework or HTTP adapter.
+Lightweight Unicode whitespace normalization writes directly into its bounded
+output `String`; it does not retain an intermediate list of every input word.
+
+Local cache activation is also memory-bounded when the artifact already
+exists. Idempotent stores and concurrent writer races open the regular file
+without following links, verify its exact size, compare it and calculate
+SHA-256 incrementally with a fixed 16 KiB buffer. They do not duplicate the
+complete caller-owned artifact.
+
+The optional Candle classifier moves decoded labels, weights and biases into
+loaded state without cloning the complete buffers. `CandleBackend` atomically
+reserves a model slot and declared artifact bytes before store access.
+`new_with_loaded_byte_limit` selects a tighter aggregate ceiling and
+`memory_pressure()` reports current/peak usage and rejected loads. An active
+inference keeps its reservation after `unload` until its tensor lease drops.
+Candle has no generative KV cache; the selected external generative engine must
+bound its own cache.
 
 ## Backend and model support
 
@@ -98,6 +115,11 @@ The built-in unauthenticated transport rejects credentials.
   custom transport both declare and implement streaming. After an event is
   emitted, a transient failure is returned instead of mixing a fallback route's output.
 
+The bounded decoder parses complete coalesced SSE frames directly from borrowed
+transport chunks. It retains only an incomplete tail between calls and compacts
+an accumulated pending buffer once per chunk, without a temporary `Vec` or
+repeated body shift for every frame.
+
 These changes are tracked publicly in
 [issue #1](https://github.com/dnettoRaw/app-core-public/issues/1).
 
@@ -114,6 +136,13 @@ binds model identity, artifact provenance, backend support, modality, quality,
 privacy and resource requirements. Backend SPI implementations decide how to
 execute a request, but the runtime still owns admission, cancellation, health,
 observability and policy.
+
+`ModelRegistryLimits` makes metadata retention explicit: models, locations per
+model, aggregate locations and accounted location bytes all have configurable
+ceilings below fixed safety maxima. Oversized initial iterators and later
+additions fail before retention or copy-on-write, while duplicate additions
+remain idempotent. `ModelRegistry::pressure` exposes current/peak counts and
+bytes plus rejected admissions without high-cardinality labels.
 
 Execution can be local, remote or delegated to an experimental swarm:
 
@@ -275,6 +304,20 @@ M1 reference run, warm resolution over 32 routes improved from 96.417 us to
 21.958 us p50, and Candle batch 32 from 68.959 us to 31.041 us. The report also
 shows small-batch regressions and the intentional cost of no-follow
 artifact checks.
+
+A separate 65,536-peer-location pressure workload previously retained every
+entry and reached 7.83 MiB peak/retained RSS. With bounded model-location
+admission it retains the default maximum of 128 per model, rejects the rest
+explicitly, and measured 1.91 MiB peak (-75.61%) and 1.89 MiB retained RSS
+(-75.86%) across five Apple M1 processes.
+
+For a representative 4 MiB Candle classifier, moving decoded buffers and
+reserving memory before reads reduced five-process median load time from 1.701
+to 1.368 ms (-19.56%) and median peak RSS from 20.16 to 16.11 MiB (-20.08%).
+
+For a 1 MiB lightweight input containing 524,288 one-byte words, removing the
+intermediate `Vec<&str>` reduced five-process median normalization time from
+4.823 to 3.337 ms (-30.80%) and median peak RSS from 12.98 to 3.88 MiB (-70.16%).
 
 The repository-local verdict is **READY FOR BETA** within the documented scope.
 Windows/Linux physical execution, sustained real-model accelerator soak and a

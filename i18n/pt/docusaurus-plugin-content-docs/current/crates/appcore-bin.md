@@ -24,6 +24,28 @@ volumes/environment resolvidos e `ApplicationTaskRegistry`.
 **API de host:** bootstrap/config errors/results, CLI, paths/lifecycle local,
 server entry points, build info e ferramentas opcionais de auth-server.
 
+Referências de secret `file:` do deployment aplicam teto de 64 KiB mais um byte
+sentinela para crescimento concorrente. Bytes rejeitados são limpos, e o
+whitespace aceito é removido na mesma alocação antes de movê-la para seu owner
+redacted e zeroizing.
+
+O marker `auth-required` usa um buffer fixo de 1.025 bytes na stack. Ele aceita
+no máximo 1 KiB e falha fechado em crescimento, UTF-8 inválido, arquivo não
+regular e symlink, sem alocar o marker completo no heap.
+
+`appcore-bin export --out CAMINHO` dimensiona o pretty JSON de diagnóstico sob
+um teto de 64 MiB antes de criar a saída. Depois, serializa com buffer fixo de
+64 KiB e snapshot de auditoria imutável compartilhado, sem um `Vec` do resultado
+completo nem clone profundo da lista. Falha de serialização ou escrita remove o
+novo arquivo incompleto e um caminho existente nunca é sobrescrito.
+
+Os diagnósticos expõem pressão de `audit_memory`, `event_bus`,
+`observation_memory` e `metric_memory` com bytes atuais, de pico e máximos,
+além de evictions ou rejeições de admissão. A exportação de observações e
+métricas começa por snapshots imutáveis compartilhados, não por clones
+profundos dos históricos. Esses contadores não contêm mensagens de auditoria
+nem payloads opacos.
+
 Os dois binários processam entrada UTF-8 limitada por `appcore-args`. Ajuda,
 validação e completion dinâmica para Bash, Zsh, Fish e PowerShell compartilham
 uma especificação declarativa; a execução permanece neste crate.
@@ -31,7 +53,9 @@ uma especificação declarativa; a execução permanece neste crate.
 O manifesto distribuído final alimenta um único catálogo de
 `appcore-capabilities` durante o bootstrap. Facade direta, HTTP de aplicação e
 peer RPC usam o mesmo owner para enforcement de declaração, mode,
-idempotência, escrita operacional e liderança. Queries de status do Runtime
+idempotência, escrita operacional e liderança. O dispatch de command peer move
+a alocação do payload V1 validado para `CommandEnvelope`, sem clone do body
+completo da aplicação. Queries de status do Runtime
 permanecem comportamento explícito do host.
 
 Na linha de manutenção 1.0 atual, handlers da facade direta, HTTP de aplicação

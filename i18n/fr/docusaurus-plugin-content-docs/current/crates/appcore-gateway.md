@@ -34,6 +34,11 @@ pour router des payloads chiffrés.
 > pour l'observation et laissez `EnvelopeRouter` gérer leur lifecycle lié à la
 > generation. Aucun alias historique ni map miroir n'est fourni.
 
+Le répertoire privé stocke 32 générations de shards immuables en copy-on-write.
+Les scans d'admission, heartbeat et HA ne copient que ces 32 handles `Arc` et
+libèrent tous les verrous de shard avant d'inspecter les partitions partagées ;
+aucune liste complète de tenants n'est allouée ou clonée.
+
 Le gateway résout le tenant depuis le suffixe de domaine défini par le
 deployment ou depuis un paramètre de query réservé aux tests locaux, authentifie
 les connexions lorsque configuré, route les enveloppes Peer RPC et les requests
@@ -98,16 +103,38 @@ reste seulement une quarantaine defensive de panne thread. Les snapshots surs
 contiennent uniquement lifecycle, adresses de bind et compteurs. Les utilisateurs directs de `spawn_heartbeat_pruner` doivent
 conserver et attendre le join handle retourne.
 
+La fédération HA transfère chaque request admise à son worker blocking borné,
+puis déplace directement le buffer JSON encodé dans `HttpRequest`. Le payload
+Peer RPC interne complet n'est cloné à aucune de ces frontières d'ownership.
+Le credential externe utilise `json_payload_hash` pour transmettre le JSON
+canonique à SHA-256 ; le hashing ne conserve aucun second body encodé complet.
+
 Les hashes de connexion worker et client utilisent un framing binaire
 canonique V2 avec le marqueur `v2:`. Les anciens hashes sans version ne sont
 pas interchangeables; émetteurs de token et consommateurs Gateway doivent être
 mis à jour ensemble.
+Le hashing emprunte désormais tous les champs de validation. Pour la forme
+maximale de 64 capabilities worker de 128 octets, il écrit directement dans la
+sortie hexadécimale requise de 17 Kio sans conserver l'ancien frame binaire de
+8,5 Kio ni une seconde chaîne de 17 Kio réservée au hash. Cinq échantillons
+release calibrés sur Apple M1 ont réduit le p50 du hash worker de 7,77 %, le
+delta RSS du workload de 22,73 % et le delta retenu de 19,05 % ; le p50 du hash
+client a baissé de 19,54 %.
 
 Chaque tenant conserve des index directs et bornés par Core ID et par
-`(cluster_id, core_id)`. Le lookup de routage est O(1) ; register, reconnect,
-disconnect et prune heartbeat mettent à jour map primaire, registre de
-capabilities et index sous le même verrou tenant. Des compteurs saturés de
+`(cluster_id, core_id)`. Le lookup courant avec un Core unique est O(1) ; les
+Core IDs dupliqués utilisent un scan borné par le plafond de workers du tenant.
+Register, reconnect, disconnect et prune heartbeat mettent à jour map primaire,
+registre de capabilities et index sous le même verrou tenant. Des compteurs saturés de
 rebuild et d'incohérence exposent la santé sans labels non bornés.
+
+Dans la beta Runtime actuelle, l'index inverse des capabilities partage un seul
+owner immuable du nom entre toutes les annonces worker d'un tenant, tout en
+préservant l'index direct de routage. `capabilities_for_iter` fournit une vue
+empruntée stable et `stats` rapporte uniquement noms distincts, workers,
+annonces et octets UTF-8 uniques. Le départ du dernier annonceur libère le nom
+partagé. Aux limites de 1 024 workers/64 capabilities sur Apple M1, le pic RSS
+est passé de 30,20 à 27,70 Mio et le lookup p50 de 55,53 à 50,22 ns.
 
 ## `1.0.2-rc` : registre HA Redis
 
@@ -189,6 +216,21 @@ a mesuré 17 125 ns p99 pour round-robin, 18 542 ns pour least-inflight et
 38 083 ns pour affinity sur 64 workers. Les invariants distribution round-robin
 exacte, health, capacity et affinity stateless ont réussi. Il s'agit d'une
 preuve locale au dépôt, pas d'une certification production ou multiplateforme.
+
+La sélection emprunte désormais les identités worker. First-available,
+least-inflight et affinity parcourent sans liste de candidats ; round-robin et
+health-weighted conservent un unique buffer compact emprunté pour préserver la
+distribution ordonnée stable. Au plafond de 1 024 workers, cinq échantillons
+release calibrés sur Apple M1 ont réduit le p50 round-robin de 468,86 à
+335,56 us (-28,43 %) et le p95 de 471,98 à 339,67 us (-28,03 %). Seul le
+résultat owned sélectionné clone sa clé.
+
+Le lookup des candidats utilise maintenant l'index Core existant sans
+construire de clés tuple owned installation/Core. Un scan exact limité à 1 024
+workers préserve l'identité lorsque des installations partagent un Core ID. Sur
+des exécutions équivalentes de la certification Gateway complète, les
+allocations sont passées de 7 439 239 à 810 640 (-89,10 %), les octets demandés
+ont baissé de 45,21 % et le p99 de sélection de 15,63 % à 20,87 %.
 
 ## `1.0.4-rc` : télémétrie de routage bornée
 

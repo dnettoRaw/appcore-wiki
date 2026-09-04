@@ -31,6 +31,14 @@ Opaque-content and Peer RPC wire serialization is unchanged. Their `Debug`
 implementations expose lengths and routing metadata instead of opaque payload
 bytes, nonce/idempotency values or remote error details.
 
+`OpaqueEnvelopeDeduplicator` keeps one shared allocation per accepted message
+ID across membership and FIFO-order indexes. Duplicate outcomes, eviction and
+the public API are unchanged. Retaining 65,536 distinct 128-byte IDs on Apple
+M1 reduced p50 from 37.55 ms to 32.83 ms and peak RSS from 35.86 MiB to
+27.25 MiB. Transport validation and deduplication reject empty IDs, control
+characters and IDs above `MAX_OPAQUE_MESSAGE_ID_BYTES` (1,024 UTF-8 bytes)
+before retention.
+
 **Maturity:** stable V1 wire contract; serialized compatibility is strict.
 
 ## Peer RPC V2 chunk frames
@@ -40,7 +48,10 @@ frame family. Open binds aggregate decoded bytes, chunk size/count and deadline;
 each chunk binds sequence, exact decoded length and digest; commit binds the
 complete decoded payload digest. Encoded chunk bytes use a canonical base64 JSON
 string rather than an integer array. V1 and V2 stay in separate modules and
-routes, with no detection, conversion or fallback.
+routes, with no detection, conversion or fallback. Human-readable encoding
+emits base64 through fixed 3 KiB input and 4 KiB output scratch buffers;
+decoding borrows the encoded JSON string when supported before allocating the
+decoded bytes. Exact fixtures do not change.
 
 The opt-in binary representation wraps the same V2 DTOs with the fixed
 `APCRPC2B` marker, codec version, frame/reply kind and exact Postcard length.
@@ -61,5 +72,5 @@ alpha remains an opt-in prerelease.
 `retry_after_ms`/`correlation_id` and a protocol-owned redacted message to the
 explicit V2 family. Known metadata is validated as one matrix. Unknown codes
 normalize to terminal `unknown` without retaining the remote text or retry
-hint. `PeerRpcRemoteErrorV1` is a separate exact decoder for the frozen V1
+hint. `PeerRpcRemoteErrorV1` is a separate exact decoder for the stable V1
 string field; it does not negotiate or construct V2 traffic.

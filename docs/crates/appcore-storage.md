@@ -32,6 +32,12 @@ the same file provider; they do not change the storage backend contract.
 Sealed reads derive a complete-envelope bound from `SealedStoragePolicy` and
 reject oversized files before allocating the file buffer.
 
+Complete snapshots retain their bounded file inventory, but their 16 MiB V1
+manifest no longer needs a complete encoded buffer beside it. Pretty JSON is
+serialized directly through a bounded 16 KiB writer into an exclusive atomic
+temporary and deserialized through a bounded 16 KiB reader. Exact-limit input
+remains valid and one non-retained byte detects concurrent growth.
+
 Use it when an application or Runtime service needs the documented local-first
 storage profile. Keep domain schemas and tables outside. Unsupported
 transactions fail explicitly.
@@ -43,6 +49,15 @@ single-file backups. Final file opens use platform no-follow semantics and are
 revalidated under the process lock. The one-process profile still assumes an
 owner-protected root: a hostile same-account process replacing an ancestor
 directory during an operation remains outside this portable boundary.
+
+Tree traversal visits at most 200,000 entries incrementally while retaining
+only the bounded 16,384-directory work stack and consumer-owned results.
+Snapshot creation keeps its required sorted file paths without a second global
+entry list; health retains only a counter, cleanup only matching temporary
+paths, and symlink validation no entries at all. The depth ceiling remains 128.
+Snapshot verification also counts actual files incrementally and borrows the
+previous manifest path while checking order; it does not build a second path
+inventory or clone one path per entry.
 
 ## Post-1.0 capability preflight
 

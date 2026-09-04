@@ -34,6 +34,12 @@ séparés par domaine, encadrés par leur longueur et avec présence optionnelle
 explicite. Les anciens hashes sans version sont rejetés; émetteurs et
 validateurs doivent être mis à jour ensemble.
 
+`RequestValidationDetailsRef` et `RequestPayloadRef` offrent un chemin additif
+emprunté pour les requêtes en cours. `compute_borrowed_request_hash` conserve
+exactement la sortie V2 tout en comptant et hashant directement le JSON structuré
+en deux passes, sans garder un payload encodé complet. Le contrat owned reste
+disponible pour compatibilité.
+
 AppCore 1.0 ne possède aucun provider TPM ou hardware-backed. L'ADR 0005 décrit
 une proposition additive 1.1 avec fallback explicite et preuves sur matériel
 réel; le Runtime actuel ne revendique aucune protection matérielle.

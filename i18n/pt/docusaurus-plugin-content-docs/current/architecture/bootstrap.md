@@ -11,6 +11,11 @@ Bootstrap começa em `run_application`. O host lê `application.toml` e `deploym
 
 Os paths são canonicalizados, TOML é parseado para contratos versionados e os dois manifests precisam ter o mesmo `application_id`. Entradas removidas, como `runtime.toml` ou configs antigas com `app_id` sem `manifest_version`, falham com `NO MORE SUPPORTED PLEASE UPDATE`.
 
+Cada arquivo de Application ou Deployment Manifest tem teto de 1 MiB. O host
+verifica metadata antes de alocar e lê por `Take(limit + 1)`; arquivo acima do
+teto, crescendo durante a leitura ou com UTF-8 inválido falha fechado antes da
+composição de providers.
+
 ## Fluxo real
 
 ```mermaid

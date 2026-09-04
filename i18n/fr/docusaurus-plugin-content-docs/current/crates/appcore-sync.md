@@ -24,11 +24,26 @@ wire V1; replication logs/snapshots; checkpoints et outbox mémoire/fichier;
 receiver state/ack; follower client; transport HTTP; peer discovery; retry,
 métriques et `SyncError`.
 Les contrats content-envelope opaque sont réexportés pour les paquets sync
-basés sur DNT sans exposer le plaintext au code de routage.
+basés sur DNT sans exposer le plaintext au code de routage. Leur limite publique
+de rétention `MAX_OPAQUE_MESSAGE_ID_BYTES` est de 1 024 octets UTF-8.
 
 `HttpSyncTransport` possède un client HTTP réutilisable et borné. Utilisez
 `with_timeout_ms` pour le délai V1 uniforme ou `with_timeouts` pour des délais
 indépendants de connexion/admission, de lecture et d'écriture.
+
+L'encodage wire V1 emprunte l'identité source, le message et les événements
+pendant l'écriture de la `String` de sortie requise. Il ne conserve pas un batch
+cloné à côté de cette sortie et préserve le JSON V1 owned exact ainsi que la
+validation du node source.
+
+L'API de snapshot de `1.0.2-rc` consomme les paires sequence/payload owned avec
+`ReplicationSnapshot::try_from_records` et déplace chaque payload dans la
+valeur V1 portable. `ReplicationSnapshot::validate` vérifie le contrat complet
+par une référence partagée ; les providers persistants n'ont donc pas besoin de
+cloner la collection de payloads avant le restore. Les consommateurs mémoire qui
+possèdent le snapshot peuvent utiliser
+`InMemoryReplicationLog::restore_snapshot_owned` pour le valider et déplacer
+les payloads directement dans le log sans deux collections résidentes.
 
 À utiliser pour réplication compatible, ordonnée et hash-chaînée. Ne pas
 contourner identité/protocole ni l'interpréter comme RAFT, multi-master ou
@@ -39,6 +54,21 @@ et hashes de checkpoint sont validés à l'écriture et à la lecture. Le receiv
 valide tout le batch, l'arithmétique de sequence et chaque limite de record
 avant toute mutation du log ou checkpoint; un événement final invalide ne
 laisse pas d'append partiel.
+
+Dans `1.0.2-rc`, `FileSyncCheckpointStore` parcourt une ligne V1 bornée à la
+fois avec un reader fixe de 16 Kio. Le démarrage ne conserve aucune map
+décodée ; le lookup valide tout le fichier et ne possède que le hash
+correspondant. Une mutation construit une map canonique triée, mais la transmet
+au remplacement atomique sans seconde string de la taille du fichier. Les
+limites publiques sont 8 Mio, 65 536 records non vides et 256 octets UTF-8 par
+ID de peer.
+
+`FileReplicationLog` parcourt une ligne bornée à la fois et conserve un vecteur
+trié de sequence vers record, avec offsets, tailles et digests. Les payloads
+ne sont décodés que pour la page ou l'événement demandé ; un log de 256 Mio
+n'est jamais matérialisé comme une seconde collection de payloads en mémoire.
+Le journal en mémoire utilise le même index plat trié et une recherche binaire,
+sans le surcoût des buckets de hash pour les journaux locaux bornés.
 
 :::warning Mise à jour de l'outbox dans `1.0.2-rc`
 Dans la version candidate `1.0.2-rc`, `FileSyncOutbox` accepte uniquement le
@@ -52,5 +82,29 @@ L'extension additive de pagination fournit `peek`, des `stats` sans payload,
 exact. Les nouveaux consommateurs utilisent `pending_page`, `outbox_stats` et
 `flush_pending_with_progress` ; le wire peer V1 reste inchangé.
 :::
+
+`InMemorySyncOutbox` mesure analytiquement les octets JSON exacts avec protection
+contre l'overflow, sans allouer un second message encodé. Les providers
+d'intégration peuvent utiliser `encoded_sync_message_bytes` pour le même compte
+et `write_sync_message_json` pour transmettre le JSON identique et compatible
+avec Serde via un scratch buffer fixe de 16 Kio pour les événements. Pour un batch
+valide de 4 Mio sur Apple M1, le p50 est passé de 23,55 ms à 10,92 ms et le RSS
+de pic de 45,73 Mio à 17,52 Mio ; les limites de page et `pending_bytes` restent
+exactes.
+
+`FileSyncOutbox` mesure maintenant le JSON du receipt et le sérialise directement
+avec un writer fixe de 64 Kio. Le fixture maximal de 1 024 IDs échappés contient
+2 086 913 octets et n'est plus retenu dans un `Vec` de production
+supplémentaire ; le scan emprunte les IDs sans déséchappement JSON. Les IDs
+indexés sont aussi partagés avec l'état transactionnel du scan du tail ; refresh
+clone des handles plutôt que chaque identifiant en attente.
+
+La fenêtre fixe des 10 000 IDs traités du receiver partage aussi chaque
+`batch_id` entre la recherche de doublons et l'éviction du plus ancien.
+L'application de 10 000 batches avec des IDs de 128 octets sur Apple M1 a
+mesuré 58,27 ms p50 et réduit le RSS de pic de 17,45 Mio à 15,27 Mio sans
+modifier les résultats. Les frontières du receiver et de l'outbox rejettent les
+IDs vides, les caractères de contrôle et les IDs de plus de 1 024 octets UTF-8
+avant rétention ; la fenêtre est bornée en octets comme en nombre d'éléments.
 
 **Maturité :** profil conservateur stable avec décodage V1 strict.

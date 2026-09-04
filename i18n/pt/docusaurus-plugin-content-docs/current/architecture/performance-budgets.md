@@ -15,8 +15,41 @@ appcore-dev cert bottlenecks
 O comando em perfil release grava
 `builds/certification/bottlenecks.json`. O relatório registra commit exato,
 estado dirty, toolchain, sistema, arquitetura, p50/p95/p99, throughput, tempo
-total e pico de memória residente. O CI Linux e Windows executa o mesmo gate e
-publica o artefato JSON.
+total e pico de memória residente. Ele também conta bytes solicitados ao heap
+Rust, operações de alocação/desalocação, pico vivo e retenção por subsistema. O
+CI Linux e Windows executa o mesmo gate e publica o artefato JSON.
+
+RSS continua obrigatório porque os contadores Rust excluem metadata do
+allocator, bibliotecas nativas, memory mappings, buffers do kernel e memória de
+devices. Saturação dos contadores falha fechada. Cada workload fixo é limitado
+a 64 MiB de delta de heap vivo e 4 MiB de crescimento retido; o processo
+completo mantém os tetos maiores de catástrofe de RSS e heap. A primeira
+calibração release no Apple M1 observou pico vivo de 29.476.637 bytes e 139.611
+bytes de crescimento retido no heap Rust.
+
+Peer RPC relata intervalos de alocação separados para V1, stream V2, codecs V2
+e erros tipados. Base64 JSON com scratch fixo e decode emprestado reduziram os
+bytes solicitados em 8,75% no workload completo, 7,20% no stream V2 e 21,36%
+nos codecs em runs pareados no Apple M1. Pico e heap retido não mudaram;
+operações de alocação subiram 5,44% e o p99 do stream 1,69%, portanto o relatório
+preserva esse tradeoff em vez de confundir churn com memória residente.
+Mover ownership dos chunks identity pelo encoder, frame e assembler reduziu os
+bytes solicitados no stream de 64 MiB de 1.072.617.252 para 938.399.524
+(-12,51%) e as alocações em 7,39%, com +0,22% no p99 e -0,21% no RSS pico do
+processo. Esse checkpoint de ownership falhava acima de 960 MiB cumulativos.
+A atribuição por fase mostrou então 662.732.479 bytes solicitados no encode. Uma
+sonda de incompressibilidade fixa em stack reduziu o total do stream de
+938.404.175 para 342.886.735 (-63,57%) e as alocações em 47,83%. Dois runs da
+sonda completa melhoraram o p99 entre 15,38% e 16,14%, mantendo gzip nas
+fixtures compressíveis. O gate agora é 384 MiB.
+
+SQLite relata intervalos separados de alocação para startup, append, leitura
+pontual, construção das fixtures, enqueue da outbox, backup e integrity check.
+O enqueue de 512 records pequenos tem gates de 2 MiB solicitados no heap Rust e
+250 ms p99. O scratch proporcional do BLOB incremental reduziu bytes solicitados
+no workload completo de 578.081.344 para 8.251.670 (-98,57%) e o delta de heap
+vivo de 1.083.528 para 233.600 bytes (-78,44%); o enqueue solicitou 255.676
+bytes, não reteve crescimento e mediu 141.791 ns p99.
 
 ## Cargas fixas
 

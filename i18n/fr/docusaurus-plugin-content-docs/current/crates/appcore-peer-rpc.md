@@ -26,6 +26,23 @@ pooled et standard one-shot ; HTTP state et host.
 Utilisez `PooledPeerRpcTransport` pour réutiliser des connexions bornées par
 origine. `StdPeerRpcTransport` conserve le comportement V1 one-shot avec
 `Connection: close`.
+Les deux consomment l'allocation owned du body du DTO HTTP. Les bodies V1 non
+compressés et V2 exacts conservent le même `Vec<u8>` dans `HttpRequest`, sans
+clone intégral à la frontière du transport.
+
+Le client V1 déplace un payload outbound owned dans une enveloppe conservée
+pendant les retries bornés. Chaque retry renouvelle toujours les champs
+temporels, le nonce, la liaison du token et l'encodage HTTP. Avec un payload de
+4 Mio sur cinq processus release Apple M1, le p50 est resté à +0,08 %, le RSS
+de pic a baissé de 7,21 %, le delta RSS du workload de 9,02 % et le delta RSS
+retenu de 7,99 %.
+
+À l'entrée, `decode_peer_rpc_envelope_json` applique le plafond encodé et
+désérialise le body V1 non compressé directement depuis les octets HTTP
+empruntés. Le Runtime déplace ensuite l'allocation du payload décodé vers
+`CommandEnvelope`. Un workload de 4 Mio sur cinq processus a réduit le p50 de
+53,06 à 52,35 ms, le RSS de pic de 35,80 à 23,81 Mio et le delta RSS de workload
+de 39,52 %.
 
 À utiliser uniquement si tenant, cluster, source, cible, protocole, expiry,
 nonce et intégrité sont établis. `AllowPeerAuthenticator` est réservé aux tests.
@@ -33,6 +50,12 @@ nonce et intégrité sont établis. `AllowPeerAuthenticator` est réservé aux t
 Le `Debug` des DTO peer request, response, outbound et HTTP expose les tailles
 et omet bytes opaques, credentials, valeurs nonce/idempotence et details
 d'erreur distante.
+
+Le `BoundedReplayStore` local au processus valide chaque nonce avec une limite
+de 128 octets, borne entrées actives et octets retenus estimés et n'autorise
+jamais un plafond par défaut supérieur à 32 Mio. L'opérateur peut choisir un
+plafond plus strict et consulter octets courants, pic, maximum et rejets sans
+exposer les nonces.
 
 **Maturité :** surface peer V1 stable.
 
@@ -44,7 +67,11 @@ explicitement sélectionné un chunk borné à la fois. Les limites par défaut 
 Les octets encodés utilisent une chaîne JSON base64 canonique, jamais un tableau
 d'entiers. Séquence, taille décodée exacte, SHA-256 par chunk et total, deadline,
 annulation et quota après gzip échouent de manière fermée. Un commit échoué
-n'expose jamais le sink partiel comme complet.
+n'expose jamais le sink partiel comme complet. Les chunks identity déplacent la
+même allocation owned de la source à la frame puis à l'assembler, sans cloner
+les octets décodés à chaque frontière. Une sonde fixe sur stack sur tout le
+chunk évite le gzip spéculatif uniquement s'il semble déjà incompressible ;
+les chunks structurés compressibles utilisent toujours gzip.
 
 `PeerRpcStreamRegistry` possède les sessions partielles sous des quotas exacts
 de sessions et d'octets décodés. Les chunks de requête utilisent des fichiers
@@ -60,7 +87,10 @@ propriétaire du processus courant. Les autres plateformes échouent fermées.
 Activez les routes HTTP signées uniquement avec
 `PeerRpcHttpHost::with_v2_stream_registry`; le host par défaut reste V1-only.
 `query_stream_v2` et `command_stream_v2` lient chaque body JSON exact à un
-bearer token et déplacent request/response une frame à la fois. L'admission open
+bearer token et déplacent request/response une frame à la fois. Le JSON
+canonique est sérialisé directement dans SHA-256 pour cette liaison, sans
+conserver un second body encodé complet à côté de la frame. Les dépendants
+réutilisent ce chemin byte-exact via `json_payload_hash`. L'admission open
 vérifie tenant, cluster, cible, trace, deadline, idempotence command et nonce
 replay borné. Les frames ambiguës ne sont pas répétées; l'annulation best effort
 est soutenue par le nettoyage autoritaire de la deadline.
@@ -83,7 +113,7 @@ protocole à 256 octets. Le client rejette les métadonnées connues
 contradictoires. Un code inconnu abandonne message/hint distants et devient un
 unique résultat `unknown`, observable et terminal.
 
-Les réponses V1 figées conservent leur JSON. Le client mappe uniquement les
+Les réponses V1 stables conservent leur JSON. Le client mappe uniquement les
 codes exacts du host vers `PeerRpcError::RemoteRejected`; seuls les rejets
 exacts endpoint/capacité replay entrent dans le retry borné existant. Aucune
 sous-chaîne ou message libre ne contrôle le retry. L'ambiguïté d'un ACK V2

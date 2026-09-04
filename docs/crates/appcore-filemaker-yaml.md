@@ -162,8 +162,11 @@ millionth-channel `cmyk(...)`, and typed colors. `opacity: 240000` means 24%.
 
 `overflow` is `wrap`, `shrink`, `ellipsis`, `clip`, `expand`, or `error`.
 `shrink` stops at `min_font_size`; `max_lines` is bounded; `line_height` is a
-millionth multiplier. Vertical writing is reserved and reported explicitly,
-so use `horizontal` for the implemented V1 path.
+millionth multiplier. `writing_mode` is `horizontal` (the default) or
+`vertical`. Vertical text wraps against the element height, shapes each column
+top to bottom, and advances columns right to left. PDF, SVG, PNG/JPEG, and HTML
+share the resolved columns and shaped runs without exporter-side reflow; PDF
+and raster use the resolved glyph advances directly.
 
 ## 6. Draw semantic vectors
 
@@ -547,9 +550,11 @@ page role accepts `background`, `header`, and `footer` element lists.
 | `layer`, `z_index` | paint order |
 | `collision` | element collision override |
 
-Fields are type-scoped: `text_options` only works on `text`; `table` plus an
-array `binding` is required on `table`; path commands only work on `line`,
-`path`, or `polygon`; tables cannot contain children or slots.
+Fields are type-scoped: `text_options` works on `text`; tables accept only its
+`min_font_size`, `line_height`, and `writing_mode` fields because table planning
+owns cell overflow and line limits. `table` plus an array `binding` is required
+on `table`; path commands only work on `line`, `path`, or `polygon`; tables
+cannot contain children or slots.
 
 ## Recommended workflow
 

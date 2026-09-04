@@ -22,6 +22,21 @@ Replay é tratado em camadas: idempotency key para commands, sequência/checkpoi
 
 DNT autentica contexto e cifra payload. Peer RPC valida tenant, cluster, core, protocolo, expiry, nonce, hash e token bound. Gateway valida conexão e mesh request. Update valida policy, assinatura, checksum e health gate.
 
+Arquivos estruturados de secret usados pelo startup do Auth Server, auth grants
+e inspeção de status têm teto de 64 KiB. Metadata acima do teto falha antes de
+alocar, um byte sentinela detecta crescimento concorrente e o owner de input é
+redacted e zeroizado depois do parse.
+
+## Como advisories apenas do lockfile são tratadas?
+
+Uma advisory não é ignorada apenas porque se espera que uma feature esteja
+desligada. O upstream de `rust_decimal` declara suporte opcional a `rkyv` 0.7,
+então o Cargo registra esse package no metadata do lockfile enquanto o
+FileMaker habilita somente `std` e Serde por string. Antes de aceitar
+`RUSTSEC-2026-0235` como lock-only, o gate de release verifica todas as
+features, targets e edges do workspace e exige que `rkyv` esteja ausente.
+Ativá-lo faz o gate falhar antes da exceção.
+
 ## Status do provider Windows DPAPI
 
 A AC-009 aceitou `windows-dpapi-user-v1` para a linha de desenvolvimento

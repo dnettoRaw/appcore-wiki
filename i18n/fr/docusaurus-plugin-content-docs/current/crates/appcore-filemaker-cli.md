@@ -1,11 +1,11 @@
 ---
-title: appcore-filemaker-cli — 0.1 alpha
+title: appcore-filemaker-cli — 0.1 beta
 ---
 
 # appcore-filemaker-cli
 
-`appcore-filemaker-cli 0.1.0-alpha.1` est l'adaptateur de processus borné de
-`appcore-filemaker`. C'est un aperçu source qui n'est pas publié sur crates.io.
+`appcore-filemaker-cli 0.1.0-beta.1` est l'adaptateur de processus borné de
+`appcore-filemaker`. Il est publié sur crates.io comme prerelease beta.
 
 La commande choisit le format d'export ; le YAML du template ne le choisit
 jamais. `check`, `validate`, `preflight` et les commandes de diagnostic sont en
@@ -14,6 +14,9 @@ les fichiers atomiquement et rejettent une sortie résolue vers le template
 d'entrée. `migrate` est réservé et échoue sans modifier l'entrée ; toute
 mutation future exige flag et contrat explicites. Chaque commande fournit un
 texte humain concis et un JSON stable pour l'automatisation.
+Les deux modes stdout se terminent par une newline et s'arrêtent à 512 Mio. Le
+pretty JSON est dimensionné avant la sortie puis sérialisé directement via un
+buffer fixe de 16 Kio, sans seconde string complète.
 
 `capabilities --json` publie la matrice stable : 0 succès, 2 validation, 64
 usage, 65 données, 66 entrée absente, 69 indisponible, 70 software, 73 création
@@ -29,9 +32,14 @@ mutant. `mask` exporte la géométrie collision/layout/visual/combined en PNG,
 PDF, SVG ou JSON stable occupied/free/collisions/overflow. `inspect` et
 `explain` exposent géométrie source, anchors, région, mesure, collision,
 page/reflow et provenance conservées par la scène résolue.
+`free-regions` interroge les rectangles libres bornés. `--patch` répétable
+applique des patches runtime JSON ordonnés, et `--font-fallback` fixe l'ordre
+exact des polices enregistrées. `render --format csv` exporte une table liée
+sans inventer de layout graphique pour les lignes dataset.
 
-`capabilities --json` sépare les formats implémentés des WebP, XLSX, ZPL,
-ESC/POS, PDF/A, PDF Hybrid, liens, bookmarks et accessibilité tagged préparés.
+`capabilities --json` expose les PDF editable, flattened et hybride. Hybrid
+ajoute un texte Unicode invisible et subsetté sur des contours déterministes.
+WebP, XLSX, ZPL, ESC/POS, PDF/A, liens, bookmarks et accessibilité tagged restent préparés.
 `schema --json` déclare aussi les contrats writer/octets bornés, pertes
 strict/best-effort, DPI raster uniquement, métadonnées PDF déterministes et
 subsets de polices.

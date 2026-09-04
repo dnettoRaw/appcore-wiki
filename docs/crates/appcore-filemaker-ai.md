@@ -1,19 +1,25 @@
 ---
-title: appcore-filemaker-ai — 0.1 alpha
+title: appcore-filemaker-ai — 0.1 beta
 ---
 
 # appcore-filemaker-ai
 
-`appcore-filemaker-ai 0.1.0-alpha.1` is the optional bounded bridge from
-`appcore-ai` tool calls to deterministic FileMaker sessions. It is a source
-preview and has not been published to crates.io.
+`appcore-filemaker-ai 0.1.0-beta.1` is the optional bounded bridge from
+`appcore-ai` tool calls to deterministic FileMaker sessions. It is published
+on crates.io as a beta prerelease.
 
 The bridge declares 20 exact tools with closed execution-matched schemas,
 enforces call, argument, core-capped patch, and result-byte budgets, and applies
 template editable/locked policy across destructive subtrees before atomic
-mutations. Candidate documents validate and resolve before commit; patch
+mutations. Candidate documents validate and graphical models resolve before commit; patch
 sequences equal the next revision. Queries do not change revision. Artifact
 tools return bounded in-memory base64 and never select a filesystem path.
+Result sizing serializes into a non-retaining limited counter, stops on the
+first byte beyond `max_result_bytes`, and never allocates a second complete JSON
+buffer merely to enforce policy.
+`filemaker_export` also selects a bound dataset table and returns bounded CSV;
+dataset sessions never fabricate a graphical page. The tested recommended loop
+executes create, patch, inspect, validate, preview, debug mask, and export.
 
 Capabilities provide remaining calls plus compact purpose/rules and
 editable/locked document context. Replacing a trusted document would also
@@ -35,11 +41,12 @@ collision/layout/visual/combined view, while free-region input declares its
 minimum dimensions; these accepted arguments are no longer hidden behind empty
 tool schemas.
 
-Capability discovery separates implemented exporters from prepared WebP,
-XLSX, ZPL, ESC/POS, PDF/A, Hybrid PDF, links, bookmarks, and tagged
-accessibility. Its export contract names caller-owned writers or bounded bytes,
+Capability discovery exposes editable, flattened, and hybrid PDF. Hybrid paints
+deterministic outlines plus invisible subsetted Unicode text for search,
+selection, and extraction. WebP, XLSX, ZPL, ESC/POS, PDF/A, links, bookmarks,
+and tagged accessibility remain prepared. Its export contract names caller-owned writers or bounded bytes,
 strict/best-effort loss reports, raster-only DPI, deterministic PDF metadata,
-and editable-PDF font subsets, so a model cannot infer unsupported output.
+and PDF font subsets, so a model cannot infer unsupported output.
 
 `filemaker_validate` returns bounded layout issues and explicit truncation.
 `filemaker_preflight` declares its actual format, fidelity, mode, page, DPI,

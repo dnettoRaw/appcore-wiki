@@ -34,6 +34,11 @@ reexportados para roteamento de payload cifrado.
 > observação e deixe o `EnvelopeRouter` controlar o lifecycle vinculado à
 > generation. Não existe alias de compatibilidade nem mapa-espelho.
 
+O diretório privado armazena 32 gerações imutáveis de shards copy-on-write.
+Scans de admissão, heartbeat e HA copiam somente esses 32 handles `Arc` e
+liberam todos os locks dos shards antes de inspecionar as partições
+compartilhadas; nenhuma lista completa de tenants é alocada ou clonada.
+
 O gateway resolve o tenant pelo sufixo de dominio definido pelo deployment ou
 por parametro de query usado em teste local, autentica conexoes quando
 configurado, roteia envelopes Peer RPC e requests HTTP Peer RPC via mesh relay
@@ -95,15 +100,36 @@ quarentena defensiva de falha da thread. Snapshots seguros contem apenas
 lifecycle, enderecos de bind e contadores. Usuarios
 diretos de `spawn_heartbeat_pruner` devem guardar e aguardar o join handle.
 
+A federação HA transfere cada request admitido para seu worker blocking
+limitado e depois move o buffer JSON codificado diretamente para `HttpRequest`.
+O payload Peer RPC interno completo não é clonado nessas fronteiras de owner.
+A credential externa usa `json_payload_hash` para transmitir o JSON canônico
+ao SHA-256; o hashing não retém um segundo body codificado completo.
+
 Hashes de conexão de worker e client usam framing binário canônico V2 e levam
 o marcador `v2:`. Hashes anteriores sem versão não são intercambiáveis;
 emissores de token e consumidores Gateway devem ser atualizados juntos.
+O hashing agora empresta todos os campos de validação. No formato máximo de 64
+capabilities de worker com 128 bytes, ele escreve direto no output hexadecimal
+exigido de 17 KiB sem manter o frame binário anterior de 8,5 KiB nem uma segunda
+string de 17 KiB usada só pelo hash. Cinco amostras release calibradas no Apple
+M1 reduziram o p50 do hash worker em 7,77%, o delta de RSS da workload em 22,73%
+e o delta retido em 19,05%; o p50 do hash client caiu 19,54%.
 
 Cada tenant mantém índices diretos e limitados por Core ID e por
-`(cluster_id, core_id)`. O lookup de roteamento é O(1); register, reconnect,
-disconnect e prune de heartbeat atualizam mapa primário, registry de
+`(cluster_id, core_id)`. O lookup comum com Core único é O(1); Core IDs
+duplicados usam scan limitado pelo teto de workers do tenant. Register,
+reconnect, disconnect e prune de heartbeat atualizam mapa primário, registry de
 capabilities e índices sob o mesmo lock do tenant. Contadores saturados de
 rebuild e inconsistência expõem saúde sem labels ilimitadas.
+
+Na beta atual do Runtime, o índice reverso de capabilities compartilha um único
+owner imutável do nome entre todos os anúncios de workers de um tenant,
+preservando o índice direto de roteamento. `capabilities_for_iter` fornece uma
+visão estável emprestada e `stats` informa somente nomes distintos, workers,
+anúncios e bytes UTF-8 únicos. Remover o último anunciante libera o nome
+compartilhado. Nos limites de 1.024 workers/64 capabilities em Apple M1, o RSS
+pico caiu de 30,20 para 27,70 MiB e o lookup p50 de 55,53 para 50,22 ns.
 
 ## `1.0.2-rc`: registry HA Redis
 
@@ -182,6 +208,21 @@ mediu 17.125 ns p99 para round-robin, 18.542 ns para least-inflight e 38.083 ns
 para affinity entre 64 workers. As invariantes de distribuição round-robin
 exata, health, capacity e affinity stateless passaram. Isto é evidência local
 do repositório, não certificação de produção ou multiplataforma.
+
+A seleção agora empresta identidades de workers. First-available,
+least-inflight e affinity percorrem sem lista de candidatos; round-robin e
+health-weighted mantêm um único buffer compacto emprestado para preservar a
+distribuição ordenada estável. No teto de 1.024 workers, cinco amostras release
+calibradas no Apple M1 reduziram o p50 round-robin de 468,86 para 335,56 us
+(-28,43%) e o p95 de 471,98 para 339,67 us (-28,03%). Somente o resultado owned
+selecionado clona sua chave.
+
+O lookup de candidatos usa agora o índice existente por Core sem construir
+chaves tuple owned de installation/Core. Um scan exato limitado a 1.024 workers
+preserva a identidade quando instalações compartilham um Core ID. Em execuções
+equivalentes da certificação Gateway completa, allocs caíram de 7.439.239 para
+810.640 (-89,10%), bytes solicitados caíram 45,21% e o p99 de seleção melhorou
+entre 15,63% e 20,87%.
 
 ## `1.0.4-rc`: telemetria limitada de roteamento
 

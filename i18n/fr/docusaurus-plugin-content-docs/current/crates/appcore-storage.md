@@ -33,6 +33,13 @@ Les lectures scellées dérivent une limite d'enveloppe complète depuis
 `SealedStoragePolicy` et rejettent les fichiers trop grands avant l'allocation
 du buffer fichier.
 
+Les snapshots complets conservent leur inventaire borné de fichiers, mais leur
+manifest V1 de 16 Mio n'exige plus un buffer encodé complet à ses côtés. Le
+pretty JSON est sérialisé directement par un writer borné de 16 Kio vers un
+temporaire atomique exclusif, puis désérialisé par un reader borné de 16 Kio.
+Une entrée exactement à la limite reste valide et un octet non retenu détecte
+la croissance concurrente.
+
 À utiliser pour le profil local-first documenté. Garder schémas et tables
 domaine hors du Runtime. Les transactions non supportées échouent.
 
@@ -45,6 +52,17 @@ sous le lock du processus. Le profil mono-processus suppose toujours un root
 protégé par son propriétaire: le remplacement hostile d'un répertoire ancêtre
 par un autre processus du même compte pendant l'opération reste hors de cette
 boundary portable.
+
+La traversée visite au maximum 200 000 entrées de manière incrémentale, en ne
+retenant que la pile bornée de 16 384 répertoires et les résultats requis par le
+consommateur. Le snapshot conserve ses paths triés nécessaires sans seconde
+liste globale ; health ne garde qu'un compteur, cleanup seulement les
+temporaires correspondants et la validation des symlinks aucune entrée. La
+profondeur reste plafonnée à 128.
+La vérification du snapshot compte également les fichiers réels de manière
+incrémentale et emprunte le path précédent pendant le contrôle de l'ordre ; elle
+ne construit pas un second inventaire de paths et ne clone pas un path par
+entrée.
 
 ## Preflight de capacités post-1.0
 

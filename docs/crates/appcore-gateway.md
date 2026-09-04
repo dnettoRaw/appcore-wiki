@@ -33,6 +33,11 @@ for encrypted payload routing.
 > `pending_request_count` for observation and let `EnvelopeRouter` own their
 > generation-bound lifecycle. No compatibility alias or mirror map is provided.
 
+The private directory stores 32 immutable copy-on-write shard generations.
+Admission, heartbeat and HA scans clone only those 32 `Arc` handles and release
+all shard locks before inspecting shared tenant partitions; no complete tenant
+list is allocated or cloned.
+
 The gateway resolves a tenant from the deployment-owned domain suffix or an
 explicit local-test query parameter, authenticates connections when configured,
 routes Peer RPC envelopes and mesh-relayed Peer RPC HTTP requests only inside
@@ -94,15 +99,36 @@ defensive thread-failure quarantine. Safe snapshots contain lifecycle state,
 bind addresses and counters only. Direct users of
 `spawn_heartbeat_pruner` must retain and await the returned join handle.
 
+HA federation transfers each admitted request to its bounded blocking worker,
+then moves the encoded JSON buffer directly into `HttpRequest`. The complete
+inner Peer RPC payload is not cloned at either ownership boundary.
+The outer credential uses `json_payload_hash` to stream canonical JSON into
+SHA-256, so hashing retains no second complete encoded body.
+
 Worker and client connection hashes use canonical V2 binary framing and carry
 a `v2:` marker. Earlier unversioned hashes are not interchangeable; token
 issuers and Gateway consumers must be upgraded together.
+Hashing now borrows all validation fields. At the maximum 64 x 128-byte worker
+capability shape, it writes directly into the required 17 KiB hexadecimal
+output without retaining the former 8.5 KiB binary frame or a second 17 KiB
+hash-only string. Five calibrated Apple M1 release samples reduced worker-hash
+p50 by 7.77%, workload RSS delta by 22.73% and retained delta by 19.05%; the
+client-hash p50 fell 19.54%.
 
 Each tenant keeps bounded direct worker indexes by Core ID and by
-`(cluster_id, core_id)`. Routing lookup is O(1); register, reconnect,
+`(cluster_id, core_id)`. The common unique-Core lookup is O(1); duplicate Core
+IDs use a scan bounded by the tenant worker ceiling. Register, reconnect,
 disconnect and heartbeat pruning update the primary map, capability registry
 and indexes under the same tenant lock. Saturating rebuild and inconsistency
 counters expose index health without unbounded labels.
+
+In the current Runtime beta, the reverse capability registry shares one
+immutable name owner across all worker advertisements in a tenant while
+preserving the direct routing index. `capabilities_for_iter` provides a stable
+borrowed view and `stats` reports only distinct names, workers, advertisements
+and unique UTF-8 name bytes. Removing the final advertiser releases the shared
+name. At the 1,024-worker/64-capability limits on Apple M1, peak RSS fell from
+30.20 to 27.70 MiB and p50 lookup from 55.53 to 50.22 ns.
 
 ## `1.0.2-rc`: Redis HA registry
 
@@ -180,6 +206,20 @@ measured 17,125 ns round-robin p99, 18,542 ns least-inflight p99 and 38,083 ns
 affinity p99 across 64 workers. Exact round-robin distribution, health,
 capacity and stateless-affinity invariants passed. This is repository-local
 evidence, not production or cross-platform certification.
+
+Selection now borrows worker identities. First-available, least-inflight and
+affinity scan without a candidate list; round-robin and health-weighted retain
+one compact borrowed buffer to preserve stable ordered distribution. At the
+1,024-worker ceiling, five calibrated Apple M1 release samples reduced
+round-robin p50 from 468.86 to 335.56 us (-28.43%) and p95 from 471.98 to
+339.67 us (-28.03%). Only the selected owned result clones its key.
+
+Candidate lookup now uses the existing Core index without constructing owned
+installation/Core tuple keys. An exact scan bounded by 1,024 workers preserves
+identity when installations share a Core ID. In matched complete Gateway
+certification runs, allocation operations fell from 7,439,239 to 810,640
+(-89.10%), requested bytes fell 45.21%, and selection p99 improved by 15.63% to
+20.87%.
 
 ## `1.0.4-rc`: bounded routing telemetry
 

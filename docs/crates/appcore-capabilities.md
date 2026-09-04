@@ -31,4 +31,24 @@ manifest descriptors before dispatch. Use `CapabilityRegistry` only when a real
 local handler is available. Catalog and resolver share request, write-mode and
 leadership enforcement, so a host does not need to rescan manifests locally.
 
+The default resolver scans borrowed peer and descriptor references, retains
+only the first compatible fallback and clones only the selected provider. Its
+compatibility check uses the descriptor that already matched instead of
+rescanning a copied list of every advertised name. A custom
+`CapabilitySelectionPolicy` continues
+to receive the complete owned candidate slice required by the stable public
+trait.
+
+Call `CapabilityResolver::handle_owned` when the request no longer needs to be
+retained by its caller. Policy and local-handler behavior remain borrowed, but
+the Peer RPC adapter transfers the request ID, capability, payload,
+idempotency key and trace directly into its outbound DTO. Existing borrowed
+callers and custom invokers remain compatible.
+
+Default `handle`, `handle_local` and `handle_owned` execution borrows the
+selected registry provider or discovery record through enforcement and
+dispatch. This avoids cloning a peer's identity, endpoints, capabilities and
+metadata for a transient call. `resolve()` retains its owned result, and custom
+selectors retain their complete owned candidate contract.
+
 **Maturity:** stable routing profile.

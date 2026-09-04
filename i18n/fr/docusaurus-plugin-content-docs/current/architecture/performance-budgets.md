@@ -15,8 +15,44 @@ appcore-dev cert bottlenecks
 La commande en profil release écrit
 `builds/certification/bottlenecks.json`. Le rapport contient le commit exact,
 l'état dirty, la toolchain, le système, l'architecture, p50/p95/p99, le débit,
-le temps total et le pic de mémoire résidente. Le CI Linux et Windows exécute
-le même gate et publie l'artefact JSON.
+le temps total et le pic de mémoire résidente. Il compte aussi les octets
+demandés au heap Rust, les opérations d'allocation/désallocation, le pic vivant
+et la rétention par sous-système. Le CI Linux et Windows exécute le même gate et
+publie l'artefact JSON.
+
+Le RSS reste obligatoire car les compteurs Rust excluent les métadonnées de
+l'allocator, les bibliothèques natives, les memory mappings, les buffers kernel
+et la mémoire des devices. La saturation des compteurs échoue fermée. Chaque
+workload fixe est limité à 64 Mio de delta de heap vivant et 4 Mio de croissance
+retenue ; le processus complet conserve les plafonds de catastrophe RSS et heap
+plus larges. La première calibration release Apple M1 a observé un pic vivant
+de 29 476 637 octets et 139 611 octets de croissance retenue du heap Rust.
+
+Peer RPC rapporte des intervalles d'allocation séparés pour V1, le stream V2,
+les codecs V2 et les erreurs typées. Le base64 JSON avec scratch fixe et le
+décodage emprunté ont réduit les octets demandés de 8,75 % sur le workload
+complet, 7,20 % sur le stream V2 et 21,36 % sur les codecs dans des runs
+appariés Apple M1. Le pic et le heap retenu ne changent pas; les opérations
+d'allocation augmentent de 5,44 % et le p99 stream de 1,69 %, donc le rapport
+conserve ce compromis sans confondre churn et mémoire résidente.
+Le transfert d'ownership des chunks identity entre encoder, frame et assembler
+a réduit les octets demandés par le stream de 64 Mio de 1 072 617 252 à
+938 399 524 (-12,51 %) et les allocations de 7,39 %, avec +0,22 % au p99 et
+-0,21 % au RSS de pic du processus. Le workload fixe échoue maintenant au-delà
+Ce checkpoint d'ownership échouait au-delà de 960 Mio demandés cumulativement.
+L'attribution par phase a ensuite montré 662 732 479 octets demandés pendant
+l'encodage. Une sonde fixe d'incompressibilité sur stack a réduit le total du
+stream de 938 404 175 à 342 886 735 (-63,57 %) et les allocations de 47,83 %.
+Deux runs de la sonde complète ont amélioré le p99 de 15,38 à 16,14 %, tout en
+gardant gzip pour les fixtures compressibles. Le gate est maintenant de 384 Mio.
+
+SQLite rapporte des intervalles d'allocation séparés pour startup, append,
+lecture ponctuelle, construction des fixtures, enqueue outbox, backup et
+integrity check. L'enqueue de 512 petits records est borné à 2 Mio demandés au
+heap Rust et 250 ms p99. Le scratch ajusté du BLOB incrémental a réduit les
+octets demandés par le workload complet de 578 081 344 à 8 251 670 (-98,57 %)
+et le delta de heap vivant de 1 083 528 à 233 600 octets (-78,44 %) ; l'enqueue
+a demandé 255 676 octets, sans croissance retenue, et mesuré 141 791 ns p99.
 
 ## Charges fixes
 

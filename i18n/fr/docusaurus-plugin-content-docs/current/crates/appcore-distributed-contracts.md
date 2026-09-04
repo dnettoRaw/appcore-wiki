@@ -31,6 +31,14 @@ La serialisation wire opaque-content et Peer RPC reste inchangee. Le `Debug`
 expose tailles et metadonnees de routage, sans bytes du payload opaque, valeurs
 nonce/idempotence ou details d'erreur distante.
 
+`OpaqueEnvelopeDeduplicator` conserve une allocation partagée par ID de message
+accepté entre les index d'appartenance et d'ordre FIFO. Le résultat duplicate,
+l'éviction et l'API publique ne changent pas. La rétention de 65 536 IDs
+distincts de 128 octets sur Apple M1 a réduit le p50 de 37,55 ms à 32,83 ms et
+le RSS de pic de 35,86 Mio à 27,25 Mio. La validation transport et la
+déduplication rejettent les IDs vides, les caractères de contrôle et les IDs
+dépassant `MAX_OPAQUE_MESSAGE_ID_BYTES` (1 024 octets UTF-8) avant rétention.
+
 **Maturité :** contrat wire V1 stable à compatibilité stricte.
 
 ## Frames chunked Peer RPC V2
@@ -41,6 +49,10 @@ chunks et deadline; chaque chunk lie séquence, taille décodée exacte et diges
 commit lie le digest du payload décodé complet. Les octets encodés utilisent
 une chaîne JSON base64 canonique, pas un tableau d'entiers. V1 et V2 restent
 dans des modules et routes séparés, sans détection, conversion ni fallback.
+L'encodage lisible émet le base64 avec des buffers scratch fixes de 3 Kio en
+entrée et 4 Kio en sortie; le décodage emprunte la chaîne JSON encodée lorsque
+possible avant d'allouer les octets décodés. Les fixtures exactes ne changent
+pas.
 
 La représentation binaire opt-in encadre les mêmes DTO V2 avec le marqueur fixe
 `APCRPC2B`, la version codec, le type frame/reply et la taille Postcard exacte.
@@ -63,4 +75,4 @@ explicites ; l'alpha reste une prerelease opt-in.
 protocole à la famille V2 explicite. Les métadonnées connues sont validées comme
 une matrice unique. Un code inconnu devient `unknown` terminal sans conserver
 texte ou retry hint distant. `PeerRpcRemoteErrorV1` est un décodeur exact séparé
-du champ string V1 figé; il ne négocie ni ne crée de trafic V2.
+du champ string V1 stable; il ne négocie ni ne crée de trafic V2.

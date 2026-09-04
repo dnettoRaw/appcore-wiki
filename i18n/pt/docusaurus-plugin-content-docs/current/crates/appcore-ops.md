@@ -23,6 +23,32 @@ metric counters, `ObservationEvent`/`ObservationSink`, file sink limitado,
 availability report e reexports de compatibilidade para
 `appcore-supervisor::managed_services`.
 
+O sink de observações local ao processo retém no máximo 65.536 eventos e 16
+MiB; o registro de métricas retém no máximo 4.096 nomes, 128 bytes por nome e 1
+MiB agregado. Ambos expõem pressão de quantidade/bytes e snapshots imutáveis
+compartilhados, preservando as APIs de snapshot owned. Observações grandes
+demais não são retidas, mas continuam chegando aos no máximo 32 drains
+configurados. O logger em memória também retém no máximo 4.096 registros e 8
+MiB e expõe `shared_records`.
+A beta atual do Runtime guarda a configuração de drains como uma geração
+imutável copy-on-write. Cada observação compartilha um ponteiro da geração, em
+vez de clonar até 32 handles de drain, e os callbacks continuam executando após
+liberar o lock de configuração.
+`SharedObservationEvent::new` aplica redaction e limites de campos uma única
+vez. O hub em memória encaminha esse payload imutável por
+`ObservationSink::emit_shared`; os sinks internos de memória, arquivo e
+métricas evitam cópias profundas, enquanto implementações existentes que
+aceitam apenas ownership usam automaticamente o default compatível.
+Nomes de atributos sensíveis são verificados por uma varredura de bytes ASCII
+case-insensitive sem alocação. A política conservadora de substrings permanece
+igual, sem alocar uma `String` em minúsculas para cada atributo.
+
+Na beta atual do Runtime, `FileObservationSink::flush` usa um único deadline de
+30 segundos para admission na fila limitada e acknowledgement durável do
+worker. `flush_timeout` aceita um prazo positivo menor. Fila cheia ou worker
+travado retorna `TimedOut`; um flush já enfileirado pode terminar com segurança
+depois do deadline do caller.
+
 Use para sinais operacionais genéricos. Código novo de lifecycle usa
 `appcore-supervisor` diretamente. Não adicione SDK de vendor nem métricas de
 negócio da aplicação ao crate.

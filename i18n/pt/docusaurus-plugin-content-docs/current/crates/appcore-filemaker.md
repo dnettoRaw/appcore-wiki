@@ -1,13 +1,12 @@
 ---
-title: appcore-filemaker — 0.1 alpha
+title: appcore-filemaker — 0.1 beta
 ---
 
 # appcore-filemaker
 
-`appcore-filemaker 0.1.0-alpha.1` é o compilador determinístico oficial do
-AppCore para documentos declarativos, canvases vetoriais e datasets. Está em
-prévia no código-fonte e não foi publicado no crates.io; publicação é uma
-decisão separada do mantenedor.
+`appcore-filemaker 0.1.0-beta.1` é o compilador determinístico oficial do
+AppCore para documentos declarativos, canvases vetoriais e datasets. A versão
+`0.1.0-beta.1` está publicada no crates.io e permanece fora do Runtime estável.
 
 Se você está começando no formato, siga o
 [guia YAML passo a passo](./appcore-filemaker-yaml.md). Ele parte do cabeçalho
@@ -35,6 +34,9 @@ continuam separados. `MemoryResolver` e `FileResolver` com raiz canônica
 implementam busca limitada de assets, templates e fontes.
 `FontManager::register_from` registra uma fonte lógica exata sob o limite de
 bytes do chamador e nunca varre as fontes do host.
+A ordem explícita de fallback faz parte do fingerprint. SVG e HTML incorporam
+as famílias realmente escolhidas nos glyph runs resolvidos, inclusive células
+de tabela.
 
 A cascata completa é defaults → theme → template → style expandido de
 component/nome/inline → regras condicionais de dados ordenadas → `SetStyle`
@@ -62,8 +64,9 @@ Elementos de texto declaram layout por `text_options`. Overflow aceita `wrap`,
 `shrink`, `ellipsis`, `clip`, `expand` e `error`, com `max_lines` limitado,
 `min_font_size` absoluto e `line_height` fixed-point. Medição e expansão
 ocorrem antes da colisão; clipping é geometria resolvida; SVG e HTML renderizam
-os runs moldados/truncados. Escrita vertical e emoji colorido são perdas
-explícitas do exporter até serem implementados.
+os runs moldados/truncados. `writing_mode: vertical` implementa colunas de cima
+para baixo que avançam da direita para a esquerda em PDF, SVG, PNG/JPEG e HTML.
+Emoji colorido continua uma perda explícita até ser implementado.
 
 Geometria declarativa também atravessa YAML e IR sem alteração. `constraints`
 carrega mínimo, preferido, máximo e aspect ratio largura/altura fixed-point;
@@ -76,6 +79,11 @@ Containers de flow vertical e horizontal aceitam `start`, `center`, `end`,
 `space_between`, `space_around` e `space_evenly`. Distribuição diferente de
 start exige tamanho primário explícito, preferido ou derivado de aspect;
 auto-medição ambígua e overflow falham antes da colisão.
+O planejamento de flow distribuído conta os filhos visíveis em duas passagens
+limitadas, sem alocar uma lista temporária de referências e preservando o mesmo
+espaçamento.
+O fingerprint ordena referências emprestadas aos nomes de assets, evitando
+strings clonadas durante a resolução determinística.
 
 `exclusions` nomeadas no nível superior definem retângulos relativos à página
 que não são pintados e devem ficar dentro do trim box. Elas repetem dentro do
@@ -95,6 +103,8 @@ só é resolvido quando o total final é conhecido. Componentes, estilos, bindin
 patches, inspeção e todos os exporters da cena respeitam o mesmo contrato.
 Elementos resolvidos mantêm um flag `collidable` para que overlays não criem
 colisões falsas, consumam regiões livres ou alterem a paginação.
+As camadas de página percorrem os elementos ativos de forma lazy por página
+física, sem alocar uma lista temporária de referências.
 
 Streams `Dataset` reiniciáveis param na amostra limitada da coluna auto sem
 varrer o restante. Tabelas resolvem larguras fixed, auto por amostra e flex
@@ -116,14 +126,14 @@ headers repetidos, retângulos de linha/célula, estilos de dados, continuidade 
 grupo, totais e texto moldado são fixados antes do export. Continuações usam os
 limites globais normais de páginas e colisão; exporters não medem nem repaginam.
 
-PDF editável/flattened, SVG, PNG/JPEG e HTML semântico/fixo agora renderizam
+PDF editável/flattened/híbrido, SVG, PNG/JPEG e HTML semântico/fixo agora renderizam
 esses fragments resolvidos diretamente. O uso de fontes no PDF inclui cada run
 de célula, SVG e HTML incluem as fontes dos estilos de dados, e o raster contorna
 os mesmos glyphs moldados. O preflight valida estrutura da tabela, limites das
 células, diagnósticos de texto e requisitos de fontes incorporadas antes do
 export.
 
-Os outputs implementados são PDF editável/flattened, SVG, PNG, JPEG,
+Os outputs implementados são PDF editável/flattened/híbrido, SVG, PNG, JPEG,
 HTML semântico/fixo, CSV streaming e máscaras PNG/PDF/SVG/JSON. Modos e nodes
 preparados falham explicitamente ou entram em `ExportLossReport`.
 
@@ -134,21 +144,27 @@ se aplica somente a PNG/JPEG e qualidade somente a JPEG. PNG preserva
 transparência, enquanto JPEG registra flattening de alpha de style ou imagem
 antes do output strict. HTML fixo não anuncia capability semântica. PDF emite
 metadados determinísticos de título, creator e producer; PDF editável embute
-subsets exatos de glyphs e mapas Unicode. PDF Hybrid, links, bookmarks,
-acessibilidade tagged, PDF/A, WebP, XLSX, ZPL e ESC/POS permanecem contratos
-preparados explícitos.
+subsets exatos de glyphs e mapas Unicode. PDF Hybrid pinta outlines
+determinísticos e acrescenta texto Unicode invisível e subsetado nas coordenadas resolvidas dos
+glyphs para busca, seleção e extração. Links, bookmarks, acessibilidade tagged,
+PDF/A, WebP, XLSX, ZPL e ESC/POS permanecem contratos preparados explícitos.
 
 A validação tem etapas explícitas de schema, dados tipados, layout resolvido e
 preflight consciente do exporter. Warnings limitados são first-class; strict os
 rejeita e truncamento do report falha fechado. Preflight detecta gaps de
 binding, asset, glyph, colisão, overflow, DPI efetivo, vector/CMYK/alpha JPEG,
-font editável e acessibilidade solicitada.
+font incorporada para PDF editável/híbrido e acessibilidade solicitada.
 
 Fingerprints determinísticos enquadram versões de schema e engine,
 template/dados/patches canônicos, digests dos assets referenciados e das fonts
-registradas. `LayoutEngine::resolve_cached` resolve somente em miss do
+registradas. Campos JSON canônicos usam uma passagem de dimensionamento seguida
+de hashing SHA-256 direto sob o budget agregado `max_output_bytes`, preservando
+o framing V1 sem reter um buffer JSON completo.
+`LayoutEngine::resolve_cached` resolve somente em miss do
 `SceneCache` limitado, retorna cenas imutáveis compartilhadas para render-many
 e rejeita versões antigas do engine.
+O batch ordenado completo de patches tem limite global; remove/replace rejeitam
+um subtree alvo que contenha qualquer descendente locked.
 
 Trabalho sobre input hostil tem limites explícitos. O binding compartilha um
 único orçamento de elementos entre raízes, descendentes e expansão de repeats,
@@ -175,6 +191,21 @@ derivam retângulos ocupados e livres por view e exportam PNG, PDF, SVG ou JSON
 estável occupied/free/collisions/overflow. `inspect` e `explain` preservam trace
 estruturado de x/y/width/height de origem, anchors, region, medição, policy de
 colisão, página/reflow e provenance.
+JSON, SVG e PDF da mask primeiro contam sob `max_output_bytes` sem reter o
+output, rejeitam resultado excessivo antes de tocar no destino e então
+serializam direto no writer do chamador. PDF emite objetos independentes, um
+stream de comandos fixed-point de tamanho exato e seu xref sem buffer de página
+ou arquivo completo. `collision_mask_json_4m` mede um output exato de 4.188.826
+bytes; `collision_mask_pdf_100k` mede 100.000 retângulos e um PDF exato de
+1.800.626 bytes com checkpoints RSS idle, pico e retido.
+
+O macrobenchmark `a4_report_export_matrix` mede o pipeline A4 mantido de duas
+páginas como uma operação limitada: decoding de YAML e dados tipados, patch em
+runtime, medição/layout/colisão/reflow, preflight e nove outputs em streaming.
+Ele cobre PDF editável, flattened e híbrido; SVG; HTML semântico e fixo; PNG;
+JPEG com losses best-effort explícitos; e CSV do dataset. Três amostras isoladas
+do commit limpo no Apple M1 mediram 70,56 ms p50, 71,34 ms p95, MAD de 0,22 ms
+e 10,64 MiB de RSS pico.
 
 O core determinístico não depende de IA. `appcore-filemaker-ai` é um bridge
 opcional de 20 tools sobre `appcore-ai`; `appcore-filemaker-cli` é o adaptador
@@ -208,6 +239,3 @@ incluída, sem depender de fontes do host. O código Rust não embute YAML nem J
 Documentação mantida pelo crate: [guia](https://github.com/dnettoRaw/AppCore-Runtime/blob/beta/crates/appcore-filemaker/wiki/guide.pt.md),
 [exemplo básico](https://github.com/dnettoRaw/AppCore-Runtime/blob/beta/crates/appcore-filemaker/wiki/examples/basic.pt.md) e
 [exemplo intermediário](https://github.com/dnettoRaw/AppCore-Runtime/blob/beta/crates/appcore-filemaker/wiki/examples/intermediate.pt.md).
-O [plano de implementação M0-M12](https://github.com/dnettoRaw/AppCore-Runtime/blob/beta/crates/appcore-filemaker/wiki/implementation-milestones.pt.md)
-registra API, módulos, aceitação, testes, benchmark/fuzz e riscos de cada
-incremento; ele não autoriza publicação nem tags.

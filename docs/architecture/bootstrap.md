@@ -13,6 +13,11 @@ The code path is intentionally narrow: `run_application` reads the standard mani
 
 The runtime resolves both manifest paths with canonical filesystem paths and parses TOML into versioned manifest contracts. It then checks that both manifests refer to the same application ID.
 
+Each Application or Deployment Manifest file is limited to 1 MiB. The host
+checks metadata before allocation and reads through `Take(limit + 1)`, so an
+oversized or concurrently growing file and invalid UTF-8 fail closed before
+provider composition starts.
+
 Removed configuration shapes fail before the runtime attempts compatibility conversion:
 
 - a file named `runtime.toml`;

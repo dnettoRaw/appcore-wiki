@@ -37,6 +37,13 @@ the limit and pressure. Shutdown drains accepted callbacks with cooperative
 cancellation; callbacks must check `TaskContext::is_cancelled()` because Rust
 threads are not forcibly timed out.
 
+Each due-task scan retains a bounded top-k no larger than the currently
+available dispatch slots. Its max-heap preserves descending priority, earlier
+deadline and registration order while cloning only selected task IDs. The
+absolute configuration limits therefore retain at most 128 candidate records
+when all 65,536 registered tasks are due, rather than materializing the full
+set.
+
 ## `1.0.2-rc`: opt-in recovery
 
 The `1.0.2-rc` candidate implements the `SchedulerStateProvider` V1
@@ -51,6 +58,11 @@ before dispatch and renewed while work runs. Callbacks receive
 `TaskContext::fencing_epoch()` and must use it at the protected effect boundary
 when owners can compete. Recovery remains at-least-once until the cycle receipt
 commits; callbacks and business workflow data are never serialized.
+
+Current source validates loaded task, definition, owner and claim fields by
+borrowing them and compares ordering with the last converted record. A maximum
+1,024-record unclaimed snapshot avoids 3,072 temporary string allocations
+without changing the V1 format or checks.
 
 This API is source status only. Do not infer that it is available from the
 stable `1.0.0` package shown above.

@@ -34,6 +34,12 @@ length-framed fields with explicit optional-field presence. Earlier
 unversioned hashes are rejected, so issuers and validators must upgrade
 together.
 
+`RequestValidationDetailsRef` and `RequestPayloadRef` provide an additive
+borrowed path for in-flight requests. `compute_borrowed_request_hash` preserves
+the exact V2 output while counting and hashing structured JSON directly in two
+passes, without retaining a complete encoded payload. The owned contract stays
+available for compatibility.
+
 AppCore 1.0 has no TPM or hardware-backed provider. ADR 0005 records an additive
 1.1 proposal with explicit fallback and physical-hardware evidence; the current
 Runtime makes no hardware-security claim.

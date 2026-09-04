@@ -31,4 +31,25 @@ autoriser les descripteurs du manifeste avant le dispatch. Utilisez
 `CapabilityRegistry` uniquement avec un vrai handler local. Catalogue et
 resolver partagent l'enforcement de request, mode d'écriture et leadership.
 
+Le resolver par défaut parcourt des références empruntées de peer et de
+descriptor, ne conserve que le premier fallback compatible et clone uniquement
+le provider retenu. La compatibilité utilise le descriptor déjà trouvé au lieu
+de parcourir une copie de tous les noms annoncés. Une
+`CapabilitySelectionPolicy`
+personnalisée continue de recevoir le slice owned complet exigé par le trait
+public stable.
+
+Utilisez `CapabilityResolver::handle_owned` lorsque le caller ne doit plus
+conserver la request. La policy et les handlers locaux restent borrowed, mais
+l'adapter Peer RPC transfère l'ID, la capability, le payload, la clé
+d'idempotence et la trace directement dans son DTO sortant. Les callers et
+invokers personnalisés qui utilisent le contrat emprunté restent compatibles.
+
+L'exécution par défaut de `handle`, `handle_local` et `handle_owned` emprunte
+le provider du registry ou le record de discovery sélectionné pendant
+l'enforcement et le dispatch. Cela évite de cloner l'identité, les endpoints,
+les capabilities et la metadata d'un peer pour un appel transitoire.
+`resolve()` conserve son résultat owned, et les selectors personnalisés
+conservent le contrat complet des candidats owned.
+
 **Maturité :** profil de routage stable.

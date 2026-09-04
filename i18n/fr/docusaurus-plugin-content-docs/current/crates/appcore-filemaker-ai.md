@@ -1,20 +1,26 @@
 ---
-title: appcore-filemaker-ai — 0.1 alpha
+title: appcore-filemaker-ai — 0.1 beta
 ---
 
 # appcore-filemaker-ai
 
-`appcore-filemaker-ai 0.1.0-alpha.1` est le bridge facultatif et borné entre les
-outils `appcore-ai` et les sessions FileMaker déterministes. C'est un aperçu
-source qui n'est pas publié sur crates.io.
+`appcore-filemaker-ai 0.1.0-beta.1` est le bridge facultatif et borné entre les
+outils `appcore-ai` et les sessions FileMaker déterministes. Il est publié sur
+crates.io comme prerelease beta.
 
 Le bridge déclare 20 outils exacts avec schémas fermés identiques à l'exécution,
 borne appels, arguments, patches également plafonnés par le core et octets de
 résultat, puis applique la policy editable/locked du template aux subtrees
 destructifs avant toute mutation atomique. Les documents candidats sont validés
-et résolus avant commit ; la séquence de patch est la prochaine revision. Les
+et les modèles graphiques résolus avant commit ; la séquence de patch est la prochaine revision. Les
 requêtes ne changent pas la revision. Les outils d'artifact renvoient du base64
 borné en mémoire sans choisir de path filesystem.
+Le dimensionnement du résultat sérialise vers un compteur borné qui ne conserve
+aucun octet, s'arrête au premier octet au-delà de `max_result_bytes` et n'alloue
+pas un second JSON complet uniquement pour appliquer la policy.
+`filemaker_export` choisit aussi une table dataset liée et renvoie un CSV borné ;
+une session dataset ne fabrique jamais de page graphique. La boucle recommandée
+testée exécute create, patch, inspect, validate, preview, debug mask et export.
 
 Les capabilities fournissent les appels restants et un contexte compact des
 purpose/rules et IDs editable/locked. Remplacer un document de confiance
@@ -36,11 +42,12 @@ page et vue collision/layout/visual/combined, tandis que les régions libres
 déclarent leurs dimensions minimales ; ces arguments acceptés ne sont plus
 cachés par des schémas vides.
 
-La découverte des capabilities sépare les exporters implémentés des WebP,
-XLSX, ZPL, ESC/POS, PDF/A, PDF Hybrid, liens, bookmarks et accessibilité tagged
-préparés. Son contrat d'export nomme les writers de l'appelant ou les octets
+La découverte des capabilities expose les PDF editable, flattened et hybride.
+Hybrid peint des contours déterministes et un texte Unicode invisible et
+subsetté pour la recherche, la sélection et l'extraction. WebP, XLSX, ZPL,
+ESC/POS, PDF/A, liens, bookmarks et accessibilité tagged restent préparés. Son contrat d'export nomme les writers de l'appelant ou les octets
 bornés, les rapports de perte strict/best-effort, le DPI raster uniquement, les
-métadonnées PDF déterministes et les subsets de polices du PDF éditable, afin
+métadonnées PDF déterministes et les subsets de polices PDF, afin
 que le modèle ne déduise pas une sortie indisponible.
 
 `filemaker_validate` renvoie les issues layout bornées et la troncature

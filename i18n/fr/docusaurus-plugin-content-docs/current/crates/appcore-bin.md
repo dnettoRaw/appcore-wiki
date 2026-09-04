@@ -24,6 +24,27 @@ volumes/environment résolus et `ApplicationTaskRegistry`.
 **API host :** bootstrap/config errors/results, CLI, paths/lifecycle local,
 server entry points, build info et outils auth-server optionnels.
 
+Les références secret `file:` du deployment appliquent un plafond de 64 Kio
+plus un octet sentinelle contre la croissance concurrente. Les octets rejetés
+sont effacés et les espaces acceptés sont supprimés dans la même allocation
+avant son transfert au owner expurgé et zeroizing.
+
+Le marker `auth-required` utilise un buffer fixe de 1 025 octets sur la stack.
+Il accepte au plus 1 Kio et échoue fermé en cas de croissance, UTF-8 invalide,
+fichier non régulier ou symlink, sans allouer le marker complet sur le heap.
+
+`appcore-bin export --out CHEMIN` mesure le pretty JSON de diagnostic sous un
+plafond de 64 Mio avant de créer la sortie. Il sérialise ensuite avec un buffer
+fixe de 64 Kio et le snapshot d'audit immuable partagé, sans `Vec` du résultat
+complet ni clonage profond de la liste. Un échec de sérialisation ou d'écriture
+supprime le nouveau fichier incomplet et un chemin existant n'est jamais écrasé.
+
+Les diagnostics exposent la pression `audit_memory`, `event_bus`,
+`observation_memory` et `metric_memory` avec octets courants, de pic et maximum,
+ainsi que les évictions ou rejets d'admission. L'export des observations et
+métriques part de snapshots immuables partagés, pas de clonages profonds des
+historiques. Ces compteurs ne contiennent ni message d'audit ni payload opaque.
+
 Les deux binaires traitent une entrée UTF-8 bornée avec `appcore-args`. L'aide,
 la validation et la complétion dynamique Bash, Zsh, Fish et PowerShell
 partagent une spécification déclarative; l'exécution reste dans ce crate.
@@ -31,7 +52,9 @@ partagent une spécification déclarative; l'exécution reste dans ce crate.
 Le manifeste distribué final alimente un catalogue unique
 `appcore-capabilities` pendant le bootstrap. La façade directe, le HTTP
 applicatif et le peer RPC utilisent le même owner pour l'enforcement de
-déclaration, mode, idempotence, écriture opérationnelle et leadership. Les
+déclaration, mode, idempotence, écriture opérationnelle et leadership. Le
+dispatch de commande peer déplace l'allocation du payload V1 validé dans
+`CommandEnvelope`, sans clone du body applicatif complet. Les
 queries de statut Runtime restent un comportement explicite du host.
 
 Sur la ligne de maintenance 1.0 actuelle, les handlers de la façade directe,

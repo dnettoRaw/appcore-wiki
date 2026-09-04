@@ -15,8 +15,41 @@ appcore-dev cert bottlenecks
 The release-profile command writes
 `builds/certification/bottlenecks.json`. The report records the exact source
 commit, dirty state, toolchain, OS, architecture, p50/p95/p99, throughput, wall
-time and peak resident memory. Linux and Windows CI execute the same gate and
-publish the JSON artifact.
+time and peak resident memory. It also counts requested Rust heap bytes,
+allocation/deallocation operations, live peak and retained growth for every
+subsystem. Linux and Windows CI execute the same gate and publish the JSON
+artifact.
+
+RSS remains mandatory because the Rust counters exclude allocator metadata,
+native libraries, memory mappings, kernel buffers and device memory. Counter
+saturation fails closed. Each fixed workload is limited to a 64 MiB live-heap
+delta and 4 MiB retained growth; the complete process retains the wider RSS and
+heap catastrophe ceilings. The first Apple M1 release calibration observed a
+29,476,637-byte live peak and 139,611 bytes of retained Rust heap growth.
+
+Peer RPC reports non-overlapping allocation intervals for V1, V2 streaming, V2
+codecs and typed errors. Fixed-scratch JSON base64 and borrowed decode reduced
+requested bytes by 8.75% for the complete workload, 7.20% for V2 streaming and
+21.36% for codecs in matched Apple M1 runs. Peak and retained heap did not
+change; allocation operations rose 5.44% and stream p99 rose 1.69%, so the
+report preserves the tradeoff rather than treating churn as resident memory.
+Moving identity-chunk ownership through encoder, frame and assembler then cut
+64 MiB stream requested bytes from 1,072,617,252 to 938,399,524 (-12.51%) and
+allocation operations by 7.39%, with +0.22% p99 and -0.21% process peak RSS.
+That ownership checkpoint failed above 960 MiB cumulative requested bytes.
+Phase attribution then showed 662,732,479 requested bytes in encoding. A fixed
+stack-only incompressibility probe reduced total stream requests from
+938,404,175 to 342,886,735 (-63.57%) and allocations by 47.83%. Two full-probe
+runs improved p99 by 15.38–16.14%, while compressible fixtures retained gzip.
+The gate is now 384 MiB.
+
+SQLite reports separate startup, append, point-read, fixture-construction,
+outbox-enqueue, backup and integrity-check allocation intervals. The 512-entry
+small-record enqueue is gated at 2 MiB requested Rust heap and 250 ms p99.
+Right-sized incremental BLOB scratch reduced complete-workload requested bytes
+from 578,081,344 to 8,251,670 (-98.57%) and peak live-heap delta from 1,083,528
+to 233,600 bytes (-78.44%); enqueue itself requested 255,676 bytes, retained no
+growth and measured 141,791 ns p99.
 
 ## Fixed workloads
 

@@ -31,7 +31,7 @@ octets de RSS maximal, produit un binaire de 10 242 592 octets et occupé
 Le coût de compilation est réel, mais séparer seulement les traits de façade ne
 retire pas le graphe du host de l'exécutable : `run_application` doit toujours
 atteindre la composition root concrète. La séparation ajouterait donc un crate
-ou modifierait le chemin public gelé sans bénéfice démontré sur l'artefact.
+ou modifierait le chemin public stable sans bénéfice démontré sur l'artefact.
 
 ## Réévaluation
 

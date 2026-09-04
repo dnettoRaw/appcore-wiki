@@ -23,6 +23,34 @@ metric counters, `ObservationEvent`/`ObservationSink`, file sink borné,
 availability report et reexports de compatibilité pour
 `appcore-supervisor::managed_services`.
 
+Le sink d'observations local au processus retient au plus 65 536 événements et
+16 Mio ; le registre de métriques retient au plus 4 096 noms, 128 octets par
+nom et 1 Mio agrégé. Tous deux exposent pression de comptage/octets et snapshots
+immuables partagés tout en conservant les API de snapshot owned. Une observation
+trop grande n'est pas retenue mais atteint toujours les 32 drains configurés au
+maximum. Le logger mémoire retient aussi au plus 4 096 enregistrements et 8 Mio
+et expose `shared_records`.
+La beta actuelle du Runtime stocke la configuration des drains dans une
+génération immuable copy-on-write. Chaque observation partage un pointeur de
+génération au lieu de cloner jusqu'à 32 handles de drain, et les callbacks
+s'exécutent toujours après la libération du lock de configuration.
+`SharedObservationEvent::new` applique l'expurgation et les limites de champs
+une seule fois. Le hub mémoire transmet ce payload immuable via
+`ObservationSink::emit_shared` ; les sinks internes mémoire, fichier et
+métriques évitent les copies profondes, tandis que les implémentations
+existantes owned utilisent automatiquement le comportement compatible par
+défaut.
+Les noms d'attributs sensibles sont examinés par un parcours des octets ASCII
+insensible à la casse et sans allocation. La politique conservatrice sur les
+sous-chaînes reste inchangée, sans allouer une `String` en minuscules pour
+chaque attribut.
+
+Dans la beta Runtime actuelle, `FileObservationSink::flush` utilise un seul
+deadline de 30 secondes pour l'admission dans la file bornée et
+l'acknowledgement durable du worker. `flush_timeout` accepte un délai positif
+plus court. Une file pleine ou un worker bloqué renvoie `TimedOut` ; un flush
+déjà en file peut finir sans risque après le deadline du caller.
+
 À utiliser pour signaux génériques. Le nouveau code lifecycle utilise
 `appcore-supervisor` directement. Ne pas ajouter de SDK vendor ni métriques
 métier applicatives au crate.

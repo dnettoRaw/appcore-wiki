@@ -31,6 +31,14 @@ A serializacao wire de opaque-content e Peer RPC nao muda. O `Debug` mostra
 tamanhos e metadata de roteamento, sem bytes de payload opaco, valores de
 nonce/idempotencia ou detalhes de erro remoto.
 
+`OpaqueEnvelopeDeduplicator` mantém uma alocação compartilhada por ID de
+mensagem aceito entre os índices de membership e ordem FIFO. Resultado de
+duplicata, eviction e API pública não mudam. Reter 65.536 IDs distintos de 128
+bytes no Apple M1 reduziu p50 de 37,55 ms para 32,83 ms e RSS pico de 35,86 MiB
+para 27,25 MiB. Validação de transporte e deduplicação rejeitam IDs vazios,
+caracteres de controle e IDs acima de `MAX_OPAQUE_MESSAGE_ID_BYTES` (1.024
+bytes UTF-8) antes da retenção.
+
 **Maturidade:** contrato wire V1 estável e compatibilidade estrita.
 
 ## Frames chunked do Peer RPC V2
@@ -41,7 +49,10 @@ tamanho/quantidade de chunks e deadline; cada chunk vincula sequência, tamanho
 decodificado exato e digest; commit vincula o digest do payload decodificado
 completo. Bytes codificados usam uma string JSON base64 canônica, não array de
 inteiros. V1 e V2 permanecem em módulos e rotas separados, sem detecção,
-conversão ou fallback.
+conversão ou fallback. O encode legível emite base64 com buffers scratch fixos
+de 3 KiB de entrada e 4 KiB de saída; o decode empresta a string JSON codificada
+quando possível antes de alocar os bytes decodificados. Fixtures exatas não
+mudam.
 
 A representação binária opt-in envolve os mesmos DTOs V2 com marcador fixo
 `APCRPC2B`, versão do codec, tipo frame/reply e tamanho Postcard exato. Bytes de
@@ -63,4 +74,4 @@ alpha permanece uma prerelease opt-in.
 protocolo à família V2 explícita. Metadata conhecida é validada como uma única
 matriz. Code desconhecido vira `unknown` terminal sem reter texto ou retry hint
 remoto. `PeerRpcRemoteErrorV1` é um decoder exato separado para o campo string
-V1 congelado; ele não negocia nem cria tráfego V2.
+V1 estável; ele não negocia nem cria tráfego V2.

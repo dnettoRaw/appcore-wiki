@@ -8,7 +8,7 @@ sidebar_position: 23
 :::caution Beta publique
 `appcore-ai 0.1.0-beta.3` est publié sur crates.io. L'API peut changer pendant
 la beta et docs.rs peut prendre du temps pour terminer le build d'une nouvelle
-release. Elle n'ajoute aucun champ aux manifests V1 gelés.
+release. Elle n'ajoute aucun champ aux manifests V1 stables.
 :::
 
 `appcore-ai` est le core d'exécution IA borné et indépendant du backend. Il
@@ -31,6 +31,23 @@ de la validation métier et de toute décision d'appliquer un résultat génér�
 | Distribué | contrats Swarm expérimentaux, aucun adapter Peer RPC production revendiqué |
 
 La compilation par défaut n'inclut ni framework ML ni adapter HTTP.
+La normalisation lightweight des espaces Unicode écrit directement dans sa
+`String` de sortie bornée, sans retenir une liste intermédiaire de mots.
+
+L'activation du cache local reste aussi bornée en mémoire lorsque l'artefact
+existe déjà. Les stores idempotents et les courses entre writers ouvrent le
+fichier régulier sans suivre les liens, vérifient sa taille exacte, le comparent
+et calculent SHA-256 incrémentalement avec un buffer fixe de 16 Kio. L'artefact
+complet owned par le caller n'est pas dupliqué.
+
+Le classificateur Candle optionnel déplace labels, poids et biais décodés dans
+l'état chargé sans cloner les buffers complets. `CandleBackend` réserve
+atomiquement un slot et les octets déclarés avant l'accès au store.
+`new_with_loaded_byte_limit` choisit un plafond agrégé inférieur et
+`memory_pressure()` expose usage courant/de pic et loads rejetés. Une inférence
+active conserve sa réservation après `unload` jusqu'à la libération de son
+lease des tensors. Candle n'a pas de KV cache génératif ; le moteur génératif
+externe choisi doit borner son propre cache.
 
 ## Backends et modèles acceptés
 
@@ -97,6 +114,11 @@ transport intégré refuse les credentials.
   déclarent et l'implémentent. Après un événement, un échec transitoire est
   retourné sans mélanger la sortie d'une route fallback.
 
+Le décodeur borné analyse les frames SSE complets et coalescés directement
+depuis les chunks empruntés au transport. Il ne retient qu'une queue incomplète
+entre les appels et compacte le buffer en attente une fois par chunk, sans
+`Vec` temporaire ni déplacement répété du body pour chaque frame.
+
 Le travail est suivi publiquement dans
 [l'issue #1](https://github.com/dnettoRaw/app-core-public/issues/1).
 
@@ -113,6 +135,14 @@ registry relie identité du modèle, provenance d'artefact, support backend,
 modalité, qualité, confidentialité et exigences de ressources. Les backends
 décident comment exécuter la request, mais le runtime possède encore admission,
 annulation, health, observabilité et policy.
+
+`ModelRegistryLimits` rend la rétention de metadata explicite : modèles,
+localisations par modèle, total des localisations et octets comptabilisés ont
+des plafonds configurables sous des maxima de sécurité fixes. Les itérateurs
+initiaux et ajouts ultérieurs excessifs échouent avant rétention ou
+copy-on-write, tandis que les doublons restent idempotents.
+`ModelRegistry::pressure` expose comptes/octets courants et de pic ainsi que
+les rejets sans labels de haute cardinalité.
 
 L'exécution peut être locale, distante ou déléguée à un swarm expérimental :
 
@@ -261,6 +291,21 @@ Candle/training et 1–1 000 candidats Swarm. Sur l'Apple M1 documenté, resolve
 chaud à 32 routes passe de 96,417 us à 21,958 us p50 et batch Candle 32 de
 68,959 us à 31,041 us. Le rapport conserve aussi les régressions petit batch et le
 coût volontaire de la protection no-follow.
+
+Un workload séparé de 65 536 localisations peer retenait auparavant toutes les
+entrées et atteignait 7,83 Mio de RSS pic/retenu. Avec l'admission bornée, il
+retient le maximum par défaut de 128 par modèle, rejette explicitement le reste
+et a mesuré 1,91 Mio de RSS pic (-75,61 %) et 1,89 Mio retenu (-75,86 %) sur
+cinq processus Apple M1.
+
+Pour un classificateur Candle représentatif de 4 Mio, déplacer les buffers
+décodés et réserver la mémoire avant lecture a réduit la médiane de cinq
+processus de 1,701 à 1,368 ms (-19,56 %) et le RSS pic médian de 20,16 à
+16,11 Mio (-20,08 %).
+
+Pour une entrée lightweight de 1 Mio avec 524 288 mots d'un octet, supprimer le
+`Vec<&str>` intermédiaire a réduit la médiane de cinq processus de 4,823 à
+3,337 ms (-30,80 %) et le RSS pic médian de 12,98 à 3,88 Mio (-70,16 %).
 
 Le verdict local est **READY FOR BETA** dans le périmètre documenté. Exécution
 physique Windows/Linux, soak réel sur accélérateurs et adapter Swarm Peer RPC

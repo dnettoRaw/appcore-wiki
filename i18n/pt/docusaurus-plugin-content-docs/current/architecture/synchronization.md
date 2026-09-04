@@ -80,7 +80,7 @@ falha fechado. Ela nunca expõe SQL arbitrário nem tabelas de aplicação.
 
 O provider suporta processos locais independentes em filesystem com locking
 confiável. Shares de rede, SQLite multi-host e seleção automática pelo manifest
-V1 congelado estão fora do contrato. Schemas internos desconhecidos ou futuros
+V1 estável estão fora do contrato. Schemas internos desconhecidos ou futuros
 retornam `NO MORE SUPPORTED PLEASE UPDATE`; formatos file-provider não são
 importados por inferência. Veja a
 [prévia `appcore-sync-sqlite`](../crates/appcore-sync-sqlite).

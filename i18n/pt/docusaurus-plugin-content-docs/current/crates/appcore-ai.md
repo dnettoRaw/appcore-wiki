@@ -8,7 +8,7 @@ sidebar_position: 23
 :::caution Beta pública
 `appcore-ai 0.1.0-beta.3` está publicado no crates.io. A API pode mudar durante
 a beta, e o docs.rs pode levar algum tempo para concluir o build de uma nova
-release. Ela não adiciona campos aos manifests V1 congelados.
+release. Ela não adiciona campos aos manifests V1 estáveis.
 :::
 
 `appcore-ai` é o core de execução de IA limitado e independente de backend. Ele
@@ -31,6 +31,23 @@ domínio e decisão de aplicar qualquer resultado gerado.
 | Distribuído | contratos Swarm experimentais; sem claim de adapter Peer RPC de produção |
 
 O build default não inclui framework de ML nem adapter HTTP.
+A normalização lightweight de whitespace Unicode escreve direto em sua
+`String` de saída limitada, sem reter uma lista intermediária de palavras.
+
+A ativação do cache local também é limitada em memória quando o artefato já
+existe. Stores idempotentes e corridas entre writers abrem o arquivo regular
+sem seguir links, verificam o tamanho exato, comparam e calculam SHA-256
+incrementalmente com um buffer fixo de 16 KiB. O artefato completo owned pelo
+caller não é duplicado.
+
+O classificador Candle opcional move labels, pesos e biases decodificados ao
+estado carregado sem clonar os buffers completos. `CandleBackend` reserva
+atomicamente um slot e os bytes declarados antes de acessar o store.
+`new_with_loaded_byte_limit` seleciona um teto agregado menor e
+`memory_pressure()` informa uso atual/de pico e loads rejeitados. Uma inferência
+ativa mantém a reserva depois de `unload` até liberar seu lease dos tensors.
+Candle não possui KV cache generativo; a engine generativa externa escolhida
+deve limitar seu próprio cache.
 
 ## Backends e modelos aceitos
 
@@ -97,6 +114,11 @@ rejeita credenciais.
   declaram e implementam streaming. Depois de emitir um evento, uma falha
   transitória é retornada sem misturar output de uma rota fallback.
 
+O decoder limitado analisa frames SSE completos e coalescidos diretamente dos
+chunks emprestados pelo transporte. Ele retém somente uma cauda incompleta entre
+chamadas e compacta o buffer pendente uma vez por chunk, sem `Vec` temporário ou
+deslocamento repetido do body para cada frame.
+
 O trabalho é acompanhado publicamente na
 [issue #1](https://github.com/dnettoRaw/app-core-public/issues/1).
 
@@ -113,6 +135,13 @@ model registry liga identidade do modelo, proveniência de artifact, suporte de
 backend, modalidade, qualidade, privacidade e requisitos de recurso. Backends
 decidem como executar a request, mas o runtime continua dono de admission,
 cancelamento, health, observabilidade e policy.
+
+`ModelRegistryLimits` torna explícita a retenção de metadata: modelos,
+localizações por modelo, localizações agregadas e bytes contabilizados possuem
+tetos configuráveis abaixo dos máximos fixos de segurança. Iteradores iniciais
+e adições posteriores excessivos falham antes da retenção ou copy-on-write,
+enquanto duplicatas continuam idempotentes. `ModelRegistry::pressure` expõe
+contagens e bytes atuais/de pico e rejeições sem labels de alta cardinalidade.
 
 A execução pode ser local, remota ou delegada a swarm experimental:
 
@@ -257,6 +286,21 @@ routing, scaling de registry/scheduler, batching, artifacts, Candle/training e
 passou de 96,417 us para 21,958 us p50 e batch Candle 32 de 68,959 us para
 31,041 us. O relatório também mantém visíveis regressões de batch pequeno e o custo
 intencional da proteção no-follow.
+
+Um workload separado com 65.536 localizações de peers antes retinha todas as
+entradas e alcançava 7,83 MiB de RSS pico/retido. Com admissão limitada, ele
+retém o máximo default de 128 por modelo, rejeita o restante explicitamente e
+mediu 1,91 MiB de RSS pico (-75,61%) e 1,89 MiB retido (-75,86%) em cinco
+processos Apple M1.
+
+Para um classificador Candle representativo de 4 MiB, mover os buffers
+decodificados e reservar memória antes da leitura reduziu a mediana de cinco
+processos de 1,701 para 1,368 ms (-19,56%) e o RSS pico mediano de 20,16 para
+16,11 MiB (-20,08%).
+
+Para um input lightweight de 1 MiB com 524.288 palavras de um byte, remover o
+`Vec<&str>` intermediário reduziu a mediana de cinco processos de 4,823 para
+3,337 ms (-30,80%) e o RSS pico mediano de 12,98 para 3,88 MiB (-70,16%).
 
 O veredito local é **READY FOR BETA** dentro do escopo documentado. Execução
 física Windows/Linux, soak real em aceleradores e adapter Swarm Peer RPC de

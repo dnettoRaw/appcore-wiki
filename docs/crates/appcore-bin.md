@@ -26,6 +26,27 @@ resolved volume/environment values and `ApplicationTaskRegistry`.
 commands, local paths/lifecycle, server entry points, build information and
 optional auth-server grant tooling.
 
+Deployment `file:` secret references enforce a 64 KiB ceiling plus one
+sentinel byte for concurrent growth. Rejected bytes are cleared, and accepted
+whitespace is trimmed in place before the allocation moves into its redacted,
+zeroizing owner.
+
+The `auth-required` marker uses a fixed 1,025-byte stack buffer. It accepts at
+most 1 KiB and fails closed on growth, invalid UTF-8, non-regular files and
+symlinks without allocating the complete marker on the heap.
+
+`appcore-bin export --out PATH` measures the diagnostics pretty JSON under a
+64 MiB ceiling before it creates the output. It then serializes through a fixed
+64 KiB buffer and the shared immutable audit snapshot, without a complete result
+`Vec` or deep-cloned audit list. Failed serialization or writing removes the
+new incomplete file, and an existing path is never overwritten.
+
+Diagnostics expose `audit_memory`, `event_bus`, `observation_memory` and
+`metric_memory` pressure with current, peak and maximum bytes plus eviction or
+admission-rejection counters. Observation and metric export start from
+immutable shared snapshots rather than first deep-cloning the retained
+histories. These counters contain no audit messages or opaque event payloads.
+
 Both binaries parse bounded UTF-8 input through `appcore-args`. Generated help,
 validation and dynamic Bash, Zsh, Fish and PowerShell completion share one
 declarative command specification; command execution remains in this crate.
@@ -33,7 +54,9 @@ declarative command specification; command execution remains in this crate.
 The final distributed manifest feeds one `appcore-capabilities` catalog during
 bootstrap. Direct facade, application HTTP and peer RPC dispatch use that same
 owner for declaration, mode, idempotency, operational-write and leadership
-enforcement. Runtime-owned status queries remain explicit host behavior.
+enforcement. Peer command dispatch moves the validated V1 payload allocation
+into `CommandEnvelope` without a complete application-body clone. Runtime-owned
+status queries remain explicit host behavior.
 
 On the current 1.0 maintenance line, direct facade, application HTTP and peer
 RPC handlers execute without retaining the shared host mutex. Independent

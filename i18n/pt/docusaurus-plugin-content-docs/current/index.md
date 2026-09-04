@@ -31,7 +31,13 @@ de `appcore-bin@1.0.0` e usar sua facade `application`.
 Prereleases publicadas: `appcore-ai 0.1.0-beta.3`, o grafo Runtime em
 `2.0.0-alpha.1`, `appcore-transport 1.1.0-alpha.1` e a integração opcional
 `appcore-sync-sqlite 0.1.0-alpha.2`. Nenhuma altera o contrato de manifest V1
-congelado.
+estável.
+
+O V1 estável é uma promessa de compatibilidade, não um congelamento de
+funcionalidades do repositório inteiro. O AppCore pode continuar adicionando
+capacidades genéricas de Runtime e crates versionados independentemente,
+mantendo os contratos V1 coerentes; contratos incompatíveis exigem uma nova
+versão explícita.
 
 ## O Que Vem Depois
 

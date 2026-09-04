@@ -24,11 +24,24 @@ V1; replication logs/snapshots; checkpoints e outbox memória/arquivo; receiver
 state/ack; follower client; HTTP transport; peer discovery; retry, métricas e
 `SyncError`.
 Contratos de content-envelope opaco são reexportados para pacotes sync
-baseados em DNT sem expor plaintext ao código de roteamento.
+baseados em DNT sem expor plaintext ao código de roteamento. Seu teto público
+de retenção `MAX_OPAQUE_MESSAGE_ID_BYTES` é de 1.024 bytes UTF-8.
 
 `HttpSyncTransport` possui um cliente HTTP reutilizável e limitado. Use
 `with_timeout_ms` para o deadline V1 uniforme ou `with_timeouts` para deadlines
 independentes de conexão/admissão, leitura e escrita.
+
+O encode wire V1 empresta identidade de origem, mensagem e eventos enquanto
+grava a `String` de saída exigida. Ele não retém um batch clonado ao lado dessa
+saída e preserva o JSON V1 owned exato e a validação do node de origem.
+
+A API de snapshot do `1.0.2-rc` consome pares sequence/payload owned com
+`ReplicationSnapshot::try_from_records` e move cada payload para o valor V1
+portável. `ReplicationSnapshot::validate` verifica o contrato completo por uma
+referência compartilhada, portanto providers persistentes não precisam clonar
+a coleção de payloads antes do restore. Consumidores em memória que possuem o
+snapshot podem usar `InMemoryReplicationLog::restore_snapshot_owned` para
+validá-lo e mover os payloads diretamente ao log sem reter duas coleções.
 
 Use para replicação compatível, ordenada e hash-chained. Não ignore identidade
 ou protocolo nem trate como RAFT, multi-master ou resolvedor de conflito de
@@ -38,6 +51,20 @@ O log file é limitado a 256 MiB e a outbox a 64 MiB. IDs de peer e hashes de
 checkpoint são validados na escrita e na leitura. O receiver valida o batch
 completo, a aritmética de sequence e cada limite de record antes de alterar log
 ou checkpoint; um evento inválido no fim não deixa append parcial.
+
+No `1.0.2-rc`, `FileSyncCheckpointStore` percorre uma linha V1 limitada por vez
+com reader fixo de 16 KiB. O startup não retém mapa decodificado; o lookup
+valida todo o arquivo e possui somente o hash correspondente. A mutação monta
+um mapa canônico ordenado, mas o transmite à substituição atômica sem uma
+segunda string do tamanho do arquivo. Os limites públicos são 8 MiB, 65.536
+records não vazios e 256 bytes UTF-8 por ID de peer.
+
+`FileReplicationLog` percorre uma linha limitada por vez e mantém um vetor
+ordenado de sequence para record, com offsets, tamanhos e digests. Payloads só
+são decodificados para a página ou evento solicitado; um log de 256 MiB nunca
+é materializado como uma segunda coleção de payloads na memória.
+O log em memória usa o mesmo índice plano ordenado e busca binária, evitando o
+overhead de buckets de hash nos logs locais limitados.
 
 :::warning Atualização da outbox no `1.0.2-rc`
 No `1.0.2-rc`, `FileSyncOutbox` aceita apenas o journal binário explícito
@@ -50,5 +77,28 @@ A extensão aditiva de paginação oferece `peek`, `stats` sem payload,
 Consumidores novos usam `pending_page`, `outbox_stats` e
 `flush_pending_with_progress`; o wire peer V1 permanece inalterado.
 :::
+
+`InMemorySyncOutbox` mede os bytes JSON exatos analiticamente e com proteção
+contra overflow, sem alocar uma segunda mensagem codificada. Providers de
+integração podem usar `encoded_sync_message_bytes` para a mesma contagem e
+`write_sync_message_json` para transmitir o JSON idêntico e compatível com
+Serde por um scratch buffer fixo de 16 KiB para eventos. Para um batch
+válido de 4 MiB no Apple M1, o p50 caiu de 23,55 ms para 10,92 ms e o RSS pico
+de 45,73 MiB para 17,52 MiB; limites de página e `pending_bytes` permanecem
+exatos.
+
+`FileSyncOutbox` agora mede o JSON do receipt e o serializa diretamente por um
+writer fixo de 64 KiB. O fixture máximo de 1.024 IDs escapados tem 2.086.913
+bytes e não fica mais retido como `Vec` adicional em produção; o scan empresta
+IDs que não exigem desfazer escapes JSON. IDs indexados também são compartilhados
+com o estado transacional do scan de tail; refresh clona handles em vez de cada
+identificador pendente.
+
+A janela fixa de 10.000 IDs processados do receiver também compartilha cada
+`batch_id` entre lookup de duplicata e eviction do mais antigo. Aplicar 10.000
+batches com IDs de 128 bytes no Apple M1 mediu 58,27 ms p50 e reduziu RSS pico
+de 17,45 MiB para 15,27 MiB sem mudar os resultados. As fronteiras do receiver
+e da outbox rejeitam IDs vazios, caracteres de controle e IDs acima de 1.024
+bytes UTF-8 antes da retenção; a janela fica limitada por bytes e por quantidade.
 
 **Maturidade:** perfil conservador estável com decode V1 estrito.
