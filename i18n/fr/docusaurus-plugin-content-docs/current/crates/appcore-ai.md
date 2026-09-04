@@ -207,7 +207,7 @@ mais aucune certification physique dans cette passe. Sysfs AMD est partiel ;
 thermique/utilisation hors sources documentées et NPU restent indisponibles,
 non simulés.
 
-## Chat, tools, images et PDF
+## Chat et appels de tools
 
 ```rust
 let request = AiRequest::chat(
@@ -224,6 +224,8 @@ Un tool possède un nom, une description et un JSON Schema bornés.
 `AiOutput::ToolCalls` n'est qu'une proposition : l'application valide les
 arguments et route le travail autorisé via `appcore-capabilities`. Le texte
 généré n'est jamais une autorité d'écriture.
+
+## Images et documents
 
 Une image n'est transportée que si backend et modèle déclarent ce support. PDF
 est une modalité document pour le routage, mais la beta n'embarque ni parseur,

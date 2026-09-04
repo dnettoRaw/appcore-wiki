@@ -27,6 +27,8 @@ restent aussi réutilisables sans dépendance AppCore. `appcore-supervisor` gèr
 les services en processus sans dépendre du dispatch de commandes ;
 `appcore-args` parse la CLI sans exécuter de commandes Runtime.
 
+## Comment lire cette carte ?
+
 Commencez par `appcore-sdk` dans le code métier et descendez vers un crate
 propriétaire uniquement lorsque son contrat de niveau inférieur est requis. Le
 processus de déploiement compose explicitement providers, services, listeners

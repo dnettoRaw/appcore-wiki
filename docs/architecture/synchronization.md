@@ -133,7 +133,7 @@ Application command idempotency is separate. A command may require an idempotenc
 
 ## Optional SQLite persistence after 1.0
 
-The published post-1.0 `appcore-sync-sqlite 0.1.0-alpha.2` preview persists only Runtime sync records:
+The published post-1.0 `appcore-sync-sqlite 0.1.0-alpha.4` preview persists only Runtime sync records:
 the replication log, outbox, per-peer checkpoints and opaque tombstones. It
 uses a versioned internal schema, WAL, full synchronization, bounded
 connections and limits, portable snapshots, verified online backup and a

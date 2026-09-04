@@ -9,8 +9,6 @@ L'objectif mesurable d'AppCore 1.0 est : une application tourne avec seulement `
 
 Ce contrat évite de mélanger identité applicative, politique d'installation et composition runtime dans le même fichier. Quand ces responsabilités se mélangent, chaque installation devient un fork implicite.
 
-## Pourquoi trois artefacts ?
-
 Parce qu'il y a trois propriétaires. L'auteur connaît les commands. L'opérateur connaît l'environnement. Le runtime sait composer providers, lifecycle et services.
 
 ## Application Manifest
@@ -23,16 +21,20 @@ Il ne contient pas provider IDs, chemins, endpoints, TLS, tokens, mots de passe 
 manifest_version = 1
 application_id = "example-app"
 application_version = "0.1.0"
+display_name = "Example App"
+vendor = "Example Vendor"
 service_id = "app.ping"
 
 [runtime]
 minimum_runtime_version = "1.0.0"
 protocol_version = "1"
+required_features = []
 
 [[capabilities]]
 id = "app.ping"
 version = "1"
 mode = "command"
+visibility = "local"
 requires_leader = false
 idempotency_required = true
 ```
@@ -51,11 +53,18 @@ paths = { storage = "target/runtime/storage", backup = "target/runtime/backups" 
 
 [storage]
 provider_id = "file"
+settings = {}
+secret_refs = {}
 
 [network]
 listen_addresses = ["127.0.0.1:39300"]
 peer_transport = "http"
 command_transport = "http"
+
+[supervisor.watchdog]
+enabled = true
+check_interval_ms = 1000
+stall_timeout_ms = 15000
 ```
 
 Les secrets sont des références. Les chemins relatifs sont résolus depuis le deployment manifest. Standalone rejette la coordination distribuée ; cluster exige des providers compatibles.
@@ -65,8 +74,39 @@ Les secrets sont des références. Les chemins relatifs sont résolus depuis le 
 Le code enregistre commands, events, states, decisions, handlers, queries et tasks. Il ne construit pas storage provider, listener HTTP, token provider, scheduler, sync ou supervisor.
 
 ```rust
-use appcore_sdk::application::NodeId;
+use appcore_sdk::application::{
+    Application, CommandBus, CommandEnvelope, CommandHandler, CommandName,
+    CommandRegistry, CommandResult, NodeId, RuntimeContext, RuntimeResult,
+};
 use appcore_sdk::{App, AppResult};
+
+struct BackendApplication;
+
+impl Application for BackendApplication {
+    fn register_commands(&self, registry: &mut CommandRegistry) -> RuntimeResult<()> {
+        registry.register(CommandName::new("app.ping")?)
+    }
+
+    fn register_handlers(&self, bus: &mut CommandBus) -> RuntimeResult<()> {
+        bus.register_handler(PingHandler)
+    }
+}
+
+struct PingHandler;
+
+impl CommandHandler for PingHandler {
+    fn command_name(&self) -> CommandName {
+        CommandName::new("app.ping").expect("static command name")
+    }
+
+    fn handle(
+        &self,
+        _command: &CommandEnvelope,
+        _context: &dyn RuntimeContext,
+    ) -> RuntimeResult<CommandResult> {
+        Ok(CommandResult::accepted(Vec::new()))
+    }
+}
 
 fn main() -> AppResult<()> {
     let app = App::new("example-app")?;
@@ -80,7 +120,18 @@ fn main() -> AppResult<()> {
 }
 ```
 
-Un quatrième artefact, comme un `RuntimeBuilder` custom ou une configuration non versionnée, viole le contrat 1.0.
+## Le quatrième artefact interdit
+
+Une application AppCore 1.0 ne doit pas avoir besoin d'un `RuntimeBuilder`
+construit à la main, d'un module host privé, d'une configuration Runtime sans
+version ou d'un fork du Runtime. Les metadata Cargo et le petit `main` relèvent
+de l'intégration de build, pas des artefacts d'architecture.
+
+## Pourquoi cette séparation est importante
+
+Le même code métier peut passer du mode standalone local à un cluster en ne
+changeant que la policy du deployment. C'est la principale garantie de
+compatibilité d'AppCore.
 
 ## Limitations
 

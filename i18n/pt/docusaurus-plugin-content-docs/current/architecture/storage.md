@@ -33,9 +33,11 @@ sequenceDiagram
     Runtime->>Provider: write_bytes_atomic(path, bytes)
     Provider->>Provider: resolver abaixo da raiz
     Provider->>Lock: lock exclusivo
-    Provider->>Tmp: escrever e fsync
+    Provider->>Tmp: criar arquivo temporário único
+    Tmp->>Tmp: escrever bytes e fsync
     Tmp->>Root: rename atômico
     Root->>Root: sync parent
+    Provider-->>Runtime: sucesso ou erro explícito
 ```
 
 ## Por que leituras têm limite?
@@ -57,6 +59,15 @@ O diretório final só aparece quando o manifest e os arquivos copiados concorda
 
 Restore copia backup verificado para `restore.pending`, move storage atual para `restore.previous`, ativa pending como storage root e remove previous. Se o processo morre no meio, `recover_snapshot_restore` escolhe pending/previous/current sem descartar a última raiz boa.
 
+```mermaid
+flowchart TD
+    Verify[Carregar e verificar manifest] --> Copy[Copiar dados para restore.pending]
+    Copy --> Previous[Mover storage atual para restore.previous]
+    Previous --> Activate[Ativar restore.pending como storage root]
+    Activate --> Cleanup[Remover restore.previous]
+    Activate -->|falha| Rollback[Restaurar restore.previous como storage root]
+```
+
 ## Por que DNT autentica metadata?
 
 DNT é um envelope binário autenticado e cifrado. Extensões são convenções; o header é a identidade. O header inclui application ID, tenant opcional, content type, codec, key ID, schema version, nonce, payload hash e metadata. Ele é AEAD additional data, então alterar contexto quebra autenticação.
@@ -68,13 +79,22 @@ flowchart LR
     Compress --> Hash[Digest com chave]
     Hash --> Header
     Header --> AEAD
-    Compress --> Encrypt[XChaCha20-Poly1305]
+    Compress --> Plaintext[Payload + metadata cifrada]
+    Plaintext --> Encrypt[XChaCha20-Poly1305]
     Encrypt --> Envelope[DNT]
 ```
 
 `read_verified` exige limite de payload, rejeita arquivos grandes antes de carregar tudo e usa `open_owned` para autenticar e abrir. Plaintext retornado pode ser zeroizado.
 
-## Limitations
+## Quais são os trade-offs deste modelo de storage?
+
+O file provider é simples e inspecionável, mas não é um banco distribuído
+multi-writer. O perfil local espera um processo e um filesystem que honre
+locks, sync e rename atômico. Coordenação de cluster usa providers explícitos.
+Isso preserva instalações local-first pequenas sem fingir que um diretório
+compartilhado é um database geral.
+
+## Limitações
 
 - O file provider não é banco distribuído multi-writer.
 - AppCore não compensa filesystem que não honra locks, flush ou rename atômico.

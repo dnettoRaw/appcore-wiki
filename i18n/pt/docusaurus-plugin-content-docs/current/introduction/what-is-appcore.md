@@ -26,15 +26,18 @@ AppCore separa ownership:
 
 ```mermaid
 flowchart TB
-    App[Aplicação externa] --> SDK[appcore-sdk]
-    Manifest[application.toml] --> SDK
-    Deployment[deployment.toml] --> SDK
-    SDK --> Prepared[Registros validados]
-    Prepared --> Executable[Executável de deployment]
-    Deployment --> Executable
-    Executable --> Providers[Providers selecionados]
-    Executable --> Services[Serviços supervisionados]
-    Executable --> API[API command/query]
+    Business[Código de negócio] --> AppManifest[Application Manifest]
+    Operator[Instalador ou operador] --> DeployManifest[Deployment Manifest]
+    Runtime[AppCore Runtime] --> RuntimeManifest[Runtime Manifest]
+    AppManifest --> SDK[appcore-sdk]
+    DeployManifest --> SDK
+    Business --> SDK
+    SDK --> Prepared[Registries validados]
+    DeployManifest --> Deployment[Executável de deployment]
+    Prepared --> Deployment
+    Deployment --> Providers[Providers selecionados]
+    Deployment --> Services[Serviços supervisionados]
+    Deployment --> API[API command/query]
 ```
 
 ## O que roda quando uma aplicação AppCore inicia

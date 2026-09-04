@@ -253,6 +253,13 @@ null is valid. `computed` is deterministic and performs no IO.
 - `style_rules` applies ordered conditional styles.
 
 ```yaml
+- id: repeated-row
+  type: group
+  repeat: data.rows
+  children: []
+```
+
+```yaml
 style_rules:
   - when: 'data.target_met == true'
     style: { fill: "#e4f4ec", color: "#1f7a4d" }
@@ -422,7 +429,13 @@ The same resolved transform reaches every graphical exporter.
 
 ## 14. Configure collision and exclusions
 
-Use `collision: false` to opt out, or the full declaration:
+Use the short form to opt out:
+
+```yaml
+collision: false
+```
+
+Or use the full declaration:
 
 ```yaml
 collision:
@@ -528,26 +541,35 @@ page role accepts `background`, `header`, and `footer` element lists.
 |---|---|
 | `id` | unique safe 1–128-byte ASCII ID |
 | `type` | element type |
-| `component`, `props`, `slots` | component instance inputs |
+| `component` | component to instantiate |
+| `props` | instance properties |
+| `slots` | named slot content |
 | `x`, `y`, `width`, `height` | explicit-unit geometry |
 | `constraints` | min/preferred/max size and aspect ratio |
 | `align_x`, `align_y` | container alignment |
 | `text` | literal text |
 | `text_options` | overflow, lines, minimum size, writing |
 | `table` | required options for `type: table` |
-| `asset`, `image` | image reference and paint options |
+| `asset` | explicit image reference |
+| `image` | fit, focus, crop, and EXIF options |
 | `path` | semantic vector commands |
-| `styles`, `style`, `style_rules` | static and conditional cascade |
+| `styles` | named style list |
+| `style` | inline style |
+| `style_rules` | ordered conditional styles |
 | `transform` | translation, rotation, scale, flip, mirror, origin |
-| `layout`, `distribute`, `gap` | child layout |
+| `layout` | absolute or flow layout |
+| `distribute` | flow child distribution |
+| `gap` | distance between children |
 | `binding` | primary data expression |
 | `when` | visibility expression |
 | `repeat` | array expansion expression |
-| `anchors`, `region` | placement references |
+| `anchors` | named placement anchors |
+| `region` | containing region |
 | `children` | nested elements |
 | `locked` | reject runtime patches |
 | `hidden` | initially hidden |
-| `layer`, `z_index` | paint order |
+| `layer` | visual layer name |
+| `z_index` | order inside the layer |
 | `collision` | element collision override |
 
 Fields are type-scoped: `text_options` works on `text`; tables accept only its

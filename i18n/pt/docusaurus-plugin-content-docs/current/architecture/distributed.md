@@ -32,6 +32,14 @@ sequenceDiagram
 
 Um líder antigo falha se lease expirou, holder mudou, tenant/cluster mudou ou o epoch mínimo é mais novo.
 
+## Por que providers são selecionados explicitamente?
+
+O Deployment Manifest seleciona storage, control plane, coordination store,
+secret provider, jobs, discovery, update, database e transports. Factories são
+registradas por role e provider ID. Se o par escolhido não existir, a criação
+falha; não há fallback de remoto para local, cluster para standalone ou seguro
+para inseguro.
+
 ## Peer RPC
 
 O envelope valida request ID, trace, protocolo, source/target core, tenant, cluster, timestamp, expiry, nonce, capability, body hash e idempotency key opcional. Nonces podem ser armazenados em memória ou arquivo privado com lock e atomic write.
@@ -64,6 +72,14 @@ Somente essas quatro settings sem segredo são aceitas. Settings desconhecidas,
 endpoints, referências de segredo e overrides de autenticação falham fechados.
 Sem o adapter não existe listener nem task de Gateway; configuração ou bind
 inválido aborta o startup.
+
+```mermaid
+flowchart LR
+    Client[Client ou Core] --> Gateway[Gateway relay]
+    Gateway --> Worker[Socket do worker conectado]
+    Worker --> PeerHost[Peer RPC host]
+    PeerHost --> App[Runtime dispatcher]
+```
 
 O host usa replay store durável e seguro entre processos. Standalone o mantém
 no storage privado; cluster exige `paths.gateway_replay` absoluto apontando

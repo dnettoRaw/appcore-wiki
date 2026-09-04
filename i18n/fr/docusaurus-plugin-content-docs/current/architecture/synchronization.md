@@ -15,14 +15,24 @@ Quand la boutique perd Internet, les commands locales peuvent continuer selon la
 
 Même séquence et même payload signifie retry. Même séquence et bytes différents signifie conflit.
 
+## Que prouve un SyncMessage ?
+
+Un batch contient `batch_id`, source node, plage de séquences, nombre
+d'événements, hash des metadata et payloads préfixés par leur taille, timestamp,
+previous batch hash facultatif et payloads opaques. Il prouve l'ordre et
+l'intégrité du transport, pas la correction sémantique métier.
+
 ```mermaid
 flowchart LR
     LeaderLog[Log leader] --> Batch[SyncMessage]
     Batch --> Hash[Hash metadata + payload]
-    Hash --> Receiver[Validation]
+    Hash --> Transport[Transport]
+    Transport --> Receiver[Validation]
     Receiver --> FollowerLog[Log follower]
-    FollowerLog --> Checkpoint[Checkpoint par peer]
+FollowerLog --> Checkpoint[Checkpoint par peer]
 ```
+
+## Pourquoi conserver un replication log ?
 
 Le log file-backed utilise `# appcore-replication-log-v1`, limite total, limite par record, sequence map, hash chain, lock et atomic write. Append par séquence est idempotent : même séquence/même payload retourne l'index original ; même séquence/payload différent est un conflit.
 
@@ -31,6 +41,12 @@ Le log est la preuve utilisée par replay. Sans lui, recovery devrait faire conf
 ## Pourquoi un checkpoint si replay existe ?
 
 Checkpoint garde dernière séquence acceptée et batch hash par peer dans `# appcore-sync-checkpoint-v1`. Sans checkpoint, recovery devrait replay tout l'historique ou deviner depuis une projection.
+
+```text
+# appcore-sync-checkpoint-v1
+peer-a=42,2f4c...
+peer-b=17,
+```
 
 ## Comment l'outbox durable récupère-t-elle ?
 
@@ -58,11 +74,16 @@ version ou futurs retournent `NO MORE SUPPORTED PLEASE UPDATE` ; le Runtime ne
 les déduit ni ne les convertit. Les opérateurs vident V1 avant la mise à niveau
 et V2 avant un rollback.
 
-Idempotency de command et idempotency de batch ne protègent pas la même frontière. La key de command évite de dupliquer un retry client. Séquence/checkpoint évitent de dupliquer une réplication peer.
+## Qu'est-ce qui rend le replay sûr ?
+
+Le replay n'est sûr que si handlers et logs sont idempotents à la bonne
+frontière. L'idempotency de command évite de dupliquer un retry client ; celle
+du batch, sa séquence et son checkpoint évitent une réplication peer en double.
+Même séquence avec d'autres bytes reste un conflit, jamais un retry.
 
 ## Persistance SQLite facultative après la 1.0
 
-L'aperçu post-1.0 publié `appcore-sync-sqlite 0.1.0-alpha.2` persiste uniquement les enregistrements
+L'aperçu post-1.0 publié `appcore-sync-sqlite 0.1.0-alpha.4` persiste uniquement les enregistrements
 de synchronisation du Runtime : replication log, outbox, checkpoints par peer
 et tombstones opaques. Il utilise un schéma interne versionné, WAL,
 synchronisation complète, connexions et limites bornées, snapshots portables,
@@ -76,7 +97,14 @@ inconnu ou futur retourne `NO MORE SUPPORTED PLEASE UPDATE` ; aucun format du
 file provider n'est importé par inférence. Voir
 [l'aperçu `appcore-sync-sqlite`](../crates/appcore-sync-sqlite).
 
-## Limitations
+## Pourquoi AppCore ne résout-il pas automatiquement les conflits ?
+
+La réplication multi-master exige un modèle de conflit métier. Le Runtime ne
+peut pas savoir si réserver du stock, modifier une note, approuver un devis et
+faire tourner un secret partagent la même sémantique. Sync reste donc
+conservateur et l'application possède la policy des conflits métier.
+
+## Limites
 
 - Sync est leader-to-follower, pas RAFT ni multi-master.
 - AppCore détecte conflits sequence/hash, mais ne fusionne pas les changements métier.

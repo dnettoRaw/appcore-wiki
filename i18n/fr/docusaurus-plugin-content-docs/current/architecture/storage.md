@@ -33,9 +33,11 @@ sequenceDiagram
     Runtime->>Provider: write_bytes_atomic(path, bytes)
     Provider->>Provider: résoudre sous la racine
     Provider->>Lock: lock exclusif
-    Provider->>Tmp: écrire et fsync
+    Provider->>Tmp: créer un fichier temporaire unique
+    Tmp->>Tmp: écrire les bytes et fsync
     Tmp->>Root: rename atomique
     Root->>Root: sync parent
+    Provider-->>Runtime: succès ou erreur explicite
 ```
 
 ## Pourquoi borner les lectures ?
@@ -54,11 +56,49 @@ Backup snapshot utilise `appcore-storage-backup-v1`, inventaire trié, taille et
 
 Le répertoire final n'apparaît qu'après accord entre manifest et fichiers copiés. Restore ne fait pas confiance à une simple liste de fichiers ; il vérifie inventaire, tailles et hashes.
 
+## Comment restore récupère-t-il après un crash ?
+
+Restore effectue un échange de répertoires récupérable et rend chaque état
+visible :
+
+```mermaid
+flowchart TD
+    Verify[Charger et vérifier le manifest] --> Copy[Copier vers restore.pending]
+    Copy --> Previous[Déplacer le storage vers restore.previous]
+    Previous --> Activate[Activer restore.pending comme storage root]
+    Activate --> Cleanup[Supprimer restore.previous]
+    Activate -->|échec| Rollback[Restaurer restore.previous comme storage root]
+```
+
 ## Pourquoi DNT authentifie le contexte ?
 
 DNT est une enveloppe binaire authentifiée et chiffrée. Le header contient application ID, tenant optionnel, content type, codec, key ID, schema version, nonce, payload hash et metadata. Le header est AEAD additional data : modifier le contexte casse l'authentification.
 
-## Limitations
+```mermaid
+flowchart LR
+    Payload --> Codec
+    Codec --> Compress[DEFLATE optionnel]
+    Compress --> Hash[Digest avec clé]
+    Hash --> Header
+    Header --> AEAD
+    Compress --> Plaintext[Payload + metadata chiffrée]
+    Plaintext --> Encrypt[XChaCha20-Poly1305]
+    Encrypt --> Envelope[DNT]
+```
+
+`read_verified` exige une limite de payload et rejette les grands fichiers
+avant de tout charger. `open_owned` authentifie et ouvre un buffer possédé ; le
+plaintext retourné peut être remis à zéro.
+
+## Quels compromis ce modèle de storage impose-t-il ?
+
+Le file provider est simple et inspectable, mais ce n'est pas une base
+distribuée multi-writer. Le profil local attend un processus et un filesystem
+qui respecte locks, sync et rename atomique. La coordination cluster emploie
+des providers explicites. Ce choix préserve les petites installations
+local-first sans prétendre qu'un répertoire partagé est une database générale.
+
+## Limites
 
 - Le file provider n'est pas une base distribuée multi-writer.
 - AppCore ne compense pas un filesystem qui ment sur locks, flush ou rename atomique.

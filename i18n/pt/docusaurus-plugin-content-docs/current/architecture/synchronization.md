@@ -23,7 +23,8 @@ Um batch carrega `batch_id`, source node, `sequence_start`, `sequence_end`, even
 flowchart LR
     LeaderLog[Log do líder] --> Batch[SyncMessage]
     Batch --> Hash[Hash metadata + payload]
-    Hash --> Receiver[Validação]
+    Hash --> Transport[Transport]
+    Transport --> Receiver[Validação]
     Receiver --> FollowerLog[Log do follower]
     FollowerLog --> Checkpoint[Checkpoint por peer]
 ```
@@ -39,6 +40,12 @@ O log é evidência de replay. Sem log, recovery teria que confiar em projection
 ## Por que checkpoint existe se já existe replay?
 
 Checkpoint guarda última sequência aceita e batch hash por peer em formato `# appcore-sync-checkpoint-v1`. Peer IDs e hashes são validados e o arquivo é substituído atomicamente.
+
+```text
+# appcore-sync-checkpoint-v1
+peer-a=42,2f4c...
+peer-b=17,
+```
 
 Sem checkpoint, recovery teria que replayar tudo ou inferir progresso pela projection. AppCore não faz essa inferência.
 
@@ -66,13 +73,13 @@ Essa é uma fronteira explícita de formato persistente. Arquivos V1, sem versã
 ou futuros retornam `NO MORE SUPPORTED PLEASE UPDATE`; o Runtime não infere nem
 converte. Operadores drenam V1 antes do upgrade e V2 antes do rollback.
 
-## Onde entra idempotency?
+## O que torna o replay seguro?
 
 Idempotency de command e idempotency de batch resolvem problemas diferentes. A key de command evita duplicar retry de cliente. A sequência/checkpoint evita duplicar replicação entre peers. Os dois limites precisam existir porque os retries acontecem em fronteiras diferentes.
 
 ## Persistência SQLite opcional depois do 1.0
 
-A prévia pós-1.0 publicada `appcore-sync-sqlite 0.1.0-alpha.2` persiste apenas registros de sync do
+A prévia pós-1.0 publicada `appcore-sync-sqlite 0.1.0-alpha.4` persiste apenas registros de sync do
 Runtime: replication log, outbox, checkpoints por peer e tombstones opacos. Ela
 usa schema interno versionado, WAL, sincronização completa, conexões e limites
 explícitos, snapshots portáveis, backup online verificado e integrity scan que
@@ -85,7 +92,14 @@ retornam `NO MORE SUPPORTED PLEASE UPDATE`; formatos file-provider não são
 importados por inferência. Veja a
 [prévia `appcore-sync-sqlite`](../crates/appcore-sync-sqlite).
 
-## Limitations
+## Por que AppCore não resolve conflitos automaticamente?
+
+Replicação multi-master exige um modelo de conflito do domínio. O Runtime não
+sabe se reservar estoque, editar uma nota, aprovar um orçamento e rotacionar
+um secret possuem a mesma semântica. Por isso sync permanece conservador e a
+aplicação possui a policy de conflito de negócio.
+
+## Limitações
 
 - Sync é leader-to-follower, não RAFT nem multi-master.
 - AppCore detecta conflito de sequência/hash, mas não mescla alterações de negócio.

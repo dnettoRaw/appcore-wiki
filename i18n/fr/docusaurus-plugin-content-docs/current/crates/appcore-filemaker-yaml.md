@@ -250,6 +250,13 @@ null est valide. `computed` est déterministe et n'effectue aucun IO.
 - `style_rules` applique des styles conditionnels ordonnés.
 
 ```yaml
+- id: repeated-row
+  type: group
+  repeat: data.rows
+  children: []
+```
+
+```yaml
 style_rules:
   - when: 'data.target_met == true'
     style: { fill: "#e4f4ec", color: "#1f7a4d" }
@@ -418,7 +425,13 @@ L'échelle utilise les millionièmes. `mirror` vaut `none`, `horizontal`,
 
 ## 14. Collision et exclusions
 
-Utilisez `collision: false` pour sortir du système, ou :
+Utilisez la forme courte pour sortir du système :
+
+```yaml
+collision: false
+```
+
+Ou utilisez la déclaration complète :
 
 ```yaml
 collision:
@@ -524,26 +537,35 @@ page accepte les listes `background`, `header`, `footer`.
 |---|---|
 | `id` | ID ASCII sûr unique de 1–128 octets |
 | `type` | type de l'élément |
-| `component`, `props`, `slots` | entrées d'une instance |
+| `component` | component à instancier |
+| `props` | propriétés de l'instance |
+| `slots` | contenu des slots nommés |
 | `x`, `y`, `width`, `height` | géométrie avec unités |
 | `constraints` | tailles min/préférée/max et ratio |
 | `align_x`, `align_y` | alignement dans le conteneur |
 | `text` | texte littéral |
 | `text_options` | overflow, lignes, minimum, écriture |
 | `table` | options obligatoires d'une table |
-| `asset`, `image` | référence et options image |
+| `asset` | référence image explicite |
+| `image` | fit, focus, crop et EXIF |
 | `path` | commandes vectorielles |
-| `styles`, `style`, `style_rules` | cascade statique/conditionnelle |
+| `styles` | liste de styles nommés |
+| `style` | style inline |
+| `style_rules` | styles conditionnels ordonnés |
 | `transform` | translation, rotation, échelle, miroir, origine |
-| `layout`, `distribute`, `gap` | layout des enfants |
+| `layout` | layout absolute ou flow |
+| `distribute` | distribution des enfants du flow |
+| `gap` | distance entre les enfants |
 | `binding` | expression data principale |
 | `when` | expression de visibilité |
 | `repeat` | expansion d'un tableau |
-| `anchors`, `region` | références de placement |
+| `anchors` | anchors de placement nommés |
+| `region` | region contenant l'élément |
 | `children` | éléments imbriqués |
 | `locked` | refuse les patches runtime |
 | `hidden` | masqué initialement |
-| `layer`, `z_index` | ordre de peinture |
+| `layer` | nom de la layer visuelle |
+| `z_index` | ordre dans la layer |
 | `collision` | override de collision |
 
 Les champs sont liés au type : `text_options` s'applique à `text`; une table

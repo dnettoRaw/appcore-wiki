@@ -27,6 +27,8 @@ standalone também continuam reutilizáveis sem dependências AppCore.
 `appcore-supervisor` gerencia serviços em processo sem depender do dispatch de
 commands; `appcore-args` faz parsing de CLI sem executar comandos do Runtime.
 
+## Como ler este mapa?
+
 Comece por `appcore-sdk` no código de negócio e desça para um crate owner
 somente quando precisar diretamente do contrato de nível inferior. O processo
 de deployment compõe providers, serviços, listeners e ciclo de vida
