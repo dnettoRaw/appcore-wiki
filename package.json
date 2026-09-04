@@ -4,10 +4,11 @@
   "private": true,
   "scripts": {
     "start": "docusaurus start",
-    "build": "docusaurus build",
-    "build:all": "docusaurus build",
+    "build": "npm run docs:locales && docusaurus build",
+    "build:all": "npm run build",
     "docs:drift": "node scripts/check-appcore-doc-drift.mjs",
     "docs:drift:accept": "node scripts/check-appcore-doc-drift.mjs --accept",
+    "docs:locales": "node scripts/check-locale-parity.mjs",
     "serve": "docusaurus serve",
     "clear": "docusaurus clear"
   },

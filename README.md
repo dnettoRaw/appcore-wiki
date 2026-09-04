@@ -2,14 +2,13 @@
 
 Public Docusaurus documentation for AppCore Runtime.
 
-The wiki documents the stable AppCore Runtime `1.0.0` release and all 22 stable
-public crates (MSRV Rust `1.89`), plus independently versioned prereleases such
-as `appcore-ai 0.1.0-beta.3`. Every public crate owns its SemVer; the current
-repository release train is `1.0.2-rc`, while compatible feature candidates
-advance toward 1.5 only in the crates that own them. crates.io remains the
-authority for versions that have actually been published. The site includes a
-progressive example path from standalone command handling to scheduled work,
-Gateway activation, and cluster composition.
+The wiki documents the current AppCore Runtime catalog of 28 active public
+crates (MSRV Rust `1.89`). Every public crate owns its SemVer; the repository
+release train is `1.0.2-rc`, while `appcore-ai`, FileMaker and other explicitly
+marked components remain independent prereleases. crates.io is the authority
+for versions that have actually been published. The site includes a progressive
+path from standalone command handling to scheduled work, Gateway activation,
+document generation and cluster composition.
 
 English is the source locale; Portuguese and French use Docusaurus native
 localization:
@@ -44,6 +43,15 @@ a translation locally.
 
 ```bash
 npm run build:all
+```
+
+The build first runs `docs:locales`. This gate requires the same 58 Markdown
+pages in English, Portuguese and French and compares heading structure, code
+examples, tables, links, admonitions, list coverage and a bounded word-coverage
+ratio. Run it directly while translating:
+
+```bash
+npm run docs:locales
 ```
 
 ## Detect Runtime documentation drift

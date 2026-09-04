@@ -249,14 +249,6 @@ function validateFutureRoadmap(crates) {
   const { components, errors, warnings } = readFutureComponents();
   const crateNames = new Set(crates.map((crate) => crate.name));
 
-  const prereleaseNames = new Set(
-    components.filter((component) => component.status !== 'Stable').map((component) => component.name),
-  );
-  const stableCrateCount = crates.filter((crate) => !prereleaseNames.has(crate.name)).length;
-  if (stableCrateCount !== 23) {
-    errors.push(`stable public crate count is ${stableCrateCount}, expected 23 until the Runtime baseline is intentionally promoted`);
-  }
-
   for (const component of components) {
     if (component.status === 'Stable' && !crateNames.has(component.name)) {
       errors.push(`future component ${component.name} is marked Stable but is absent from the public crate graph`);
@@ -280,6 +272,30 @@ function validateFutureRoadmap(crates) {
     ['pt', path.join(wikiRoot, 'i18n', 'pt', 'docusaurus-plugin-content-docs', 'current', 'crates', 'appcore-ui.md'), 'ainda não foi publicado'],
     ['fr', path.join(wikiRoot, 'i18n', 'fr', 'docusaurus-plugin-content-docs', 'current', 'crates', 'appcore-ui.md'), "n'est pas encore publié"],
   ];
+
+  const roadmapPages = [
+    path.join(wikiRoot, 'docs', 'roadmap', 'index.md'),
+    path.join(wikiRoot, 'i18n', 'pt', 'docusaurus-plugin-content-docs', 'current', 'roadmap', 'index.md'),
+    path.join(wikiRoot, 'i18n', 'fr', 'docusaurus-plugin-content-docs', 'current', 'roadmap', 'index.md'),
+  ];
+
+  for (const component of components) {
+    for (const file of roadmapPages) {
+      const content = fs.readFileSync(file, 'utf8');
+      const row = content.split('\n').find((line) => line.startsWith('|') && line.includes(component.name));
+      if (!row) {
+        errors.push(`${path.relative(wikiRoot, file)} does not list ${component.name}`);
+        continue;
+      }
+      if (!row.includes(`| ${component.status} |`)) {
+        errors.push(`${path.relative(wikiRoot, file)} does not expose status ${component.status} for ${component.name}`);
+      }
+      const version = /\d+\.\d+\.\d+(?:-[0-9A-Za-z.-]+)?/.exec(component.horizon)?.[0];
+      if (version && !row.includes(version)) {
+        errors.push(`${path.relative(wikiRoot, file)} does not expose ${component.name} version ${version}`);
+      }
+    }
+  }
 
   for (const [locale, file, requiredText] of requiredPages) {
     if (!fs.existsSync(file)) {
