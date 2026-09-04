@@ -95,7 +95,7 @@ deployment decision; V1 peers are not upgraded or redirected.
 The gateway exists for Cores that can make outbound connections but cannot expose stable inbound ports. It is a relay, not a business API.
 
 Gateway activation is declarative. Selecting the owned adapter in the
-Deployment Manifest makes `appcore-bin` parse the bounded configuration, add
+Deployment Manifest makes the deployment executable parse the bounded configuration, add
 and authorize `runtime.gateway` in the shared capability catalog, reuse Runtime
 security, and register the instance as a critical Supervisor-managed service:
 

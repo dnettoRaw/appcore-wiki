@@ -259,20 +259,18 @@ fine-tuning.
 
 ## AppCore application integration
 
-The `appcore-bin/ai-alpha` feature wraps an already configured `AiRuntime` in
-`AppCoreAiComponent`. The existing Supervisor owns required/optional startup,
+Applications enable `appcore-sdk/ai` to consume the backend-neutral contracts.
+The deployment configures `AiRuntime` and owns required/optional startup,
 health, admission stop, cancellation and bounded shutdown:
 
 ```rust
-let component = Arc::new(AppCoreAiComponent::new(Arc::new(ai_runtime), false)?);
-let ai = component.facade();
-let business = MyApplication::new(ai);
-ManifestApplicationHost::load("application.toml", "deployment.toml", &business)?
-    .with_ai(component)
-    .run()?;
+use appcore_sdk::ai::{AiRequest, AiTask};
+
+let request = AiRequest::new(AiTask::Chat, "Summarize this bounded input")?;
+let response = ai_runtime.execute(request)?;
 ```
 
-Set `required` to `true` to fail startup when no model/backend is usable. A
+Deployment policy fails startup when a required model/backend is unavailable. A
 caller exposing `appcore.ai.resolve` through `appcore-capabilities` must supply
 an explicit bounded `AiCapabilityCodec`; Rust types are not an implicit wire
 format. Declarative provider/model selection requires a future versioned

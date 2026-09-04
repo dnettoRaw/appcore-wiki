@@ -251,20 +251,18 @@ seed, CPU/RAM et checkpoints. Le résultat contient les octets, le SHA-256 et un
 
 ## Intégration application AppCore
 
-La feature `appcore-bin/ai-alpha` enveloppe un `AiRuntime` configuré dans
-`AppCoreAiComponent`. Le Supervisor existant possède démarrage
+La feature `appcore-sdk/ai` expose les contrats neutres de backend à
+l'application. Le déploiement configure `AiRuntime` et possède démarrage
 required/optional, health, arrêt des admissions, annulation et shutdown borné :
 
 ```rust
-let component = Arc::new(AppCoreAiComponent::new(Arc::new(ai_runtime), false)?);
-let ai = component.facade();
-let business = MonApplication::new(ai);
-ManifestApplicationHost::load("application.toml", "deployment.toml", &business)?
-    .with_ai(component)
-    .run()?;
+use appcore_sdk::ai::{AiRequest, AiTask};
+
+let request = AiRequest::new(AiTask::Chat, "Résumez cette entrée bornée")?;
+let response = ai_runtime.execute(request)?;
 ```
 
-`required = true` fait échouer le démarrage sans modèle/backend utilisable.
+La policy de déploiement échoue sans modèle/backend obligatoire utilisable.
 Exposer `appcore.ai.resolve` via `appcore-capabilities` exige un
 `AiCapabilityCodec` explicite et borné. La sélection déclarative attend un
 contrat versionné post-1.0.

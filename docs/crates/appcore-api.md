@@ -25,8 +25,9 @@ The Runtime repository maintains the detailed [guide](https://github.com/dnettoR
 command/query capability policy, token verification and sync-log view.
 
 Use it to expose Runtime-owned routes and register application query behavior.
-Do not add product REST resources or business schemas. New application hosting
-normally reaches it through `appcore-bin`.
+Do not add product REST resources or business schemas. Applications reach its
+contracts through the opt-in `appcore-sdk/api` namespace; the deployment
+executable owns HTTP hosting.
 
 Application queries are authorized by the composed capability policy before
 the application router runs. Runtime-owned status queries remain outside the

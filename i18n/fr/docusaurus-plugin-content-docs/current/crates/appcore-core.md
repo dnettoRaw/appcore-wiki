@@ -79,8 +79,8 @@ snapshot et le format V1 du journal ne changent pas. Une charge réelle de fsync
 de 3 Mio a réduit le RSS de pic de 8,11 à 5,08 Mio (-37,38 %) et la mémoire
 retenue de 48,00 %, avec un p50 dominé par le disque dans +0,95 %.
 
-Les nouvelles applications utilisent les re-exports de
-`appcore_bin::application`; elles n'assemblent pas le core. Garder I/O adapters
+Les nouvelles applications utilisent ces contrats via `appcore_sdk` ; elles
+n'assemblent pas le core. Garder I/O adapters
 et comportement domaine hors de ce crate.
 
 **Maturité :** surface low-level stable; builder/plugin restent de

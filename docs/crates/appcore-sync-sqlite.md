@@ -10,7 +10,7 @@ Post-1.0 **`0.1.0-alpha.2`** ·
 [crates.io](https://crates.io/crates/appcore-sync-sqlite/0.1.0-alpha.2) ·
 [docs.rs](https://docs.rs/crate/appcore-sync-sqlite/0.1.0-alpha.2) ·
 [public source](https://github.com/dnettoRaw/app-core-public/tree/beta/crates/appcore-sync-sqlite) ·
-not selectable by the stable V1 manifest or registered by `appcore-bin`.
+not selectable by the stable V1 manifest.
 :::
 
 **Responsibility:** optional bounded SQLite persistence for Runtime-owned sync

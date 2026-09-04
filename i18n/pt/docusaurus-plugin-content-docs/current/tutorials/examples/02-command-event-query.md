@@ -1,199 +1,44 @@
 ---
-title: 2. Command, event e query
+title: 2. Registro da Aplicação
 sidebar_position: 2
 ---
 
-# 2. Command, event e query
+# 2. Registro da Aplicação
 
-Esta etapa troca o ping por um write path (`example.echo`), seu fato imutável
-(`example.echoed`) e uma leitura sem side effects (`example.echo.read`).
-
-## Estenda o Application Manifest
-
-Defina `service_id = "example.echo"` e substitua a capability por:
-
-```toml title="application.toml"
-[[capabilities]]
-id = "example.echo"
-version = "1"
-mode = "command"
-visibility = "local"
-requires_leader = false
-idempotency_required = true
-
-[[capabilities]]
-id = "example.echo.read"
-version = "1"
-mode = "query"
-visibility = "local"
-requires_leader = false
-idempotency_required = false
-```
-
-O manifest não declara `example.echoed` como capability invocável. Ele é um
-event produzido por comportamento de negócio aceito.
-
-## Registre o comportamento
-
-Substitua `src/main.rs` por:
+Implemente `Application` quando o comportamento de negócio precisar ser
+registrado. O SDK coleta registries validados sem construir infraestrutura.
 
 ```rust title="src/main.rs"
-use appcore_bin::application::{
-    ApiRequest, ApiResponse, ApiRouter, Application, CommandBus,
-    CommandEnvelope, CommandHandler, CommandName, CommandRegistry,
-    CommandResult, EventEnvelope, EventName, EventRegistry, QueryEndpoint,
-    QueryName, RuntimeContext, RuntimeResult,
+use appcore_sdk::application::{
+    CommandName, CommandRegistry, NodeId, RuntimeResult,
 };
+use appcore_sdk::{App, Application, AppResult};
 
-struct EchoApplication;
+struct ExampleApplication;
 
-impl Application for EchoApplication {
-    fn register_commands(&self, registry: &mut CommandRegistry) -> RuntimeResult<()> {
-        registry.register(CommandName::new("example.echo")?)
-    }
-
-    fn register_events(&self, registry: &mut EventRegistry) -> RuntimeResult<()> {
-        registry.register(EventName::new("example.echoed")?)
-    }
-
-    fn register_handlers(&self, bus: &mut CommandBus) -> RuntimeResult<()> {
-        bus.register_handler(EchoHandler)
-    }
-
-    fn register_queries(&self, router: &mut ApiRouter) -> RuntimeResult<()> {
-        router.register_query(EchoQuery)
-    }
-}
-
-struct EchoHandler;
-
-impl CommandHandler for EchoHandler {
-    fn command_name(&self) -> CommandName {
-        CommandName::new("example.echo").expect("static command name")
-    }
-
-    fn handle(
+impl Application for ExampleApplication {
+    fn register_commands(
         &self,
-        command: &CommandEnvelope,
-        _context: &dyn RuntimeContext,
-    ) -> RuntimeResult<CommandResult> {
-        let event = EventEnvelope::new(
-            EventName::new("example.echoed")?,
-            format!("event-{}", command.command_id),
-            command.app_id.clone(),
-            command.node_id.clone(),
-            command.issued_at_ms,
-            command.payload.clone(),
-        )?;
-        Ok(CommandResult::accepted(vec![event]))
+        registry: &mut CommandRegistry,
+    ) -> RuntimeResult<()> {
+        registry.register(CommandName::new("example.ping")?)
     }
 }
 
-struct EchoQuery;
+fn main() -> AppResult<()> {
+    let app = App::new("example-app")?;
+    let prepared = app.prepare(
+        &ExampleApplication,
+        NodeId::new("example-local")?,
+    )?;
 
-impl QueryEndpoint for EchoQuery {
-    fn query_name(&self) -> &QueryName {
-        static NAME: std::sync::OnceLock<QueryName> = std::sync::OnceLock::new();
-        NAME.get_or_init(|| {
-            QueryName::new("example.echo.read").expect("static query name")
-        })
-    }
-
-    fn handle_query(&self, request: ApiRequest) -> RuntimeResult<ApiResponse> {
-        Ok(ApiResponse {
-            status_code: 200,
-            payload: request.payload,
-        })
-    }
-}
-
-fn main() {
-    if let Err(error) =
-        appcore_bin::application::run_application(&EchoApplication)
-    {
-        eprintln!("application failed: {error}");
-        std::process::exit(1);
-    }
+    assert_eq!(prepared.runtime().commands().len(), 1);
+    Ok(())
 }
 ```
 
-Numa aplicação real, o handler valida e altera state de negócio e retorna fatos
-por `CommandResult`. A query não deve escrever estado.
+Use os outros hooks para eventos, estados, decisões, handlers, queries e
+tarefas. O executável de deployment consome os contratos preparados e controla
+providers, listeners, workers e shutdown.
 
-## Teste sem montar infraestrutura do Runtime
-
-Adicione uma dependência de desenvolvimento:
-
-```toml title="Cargo.toml"
-[dev-dependencies]
-serde_json = "1"
-```
-
-Acrescente este único teste round-trip a `src/main.rs`:
-
-```rust
-#[cfg(test)]
-mod tests {
-    use super::*;
-    use appcore_bin::application::{
-        CommandRequest, ManifestApplicationHost, QueryRequest,
-    };
-    use serde_json::json;
-    use std::path::Path;
-
-    #[test]
-    fn command_and_query_round_trip() {
-        let root = Path::new(env!("CARGO_MANIFEST_DIR"));
-        let host = ManifestApplicationHost::load(
-            root.join("application.toml"),
-            root.join("deployment.toml"),
-            &EchoApplication,
-        )
-        .expect("manifest-first host");
-
-        let missing_key = host.dispatch_command(CommandRequest {
-            command_name: "example.echo".to_string(),
-            command_id: "cmd-missing-key".to_string(),
-            idempotency_key: None,
-            payload: "hello".to_string(),
-        });
-        assert!(missing_key.is_err());
-
-        let result = host
-            .dispatch_command(CommandRequest {
-                command_name: "example.echo".to_string(),
-                command_id: "cmd-1".to_string(),
-                idempotency_key: Some("idem-1".to_string()),
-                payload: "hello".to_string(),
-            })
-            .expect("command dispatch");
-        assert!(result.is_accepted());
-        assert_eq!(result.events().len(), 1);
-        assert_eq!(host.audit_len(), 1);
-
-        let response = host
-            .dispatch_query(QueryRequest {
-                query_name: "example.echo.read".to_string(),
-                query_id: "query-1".to_string(),
-                payload: json!({"message": "hello"}),
-            })
-            .expect("query dispatch");
-        assert!(response.ok);
-        assert_eq!(response.payload, json!({"message": "hello"}));
-
-        host.shutdown().expect("clean shutdown");
-    }
-}
-```
-
-Com o secret estruturado do nível 1 ainda exportado:
-
-```bash
-cargo test
-```
-
-As rotas HTTP `/v1/command` e `/v1/query` também exigem tokens de menor
-privilégio emitidos pelo Runtime. O teste direto do host verifica o contrato da
-aplicação sem enfraquecer autenticação de transporte.
-
-Próximo: [registrar trabalho agendado e limitado](./scheduled-task).
+Próximo: [declare uma tarefa agendada](./scheduled-task).

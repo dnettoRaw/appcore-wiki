@@ -60,7 +60,7 @@ volume compartilhado e gravavel por todas as instancias Gateway.
 
 O parser aceita apenas essas quatro settings sem segredo. Endpoints,
 referencias de segredo, settings desconhecidas e overrides de autenticacao
-falham fechados. `appcore-bin` inclui e autoriza o descriptor do owner
+falham fechados. O executável de deployment inclui e autoriza o descriptor do owner
 `runtime.gateway` no catalogo compartilhado, reutiliza a seguranca do Runtime e
 registra a instancia como servico critico do Supervisor. Sem
 `adapters.gateway`, nao existe runtime, listener ou task de Gateway.

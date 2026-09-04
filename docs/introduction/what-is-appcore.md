@@ -32,12 +32,15 @@ flowchart TB
     Operator[Installer or operator] --> DeployManifest[Deployment Manifest]
     Runtime[AppCore Runtime] --> RuntimeManifest[Runtime Manifest]
 
-    AppManifest --> Host[appcore-bin host]
-    DeployManifest --> Host
-    Business --> Host
-    Host --> Providers[Selected providers]
-    Host --> Services[Supervised runtime services]
-    Host --> API[Command/query API]
+    AppManifest --> SDK[appcore-sdk]
+    DeployManifest --> SDK
+    Business --> SDK
+    SDK --> Prepared[Validated application registries]
+    DeployManifest --> Deployment[Deployment executable]
+    Prepared --> Deployment
+    Deployment --> Providers[Selected providers]
+    Deployment --> Services[Supervised runtime services]
+    Deployment --> API[Command/query API]
 ```
 
 The important part is ownership:
@@ -53,27 +56,31 @@ This is why AppCore documentation starts with manifests rather than crates.
 
 ## What runs when an AppCore app starts
 
-The executable calls `appcore_bin::application::run_application(&YourApplication)`. From there, the runtime owns bootstrap:
+Application code uses `App::prepare` to validate manifests and collect business
+registrations. The selected deployment executable then owns composition:
 
 ```mermaid
 sequenceDiagram
     participant Main as main()
-    participant Host as appcore-bin
+    participant SDK as appcore-sdk
     participant Contracts as appcore-contracts
     participant Providers as Provider plan
     participant Core as appcore-core
     participant Supervisor as appcore-supervisor
     participant App as Application
 
-    Main->>Host: run_application(application)
-    Host->>Contracts: load and validate application.toml
-    Host->>Contracts: load and validate deployment.toml
-    Host->>Providers: resolve explicit provider selections
-    Host->>App: configure(validated DeploymentContext)
-    Host->>Core: register commands, events, states, decisions
-    Host->>Supervisor: register selected runtime services
+    participant Deployment as Deployment executable
+
+    Main->>SDK: prepare(application, manifests)
+    SDK->>Contracts: validate application.toml
+    SDK->>Contracts: validate deployment.toml
+    SDK->>App: configure(validated DeploymentContext)
+    SDK->>Core: register commands, events, states, decisions
+    SDK-->>Deployment: prepared registries and callbacks
+    Deployment->>Providers: resolve explicit provider selections
+    Deployment->>Supervisor: register selected runtime services
     Supervisor->>Supervisor: start dependency order
-    Host-->>Main: run until shutdown or bootstrap failure
+    Deployment-->>Main: run until shutdown or bootstrap failure
 ```
 
 If the application manifest and deployment manifest do not refer to the same application identity, bootstrap fails. If a removed runtime configuration shape is supplied, bootstrap stops at the update wall with `NO MORE SUPPORTED PLEASE UPDATE`. If a selected provider is missing, bootstrap fails instead of silently falling back to another provider.

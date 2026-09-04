@@ -26,12 +26,15 @@ AppCore separa ownership:
 
 ```mermaid
 flowchart TB
-    App[Aplicação externa] --> Host[appcore-bin host]
-    Manifest[application.toml] --> Host
-    Deployment[deployment.toml] --> Host
-    Host --> Providers[Providers selecionados]
-    Host --> Services[Serviços supervisionados]
-    Host --> API[API command/query]
+    App[Aplicação externa] --> SDK[appcore-sdk]
+    Manifest[application.toml] --> SDK
+    Deployment[deployment.toml] --> SDK
+    SDK --> Prepared[Registros validados]
+    Prepared --> Executable[Executável de deployment]
+    Deployment --> Executable
+    Executable --> Providers[Providers selecionados]
+    Executable --> Services[Serviços supervisionados]
+    Executable --> API[API command/query]
 ```
 
 ## Quando usar

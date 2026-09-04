@@ -1,103 +1,28 @@
 ---
-title: 3. Tâche planifiée
+title: 3. Contrat de Tâche Planifiée
 sidebar_position: 3
 ---
 
-# 3. Tâche planifiée
+# 3. Contrat de Tâche Planifiée
 
-À ce niveau, l'application possède le callback, tandis qu'AppCore possède les
-workers du scheduler, la concurrence, le délai des retries, l'isolation des
-panics, l'annulation et le shutdown.
+Activez `scheduler` uniquement si l'application enregistre un travail local
+borné :
 
-## Déclarer le besoin
-
-Modifier la section scheduler de l'Application Manifest :
-
-```toml title="application.toml"
-[scheduler]
-required = true
-max_concurrency = 1
+```toml title="Cargo.toml"
+[dependencies]
+appcore-sdk = { version = "1.0.0-rc.1", features = ["scheduler"] }
 ```
 
-Si le manifest exige le scheduling mais que le code métier n'enregistre aucune
-tâche, le bootstrap échoue. L'incohérence inverse échoue également.
+Implémentez `Application::register_tasks` avec `ApplicationTaskRegistry`,
+`ScheduledTask`, `TaskSchedule` et une politique de retry explicite. Le callback
+effectue une unité de travail bornée et retourne un résultat contrôlé.
 
-## Enregistrer une tâche bornée
+L'application possède le callback et l'identité de tâche. Le déploiement
+possède workers, concurrence, retry, annulation, supervision et shutdown. Ne
+démarrez jamais un thread détaché ou une boucle infinie dans le callback.
 
-Ajouter ces imports à ceux de la façade application :
+Testez les identités dupliquées, intervalles nuls, retry idempotent, admission
+pendant le shutdown et échecs du callback. Les workflows durables restent hors
+du scheduler local au processus.
 
-```rust
-use appcore_bin::application::{
-    ApplicationTaskRegistry, RetryPolicy, ScheduledTask, TaskSchedule,
-};
-use std::time::Duration;
-```
-
-Puis ajouter cette méthode à `impl Application for EchoApplication` :
-
-```rust
-fn register_tasks(
-    &self,
-    registry: &mut ApplicationTaskRegistry,
-) -> RuntimeResult<()> {
-    registry.register(
-        ScheduledTask {
-            id: "example.maintenance".to_string(),
-            schedule: TaskSchedule::Interval {
-                every: Duration::from_secs(3_600),
-                start_at: None,
-            },
-            retry: RetryPolicy::default(),
-            priority: 1,
-            trace: None,
-        },
-        |_context| {
-            // Exécuter une unité bornée de travail appartenant à l'application.
-            Ok(())
-        },
-    )
-}
-```
-
-`RetryPolicy::default()` effectue une tentative. Utiliser une policy explicite
-lorsqu'un retry est sûr :
-
-```rust
-retry: RetryPolicy {
-    max_attempts: 3,
-    initial_backoff: Duration::from_secs(1),
-    max_backoff: Duration::from_secs(30),
-    multiplier: 2,
-    jitter: Duration::from_millis(250),
-},
-```
-
-Le callback retourne `Result<(), String>`. Il doit rester borné et coopératif ;
-ne pas y démarrer un thread détaché ni une boucle sans fin.
-
-## Vérifier la responsabilité du Runtime
-
-Le test manifest-first existant peut inspecter le rapport des services :
-
-```rust
-let report = host
-    .probe_services(Duration::from_secs(2))
-    .expect("service probe");
-assert!(report.scheduler_started);
-```
-
-Tester également :
-
-- `every = Duration::ZERO` est rejeté ;
-- les identifiants de tâche dupliqués sont rejetés ;
-- le travail retentable est idempotent ;
-- le shutdown empêche de nouvelles admissions ;
-- un échec du callback produit un échec de tâche contrôlé.
-
-## Ne pas l'utiliser comme moteur de workflow
-
-Le scheduler est local au processus. Les workflows durables en plusieurs
-étapes, les transactions inter-services et une queue distribuée restent hors
-de ce profil.
-
-Suite : [exécuter le même code métier en mode cluster](./standalone-to-cluster).
+Suite : [changer le déploiement sans changer le métier](./standalone-to-cluster).

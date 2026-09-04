@@ -5,7 +5,7 @@ sidebar_position: 2
 
 # Le contrat à trois artefacts
 
-L'objectif mesurable d'AppCore 1.0 est : une application tourne avec seulement `application.toml`, `deployment.toml` et du code métier implémentant `appcore_bin::application::Application`.
+L'objectif mesurable d'AppCore 1.0 est : une application tourne avec seulement `application.toml`, `deployment.toml` et du code métier implémentant `appcore_sdk::Application`.
 
 Ce contrat évite de mélanger identité applicative, politique d'installation et composition runtime dans le même fichier. Quand ces responsabilités se mélangent, chaque installation devient un fork implicite.
 
@@ -65,11 +65,18 @@ Les secrets sont des références. Les chemins relatifs sont résolus depuis le 
 Le code enregistre commands, events, states, decisions, handlers, queries et tasks. Il ne construit pas storage provider, listener HTTP, token provider, scheduler, sync ou supervisor.
 
 ```rust
-fn main() {
-    if let Err(error) = appcore_bin::application::run_application(&BackendApplication) {
-        eprintln!("application failed: {error}");
-        std::process::exit(1);
-    }
+use appcore_sdk::application::NodeId;
+use appcore_sdk::{App, AppResult};
+
+fn main() -> AppResult<()> {
+    let app = App::new("example-app")?;
+    let prepared = app.prepare(
+        &BackendApplication,
+        NodeId::new("example-local")?,
+    )?;
+
+    assert_eq!(prepared.runtime().commands().len(), 1);
+    Ok(())
 }
 ```
 

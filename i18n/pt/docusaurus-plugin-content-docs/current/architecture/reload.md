@@ -31,7 +31,7 @@ em drain.
 
 ## Ownership e limites
 
-`appcore-api` possui as gerações de routing. `appcore-bin` registra o owner como
+`appcore-api` possui as gerações de routing. O executável de deployment registra o owner como
 o serviço gerenciado `http` existente. O Supervisor atual continua sendo o
 único owner de lifecycle e restart de processo permanece externo.
 
@@ -56,7 +56,7 @@ certificado. Ele mantém o listener do Runtime estável e não cria um segundo
 caminho de routing no Runtime.
 
 O candidato atual `appcore-api 1.0.2-rc` implementa routing no mesmo listener, e
-o `appcore-bin` o compõe como o serviço HTTP supervisionado existente sobre um
+o executável de deployment o compõe como serviço HTTP supervisionado sobre um
 TCP listener pré-ligado. Composição com mudança de endereço, gatilho coordenado
 de configuração e certificação externa multiplataforma continuam como trabalho
 pós-GA. A API não está disponível no pacote estável `1.0.0`.

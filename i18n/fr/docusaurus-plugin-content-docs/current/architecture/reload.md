@@ -31,7 +31,7 @@ même slot borné en drain.
 
 ## Ownership et limites
 
-`appcore-api` possède les générations de routing. `appcore-bin` enregistre le
+`appcore-api` possède les générations de routing. L'exécutable de déploiement enregistre le
 owner comme service géré `http` existant. Le Supervisor actuel reste l'unique
 owner du lifecycle et le redémarrage du processus reste externe.
 
@@ -58,7 +58,7 @@ des certificats. Il garde le listener Runtime stable et ne crée pas un second
 chemin de routing Runtime.
 
 Le candidat actuel `appcore-api 1.0.2-rc` implémente le routing sur le même
-listener, et `appcore-bin` le compose comme le service HTTP supervisé existant
+listener, et l'exécutable de déploiement le compose comme service HTTP supervisé
 sur un listener TCP pré-lié. La composition avec changement d'adresse, le
 déclencheur coordonné de configuration et la certification externe
 multiplateforme restent des travaux post-GA. Cette API n'est pas disponible

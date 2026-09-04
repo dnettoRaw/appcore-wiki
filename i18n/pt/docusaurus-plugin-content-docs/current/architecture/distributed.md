@@ -49,7 +49,7 @@ ou redirecionados.
 Gateway existe para cores com conexão outbound mas sem porta inbound estável. Tokens de conexão são curtos, single-use e bound ao hash da conexão. Mesh relay valida que metadata externa combina com o envelope Peer RPC interno. O gateway nunca interpreta payload de negócio.
 
 A ativação é declarativa. Ao selecionar o adapter no Deployment Manifest, o
-`appcore-bin` valida a configuração, inclui e autoriza `runtime.gateway` no
+o executável de deployment valida a configuração, inclui e autoriza `runtime.gateway` no
 catálogo compartilhado, reutiliza a segurança do Runtime e registra o Gateway
 como serviço crítico do Supervisor:
 
