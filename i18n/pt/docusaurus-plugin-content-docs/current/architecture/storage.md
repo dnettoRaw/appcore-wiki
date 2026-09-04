@@ -177,4 +177,4 @@ coordenação distribuída uma escolha explícita.
 - DNT protege bytes e contexto autenticado; não define autorização de domínio.
 - Restore não desfaz ações externas executadas por handlers da aplicação.
 
-Próximo: [sync](/architecture/synchronization).
+Próximo: [sync](/pt/architecture/synchronization).

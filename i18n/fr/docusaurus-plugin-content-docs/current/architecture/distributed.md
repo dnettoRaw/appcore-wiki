@@ -159,4 +159,4 @@ incomplètes.
 - Gateway en cluster échoue fermé sans replay file partagé explicite.
 - Provider absent échoue le startup ; AppCore ne bascule pas vers une option plus faible.
 
-Suivant : [supervisor](/architecture/supervisor).
+Suivant : [supervisor](/fr/architecture/supervisor).

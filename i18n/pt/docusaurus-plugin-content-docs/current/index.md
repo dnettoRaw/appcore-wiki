@@ -9,20 +9,20 @@ AppCore é um runtime Rust para aplicações cuja infraestrutura precisa ser exp
 
 Leia como um livro técnico:
 
-1. [O que é AppCore](/introduction/what-is-appcore)
-2. [Contrato de três artefatos](/architecture/three-artifact-contract)
-3. [Bootstrap e runtime host](/architecture/bootstrap)
-4. [Storage, DNT, backup e restore](/architecture/storage)
-5. [Sync, logs, checkpoints e replay](/architecture/synchronization)
-6. [Operação distribuída](/architecture/distributed)
-7. [Supervisor e ciclo de vida](/architecture/supervisor)
-8. [Budgets de performance](/architecture/performance-budgets)
-9. [Updates](/architecture/updates)
-10. [Modelo de segurança](/security/security-model)
-11. [Primeira aplicação](/tutorials/first-application)
-12. [Exemplos do básico ao intermediário](/tutorials/examples/)
-13. [Referência dos crates estáveis e das prévias publicadas](/crates/)
-14. [Roadmap futuro](/roadmap/)
+1. [O que é AppCore](/pt/introduction/what-is-appcore)
+2. [Contrato de três artefatos](/pt/architecture/three-artifact-contract)
+3. [Bootstrap e runtime host](/pt/architecture/bootstrap)
+4. [Storage, DNT, backup e restore](/pt/architecture/storage)
+5. [Sync, logs, checkpoints e replay](/pt/architecture/synchronization)
+6. [Operação distribuída](/pt/architecture/distributed)
+7. [Supervisor e ciclo de vida](/pt/architecture/supervisor)
+8. [Budgets de performance](/pt/architecture/performance-budgets)
+9. [Updates](/pt/architecture/updates)
+10. [Modelo de segurança](/pt/security/security-model)
+11. [Primeira aplicação](/pt/tutorials/first-application)
+12. [Exemplos do básico ao intermediário](/pt/tutorials/examples/)
+13. [Referência dos crates estáveis e das prévias publicadas](/pt/crates/)
+14. [Roadmap futuro](/pt/roadmap/)
 
 Release estável: `1.0.0`. O catálogo atual do código-fonte contém 28 crates
 públicos ativos, com versões independentes e maturidade explícita. Toolchain
@@ -48,7 +48,7 @@ atual do Runtime. O trabalho em prerelease inclui
 é [appcore-ui](/pt/crates/appcore-ui). Áreas planejadas de
 alta prioridade incluem
 `appcore-test`, `appcore-jobs`, `appcore-search`, `appcore-automation` e
-`appcore-plugin`; veja o [Roadmap futuro](/roadmap/).
+`appcore-plugin`; veja o [Roadmap futuro](/pt/roadmap/).
 
 ## Limitações
 

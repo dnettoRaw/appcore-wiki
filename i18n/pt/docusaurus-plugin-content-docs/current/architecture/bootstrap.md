@@ -97,4 +97,4 @@ segurança código arbitrário dentro do processo.
 - Commands não declarados no manifest são rejeitados.
 - Update automático exige caminho supervisionado; execução direta não gerenciada rejeita esse modo.
 
-Próximo: [storage](/architecture/storage).
+Próximo: [storage](/pt/architecture/storage).

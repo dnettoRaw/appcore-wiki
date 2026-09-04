@@ -98,4 +98,4 @@ en sécurité du code arbitraire dans le processus.
 - Les commands non déclarées dans le manifest sont rejetées.
 - L'update automatique exige le chemin supervisé ; une exécution directe non managée rejette ce mode.
 
-Suivant : [storage](/architecture/storage).
+Suivant : [storage](/fr/architecture/storage).

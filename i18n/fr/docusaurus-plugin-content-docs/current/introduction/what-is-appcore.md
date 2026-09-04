@@ -121,4 +121,4 @@ non par une liste de crates.
 
 ## Lire ensuite
 
-Chapitre suivant : [contrat à trois artefacts](/architecture/three-artifact-contract).
+Chapitre suivant : [contrat à trois artefacts](/fr/architecture/three-artifact-contract).

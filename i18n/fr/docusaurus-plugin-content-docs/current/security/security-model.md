@@ -107,4 +107,4 @@ niveau est explicite.
 - L'autorisation métier appartient à l'application.
 - Un hôte compromis peut attaquer les fichiers locaux hors du processus AppCore.
 
-Suivant : [providers](/architecture/providers).
+Suivant : [providers](/fr/architecture/providers).

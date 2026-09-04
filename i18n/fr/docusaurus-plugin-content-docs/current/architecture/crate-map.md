@@ -56,7 +56,7 @@ invariants.
 ## Limitations
 
 - Cette carte explique l'ownership ; utiliser le
-  [catalogue des crates](/crates/) pour les APIs, limites, maturité et liens
+  [catalogue des crates](/fr/crates/) pour les APIs, limites, maturité et liens
   registry.
 - Les crates de tooling/certification peuvent ne pas faire partie de la surface applicative stable.
 - Les modules internes peuvent changer même lorsque manifests et facade publique restent compatibles.

@@ -94,4 +94,4 @@ exceto quando há reutilização idempotente com bytes exatamente iguais.
 - Rollback cobre o artifact store e activation state; não desfaz efeitos
   externos criados pela nova versão da aplicação.
 
-Continue com o [modelo de segurança](/security/security-model).
+Continue com o [modelo de segurança](/pt/security/security-model).

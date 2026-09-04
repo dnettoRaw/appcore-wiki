@@ -48,7 +48,7 @@ deployment sem alterar sua configuração declarada.
 A seleção de storage também executa preflight explícito de capacidades
 pós-1.0. Um descriptor limitado declara garantias exatas em vez de nomes de
 implementação; o provider selecionado deve satisfazer todos os requisitos antes
-de abrir. Veja [preflight de capacidades de storage](/architecture/storage-provider-capabilities).
+de abrir. Veja [preflight de capacidades de storage](/pt/architecture/storage-provider-capabilities).
 
 ## Para que serve o coordination store?
 
@@ -88,4 +88,4 @@ sozinhos.
 - Coordination store é infraestrutura do runtime, não database de aplicação.
 - Health de provider indica disponibilidade de infraestrutura, não correção de negócio.
 
-Próximo: [primeira aplicação](/tutorials/first-application).
+Próximo: [primeira aplicação](/pt/tutorials/first-application).

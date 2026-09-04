@@ -54,7 +54,7 @@ aleatórios não representam bem essas invariantes.
 
 ## Limitations
 
-- Este mapa explica ownership; use o [catálogo de crates](/crates/) para
+- Este mapa explica ownership; use o [catálogo de crates](/pt/crates/) para
   APIs, limites, maturidade e links do registry.
 - Crates de tooling/certificação podem não ser superfície estável de aplicação.
 - Módulos internos podem mudar mesmo quando manifests e facade pública continuam compatíveis.

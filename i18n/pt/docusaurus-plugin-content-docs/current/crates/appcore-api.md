@@ -108,6 +108,6 @@ preparada e não são inferidas.
 
 Esta API descreve apenas o status do source. Não presuma que ela esteja
 disponível no pacote estável `1.0.0` indicado acima. Veja
-[reload coordenado](/architecture/reload).
+[reload coordenado](/pt/architecture/reload).
 
 **Maturidade:** superfície HTTP V1 estrita e estável.

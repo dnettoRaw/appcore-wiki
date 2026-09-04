@@ -27,29 +27,29 @@ Runtime.
 
 | Componente | Status | Fronteira |
 | --- | --- | --- |
-| [appcore-ai](/crates/appcore-ai) | Beta | `0.1.0-beta.3` publicada para routing limitado, inferência local/remota, recursos, provenance, segurança e execução observável. |
-| [appcore-filemaker](/crates/appcore-filemaker) | Beta | `0.1.0-beta.1` publicada para compilação determinística de documentos, canvases vetoriais e datasets limitados. |
-| [appcore-filemaker-ai](/crates/appcore-filemaker-ai) | Beta | Bridge opcional e limitado `0.1.0-beta.1` publicado; IA permanece fora do compiler determinístico. |
-| [appcore-filemaker-cli](/crates/appcore-filemaker-cli) | Beta | Adapter de processo limitado `0.1.0-beta.1` publicado para compilação, diagnóstico e export explícito. |
+| [appcore-ai](/pt/crates/appcore-ai) | Beta | `0.1.0-beta.3` publicada para routing limitado, inferência local/remota, recursos, provenance, segurança e execução observável. |
+| [appcore-filemaker](/pt/crates/appcore-filemaker) | Beta | `0.1.0-beta.1` publicada para compilação determinística de documentos, canvases vetoriais e datasets limitados. |
+| [appcore-filemaker-ai](/pt/crates/appcore-filemaker-ai) | Beta | Bridge opcional e limitado `0.1.0-beta.1` publicado; IA permanece fora do compiler determinístico. |
+| [appcore-filemaker-cli](/pt/crates/appcore-filemaker-cli) | Beta | Adapter de processo limitado `0.1.0-beta.1` publicado para compilação, diagnóstico e export explícito. |
 
 ## RC
 
 | Componente | Status | Fronteira |
 | --- | --- | --- |
-| [appcore-log](/crates/appcore-log) | RC | Pipeline de logging estruturado e limitado `1.0.0-rc.1` publicado para componentes do Runtime e aplicações SDK. |
-| [appcore-sdk](/crates/appcore-sdk) | RC | Facade de aplicação manifest-first `1.0.0-rc.1` publicada, substituindo o `appcore-bin` aposentado. |
+| [appcore-log](/pt/crates/appcore-log) | RC | Pipeline de logging estruturado e limitado `1.0.0-rc.1` publicado para componentes do Runtime e aplicações SDK. |
+| [appcore-sdk](/pt/crates/appcore-sdk) | RC | Facade de aplicação manifest-first `1.0.0-rc.1` publicada, substituindo o `appcore-bin` aposentado. |
 
 ## Alpha
 
 | Componente | Status | Fronteira |
 | --- | --- | --- |
-| [appcore-sync-sqlite](/crates/appcore-sync-sqlite) | Alpha | `0.1.0-alpha.4` publicada para persistência opcional do estado de sync do Runtime. |
+| [appcore-sync-sqlite](/pt/crates/appcore-sync-sqlite) | Alpha | `0.1.0-alpha.4` publicada para persistência opcional do estado de sync do Runtime. |
 
 ## In Design
 
 | Componente | Status | Fronteira |
 | --- | --- | --- |
-| [appcore-ui](/crates/appcore-ui) | In Design | Fronteira de superfícies de UI para páginas HTML/TypeScript, views nativas Rust, lifecycle de janela, eventos, estado visual e futuro page builder. |
+| [appcore-ui](/pt/crates/appcore-ui) | In Design | Fronteira de superfícies de UI para páginas HTML/TypeScript, views nativas Rust, lifecycle de janela, eventos, estado visual e futuro page builder. |
 
 ## Alta Prioridade
 

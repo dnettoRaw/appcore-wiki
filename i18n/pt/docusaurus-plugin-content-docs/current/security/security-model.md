@@ -103,4 +103,4 @@ explícita.
 - Autorização de domínio pertence à aplicação.
 - Um host comprometido pode atacar arquivos locais fora do processo AppCore.
 
-Próximo: [providers](/architecture/providers).
+Próximo: [providers](/pt/architecture/providers).

@@ -120,4 +120,4 @@ por uma lista de crates.
 
 ## Leia depois
 
-Próximo capítulo: [contrato de três artefatos](/architecture/three-artifact-contract).
+Próximo capítulo: [contrato de três artefatos](/pt/architecture/three-artifact-contract).

@@ -155,4 +155,4 @@ aplicação possui a policy de conflito de negócio.
   fila durável vazia.
 - Partições de rede são tratadas de forma conservadora; writes que exigem liderança não prometem disponibilidade global contínua.
 
-Próximo: [operação distribuída](/architecture/distributed).
+Próximo: [operação distribuída](/pt/architecture/distributed).

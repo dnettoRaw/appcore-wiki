@@ -175,4 +175,4 @@ compatibilité d'AppCore.
 - Les handlers restent responsables de l'idempotency quand le manifest l'exige.
 - Les chemins privés de `RuntimeBuilder` restent hors contrat applicatif.
 
-Suivant : [bootstrap](/architecture/bootstrap).
+Suivant : [bootstrap](/fr/architecture/bootstrap).

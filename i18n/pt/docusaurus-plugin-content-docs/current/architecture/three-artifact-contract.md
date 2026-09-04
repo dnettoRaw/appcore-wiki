@@ -175,4 +175,4 @@ do AppCore.
 - Handlers continuam responsáveis por idempotência correta quando o manifest exige idempotency.
 - Caminhos privados de `RuntimeBuilder` ficam fora do contrato de aplicação.
 
-Próximo: [bootstrap](/architecture/bootstrap).
+Próximo: [bootstrap](/pt/architecture/bootstrap).

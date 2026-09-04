@@ -152,4 +152,4 @@ conservateur et l'application possède la policy des conflits métier.
   niveau et rollback exigent une file durable vide.
 - Les partitions réseau sont traitées prudemment ; les writes nécessitant leadership ne promettent pas disponibilité globale continue.
 
-Suivant : [fonctionnement distribué](/architecture/distributed).
+Suivant : [fonctionnement distribué](/fr/architecture/distributed).

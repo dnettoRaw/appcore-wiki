@@ -45,7 +45,7 @@ Une factory est enregistrée par role et provider ID. Si la paire sélectionnée
 La sélection storage exécute aussi un preflight explicite de capacités
 post-1.0. Un descriptor borné déclare des garanties exactes plutôt que des noms
 d'implémentation; le provider sélectionné doit satisfaire chaque exigence avant
-l'ouverture. Voir [preflight des capacités storage](/architecture/storage-provider-capabilities).
+l'ouverture. Voir [preflight des capacités storage](/fr/architecture/storage-provider-capabilities).
 
 ## À quoi sert le coordination store ?
 
@@ -85,4 +85,4 @@ n'empêche pas seul le split-brain.
 - Coordination store est infrastructure runtime, pas database applicative.
 - Health provider indique disponibilité d'infrastructure, pas correction métier.
 
-Suivant : [première application](/tutorials/first-application).
+Suivant : [première application](/fr/tutorials/first-application).

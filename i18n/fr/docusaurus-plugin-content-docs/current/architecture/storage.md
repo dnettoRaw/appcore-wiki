@@ -180,4 +180,4 @@ rend la coordination distribuée explicite.
 - DNT protège bytes et contexte authentifié ; il ne définit pas l'autorisation métier.
 - Restore n'annule pas les actions externes exécutées par les handlers applicatifs.
 
-Suivant : [sync](/architecture/synchronization).
+Suivant : [sync](/fr/architecture/synchronization).

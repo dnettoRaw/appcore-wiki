@@ -148,4 +148,4 @@ expiram em até 60 segundos e o shutdown limitado fecha conexões incompletas.
 - Gateway em cluster falha fechado sem replay file compartilhado explícito.
 - Provider ausente falha startup; AppCore não cai para opção mais fraca.
 
-Próximo: [supervisor](/architecture/supervisor).
+Próximo: [supervisor](/pt/architecture/supervisor).

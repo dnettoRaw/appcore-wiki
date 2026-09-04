@@ -97,4 +97,4 @@ d'installer des artefacts de build immuables. Les paths existants ne sont pas
 - Le rollback couvre l'artifact store et l'activation state ; il n'annule pas
   les effets externes créés par la nouvelle version applicative.
 
-Continuez avec le [modèle de sécurité](/security/security-model).
+Continuez avec le [modèle de sécurité](/fr/security/security-model).

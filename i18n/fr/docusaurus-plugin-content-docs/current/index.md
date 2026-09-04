@@ -9,20 +9,20 @@ AppCore est un runtime Rust pour les applications dont l'infrastructure doit êt
 
 Lire ce manuel comme un livre technique :
 
-1. [Ce qu'est AppCore](/introduction/what-is-appcore)
-2. [Le contrat à trois artefacts](/architecture/three-artifact-contract)
-3. [Bootstrap et runtime host](/architecture/bootstrap)
-4. [Storage, DNT, backup et restore](/architecture/storage)
-5. [Sync, logs, checkpoints et replay](/architecture/synchronization)
-6. [Fonctionnement distribué](/architecture/distributed)
-7. [Supervisor et cycle de vie](/architecture/supervisor)
-8. [Budgets de performance](/architecture/performance-budgets)
-9. [Updates](/architecture/updates)
-10. [Modèle de sécurité](/security/security-model)
-11. [Première application](/tutorials/first-application)
-12. [Exemples du niveau débutant à intermédiaire](/tutorials/examples/)
-13. [Référence des crates stables et des aperçus publiés](/crates/)
-14. [Roadmap future](/roadmap/)
+1. [Ce qu'est AppCore](/fr/introduction/what-is-appcore)
+2. [Le contrat à trois artefacts](/fr/architecture/three-artifact-contract)
+3. [Bootstrap et runtime host](/fr/architecture/bootstrap)
+4. [Storage, DNT, backup et restore](/fr/architecture/storage)
+5. [Sync, logs, checkpoints et replay](/fr/architecture/synchronization)
+6. [Fonctionnement distribué](/fr/architecture/distributed)
+7. [Supervisor et cycle de vie](/fr/architecture/supervisor)
+8. [Budgets de performance](/fr/architecture/performance-budgets)
+9. [Updates](/fr/architecture/updates)
+10. [Modèle de sécurité](/fr/security/security-model)
+11. [Première application](/fr/tutorials/first-application)
+12. [Exemples du niveau débutant à intermédiaire](/fr/tutorials/examples/)
+13. [Référence des crates stables et des aperçus publiés](/fr/crates/)
+14. [Roadmap future](/fr/roadmap/)
 
 Version stable : `1.0.0`. Le catalogue source courant contient 28 crates
 publics actifs, avec versions indépendantes et maturité explicite. Toolchain
@@ -46,7 +46,7 @@ Runtime courante. Le travail en prerelease comprend
 courant est [appcore-ui](/fr/crates/appcore-ui). Les zones
 planifiées en haute priorité
 incluent `appcore-test`, `appcore-jobs`, `appcore-search`,
-`appcore-automation` et `appcore-plugin` ; voir la [roadmap future](/roadmap/).
+`appcore-automation` et `appcore-plugin` ; voir la [roadmap future](/fr/roadmap/).
 
 ## Limites
 

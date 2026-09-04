@@ -116,4 +116,4 @@ pas le processus. Voir [reload coordonné](./reload).
 - L'ordre des dépendances évite les races connues, mais ne rend pas saine une
   dépendance unhealthy.
 
-Continuez avec [updates](/architecture/updates).
+Continuez avec [updates](/fr/architecture/updates).

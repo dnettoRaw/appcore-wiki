@@ -115,4 +115,4 @@ o processo. Veja [reload coordenado](./reload).
 - A ordem de dependências evita races conhecidas, mas não torna saudável uma
   dependência unhealthy.
 
-Continue com [updates](/architecture/updates).
+Continue com [updates](/pt/architecture/updates).
