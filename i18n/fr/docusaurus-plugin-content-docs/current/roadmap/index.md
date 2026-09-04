@@ -1,6 +1,6 @@
 ---
 title: Roadmap future
-description: Composants AppCore prévus ou en recherche qui ne font pas partie des 22 crates stables.
+description: Composants AppCore prévus ou en recherche qui ne font pas partie des 23 crates stables.
 sidebar_position: 1
 slug: /roadmap/
 ---
@@ -8,10 +8,10 @@ slug: /roadmap/
 # Roadmap future
 
 :::caution Composants futurs
-Cette roadmap sépare les prereleases et composants conceptuels des 22 crates
-publics stables. Les entrées Alpha ou Beta sont publiées mais restent opt-in ;
-les entrées prévues et de recherche ne doivent pas être utilisées comme
-dépendances.
+Cette roadmap sépare les prereleases et composants conceptuels des 23 crates
+publics stables. Les entrées Alpha ou Beta restent opt-in et leur page indique
+si elles sont publiées ; les entrées prévues et de recherche ne doivent pas
+être utilisées comme dépendances.
 :::
 
 AppCore garde la documentation stable du Runtime séparée du design futur. Les

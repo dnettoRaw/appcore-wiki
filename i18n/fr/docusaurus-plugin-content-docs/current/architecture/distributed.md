@@ -37,7 +37,7 @@ La sélection V2 est une décision de deployment explicite et coordonnée; les
 peers V1 ne sont ni mis à niveau ni redirigés.
 
 L'activation Gateway est déclarative. Quand le Deployment Manifest sélectionne
-l'adapter, `appcore-bin` valide la configuration, ajoute et autorise
+l'adapter, l'exécutable de déploiement valide la configuration, ajoute et autorise
 `runtime.gateway` dans le catalogue partagé, réutilise la sécurité Runtime et
 enregistre le Gateway comme service critique du Supervisor :
 

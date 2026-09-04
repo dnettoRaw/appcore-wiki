@@ -31,7 +31,7 @@ bounded retiring slot.
 
 ## Ownership and limits
 
-`appcore-api` owns routing generations. `appcore-bin` registers the owner as
+`appcore-api` owns routing generations. The deployment executable registers the owner as
 the existing `http` managed service. The existing Supervisor remains the only
 lifecycle owner and process restart stays external.
 
@@ -58,7 +58,7 @@ rotation. It keeps the Runtime listener stable and adds no second Runtime
 routing path.
 
 The current `appcore-api 1.0.2-rc` candidate implements same-listener routing,
-and `appcore-bin` composes it as the existing supervised HTTP service over a
+and the deployment executable composes it as the existing supervised HTTP service over a
 pre-bound TCP listener. Address-changing composition, a coordinated
 configuration trigger and external cross-platform certification remain post-GA
 work. This API is not available from the stable `1.0.0` package.

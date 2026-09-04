@@ -1,37 +1,21 @@
 ---
-title: Exemplos — do básico ao intermediário
+title: Exemplos — Básico ao Intermediário
 sidebar_position: 0
 slug: /tutorials/examples/
 ---
 
-# Exemplos — do básico ao intermediário
+# Exemplos — Básico ao Intermediário
 
-Esta trilha evolui uma única aplicação externa sem atravessar a fronteira do
-AppCore. Cada etapa mantém os três artefatos próprios da aplicação: Application
-Manifest, Deployment Manifest e código de negócio. A infraestrutura continua
-dentro de `appcore-bin`.
+Estes exemplos evoluem uma aplicação externa pela fachada atual
+`appcore-sdk`. Cada etapa mantém os três artefatos próprios: Application
+Manifest, Deployment Manifest e código de negócio.
 
-| Nível | Exemplo | Aprendizado principal |
+| Nível | Exemplo | Ideia principal |
 | --- | --- | --- |
-| 1 — Básico | [Ping standalone](./standalone-ping) | Instalar pelo crates.io, declarar um command e iniciar com segurança |
-| 2 — Básico+ | [Command, event e query](./command-event-query) | Aplicar o manifest, emitir um fato, adicionar leitura sem side effects e testar os dois caminhos |
-| 3 — Intermediário | [Task agendada](./scheduled-task) | Registrar trabalho limitado enquanto o Runtime controla workers e shutdown |
-| 4 — Intermediário | [De standalone para cluster](./standalone-to-cluster) | Manter o código de negócio e trocar infraestrutura pelo deployment |
+| 1 | [Menor aplicação local](./standalone-ping) | Validar manifests locais canônicos e logging |
+| 2 | [Registro da aplicação](./command-event-query) | Registrar contratos sem construir infraestrutura |
+| 3 | [Contrato de tarefa agendada](./scheduled-task) | Declarar trabalho limitado para o scheduler do deployment |
+| 4 | [Standalone para cluster](./standalone-to-cluster) | Manter o negócio enquanto a política de deployment muda |
 
-## Antes de começar
-
-- Instale Rust `1.89` ou mais recente.
-- Use AppCore `1.0.0`.
-- Mantenha secrets fora dos manifests.
-- Execute cada exemplo a partir da raiz do projeto.
-
-Os exemplos usam a facade pública `appcore_bin::application`. Eles não copiam
-`RuntimeBuilder`, não montam listener HTTP manualmente e não instanciam
-providers de storage ou security no código da aplicação.
-
-## O que estes exemplos não prometem
-
-File provider local, HTTP em loopback e coordenação file-backed são perfis de
-aprendizado e conformidade. Um deployment de produção ainda é responsável por
-TLS, gestão de secrets, garantias do filesystem, backup, capacidade e evidência
-dos providers operados.
+Comece com `appcore-sdk = "1.0.0-rc.1"` e ative somente as features usadas.
+Nenhum exemplo cria host implícito ou CLI do Runtime.

@@ -1,5 +1,36 @@
 // @ts-check
 
+const stableCrateIds = {
+  '/crates/appcore-args': 'acr-001',
+  '/crates/appcore-contracts': 'acr-002',
+  '/crates/appcore-types': 'acr-003',
+  '/crates/appcore-transport': 'acr-004',
+  '/crates/appcore-supervisor': 'acr-005',
+  '/crates/appcore-distributed-contracts': 'acr-006',
+  '/crates/appcore-dnt': 'acr-007',
+  '/crates/appcore-core': 'acr-008',
+  '/crates/appcore-api': 'acr-009',
+  '/crates/appcore-security': 'acr-010',
+  '/crates/appcore-storage': 'acr-011',
+  '/crates/appcore-sync': 'acr-012',
+  '/crates/appcore-ops': 'acr-013',
+  '/crates/appcore-scheduler': 'acr-014',
+  '/crates/appcore-control-plane': 'acr-015',
+  '/crates/appcore-capabilities': 'acr-016',
+  '/crates/appcore-peer-rpc': 'acr-017',
+  '/crates/appcore-gateway': 'acr-018',
+  '/crates/appcore-provider': 'acr-019',
+  '/crates/appcore-provider-vercel-neon': 'acr-020',
+  '/crates/appcore-update': 'acr-021',
+  '/crates/appcore-ai': 'acr-022',
+  '/crates/appcore-filemaker': 'acr-023',
+  '/crates/appcore-filemaker-ai': 'acr-024',
+  '/crates/appcore-filemaker-cli': 'acr-025',
+  '/crates/appcore-sync-sqlite': 'acr-026',
+  '/crates/appcore-log': 'acr-027',
+  '/crates/appcore-sdk': 'acr-028',
+};
+
 const config = {
   title: 'AppCore Runtime',
   tagline: 'Official technical documentation for the AppCore Runtime',
@@ -30,11 +61,15 @@ const config = {
       '@docusaurus/plugin-client-redirects',
       {
         createRedirects(existingPath) {
-          if (process.env.DOCUSAURUS_CURRENT_LOCALE !== 'en') {
-            return undefined;
+          const redirects = [];
+          const stableId = stableCrateIds[existingPath];
+          if (stableId) {
+            redirects.push(`/crates/id/${stableId}`);
           }
-
-          return existingPath === '/' ? '/en/' : `/en${existingPath}`;
+          if (process.env.DOCUSAURUS_CURRENT_LOCALE === 'en') {
+            redirects.push(existingPath === '/' ? '/en/' : `/en${existingPath}`);
+          }
+          return redirects.length === 0 ? undefined : redirects;
         },
       },
     ],

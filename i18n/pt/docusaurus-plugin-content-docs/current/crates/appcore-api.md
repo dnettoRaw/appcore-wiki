@@ -25,8 +25,8 @@ O repositório do Runtime mantém o [guia detalhado](https://github.com/dnettoRa
 de aplicação, verificação de token e view do sync log.
 
 Use para rotas do Runtime e queries registradas da aplicação. Não adicione
-resources REST de produto ou schemas de negócio. O host novo normalmente
-acessa pelo `appcore-bin`.
+resources REST de produto ou schemas de negócio. Aplicações usam os contratos
+pelo namespace `appcore-sdk/api`; o executável de deployment possui o host HTTP.
 
 Queries de aplicação são autorizadas pela policy de capability composta antes
 do router. Queries de status do Runtime permanecem fora do catálogo da

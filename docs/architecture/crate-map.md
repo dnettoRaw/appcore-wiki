@@ -7,18 +7,19 @@ sidebar_position: 12
 
 When a runtime grows, crate boundaries either explain the architecture or hide it. AppCore crates are split by ownership boundary, not by convenience.
 
-The stable `1.0.0` release contains 22 public crates, all published on
-crates.io. Every public crate owns independent SemVer even when several release
-numbers happen to align. The complete reference is available in the
-[crate catalog](/crates/).
+The current source catalog contains 28 active public crates. Every public crate
+owns independent SemVer even when several release numbers happen to align;
+source presence does not by itself claim registry publication. The complete
+reference and permanent IDs are in the [crate catalog](/crates/).
 
 | Layer | Crates | Why it exists |
 | --- | --- | --- |
 | Standalone foundations | `appcore-args`, `appcore-supervisor`, `appcore-transport` | independently versioned reusable components with no AppCore dependencies |
 | Contracts | `appcore-contracts`, `appcore-types`, `appcore-distributed-contracts`, `appcore-provider` | manifests, validated identities, wire contracts, and provider composition contracts |
-| Runtime | `appcore-core`, `appcore-dnt`, `appcore-security`, `appcore-storage`, `appcore-sync`, `appcore-ops`, `appcore-scheduler`, `appcore-control-plane`, `appcore-capabilities`, `appcore-peer-rpc`, `appcore-api`, `appcore-update` | Runtime behavior and infrastructure, each with an explicit ownership boundary |
-| Integrations | `appcore-gateway`, `appcore-provider-vercel-neon` | externally operated transport/provider integrations |
-| Composition | `appcore-bin` | the only crate allowed to compose concrete runtime infrastructure for applications |
+| Runtime | `appcore-core`, `appcore-dnt`, `appcore-security`, `appcore-storage`, `appcore-sync`, `appcore-ops`, `appcore-log`, `appcore-scheduler`, `appcore-control-plane`, `appcore-capabilities`, `appcore-peer-rpc`, `appcore-api`, `appcore-update`, `appcore-ai`, `appcore-filemaker` | Runtime behavior and infrastructure, each with an explicit ownership boundary |
+| Integrations | `appcore-gateway`, `appcore-provider-vercel-neon`, `appcore-sync-sqlite` | externally operated or optional infrastructure integrations |
+| Adapters | `appcore-filemaker-ai`, `appcore-filemaker-cli` | optional model and process adapters around the deterministic FileMaker core |
+| Facade | `appcore-sdk` | application contracts and opt-in namespaces without implicit host composition |
 | Tools | `appcore-dev`, `runtime-console`, certification tools | development, operator, and release evidence workflows; not public Runtime crates |
 
 All public packages are independently versioned. Standalone foundations also
@@ -31,7 +32,10 @@ The architecture rule is acyclic dependency direction. Contracts do not depend o
 
 ## How should you read this map?
 
-Start from the host and move downward. `appcore-bin` composes concrete runtime infrastructure. It depends on contracts, providers, core services, and lifecycle tools. Application code should stop at the public facade instead of importing private host internals.
+Start with `appcore-sdk` for business code, then move to an owning crate only
+when its lower-level contract is required. A deployment process composes
+providers, services, listeners, and process lifecycle explicitly; the SDK does
+not hide that host inside the application library.
 
 If a crate owns a wire format or manifest type, treat it as compatibility-sensitive. If it owns a provider implementation, treat it as deployment-sensitive. If it owns business registration facades, treat it as application-facing.
 

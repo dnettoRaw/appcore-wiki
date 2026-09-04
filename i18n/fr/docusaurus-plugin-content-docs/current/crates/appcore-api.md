@@ -25,8 +25,8 @@ Le dépôt Runtime maintient le [guide détaillé](https://github.com/dnettoRaw/
 applicatives, vérification token et vue du sync log.
 
 À utiliser pour les routes Runtime et queries applicatives enregistrées. Ne pas
-ajouter resources REST produit ou schémas métier. Le nouveau host l'utilise via
-`appcore-bin`.
+ajouter resources REST produit ou schémas métier. Les applications utilisent
+les contrats via `appcore-sdk/api` ; l'exécutable de déploiement possède le host HTTP.
 
 Les queries applicatives sont autorisées par la policy capability composée
 avant le router. Les queries de statut Runtime restent hors du catalogue

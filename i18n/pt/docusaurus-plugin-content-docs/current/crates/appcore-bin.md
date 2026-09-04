@@ -1,114 +1,26 @@
 ---
-title: appcore-bin
+title: appcore-bin (aposentado)
 sidebar_position: 22
 ---
 
-# appcore-bin
+# appcore-bin foi aposentado
 
-:::info Pacote publicado
-Estável **`1.0.0`** · MSRV **Rust `1.89`** · [crates.io](https://crates.io/crates/appcore-bin/1.0.0) · [docs.rs](https://docs.rs/crate/appcore-bin/1.0.0) · [código-fonte](https://github.com/dnettoRaw/AppCore-Runtime/tree/v1.0.0/crates/appcore-bin)
+:::danger Não use em aplicações novas
+`appcore-bin` foi removido do workspace do Runtime. Seu pacote final no
+crates.io, [`1.0.1`](https://crates.io/crates/appcore-bin/1.0.1), é um aviso de
+aposentadoria sem dependências e não oferece executável, host, CLI, camada de
+compatibilidade ou comportamento do Runtime. Todas as versões funcionais
+anteriores estão yanked.
 :::
 
-## Guia e exemplos mantidos pelo crate
+Use [`appcore-sdk 1.0.0-rc.1`](https://crates.io/crates/appcore-sdk/1.0.0-rc.1)
+para contratos da aplicação, manifests canônicos, registros, logging e
+namespaces opcionais de capabilities.
 
-O repositório do Runtime mantém o [guia detalhado](https://github.com/dnettoRaw/AppCore-Runtime/blob/v1.0.0/crates/appcore-bin/wiki/guide.pt.md), [exemplo básico](https://github.com/dnettoRaw/AppCore-Runtime/blob/v1.0.0/crates/appcore-bin/wiki/examples/basic.pt.md) e [exemplo intermediário](https://github.com/dnettoRaw/AppCore-Runtime/blob/v1.0.0/crates/appcore-bin/wiki/examples/intermediate.pt.md). O wiki resume a fronteira pública; detalhes de API e execução ficam junto ao código do crate.
+Aplicações existentes mantêm `application.toml`, `deployment.toml` e o código
+de negócio. Troque imports de `appcore_bin` por `appcore_sdk`; o executável de
+deployment continua responsável por providers, listeners, workers, sinais e
+shutdown.
 
-**Responsabilidade:** facade manifest-first, CLI e composition root.
-
-**Dependências internas:** todos os crates de serviço/composição.
-
-**API de aplicação:** `Application`, `run_application`,
-`ManifestApplicationHost`, `ApplicationServiceReport`, `DeploymentContext`,
-volumes/environment resolvidos e `ApplicationTaskRegistry`.
-
-**API de host:** bootstrap/config errors/results, CLI, paths/lifecycle local,
-server entry points, build info e ferramentas opcionais de auth-server.
-
-Referências de secret `file:` do deployment aplicam teto de 64 KiB mais um byte
-sentinela para crescimento concorrente. Bytes rejeitados são limpos, e o
-whitespace aceito é removido na mesma alocação antes de movê-la para seu owner
-redacted e zeroizing.
-
-O marker `auth-required` usa um buffer fixo de 1.025 bytes na stack. Ele aceita
-no máximo 1 KiB e falha fechado em crescimento, UTF-8 inválido, arquivo não
-regular e symlink, sem alocar o marker completo no heap.
-
-`appcore-bin export --out CAMINHO` dimensiona o pretty JSON de diagnóstico sob
-um teto de 64 MiB antes de criar a saída. Depois, serializa com buffer fixo de
-64 KiB e snapshot de auditoria imutável compartilhado, sem um `Vec` do resultado
-completo nem clone profundo da lista. Falha de serialização ou escrita remove o
-novo arquivo incompleto e um caminho existente nunca é sobrescrito.
-
-Os diagnósticos expõem pressão de `audit_memory`, `event_bus`,
-`observation_memory` e `metric_memory` com bytes atuais, de pico e máximos,
-além de evictions ou rejeições de admissão. A exportação de observações e
-métricas começa por snapshots imutáveis compartilhados, não por clones
-profundos dos históricos. Esses contadores não contêm mensagens de auditoria
-nem payloads opacos.
-
-Os dois binários processam entrada UTF-8 limitada por `appcore-args`. Ajuda,
-validação e completion dinâmica para Bash, Zsh, Fish e PowerShell compartilham
-uma especificação declarativa; a execução permanece neste crate.
-
-O manifesto distribuído final alimenta um único catálogo de
-`appcore-capabilities` durante o bootstrap. Facade direta, HTTP de aplicação e
-peer RPC usam o mesmo owner para enforcement de declaração, mode,
-idempotência, escrita operacional e liderança. O dispatch de command peer move
-a alocação do payload V1 validado para `CommandEnvelope`, sem clone do body
-completo da aplicação. Queries de status do Runtime
-permanecem comportamento explícito do host.
-
-Na linha de manutenção 1.0 atual, handlers da facade direta, HTTP de aplicação
-e peer RPC executam sem manter o mutex compartilhado do host. Comandos
-independentes avançam em paralelo; a reserva idempotente permanece serializada
-por store. `shutdown()` fecha a admissão, drena comandos admitidos por no
-máximo 30 segundos e só então conclui o lifecycle. Testes embutidos podem
-escolher um limite menor com `shutdown_with_timeout`.
-O registro de queries de aplicação é congelado após o bootstrap; queries
-diretas, HTTP e peer RPC clonam o router imutável e executam sem o mutex do host.
-
-Selecionar `[adapters.gateway]` com provider `appcore-gateway` e a fronteira
-declarativa de ativacao do Gateway. O bootstrap faz parse pela crate owner,
-inclui e autoriza `runtime.gateway` no catalogo compartilhado, reutiliza a
-seguranca do Runtime e registra o servico no Supervisor. Falha de configuracao
-ou bind aborta o startup; a ausencia nao cria listener nem task de Gateway.
-`ApplicationServiceReport` expoe started, state e bind seguros, e o shutdown
-do host faz join de todo o trabalho possuido pelo Gateway. O replay store e
-seguro entre processos; cluster exige `paths.gateway_replay` absoluto em volume
-compartilhado e gravavel. O shutdown fecha conexoes incompletas antes do prazo.
-
-É a dependência recomendada para aplicações. Possui carregamento de manifests,
-providers, lifecycle, HTTP, sync, peer RPC, control plane, Gateway, scheduling,
-supervision, updates e shutdown.
-
-Aplicações usam o módulo público `application` e evitam internals.
-
-A AC-023 mediu o consumer mínimo empacotado e manteve esse ownership combinado
-de facade/composição para 1.x. Consulte a
-[decisão de ownership da facade](/architecture/appcore-bin-facade).
-
-## `1.0.2-rc`: geração HTTP supervisionada
-
-O candidato `1.0.2-rc` compõe o listener HTTP por uma geração de
-`ReloadableRuntimeHttpHost` registrada como o serviço gerenciado `http`
-existente. O Supervisor global continua como único owner do lifecycle; não há
-Supervisor aninhado nem worker de reload destacado. Rotas estáveis e o caminho
-1.0 de `RuntimeHttpHost` continuam inalterados.
-
-Essa integração estabelece prepare, troca atômica, drain limitado e rollback no
-mesmo listener. Ela não observa manifests V1 nem liga outro endereço
-silenciosamente. Veja [reload coordenado](/architecture/reload).
-
-## Integração AI experimental disponível no código-fonte
-
-O workspace de desenvolvimento atual possui a feature opt-in `ai-alpha`, que
-**não faz parte do artifact `appcore-bin 1.0.0` publicado**. Ela anexa um
-`appcore_ai::AiRuntime` já configurado por `AppCoreAiComponent` e
-`ManifestApplicationHost::with_ai`. O Supervisor existente possui health
-required/optional, cancelamento e shutdown limitado.
-
-Essa bridge programática não altera manifests V1. Ela pertence à linha de
-release beta independente [`appcore-ai 0.1.0-beta.3`](./appcore-ai); seleção
-declarativa exige contrato versionado pós-1.0 e uma release AppCore publicável.
-
-**Maturidade:** facade manifest-first estável; internals são detalhes.
+Releases históricas de `appcore-bin` permanecem apenas como evidência no
+registro. Elas não são a API atual de aplicações AppCore.

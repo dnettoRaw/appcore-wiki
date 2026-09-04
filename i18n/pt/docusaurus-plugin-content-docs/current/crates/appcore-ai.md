@@ -247,20 +247,18 @@ um `ModelDescriptor` pronto para o registry. Isso não é fine-tuning de LLM.
 
 ## Integração com uma aplicação
 
-A feature `appcore-bin/ai-alpha` envolve um `AiRuntime` já configurado em
-`AppCoreAiComponent`. O Supervisor existente possui startup required/optional,
-health, bloqueio de admission, cancelamento e shutdown limitado:
+A feature `appcore-sdk/ai` expõe os contratos neutros de backend para a
+aplicação. O deployment configura `AiRuntime` e possui startup
+required/optional, health, bloqueio de admission, cancelamento e shutdown:
 
 ```rust
-let component = Arc::new(AppCoreAiComponent::new(Arc::new(ai_runtime), false)?);
-let ai = component.facade();
-let business = MinhaAplicacao::new(ai);
-ManifestApplicationHost::load("application.toml", "deployment.toml", &business)?
-    .with_ai(component)
-    .run()?;
+use appcore_sdk::ai::{AiRequest, AiTask};
+
+let request = AiRequest::new(AiTask::Chat, "Resuma esta entrada limitada")?;
+let response = ai_runtime.execute(request)?;
 ```
 
-Use `required = true` para falhar startup sem modelo/backend utilizável. Expor
+A policy de deployment falha o startup sem modelo/backend obrigatório. Expor
 `appcore.ai.resolve` por `appcore-capabilities` exige `AiCapabilityCodec`
 limitado e explícito. A seleção declarativa aguarda contrato versionado pós-1.0.
 

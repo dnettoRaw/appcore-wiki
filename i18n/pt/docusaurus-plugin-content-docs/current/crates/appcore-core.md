@@ -77,8 +77,8 @@ não mudam. Uma carga real de fsync com 3 MiB reduziu o RSS pico de 8,11 para
 5,08 MiB (-37,38%) e a memória retida em 48,00%, com p50 dominado por disco
 dentro de +0,95%.
 
-Aplicações novas usam re-exports de `appcore_bin::application`; não montam o
-core manualmente. Mantenha I/O adapters e comportamento de domínio fora.
+Aplicações novas usam esses contratos por `appcore_sdk`; não montam o core
+manualmente. Mantenha I/O adapters e comportamento de domínio fora.
 
 **Maturidade:** superfície low-level estável; builder/plugin são de
 compatibilidade e manifest-first é o caminho preferido.

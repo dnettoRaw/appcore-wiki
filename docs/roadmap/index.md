@@ -1,6 +1,6 @@
 ---
 title: Future Roadmap
-description: Planned and research AppCore components that are not part of the 22 stable crates.
+description: Planned and research AppCore components that are not part of the 23 stable crates.
 sidebar_position: 1
 slug: /roadmap/
 ---
@@ -8,9 +8,10 @@ slug: /roadmap/
 # Future Roadmap
 
 :::caution Future components
-This roadmap separates prereleases and conceptual components from the 22
-stable public crates. Entries marked Alpha or Beta are published but remain
-opt-in; planned and research entries should not be used as dependencies.
+This roadmap separates prereleases and conceptual components from the 23
+stable public crates. Alpha or Beta entries remain opt-in and their individual
+pages state whether they are published; planned and research entries should not
+be used as dependencies.
 :::
 
 AppCore keeps stable Runtime documentation separate from future design work.

@@ -45,17 +45,19 @@ const stableCrates = [
   'appcore-provider',
   'appcore-provider-vercel-neon',
   'appcore-update',
-  'appcore-bin',
+  'appcore-ai',
+  'appcore-filemaker',
+  'appcore-filemaker-ai',
+  'appcore-filemaker-cli',
+  'appcore-sync-sqlite',
+  'appcore-log',
+  'appcore-sdk',
 ];
 
 const futureRoadmap = [
   'roadmap/index',
   'architecture/future-architecture',
-  'crates/appcore-ai',
-  'crates/appcore-filemaker',
   'crates/appcore-filemaker-yaml',
-  'crates/appcore-filemaker-ai',
-  'crates/appcore-filemaker-cli',
   'crates/appcore-ui',
 ];
 
@@ -72,9 +74,13 @@ module.exports = {
     'architecture/crate-map',
     {
       type: 'category',
-      label: 'Crate reference — 22 stable',
+      label: 'Crate reference — 28 active',
       collapsed: true,
-      items: ['crates/index', ...stableCrates.map((crate) => `crates/${crate}`)],
+      items: [
+        'crates/index',
+        'crates/registry',
+        ...stableCrates.map((crate) => `crates/${crate}`),
+      ],
     },
     {
       type: 'category',

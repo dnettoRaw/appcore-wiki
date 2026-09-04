@@ -24,14 +24,12 @@ Lire ce manuel comme un livre technique :
 13. [Référence des crates stables et des aperçus publiés](/crates/)
 14. [Roadmap future](/roadmap/)
 
-Version stable : `1.0.0`. Les 22 crates publics sont disponibles sur crates.io.
-Toolchain Rust minimale : `1.89`. Une application doit normalement dépendre de
-`appcore-bin@1.0.0` et utiliser sa façade `application`.
-
-Prereleases publiées : `appcore-ai 0.1.0-beta.3`, le graphe Runtime en
-`2.0.0-alpha.1`, `appcore-transport 1.1.0-alpha.1` et l'intégration facultative
-`appcore-sync-sqlite 0.1.0-alpha.2`. Aucune ne modifie le contrat de manifest
-V1 stable.
+Version stable : `1.0.0`. Le catalogue source courant contient 28 crates
+publics actifs, avec versions indépendantes et maturité explicite. Toolchain
+Rust minimale : `1.89`. Le nouveau code applicatif commence par
+[`appcore-sdk`](/fr/crates/appcore-sdk) ; les crates de niveau inférieur restent
+disponibles lorsque leur contrat doit être utilisé directement. Consultez la
+page de chaque crate avant de supposer qu’une prerelease source est publiée.
 
 Le V1 stable est une promesse de compatibilité, pas un gel fonctionnel de tout
 le dépôt. AppCore peut continuer à ajouter des capacités Runtime génériques et
@@ -40,11 +38,12 @@ un contrat incompatible exige une nouvelle version explicite.
 
 ## Et Ensuite
 
-La roadmap future suit le travail prévu sans le mélanger à la référence stable
-du Runtime. Les aperçus publiés actuels sont
-[appcore-ai](/crates/appcore-ai) et
-[appcore-sync-sqlite](/crates/appcore-sync-sqlite) ; l'aperçu en design actuel
-est [appcore-ui](/crates/appcore-ui). Les zones
+La roadmap future suit le travail prévu sans le mélanger à la référence
+Runtime courante. Le travail en prerelease comprend
+[appcore-ai](/fr/crates/appcore-ai),
+[appcore-filemaker](/fr/crates/appcore-filemaker) et
+[appcore-sync-sqlite](/fr/crates/appcore-sync-sqlite) ; l’aperçu en design
+courant est [appcore-ui](/fr/crates/appcore-ui). Les zones
 planifiées en haute priorité
 incluent `appcore-test`, `appcore-jobs`, `appcore-search`,
 `appcore-automation` et `appcore-plugin` ; voir la [roadmap future](/roadmap/).

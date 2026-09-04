@@ -24,14 +24,12 @@ This manual is written as a technical book. Read the chapters in order if you ar
 13. [Reference for the stable crates and published previews](/crates/)
 14. [Future roadmap](/roadmap/)
 
-Stable release: `1.0.0`. All 22 public crates are available on crates.io.
-Minimum Rust toolchain: `1.89`. Applications should normally depend on
-`appcore-bin@1.0.0` and use its `application` facade.
-
-Published prereleases: `appcore-ai 0.1.0-beta.3`, the Runtime graph at
-`2.0.0-alpha.1`, `appcore-transport 1.1.0-alpha.1`, and the optional
-`appcore-sync-sqlite 0.1.0-alpha.2` integration. None changes the stable V1
-manifest contract.
+Stable release: `1.0.0`. The current source catalog contains 28 active public
+crates with independent versions and explicit maturity. Minimum Rust
+toolchain: `1.89`. New application code starts with
+[`appcore-sdk`](/crates/appcore-sdk); lower-level crates remain available when
+their owning contract is needed directly. Consult each crate page before
+assuming that a source prerelease has been published.
 
 Stable V1 is a compatibility promise, not a repository-wide feature freeze.
 AppCore may continue to add generic Runtime capabilities and independently
@@ -40,9 +38,10 @@ contracts require a new explicit version.
 
 ## What's Next
 
-The future roadmap tracks planned work without mixing it into the stable
-Runtime reference. The current published previews are
-[appcore-ai](/crates/appcore-ai) and
+The future roadmap tracks planned work without mixing it into the current
+Runtime reference. Current prerelease work includes
+[appcore-ai](/crates/appcore-ai),
+[appcore-filemaker](/crates/appcore-filemaker), and
 [appcore-sync-sqlite](/crates/appcore-sync-sqlite); the current design preview
 is [appcore-ui](/crates/appcore-ui).
 High-priority planned areas include

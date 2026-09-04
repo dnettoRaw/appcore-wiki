@@ -7,18 +7,19 @@ sidebar_position: 12
 
 Quando um runtime cresce, os limites entre crates precisam explicar a arquitetura. No AppCore eles seguem ownership, não conveniência.
 
-A release estável `1.0.0` contém 22 crates públicos, todos publicados no
-crates.io. Cada crate público possui SemVer independente, mesmo quando vários
-números de versão coincidem. A referência individual está no
-[catálogo de crates](/crates/).
+O catálogo atual do código-fonte contém 28 crates públicos ativos. Cada crate
+possui SemVer independente, mesmo quando vários números coincidem; existir no
+código-fonte não afirma, por si só, publicação no registry. A referência e os
+IDs permanentes estão no [catálogo de crates](/pt/crates/).
 
 | Camada | Crates | Por que existe |
 | --- | --- | --- |
 | Fundações standalone | `appcore-args`, `appcore-supervisor`, `appcore-transport` | componentes reutilizáveis e versionados independentemente, sem dependências AppCore |
 | Contratos | `appcore-contracts`, `appcore-types`, `appcore-distributed-contracts`, `appcore-provider` | manifests, identidades validadas, contratos wire e composição de providers |
-| Runtime | `appcore-core`, `appcore-dnt`, `appcore-security`, `appcore-storage`, `appcore-sync`, `appcore-ops`, `appcore-scheduler`, `appcore-control-plane`, `appcore-capabilities`, `appcore-peer-rpc`, `appcore-api`, `appcore-update` | comportamento e infraestrutura do Runtime com fronteiras explícitas |
-| Integrações | `appcore-gateway`, `appcore-provider-vercel-neon` | integrações de transport e provider operadas externamente |
-| Composição | `appcore-bin` | único crate autorizado a compor infraestrutura concreta para aplicações |
+| Runtime | `appcore-core`, `appcore-dnt`, `appcore-security`, `appcore-storage`, `appcore-sync`, `appcore-ops`, `appcore-log`, `appcore-scheduler`, `appcore-control-plane`, `appcore-capabilities`, `appcore-peer-rpc`, `appcore-api`, `appcore-update`, `appcore-ai`, `appcore-filemaker` | comportamento e infraestrutura do Runtime com fronteiras explícitas |
+| Integrações | `appcore-gateway`, `appcore-provider-vercel-neon`, `appcore-sync-sqlite` | integrações externas ou opcionais de infraestrutura |
+| Adapters | `appcore-filemaker-ai`, `appcore-filemaker-cli` | adapters opcionais de modelo e processo ao redor do core FileMaker determinístico |
+| Facade | `appcore-sdk` | contratos de aplicação e namespaces opt-in sem composição implícita do host |
 | Ferramentas | `appcore-dev`, `runtime-console`, ferramentas de certificação | desenvolvimento, operação e evidência de release; não são crates públicos |
 
 Todos os pacotes públicos são versionados separadamente. As fundações
@@ -26,7 +27,10 @@ standalone também continuam reutilizáveis sem dependências AppCore.
 `appcore-supervisor` gerencia serviços em processo sem depender do dispatch de
 commands; `appcore-args` faz parsing de CLI sem executar comandos do Runtime.
 
-`appcore-bin` é o único composition root concreto para aplicações. Contratos não dependem de implementações, e código de negócio não deve importar módulos privados do host.
+Comece por `appcore-sdk` no código de negócio e desça para um crate owner
+somente quando precisar diretamente do contrato de nível inferior. O processo
+de deployment compõe providers, serviços, listeners e ciclo de vida
+explicitamente; o SDK não esconde esse host dentro da biblioteca da aplicação.
 
 ## Testes de fuzz
 

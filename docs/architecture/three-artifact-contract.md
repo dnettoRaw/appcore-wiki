@@ -9,7 +9,7 @@ The measurable goal of AppCore 1.0 is simple: a new application runs by supplyin
 
 1. `application.toml`
 2. `deployment.toml`
-3. business code implementing `appcore_bin::application::Application`
+3. business code implementing `appcore_sdk::Application`
 
 Everything else is runtime infrastructure.
 
@@ -108,10 +108,11 @@ Application code implements the public `Application` trait. The runtime calls it
 The public contract has this intended shape:
 
 ```rust
-use appcore_bin::application::{
+use appcore_sdk::application::{
     Application, CommandBus, CommandEnvelope, CommandHandler, CommandName,
-    CommandRegistry, CommandResult, RuntimeContext, RuntimeResult,
+    CommandRegistry, CommandResult, NodeId, RuntimeContext, RuntimeResult,
 };
+use appcore_sdk::{App, AppResult};
 
 struct BackendApplication;
 
@@ -141,15 +142,21 @@ impl CommandHandler for PingHandler {
     }
 }
 
-fn main() {
-    if let Err(error) = appcore_bin::application::run_application(&BackendApplication) {
-        eprintln!("application failed: {error}");
-        std::process::exit(1);
-    }
+fn main() -> AppResult<()> {
+    let app = App::new("example-app")?;
+    let prepared = app.prepare(
+        &BackendApplication,
+        NodeId::new("example-local")?,
+    )?;
+
+    assert_eq!(prepared.runtime().commands().len(), 1);
+    Ok(())
 }
 ```
 
-Notice what is absent: no storage provider construction, no HTTP listener construction, no token provider wiring, no scheduler thread, no sync service, and no supervisor graph. That belongs to the host.
+Notice what is absent: no storage provider construction, HTTP listener, token
+provider wiring, scheduler thread, sync service, or supervisor graph. Those
+belong to the deployment executable.
 
 ## The forbidden fourth artifact
 
@@ -167,4 +174,4 @@ The same business code can move from local standalone mode to a cluster by chang
 - Business code must still implement correct idempotent handlers where the manifest requires idempotency.
 - Private runtime builder paths are intentionally outside the application contract.
 
-Continue with [bootstrap and runtime host](/architecture/bootstrap).
+Continue with [bootstrap and deployment composition](/architecture/bootstrap).

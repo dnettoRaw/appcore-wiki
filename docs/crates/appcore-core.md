@@ -74,8 +74,8 @@ owned APIs, snapshot JSON and the V1 journal format do not change. A real-fsync
 3 MiB workload reduced peak RSS from 8.11 to 5.08 MiB (-37.38%) and retained
 workload memory by 48.00%, with disk-dominated p50 within +0.95%.
 
-New applications consume these re-exports through
-`appcore_bin::application`; they do not assemble the core manually. Keep I/O
+New applications consume these contracts through `appcore_sdk`; they do not
+assemble the core manually. Keep I/O
 adapters and domain behavior outside this crate.
 
 **Maturity:** stable low-level surface; builder/plugin APIs are compatibility

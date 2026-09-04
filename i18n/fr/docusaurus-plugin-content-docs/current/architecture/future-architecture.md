@@ -8,7 +8,7 @@ sidebar_position: 12
 
 :::caution Roadmap conceptuelle
 Cette page décrit des idées d'architecture future. Elle ne modifie **pas**
-l'architecture Runtime actuelle, le graphe stable des crates ni les 22 crates
+l'architecture Runtime actuelle, le graphe stable des crates ni les 23 crates stables
 publics disponibles aujourd'hui.
 :::
 

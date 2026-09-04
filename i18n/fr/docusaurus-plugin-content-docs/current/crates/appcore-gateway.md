@@ -60,7 +60,7 @@ partage et inscriptible par toutes les instances Gateway.
 
 Le parser accepte uniquement ces quatre settings non secretes. Les endpoints,
 references de secret, settings inconnues et overrides d'authentification
-echouent fermes. `appcore-bin` ajoute et autorise le descriptor owner
+echouent fermes. L'exécutable de déploiement ajoute et autorise le descriptor owner
 `runtime.gateway` dans le catalogue partage, reutilise la securite du Runtime
 et enregistre l'instance comme service critique du Supervisor. Sans
 `adapters.gateway`, aucun runtime, listener ou task Gateway n'existe.

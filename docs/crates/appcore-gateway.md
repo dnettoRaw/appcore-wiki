@@ -58,7 +58,7 @@ a writable volume shared by every Gateway instance.
 
 The parser accepts only those four non-secret settings. Endpoints, secret
 references, unknown settings and authentication overrides fail closed.
-`appcore-bin` adds and authorizes the owner descriptor `runtime.gateway` in the
+The deployment executable adds and authorizes the owner descriptor `runtime.gateway` in the
 shared capability catalog, reuses Runtime security and registers the instance
 as a critical Supervisor-managed service. Without `adapters.gateway`, it
 creates no Gateway runtime, listener or task.
