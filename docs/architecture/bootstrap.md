@@ -1,94 +1,67 @@
 ---
-title: Bootstrap and Runtime Host
+title: Bootstrap and deployment composition
 sidebar_position: 3
 ---
 
-# Bootstrap and Runtime Host
+# Bootstrap and deployment composition
 
-Bootstrap is where AppCore turns files and application code into a running runtime. It is also the first trust boundary. Before an HTTP listener, sync receiver, scheduler, or application handler exists, the host must decide whether this installation is coherent enough to run.
+The SDK prepares application behavior; it does not provide a Runtime process
+host or CLI. Process composition belongs to the deployment.
 
-The code path is intentionally narrow: `run_application` reads the standard manifest paths or the `APPCORE_APPLICATION_MANIFEST` and `APPCORE_DEPLOYMENT_MANIFEST` overrides, then creates a `ManifestApplicationHost`.
+## Local context and preparation
 
-## Why does bootstrap fail early?
+`App::new` constructs validated canonical V1 manifests in memory.
+`appcore_sdk::run` creates that context and invokes a closure; it does not read
+manifest files or start listeners, storage, sync or cluster services.
+Explicit manifests replace defaults through validated SDK methods.
 
-The runtime resolves both manifest paths with canonical filesystem paths and parses TOML into versioned manifest contracts. It then checks that both manifests refer to the same application ID.
+`App::prepare` registers application behavior and returns `PreparedApplication`.
+Core registries and callbacks are owned by the prepared value. With `api`,
+queries are registered into a frozen router; with `scheduler`, tasks are
+collected into a bounded registry. Preparation is not service startup.
 
-Each Application or Deployment Manifest file is limited to 1 MiB. The host
-checks metadata before allocation and reads through `Take(limit + 1)`, so an
-oversized or concurrently growing file and invalid UTF-8 fail closed before
-provider composition starts.
+## Validate before starting services
 
-Removed configuration shapes fail before the runtime attempts compatibility conversion:
+A deployment that loads files must bound reads before allocation, validate
+UTF-8 and versioned schemas, and ensure application/deployment identities agree.
+A 1 MiB file budget with a `Take(limit + 1)` reader is a useful explicit
+deployment policy, not an automatic SDK filesystem guarantee. Never infer or
+convert removed unversioned inputs; rejected removed contracts use
+`NO MORE SUPPORTED PLEASE UPDATE`.
 
-- a file named `runtime.toml`;
-- old inputs containing `app_id` without `manifest_version`.
+Resolve provider descriptors, secret references and installation bindings
+before opening services. Reject unknown providers and insufficient guarantees
+without fallback. Application configuration consumes validated
+`DeploymentContext`; infrastructure composition stays outside business hooks.
 
-The error text is intentionally direct: `NO MORE SUPPORTED PLEASE UPDATE`.
+## Connect the prepared application
 
-Failing early keeps invalid installations from half-starting services. A process that starts storage but not security, or API but not provider selection, is harder to diagnose than a process that refuses to boot with one explicit error.
+The deployment chooses listeners, authentication, payload budgets, token and
+idempotency TTLs, sync/cluster policies and Supervisor configuration. Merely
+declaring a provider ID in a manifest does not instantiate its implementation.
 
-## How do manifests become runtime config?
+Compose a shared `CapabilityCatalog` for application HTTP, direct invocation
+and Peer RPC where those paths are enabled. Enforce declaration, invocation
+mode, idempotency, operational write policy and leadership before handlers.
+Create local capability registrations only for real handlers. The SDK does
+not automatically wire this catalog into every transport.
 
-The host derives a `RuntimeConfig` from the two manifests:
+## Startup and shutdown
 
-- application ID becomes runtime app identity;
-- installation ID becomes cluster/sync grouping material;
-- runtime node/core/instance IDs are runtime-owned derived IDs;
-- API listener comes from the first deployment listen address;
-- cluster mode enables sync defaults;
-- API payloads default to a bounded size;
-- token TTL and idempotency TTL are runtime policy values;
-- supervisor watchdog settings come from deployment policy.
+Register selected managed services with the Supervisor, declare dependencies,
+and prove readiness with bounded probes. Deployment owns signals, process
+restart and update activation/rollback. Shutdown is cooperative; quarantine
+does not safely kill arbitrary Rust threads. Test real startup, degraded mode
+and shutdown independently of preparation tests.
 
-Then deployment-specific settings are applied. The application never receives a raw deployment manifest and starts wiring providers itself; it receives a `DeploymentContext` with validated installation bindings.
+HTTP routing generations are opt-in primitives: [coordinated reload](./reload)
+does not watch manifests or change listener addresses automatically.
 
-## What does the application get to configure?
+## Evidence and limits
 
-Once manifests and provider context are valid, the host asks the business implementation to register behavior:
+SDK consumer tests prove manifests, registration and dispatch within their
+tested scope, not a production cluster or a hidden host. External deployments
+must supply service-manager, network, recovery and resource evidence. No
+provider inference, silent fallback or compatibility parser is implied.
 
-```mermaid
-flowchart TD
-    Load[Load manifests] --> Context[Resolve DeploymentContext]
-    Context --> Configure[Application.configure]
-    Configure --> Plugin[ManifestApplicationPlugin]
-    Plugin --> Bootstrap[bootstrap_runtime_from_manifest]
-    Bootstrap --> Queries[Build query router]
-    Queries --> Tasks[Build task registry]
-    Tasks --> Validate[Validate business contract]
-    Validate --> Run[Run selected runtime services]
-```
-
-Command dispatch is still guarded by the manifest. If the request names a capability that was not declared, the runtime rejects it. If a declared command requires an idempotency key and the request does not include one, the runtime rejects it before handler execution.
-
-That order is important. Application code can register commands, queries, handlers, states, decisions, and tasks, but it does not choose undeclared capabilities after deployment validation. The manifest remains the contract that outside tools can inspect.
-
-The final distributed manifest produces one `CapabilityCatalog` during
-bootstrap. Direct facade calls, application HTTP, and Peer RPC use this same
-catalog for declaration, mode, idempotency, operational-write, and leadership
-checks. A `CapabilityRegistry` is created only for a real local handler;
-Runtime-owned status queries remain explicit host behavior.
-
-## When do runtime services start?
-
-The host may start HTTP, sync receiver, peer RPC, control-plane worker, scheduler, update service, and other infrastructure depending on deployment mode and manifest requirements. These services are registered with the supervisor rather than started as detached threads.
-
-The host exposes a probe path used by tests and certification: it starts selected services, waits for readiness up to a timeout, then gracefully shuts down and reports which services were observed.
-
-The `appcore-api 1.0.2-rc` candidate also has an opt-in routing-generation boundary for the HTTP
-service. It prepares and health-checks a newer Router before one atomic switch,
-then drains requests already admitted by the old generation. This is not an
-implicit V1 manifest watcher. See [coordinated reload](./reload).
-
-## What does shutdown mean?
-
-Shutdown is not a process kill. The host asks the runtime lifecycle to move through shutdown-requested and shutdown-completed states. Service shutdown remains cooperative. The supervisor can quarantine a service that does not stop, but it does not safely terminate arbitrary user code inside the process.
-
-## Limitations
-
-- Bootstrap does not infer providers or silently fall back to a different infrastructure choice.
-- It does not migrate old unversioned inputs.
-- It does not start business tasks outside runtime scheduling.
-- It does not accept undeclared commands.
-- It does not own process restart. If automatic updates are enabled, process-supervisor integration is required; direct unmanaged execution rejects that mode.
-
-Continue with [storage, DNT, backup, and restore](/architecture/storage).
+Continue with [storage](/architecture/storage).

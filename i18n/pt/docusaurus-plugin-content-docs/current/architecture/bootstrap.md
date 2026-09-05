@@ -1,100 +1,67 @@
 ---
-title: Bootstrap e runtime host
+title: Bootstrap e composição do deployment
 sidebar_position: 3
 ---
 
-# Bootstrap e runtime host
+# Bootstrap e composição do deployment
 
-Bootstrap começa em `run_application`. O host lê `application.toml` e `deployment.toml` ou os overrides `APPCORE_APPLICATION_MANIFEST` e `APPCORE_DEPLOYMENT_MANIFEST`, valida os manifests e cria o `ManifestApplicationHost`.
+O SDK prepara comportamento da aplicação; não fornece host de processo Runtime
+nem CLI. A composição do processo pertence ao deployment.
 
-Essa também é a primeira fronteira de confiança. Antes de existir listener
-HTTP, receiver de sync, scheduler ou handler da aplicação, o host decide se a
-instalação é coerente o bastante para executar.
+## Contexto local e preparação
 
-## Por que o bootstrap falha cedo?
+`App::new` constrói manifests V1 canônicos validados em memória.
+`appcore_sdk::run` cria esse contexto e chama uma closure; não lê arquivos de
+manifest nem inicia listeners, storage, sync ou cluster. Manifests explícitos
+substituem defaults pelos métodos validados do SDK.
 
-Os paths são canonicalizados, TOML é parseado para contratos versionados e os dois manifests precisam ter o mesmo `application_id`. Entradas removidas, como `runtime.toml` ou configs antigas com `app_id` sem `manifest_version`, falham com `NO MORE SUPPORTED PLEASE UPDATE`.
+`App::prepare` registra comportamento e retorna `PreparedApplication`.
+O valor preparado possui registries Core e callbacks. Com `api`, queries são
+registradas num router congelado; com `scheduler`, tasks são coletadas num
+registry limitado. Preparação não é startup de serviços.
 
-Cada arquivo de Application ou Deployment Manifest tem teto de 1 MiB. O host
-verifica metadata antes de alocar e lê por `Take(limit + 1)`; arquivo acima do
-teto, crescendo durante a leitura ou com UTF-8 inválido falha fechado antes da
-composição de providers.
+## Validar antes de iniciar serviços
 
-Entradas removidas falham antes de qualquer conversão de compatibilidade.
+O deployment que lê arquivos deve limitar a leitura antes da alocação, validar
+UTF-8 e schemas versionados e conferir a identidade da aplicação nos manifests.
+Um teto de 1 MiB com leitor `Take(limit + 1)` é uma política explícita útil do
+deployment, não uma garantia automática de filesystem do SDK. Não infira nem
+converta entradas removidas sem versão; contratos removidos rejeitados usam
+`NO MORE SUPPORTED PLEASE UPDATE`.
 
-- arquivo chamado `runtime.toml`;
-- input antigo contendo `app_id` sem `manifest_version`.
+Resolva descriptors de providers, referências de segredo e bindings antes de
+abrir serviços. Rejeite providers desconhecidos e garantias insuficientes, sem
+fallback. A configuração da aplicação recebe `DeploymentContext` validado;
+composição de infraestrutura fica fora dos hooks de negócio.
 
-Falhar cedo impede que uma instalação inválida inicie apenas parte de seus
-serviços e termine em um estado mais difícil de diagnosticar.
+## Conectar a aplicação preparada
 
-## Como os manifests se tornam configuração do Runtime?
+O deployment escolhe listeners, autenticação, budgets de payload, TTLs de token
+e idempotência, políticas de sync/cluster e configuração do Supervisor.
+Declarar um provider ID no manifest não instancia sua implementação.
 
-O Runtime deriva `RuntimeConfig`:
+Componha um `CapabilityCatalog` compartilhado para HTTP, chamadas diretas e
+Peer RPC quando habilitados. Confira declaração, mode, idempotência, escrita
+operacional e liderança antes dos handlers. Registre capabilities locais
+somente para handlers reais. O SDK não conecta automaticamente esse catálogo
+a todos os transportes.
 
-- application ID vira a identidade da aplicação;
-- installation ID participa do agrupamento de cluster e sync;
-- IDs de node, core e instance são derivados pelo Runtime;
-- o listener da API vem do primeiro endereço do deployment;
-- cluster mode habilita defaults de sync;
-- payloads da API possuem tamanho default limitado;
-- TTLs de token e idempotência são policy do Runtime;
-- configuração do watchdog vem da policy do deployment.
+## Startup e shutdown
 
-## O que a aplicação pode configurar?
+Registre serviços gerenciados no Supervisor, declare dependências e comprove
+readiness por probes limitados. Deployment controla sinais, restart e
+ativação/rollback de updates. Shutdown é cooperativo; quarantine não mata
+threads Rust arbitrárias com segurança. Teste startup real, degradação e
+shutdown separadamente dos testes de preparação.
 
-```mermaid
-flowchart TD
-    Load[Carregar manifests] --> Context[Resolver DeploymentContext]
-    Context --> Configure[Application.configure]
-    Configure --> Plugin[ManifestApplicationPlugin]
-    Plugin --> Bootstrap[bootstrap_runtime_from_manifest]
-    Bootstrap --> Query[Query router]
-    Query --> Tasks[Task registry]
-    Tasks --> Validate[Validar contrato de negócio]
-    Validate --> Run[Rodar serviços selecionados]
-```
+Gerações de routing HTTP são primitivas opt-in: [reload coordenado](./reload)
+não monitora manifests nem troca endereços de listeners automaticamente.
 
-Commands continuam protegidos pelo manifest. Capability ausente falha. Command que exige idempotency key falha antes do handler se a chave não vier.
+## Evidência e limites
 
-O manifest distribuído final produz um único `CapabilityCatalog` no bootstrap.
-Facade direta, HTTP da aplicação e Peer RPC usam esse mesmo catálogo para
-validar declaração, mode, idempotência, escrita operacional e liderança. Um
-`CapabilityRegistry` só existe quando há handler local real; queries de status
-do Runtime continuam comportamento explícito do host.
-
-A ordem importa. A aplicação recebe `DeploymentContext` com bindings validados,
-não o manifest bruto para conectar providers por conta própria. Ela pode
-registrar commands, queries, handlers, states, decisions e tasks, mas não pode
-escolher uma capability não declarada depois da validação. O manifest continua
-sendo o contrato inspecionável por ferramentas externas.
-
-## Quando os serviços do Runtime iniciam?
-
-O host pode iniciar HTTP, receiver de sync, Peer RPC, worker de control plane,
-scheduler, serviço de update e outras infraestruturas conforme o modo e os
-requisitos. Esses serviços são registrados no Supervisor, não iniciados como
-threads soltas. Um probe de certificação inicia os serviços selecionados,
-espera readiness com timeout e encerra tudo de forma cooperativa.
-
-O candidato `appcore-api 1.0.2-rc` também possui uma fronteira opt-in de geração de routing
-para o serviço HTTP. Ela prepara e verifica um Router mais novo antes de uma
-troca atômica e depois drena requests já admitidos pela geração antiga. Isso não
-é um watcher implícito de manifest V1. Veja [reload coordenado](./reload).
-
-## O que shutdown significa?
-
-Shutdown não é matar o processo. O host move o lifecycle pelos estados de
-shutdown solicitado e concluído. O encerramento é cooperativo; o Supervisor
-pode colocar um serviço que não para em quarantine, mas não pode encerrar com
-segurança código arbitrário dentro do processo.
-
-## Limitações
-
-- Bootstrap não infere providers nem aplica fallback silencioso.
-- Config antiga sem versão não é convertida.
-- Tasks de negócio não são iniciadas fora do scheduler do runtime.
-- Commands não declarados no manifest são rejeitados.
-- Update automático exige caminho supervisionado; execução direta não gerenciada rejeita esse modo.
+Testes consumidores SDK provam manifests, registro e dispatch no escopo
+testado, não cluster de produção ou host oculto. Deployments externos devem
+fornecer evidência de service manager, rede, recuperação e recursos. Não há
+inferência de providers, fallback silencioso ou parser de compatibilidade.
 
 Próximo: [storage](/pt/architecture/storage).

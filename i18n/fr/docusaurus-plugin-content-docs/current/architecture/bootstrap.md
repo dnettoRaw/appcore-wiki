@@ -1,101 +1,68 @@
 ---
-title: Bootstrap et runtime host
+title: Bootstrap et composition du deployment
 sidebar_position: 3
 ---
 
-# Bootstrap et runtime host
+# Bootstrap et composition du deployment
 
-Bootstrap commence dans `run_application`. C'est la première frontière de confiance : avant API, sync receiver ou handler applicatif, le host décide si l'installation est cohérente.
+Le SDK prépare le comportement applicatif ; il ne fournit ni host de processus
+Runtime ni CLI. La composition du processus appartient au deployment.
 
-Le host lit `application.toml` et `deployment.toml` ou les overrides `APPCORE_APPLICATION_MANIFEST` et `APPCORE_DEPLOYMENT_MANIFEST`, valide les manifests et crée `ManifestApplicationHost`.
+## Contexte local et préparation
 
-Avant qu'existent listener HTTP, receiver sync, scheduler ou handler
-applicatif, le host décide si l'installation est assez cohérente pour
-s'exécuter.
+`App::new` construit des manifests V1 canoniques validés en mémoire.
+`appcore_sdk::run` crée ce contexte et appelle une closure ; il ne lit pas de
+fichiers de manifest et ne démarre ni listeners, ni storage, sync ou cluster.
+Les manifests explicites remplacent les defaults via les méthodes validées.
 
-Les chemins sont canonicalisés, le TOML est parsé dans des contrats versionnés et les deux manifests doivent partager le même `application_id`. Les entrées supprimées, comme `runtime.toml` ou les configs anciennes avec `app_id` sans `manifest_version`, échouent avec `NO MORE SUPPORTED PLEASE UPDATE`.
+`App::prepare` enregistre le comportement et retourne `PreparedApplication`.
+Cette valeur possède les registries Core et callbacks. Avec `api`, les queries
+sont enregistrées dans un router figé ; avec `scheduler`, les tasks sont
+collectées dans un registry borné. Préparer n'est pas démarrer des services.
 
-## Pourquoi le bootstrap échoue-t-il tôt ?
+## Valider avant de démarrer les services
 
-Chaque fichier Application ou Deployment Manifest est limité à 1 Mio. Le host
-vérifie les metadata avant l'allocation et lit via `Take(limit + 1)` ; un
-fichier trop grand, en croissance concurrente ou avec un UTF-8 invalide échoue
-fermé avant la composition des providers.
+Un deployment qui lit des fichiers doit borner la lecture avant allocation,
+valider UTF-8 et les schemas versionnés, puis vérifier l'identité applicative
+des manifests. Un budget de 1 Mio avec `Take(limit + 1)` est une politique
+explicite utile du deployment, pas une garantie automatique du filesystem SDK.
+Ne pas inférer ni convertir les anciennes entrées supprimées ; les contrats
+supprimés rejetés utilisent `NO MORE SUPPORTED PLEASE UPDATE`.
 
-Les entrées supprimées échouent avant toute conversion de compatibilité.
+Résoudre descriptors, références de secrets et bindings avant les services.
+Rejeter les providers inconnus et garanties insuffisantes sans fallback.
+La configuration applicative reçoit un `DeploymentContext` validé ; la
+composition de l'infrastructure reste hors des hooks métier.
 
-- fichier nommé `runtime.toml` ;
-- ancien input contenant `app_id` sans `manifest_version`.
+## Connecter l'application préparée
 
-Cet échec précoce évite qu'une installation invalide ne démarre qu'une partie de
-ses services et n'atteigne un état plus difficile à diagnostiquer.
+Le deployment choisit listeners, authentification, budgets de payload, TTL des
+tokens et d'idempotence, politiques sync/cluster et configuration Supervisor.
+Déclarer un provider ID dans un manifest n'instancie pas son implémentation.
 
-## Comment les manifests deviennent-ils une configuration Runtime ?
+Composer un `CapabilityCatalog` partagé pour HTTP, appels directs et Peer RPC
+lorsqu'ils sont activés. Vérifier déclaration, mode, idempotence, politique
+d'écriture et leadership avant les handlers. Enregistrer des capabilities
+locales uniquement pour de vrais handlers. Le SDK ne connecte pas
+automatiquement ce catalogue à tous les transports.
 
-Le Runtime dérive `RuntimeConfig` :
+## Startup et shutdown
 
-- application ID devient l'identité de l'application ;
-- installation ID participe au regroupement cluster et sync ;
-- les IDs node, core et instance sont dérivés par le Runtime ;
-- le listener API vient de la première adresse du deployment ;
-- cluster mode active les defaults sync ;
-- les payloads API ont une taille default bornée ;
-- les TTL de token et d'idempotence relèvent de la policy Runtime ;
-- la configuration du watchdog vient de la policy du deployment.
+Enregistrer les services gérés auprès du Supervisor, déclarer les dépendances
+et prouver readiness avec des probes bornés. Le deployment possède signaux,
+restart et activation/rollback des updates. Le shutdown est coopératif ; la
+quarantine ne termine pas sûrement des threads Rust arbitraires. Tester startup
+réel, dégradation et shutdown séparément de la préparation.
 
-## Que peut configurer l'application ?
+Les générations HTTP sont des primitives opt-in : le [reload coordonné](./reload)
+ne surveille pas les manifests et ne change pas automatiquement les listeners.
 
-```mermaid
-flowchart TD
-    Load[Charger manifests] --> Context[Résoudre DeploymentContext]
-    Context --> Configure[Application.configure]
-    Configure --> Plugin[ManifestApplicationPlugin]
-    Plugin --> Bootstrap[bootstrap_runtime_from_manifest]
-    Bootstrap --> Query[Query router]
-    Query --> Tasks[Task registry]
-    Tasks --> Validate[Valider contrat métier]
-    Validate --> Run[Lancer services sélectionnés]
-```
+## Preuves et limites
 
-Les commands restent protégées par le manifest. Capability absente échoue. Command exigeant une idempotency key échoue avant le handler si la clé manque.
-
-Le manifest distribué final produit un seul `CapabilityCatalog` au bootstrap.
-La façade directe, le HTTP applicatif et le Peer RPC utilisent ce même
-catalogue pour contrôler déclaration, mode, idempotence, écriture
-opérationnelle et leadership. Un `CapabilityRegistry` n'existe qu'avec un vrai
-handler local ; les queries de statut Runtime restent explicites dans le host.
-
-L'application reçoit un `DeploymentContext` aux bindings validés, pas le
-manifest brut pour connecter elle-même les providers. Elle enregistre le
-comportement déclaré sans pouvoir choisir ensuite une capability absente.
-
-## Quand les services Runtime démarrent-ils ?
-
-Le host peut démarrer HTTP, receiver sync, Peer RPC, worker control plane,
-scheduler, service d'update et d'autres infrastructures selon le mode et les
-exigences. Ces services sont enregistrés auprès du Supervisor, pas lancés sous
-forme de threads détachés. Un probe de certification démarre les services
-choisis, attend leur readiness avec timeout puis les arrête coopérativement.
-
-Le candidat `appcore-api 1.0.2-rc` possède aussi une frontière opt-in de génération de routing
-pour le service HTTP. Elle prépare et vérifie un Router plus récent avant une
-commutation atomique, puis draine les requêtes déjà admises par l'ancienne
-génération. Ce n'est pas un watcher implicite du manifest V1. Voir
-[reload coordonné](./reload).
-
-## Que signifie le shutdown ?
-
-Le shutdown ne tue pas le processus. Le host fait passer le lifecycle par les
-états shutdown demandé et terminé. L'arrêt est coopératif ; le Supervisor peut
-mettre en quarantine un service qui ne s'arrête pas, mais ne peut pas terminer
-en sécurité du code arbitraire dans le processus.
-
-## Limites
-
-- Bootstrap n'infère pas les providers et ne fait pas de fallback silencieux.
-- Les anciennes configs non versionnées ne sont pas converties.
-- Les tasks métier ne démarrent pas hors scheduler runtime.
-- Les commands non déclarées dans le manifest sont rejetées.
-- L'update automatique exige le chemin supervisé ; une exécution directe non managée rejette ce mode.
+Les tests consommateurs SDK prouvent manifests, enregistrement et dispatch
+dans leur périmètre, pas un cluster de production ni un host caché. Les
+deployments externes doivent fournir des preuves pour service manager, réseau,
+récupération et ressources. Aucune inférence de providers, aucun fallback
+silencieux ni parser de compatibilité n'est implicite.
 
 Suivant : [storage](/fr/architecture/storage).
