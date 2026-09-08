@@ -9,7 +9,7 @@ Ative `scheduler` apenas quando a aplicação registrar trabalho local limitado:
 
 ```toml title="Cargo.toml"
 [dependencies]
-appcore-sdk = { version = "1.0.0-rc.1", features = ["scheduler"] }
+appcore-sdk = { version = "1.0.0-rc.2", features = ["scheduler"] }
 ```
 
 Implemente `Application::register_tasks` com `ApplicationTaskRegistry`,

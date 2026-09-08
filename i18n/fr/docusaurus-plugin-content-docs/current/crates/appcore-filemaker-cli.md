@@ -4,9 +4,9 @@ title: appcore-filemaker-cli — 0.1 beta
 
 # appcore-filemaker-cli
 
-> **BETA PÚBLICA** — `0.1.0-beta.1` est publiée sur crates.io pour évaluation.
+> **BÊTA PUBLIQUE** — `0.1.0-beta.2` est publiée sur crates.io pour évaluation.
 
-`appcore-filemaker-cli 0.1.0-beta.1` est l'adaptateur de processus borné de
+`appcore-filemaker-cli 0.1.0-beta.2` est l'adaptateur de processus borné de
 `appcore-filemaker`. Il est publié sur crates.io comme prerelease beta.
 
 La commande choisit le format d'export ; le YAML du template ne le choisit

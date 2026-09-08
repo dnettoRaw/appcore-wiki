@@ -4,9 +4,9 @@ title: appcore-filemaker-cli — 0.1 beta
 
 # appcore-filemaker-cli
 
-> **BETA PÚBLICA** — `0.1.0-beta.1` está disponível no crates.io para avaliação.
+> **PUBLIC BETA** — `0.1.0-beta.2` is available on crates.io for evaluation.
 
-`appcore-filemaker-cli 0.1.0-beta.1` is the bounded process adapter for
+`appcore-filemaker-cli 0.1.0-beta.2` is the bounded process adapter for
 `appcore-filemaker`. It is published on crates.io as a beta prerelease.
 
 The command selects export format; template YAML never does. `check`,

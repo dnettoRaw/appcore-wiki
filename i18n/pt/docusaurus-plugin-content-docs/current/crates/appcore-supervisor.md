@@ -6,7 +6,7 @@ sidebar_position: 5
 # appcore-supervisor
 
 :::info Pacote publicado
-Estável **`1.0.1`** · MSRV **Rust `1.89`** · [crates.io](https://crates.io/crates/appcore-supervisor/1.0.1) · [docs.rs](https://docs.rs/crate/appcore-supervisor/1.0.1) · [código-fonte](https://github.com/dnettoRaw/app-core-public/tree/main/crates/appcore-supervisor)
+Estável **`1.0.2`** · MSRV **Rust `1.89`** · [crates.io](https://crates.io/crates/appcore-supervisor/1.0.2) · [docs.rs](https://docs.rs/crate/appcore-supervisor/1.0.2) · [código-fonte](https://github.com/dnettoRaw/app-core-public/tree/main/crates/appcore-supervisor)
 :::
 
 ## Guia e exemplos mantidos pelo crate

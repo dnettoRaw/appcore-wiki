@@ -10,7 +10,7 @@ borné :
 
 ```toml title="Cargo.toml"
 [dependencies]
-appcore-sdk = { version = "1.0.0-rc.1", features = ["scheduler"] }
+appcore-sdk = { version = "1.0.0-rc.2", features = ["scheduler"] }
 ```
 
 Implémentez `Application::register_tasks` avec `ApplicationTaskRegistry`,

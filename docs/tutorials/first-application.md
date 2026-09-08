@@ -15,7 +15,7 @@ Use the published SDK release:
 
 ```toml
 [dependencies]
-appcore-sdk = "1.0.0-rc.1"
+appcore-sdk = "1.0.0-rc.2"
 ```
 
 Use a local `path` dependency only while developing against an AppCore Runtime

@@ -4,11 +4,11 @@ title: appcore-filemaker — 0.1 beta
 
 # appcore-filemaker
 
-> **BETA PÚBLICA** — `0.1.0-beta.1` está disponível no crates.io para avaliação.
+> **BETA PÚBLICA** — `0.1.0-beta.2` está disponível no crates.io para avaliação.
 
-`appcore-filemaker 0.1.0-beta.1` é o compilador determinístico oficial do
+`appcore-filemaker 0.1.0-beta.2` é o compilador determinístico oficial do
 AppCore para documentos declarativos, canvases vetoriais e datasets. A versão
-`0.1.0-beta.1` está publicada no crates.io e permanece fora do Runtime estável.
+`0.1.0-beta.2` está publicada no crates.io e permanece fora do Runtime estável.
 
 Se você está começando no formato, siga o
 [guia YAML passo a passo](./appcore-filemaker-yaml.md). Ele parte do cabeçalho

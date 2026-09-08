@@ -17,5 +17,5 @@ Manifest, Deployment Manifest, and business code.
 | 3 | [Scheduled task contract](./scheduled-task) | Declare bounded work for a deployment-owned scheduler |
 | 4 | [Standalone to cluster](./standalone-to-cluster) | Keep business code unchanged while deployment policy changes |
 
-Start with `appcore-sdk = "1.0.0-rc.1"`. Enable only the features used by the
+Start with `appcore-sdk = "1.0.0-rc.2"`. Enable only the features used by the
 application. None of these examples creates an implicit host or Runtime CLI.

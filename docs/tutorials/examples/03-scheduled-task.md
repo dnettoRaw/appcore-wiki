@@ -9,7 +9,7 @@ Enable `scheduler` only when the application registers bounded local work:
 
 ```toml title="Cargo.toml"
 [dependencies]
-appcore-sdk = { version = "1.0.0-rc.1", features = ["scheduler"] }
+appcore-sdk = { version = "1.0.0-rc.2", features = ["scheduler"] }
 ```
 
 Implement `Application::register_tasks` with

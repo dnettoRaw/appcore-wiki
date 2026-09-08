@@ -4,9 +4,9 @@ title: appcore-filemaker-ai — 0.1 beta
 
 # appcore-filemaker-ai
 
-> **BETA PÚBLICA** — `0.1.0-beta.1` está disponível no crates.io para avaliação.
+> **PUBLIC BETA** — `0.1.0-beta.2` is available on crates.io for evaluation.
 
-`appcore-filemaker-ai 0.1.0-beta.1` is the optional bounded bridge from
+`appcore-filemaker-ai 0.1.0-beta.2` is the optional bounded bridge from
 `appcore-ai` tool calls to deterministic FileMaker sessions. It is published
 on crates.io as a beta prerelease.
 
