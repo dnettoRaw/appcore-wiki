@@ -20,9 +20,12 @@ conexão. Tokens de request Peer RPC podem ser vinculados ao hash do envelope.
 Hashes vinculados a requests usam o formato SHA-256 canônico `v2:`, com
 separação de domínio, framing por tamanho e presença explícita de campos
 opcionais. Hashes antigos sem versão são rejeitados; emissores e validadores
-precisam ser atualizados juntos. A autenticação HTTP de command/query falha
-fechada por padrão; apenas o construtor explícito de teste local a desativa, e
-`/v1/health` continua público por contrato.
+precisam ser atualizados juntos. A validação de token rejeita centralmente
+emissão no futuro, ordem temporal inválida e duração acima do máximo
+configurado; skew positivo na emissão é explícito e limitado. A autenticação
+HTTP de command/query falha fechada por padrão. O bypass de teste local não
+existe em release e os hosts embutidos o restringem a loopback. `/v1/health`
+continua público por contrato, mas expõe apenas o status agregado.
 
 ## Onde o replay é bloqueado?
 

@@ -21,9 +21,13 @@ hash d'une envelope.
 Les hashes liés aux requests utilisent le format SHA-256 canonique `v2:`, avec
 séparation de domaine, framing par longueur et présence explicite des champs
 optionnels. Les anciens hashes sans version sont rejetés ; émetteurs et
-validateurs doivent évoluer ensemble. L'authentification HTTP command/query
-échoue fermée par défaut ; seul le constructeur explicite de test local la
-désactive, et `/v1/health` reste public par contrat.
+validateurs doivent évoluer ensemble. La validation des tokens refuse
+centralement les émissions futures, l'ordre temporel invalide et les durées
+supérieures au maximum configuré ; le skew positif à l'émission est explicite
+et borné. L'authentification HTTP command/query échoue fermée par défaut. Le
+bypass de test local est absent des builds release et les hosts intégrés le
+limitent au loopback. `/v1/health` reste public par contrat mais n'expose que
+le status agrégé.
 
 ## Où le replay est-il bloqué ?
 

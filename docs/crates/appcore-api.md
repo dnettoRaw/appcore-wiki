@@ -78,11 +78,12 @@ overrides them to hash text or structured JSON directly without an owned
 payload copy.
 
 `HttpCommandAuth::default()` requires authentication and fails closed until a
-token verifier is configured. Only `insecure_local_for_testing()` explicitly
-disables command/query authentication for controlled local tests. `/v1/health`
-remains intentionally public. Rejected command authorization is audited with
-normalized metadata and never records credentials, payloads or idempotency
-keys.
+token verifier is configured; `HttpCommandAuth::required` installs one
+explicitly. The local-test bypass exists only in crate tests or explicit debug
+`insecure-testing` builds. Built-in hosts reject it on non-loopback listeners,
+and reload cannot change the authentication boundary. `/v1/health` remains
+public but returns only aggregate `status`; Supervisor details remain
+authenticated. Inbound TLS remains a deployment boundary.
 
 ## `1.0.2-rc`: coordinated routing reload
 

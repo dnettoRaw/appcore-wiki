@@ -79,11 +79,13 @@ Runtime os sobrepõe para hashear texto ou JSON estruturado diretamente, sem uma
 cópia owned do payload.
 
 `HttpCommandAuth::default()` exige autenticação e falha fechado até que um
-verificador de token seja configurado. Apenas
-`insecure_local_for_testing()` desativa explicitamente a autenticação de
-command/query para testes locais controlados. `/v1/health` permanece público
-por contrato. Rejeições de autorização de command geram audit com metadados
-normalizados, sem credenciais, payload ou chave de idempotência.
+verificador de token seja configurado; `HttpCommandAuth::required` instala um
+explicitamente. O bypass de teste local só existe nos testes do crate ou em
+builds debug com `insecure-testing`. Hosts embutidos o rejeitam em listeners
+não-loopback, e reload não pode mudar a fronteira de autenticação.
+`/v1/health` permanece público, mas retorna apenas o `status` agregado; detalhes
+do Supervisor continuam autenticados. TLS de entrada continua sendo fronteira
+do deployment.
 
 ## `1.0.2-rc`: reload coordenado de routing
 

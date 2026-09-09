@@ -40,6 +40,11 @@ exactement la sortie V2 tout en comptant et hashant directement le JSON structur
 en deux passes, sans garder un payload encodé complet. Le contrat owned reste
 disponible pour compatibilité.
 
+`CommandTokenValidator` refuse centralement une émission dans le futur, un
+ordre temporel invalide et une durée supérieure à `TokenClaims::ttl_ms`. Des
+horloges distinctes peuvent accepter au plus cinq minutes de skew positif à
+l'émission ; l'expiration reste stricte.
+
 AppCore 1.0 ne possède aucun provider TPM ou hardware-backed. L'ADR 0005 décrit
 une proposition additive 1.1 avec fallback explicite et preuves sur matériel
 réel; le Runtime actuel ne revendique aucune protection matérielle.

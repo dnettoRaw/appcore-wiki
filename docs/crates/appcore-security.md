@@ -40,6 +40,11 @@ the exact V2 output while counting and hashing structured JSON directly in two
 passes, without retaining a complete encoded payload. The owned contract stays
 available for compatibility.
 
+`CommandTokenValidator` centrally rejects future issue timestamps, invalid
+timestamp ordering and claim lifetimes above `TokenClaims::ttl_ms`. Distinct
+clocks may opt into at most five minutes of positive issue-time skew; expiry
+remains strict.
+
 AppCore 1.0 has no TPM or hardware-backed provider. ADR 0005 records an additive
 1.1 proposal with explicit fallback and physical-hardware evidence; the current
 Runtime makes no hardware-security claim.

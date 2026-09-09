@@ -18,9 +18,12 @@ Gateway and Peer RPC credentials are scoped to `peer` purpose. Gateway connectio
 Request-bound hashes use the `v2:` canonical SHA-256 format with domain
 separation, length framing, and explicit optional-field presence. Earlier
 unversioned hashes are rejected, so token issuers and validators must be
-upgraded together. Runtime HTTP command/query authentication fails closed by
-default; only the explicit local-test constructor disables it, and
-`/v1/health` remains public by contract.
+upgraded together. Runtime token validation centrally rejects future issue
+times, invalid temporal order and lifetimes above the configured maximum;
+positive issue-time skew is explicit and bounded. Runtime HTTP command/query
+authentication fails closed by default. The local-test bypass is unavailable
+in release builds and restricted to loopback by built-in hosts. `/v1/health`
+remains public by contract but exposes only aggregate status.
 
 ## Where is replay blocked?
 
