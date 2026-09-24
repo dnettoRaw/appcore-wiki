@@ -6,12 +6,12 @@ sidebar_position: 10
 # appcore-security
 
 :::info Published package
-Stable **`1.0.0`** · MSRV **Rust `1.89`** · [crates.io](https://crates.io/crates/appcore-security/1.0.0) · [docs.rs](https://docs.rs/crate/appcore-security/1.0.0) · [source](https://github.com/dnettoRaw/AppCore-Runtime/tree/v1.0.0/crates/appcore-security)
+Release candidate **`1.0.3-rc.1`** · MSRV **Rust `1.89`** · [crates.io](https://crates.io/crates/appcore-security/1.0.3-rc.1) · [docs.rs](https://docs.rs/crate/appcore-security/1.0.3-rc.1) · [source](https://github.com/dnettoRaw/AppCore-Runtime/tree/beta/crates/appcore-security)
 :::
 
 ## Crate-owned guide and examples
 
-The Runtime repository maintains the detailed [guide](https://github.com/dnettoRaw/AppCore-Runtime/blob/v1.0.0/crates/appcore-security/wiki/guide.en.md), [basic example](https://github.com/dnettoRaw/AppCore-Runtime/blob/v1.0.0/crates/appcore-security/wiki/examples/basic.en.md), and [intermediate example](https://github.com/dnettoRaw/AppCore-Runtime/blob/v1.0.0/crates/appcore-security/wiki/examples/intermediate.en.md). The wiki summarizes the public boundary; API and executable details live beside the crate code.
+The Runtime repository maintains the detailed [guide](https://github.com/dnettoRaw/AppCore-Runtime/blob/beta/crates/appcore-security/wiki/guide.en.md), [basic example](https://github.com/dnettoRaw/AppCore-Runtime/blob/beta/crates/appcore-security/wiki/examples/basic.en.md), and [intermediate example](https://github.com/dnettoRaw/AppCore-Runtime/blob/beta/crates/appcore-security/wiki/examples/intermediate.en.md). The wiki summarizes the public boundary; API and executable details live beside the crate code.
 
 **Responsibility:** reusable Runtime authentication, token, secret and policy
 contracts.
@@ -45,9 +45,15 @@ timestamp ordering and claim lifetimes above `TokenClaims::ttl_ms`. Distinct
 clocks may opt into at most five minutes of positive issue-time skew; expiry
 remains strict.
 
+`SecureDirectory` and its private-directory helpers provide a fail-closed
+filesystem boundary for key material and other security-owned state. They
+validate ancestors, reject traversal and symlink/reparse escapes, and support
+pinned-handle operations where the platform permits them. They do not silently
+repair permissions or turn deployment-owned policy into an implicit fallback.
+
 AppCore 1.0 has no TPM or hardware-backed provider. ADR 0005 records an additive
 1.1 proposal with explicit fallback and physical-hardware evidence; the current
 Runtime makes no hardware-security claim.
 
-**Maturity:** stable contracts; production suitability depends on selected
-secret backend and deployment controls.
+**Maturity:** release candidate contracts; production suitability depends on
+the selected secret backend and deployment controls.

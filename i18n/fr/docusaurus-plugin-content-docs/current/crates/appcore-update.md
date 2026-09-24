@@ -6,12 +6,12 @@ sidebar_position: 21
 # appcore-update
 
 :::info Paquet publié
-Stable **`1.0.0`** · MSRV **Rust `1.89`** · [crates.io](https://crates.io/crates/appcore-update/1.0.0) · [docs.rs](https://docs.rs/crate/appcore-update/1.0.0) · [code source](https://github.com/dnettoRaw/AppCore-Runtime/tree/v1.0.0/crates/appcore-update)
+Release candidate **`1.0.3-rc.1`** · MSRV **Rust `1.89`** · [crates.io](https://crates.io/crates/appcore-update/1.0.3-rc.1) · [docs.rs](https://docs.rs/crate/appcore-update/1.0.3-rc.1) · [code source](https://github.com/dnettoRaw/AppCore-Runtime/tree/beta/crates/appcore-update)
 :::
 
 ## Guide et exemples maintenus par le crate
 
-Le dépôt Runtime maintient le [guide détaillé](https://github.com/dnettoRaw/AppCore-Runtime/blob/v1.0.0/crates/appcore-update/wiki/guide.fr.md), [exemple débutant](https://github.com/dnettoRaw/AppCore-Runtime/blob/v1.0.0/crates/appcore-update/wiki/examples/basic.fr.md) et [exemple intermédiaire](https://github.com/dnettoRaw/AppCore-Runtime/blob/v1.0.0/crates/appcore-update/wiki/examples/intermediate.fr.md). Le wiki résume la frontière publique ; les détails d’API et d’exécution restent avec le code du crate.
+Le dépôt Runtime maintient le [guide détaillé](https://github.com/dnettoRaw/AppCore-Runtime/blob/beta/crates/appcore-update/wiki/guide.fr.md), [exemple débutant](https://github.com/dnettoRaw/AppCore-Runtime/blob/beta/crates/appcore-update/wiki/examples/basic.fr.md) et [exemple intermédiaire](https://github.com/dnettoRaw/AppCore-Runtime/blob/beta/crates/appcore-update/wiki/examples/intermediate.fr.md). Le wiki résume la frontière publique ; les détails d’API et d’exécution restent avec le code du crate.
 
 **Responsabilité :** sélection, authenticité, staging, activation, health gate
 et rollback d'artefact opaque.
@@ -52,5 +52,12 @@ la première entrée reste prioritaire. Un reader fixe de 16 Kio, un preflight d
 1 Mio et un octet sentinelle non retenu rejettent une taille déclarée excessive
 et une croissance concurrente.
 
-**Maturité :** lifecycle stable; supply chain distant exige signature,
-provenance et trust roots.
+La release candidate expose aussi `ReleaseCatalog` borné et la recherche
+d’artefacts en streaming, des primitives de cache adressé par contenu et les
+métadonnées Recovery V2. `QuarantineStore` enregistre les candidats échoués
+afin que la sélection les exclue sans modifier le catalogue. La CLI
+`appcore-update-diagnose` ne lit que l’état local borné et émet des diagnostics
+rédigés pour les opérateurs.
+
+**Maturité :** lifecycle de release candidate; la supply chain distante exige
+signature, provenance et trust roots.

@@ -6,12 +6,12 @@ sidebar_position: 10
 # appcore-security
 
 :::info Pacote publicado
-Estável **`1.0.0`** · MSRV **Rust `1.89`** · [crates.io](https://crates.io/crates/appcore-security/1.0.0) · [docs.rs](https://docs.rs/crate/appcore-security/1.0.0) · [código-fonte](https://github.com/dnettoRaw/AppCore-Runtime/tree/v1.0.0/crates/appcore-security)
+Release candidate **`1.0.3-rc.1`** · MSRV **Rust `1.89`** · [crates.io](https://crates.io/crates/appcore-security/1.0.3-rc.1) · [docs.rs](https://docs.rs/crate/appcore-security/1.0.3-rc.1) · [código-fonte](https://github.com/dnettoRaw/AppCore-Runtime/tree/beta/crates/appcore-security)
 :::
 
 ## Guia e exemplos mantidos pelo crate
 
-O repositório do Runtime mantém o [guia detalhado](https://github.com/dnettoRaw/AppCore-Runtime/blob/v1.0.0/crates/appcore-security/wiki/guide.pt.md), [exemplo básico](https://github.com/dnettoRaw/AppCore-Runtime/blob/v1.0.0/crates/appcore-security/wiki/examples/basic.pt.md) e [exemplo intermediário](https://github.com/dnettoRaw/AppCore-Runtime/blob/v1.0.0/crates/appcore-security/wiki/examples/intermediate.pt.md). O wiki resume a fronteira pública; detalhes de API e execução ficam junto ao código do crate.
+O repositório do Runtime mantém o [guia detalhado](https://github.com/dnettoRaw/AppCore-Runtime/blob/beta/crates/appcore-security/wiki/guide.pt.md), [exemplo básico](https://github.com/dnettoRaw/AppCore-Runtime/blob/beta/crates/appcore-security/wiki/examples/basic.pt.md) e [exemplo intermediário](https://github.com/dnettoRaw/AppCore-Runtime/blob/beta/crates/appcore-security/wiki/examples/intermediate.pt.md). O wiki resume a fronteira pública; detalhes de API e execução ficam junto ao código do crate.
 
 **Responsabilidade:** contratos reutilizáveis de autenticação, token, segredo e
 policy.
@@ -49,5 +49,11 @@ O AppCore 1.0 não possui provider TPM ou hardware-backed. O ADR 0005 registra u
 proposta aditiva para 1.1, com fallback explícito e evidência em hardware real;
 o Runtime atual não alega proteção por hardware.
 
-**Maturidade:** contratos estáveis; produção depende do backend de segredo e
-controles do deployment.
+`SecureDirectory` e os helpers de diretório privado fornecem uma fronteira
+fail-closed para material de chave e estado controlado pelo security. Validam
+ancestrais, rejeitam traversal e escapes por symlink/reparse e suportam
+operações com handle fixado quando a plataforma permite. Não corrigem
+permissões silenciosamente nem transformam política do deployment em fallback.
+
+**Maturidade:** contratos de release candidate; produção depende do backend de
+segredo e controles do deployment.

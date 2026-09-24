@@ -6,12 +6,12 @@ sidebar_position: 10
 # appcore-security
 
 :::info Paquet publié
-Stable **`1.0.0`** · MSRV **Rust `1.89`** · [crates.io](https://crates.io/crates/appcore-security/1.0.0) · [docs.rs](https://docs.rs/crate/appcore-security/1.0.0) · [code source](https://github.com/dnettoRaw/AppCore-Runtime/tree/v1.0.0/crates/appcore-security)
+Release candidate **`1.0.3-rc.1`** · MSRV **Rust `1.89`** · [crates.io](https://crates.io/crates/appcore-security/1.0.3-rc.1) · [docs.rs](https://docs.rs/crate/appcore-security/1.0.3-rc.1) · [code source](https://github.com/dnettoRaw/AppCore-Runtime/tree/beta/crates/appcore-security)
 :::
 
 ## Guide et exemples maintenus par le crate
 
-Le dépôt Runtime maintient le [guide détaillé](https://github.com/dnettoRaw/AppCore-Runtime/blob/v1.0.0/crates/appcore-security/wiki/guide.fr.md), [exemple débutant](https://github.com/dnettoRaw/AppCore-Runtime/blob/v1.0.0/crates/appcore-security/wiki/examples/basic.fr.md) et [exemple intermédiaire](https://github.com/dnettoRaw/AppCore-Runtime/blob/v1.0.0/crates/appcore-security/wiki/examples/intermediate.fr.md). Le wiki résume la frontière publique ; les détails d’API et d’exécution restent avec le code du crate.
+Le dépôt Runtime maintient le [guide détaillé](https://github.com/dnettoRaw/AppCore-Runtime/blob/beta/crates/appcore-security/wiki/guide.fr.md), [exemple débutant](https://github.com/dnettoRaw/AppCore-Runtime/blob/beta/crates/appcore-security/wiki/examples/basic.fr.md) et [exemple intermédiaire](https://github.com/dnettoRaw/AppCore-Runtime/blob/beta/crates/appcore-security/wiki/examples/intermediate.fr.md). Le wiki résume la frontière publique ; les détails d’API et d’exécution restent avec le code du crate.
 
 **Responsabilité :** contrats réutilisables d'authentification, token, secret et
 policy.
@@ -49,5 +49,12 @@ AppCore 1.0 ne possède aucun provider TPM ou hardware-backed. L'ADR 0005 décri
 une proposition additive 1.1 avec fallback explicite et preuves sur matériel
 réel; le Runtime actuel ne revendique aucune protection matérielle.
 
-**Maturité :** contrats stables; la production dépend du backend secret et
-des contrôles du déploiement.
+`SecureDirectory` et les helpers de répertoire privé fournissent une frontière
+fail-closed pour le matériel de clé et l’état contrôlé par security. Ils
+valident les ancêtres, refusent traversal et échappées symlink/reparse et
+prennent en charge les opérations par handle épinglé lorsque la plateforme le
+permet. Ils ne réparent pas silencieusement les permissions et ne transforment
+pas la politique du deployment en fallback implicite.
+
+**Maturité :** contrats de release candidate; la production dépend du backend
+secret et des contrôles du déploiement.
