@@ -17,5 +17,5 @@ Manifest, Deployment Manifest e código de negócio.
 | 3 | [Contrato de tarefa agendada](./scheduled-task) | Declarar trabalho limitado para o scheduler do deployment |
 | 4 | [Standalone para cluster](./standalone-to-cluster) | Manter o negócio enquanto a política de deployment muda |
 
-Comece com `appcore-sdk = "1.0.0-rc.2"` e ative somente as features usadas.
+Comece com `appcore-sdk = "1.0.0-rc.3"` e ative somente as features usadas.
 Nenhum exemplo cria host implícito ou CLI do Runtime.

@@ -10,7 +10,7 @@ Stable **`1.0.0`** · MSRV **Rust `1.89`** · [crates.io](https://crates.io/crat
 :::
 
 :::warning Version 2 preview
-`2.0.0-alpha.2` is the published preview for the breaking typed Peer RPC error
+`2.0.0-alpha.3` is the published preview for the breaking typed Peer RPC error
 contract. Stable `1.0.0` consumers do not receive this change implicitly.
 :::
 

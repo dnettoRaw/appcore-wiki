@@ -17,5 +17,5 @@ Manifest, Deployment Manifest et code métier.
 | 3 | [Contrat de tâche planifiée](./scheduled-task) | Déclarer un travail borné pour le scheduler du déploiement |
 | 4 | [Standalone vers cluster](./standalone-to-cluster) | Conserver le métier quand la politique de déploiement change |
 
-Commencez avec `appcore-sdk = "1.0.0-rc.2"` et activez uniquement les features
+Commencez avec `appcore-sdk = "1.0.0-rc.3"` et activez uniquement les features
 utilisées. Aucun exemple ne crée de host implicite ni de CLI Runtime.

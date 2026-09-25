@@ -7,7 +7,7 @@ sidebar_position: 28
 
 ID estável da documentação: **ACR-028**.
 
-Release publicada: [`appcore-sdk 1.0.0-rc.2`](https://crates.io/crates/appcore-sdk/1.0.0-rc.2).
+Release publicada: [`appcore-sdk 1.0.0-rc.3`](https://crates.io/crates/appcore-sdk/1.0.0-rc.3).
 
 `appcore-sdk` é a fachada para aplicações. Ele oferece uma superfície pequena e
 orientada a manifestos enquanto crates especializados continuam responsáveis

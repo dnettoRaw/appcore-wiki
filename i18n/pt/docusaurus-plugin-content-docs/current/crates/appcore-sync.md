@@ -10,7 +10,7 @@ Estável **`1.0.0`** · MSRV **Rust `1.89`** · [crates.io](https://crates.io/cr
 :::
 
 :::warning Preview da versão 2
-`2.0.0-alpha.2` é a preview publicada das observações falíveis de replicação e
+`2.0.0-alpha.3` é a preview publicada das observações falíveis de replicação e
 do contrato explícito da outbox. Consumidores do `1.0.0` estável devem migrar
 deliberadamente.
 :::

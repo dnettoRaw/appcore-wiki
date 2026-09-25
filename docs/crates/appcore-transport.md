@@ -8,9 +8,9 @@ sidebar_position: 4
 :::info Published package
 Stable **`1.0.0`** · MSRV **Rust `1.89`** · [crates.io](https://crates.io/crates/appcore-transport/1.0.0) · [docs.rs](https://docs.rs/crate/appcore-transport/1.0.0) · [source](https://github.com/dnettoRaw/app-core-public/tree/main/crates/appcore-transport)
 
-Optional prerelease **`1.1.0-alpha.2`** adds the owned pooled client and
-per-exchange deadline API: [crates.io](https://crates.io/crates/appcore-transport/1.1.0-alpha.2) ·
-[docs.rs](https://docs.rs/crate/appcore-transport/1.1.0-alpha.2) ·
+Optional prerelease **`1.1.0-alpha.3`** adds the owned pooled client and
+per-exchange deadline API: [crates.io](https://crates.io/crates/appcore-transport/1.1.0-alpha.3) ·
+[docs.rs](https://docs.rs/crate/appcore-transport/1.1.0-alpha.3) ·
 [public source](https://github.com/dnettoRaw/app-core-public/tree/beta/crates/appcore-transport).
 :::
 

@@ -9,7 +9,7 @@ Add the facade:
 
 ```toml title="Cargo.toml"
 [dependencies]
-appcore-sdk = "1.0.0-rc.2"
+appcore-sdk = "1.0.0-rc.3"
 ```
 
 Then validate the canonical local manifests and use bounded logging:

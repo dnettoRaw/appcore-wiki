@@ -13,7 +13,7 @@ compatibility layer, or Runtime behavior. Every earlier functional version is
 yanked.
 :::
 
-Use [`appcore-sdk 1.0.0-rc.2`](https://crates.io/crates/appcore-sdk/1.0.0-rc.2)
+Use [`appcore-sdk 1.0.0-rc.3`](https://crates.io/crates/appcore-sdk/1.0.0-rc.3)
 for application contracts, canonical manifests, registration, logging, and
 opt-in capability namespaces.
 

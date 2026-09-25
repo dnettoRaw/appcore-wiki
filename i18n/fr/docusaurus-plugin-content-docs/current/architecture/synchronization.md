@@ -121,7 +121,7 @@ Même séquence avec d'autres bytes reste un conflit, jamais un retry.
 
 ## Persistance SQLite facultative après la 1.0
 
-L'aperçu post-1.0 publié `appcore-sync-sqlite 0.1.0-alpha.5` persiste uniquement les enregistrements
+L'aperçu post-1.0 publié `appcore-sync-sqlite 0.1.0-alpha.6` persiste uniquement les enregistrements
 de synchronisation du Runtime : replication log, outbox, checkpoints par peer
 et tombstones opaques. Il utilise un schéma interne versionné, WAL,
 synchronisation complète, connexions et limites bornées, snapshots portables,

@@ -10,7 +10,7 @@ Stable **`1.0.0`** · MSRV **Rust `1.89`** · [crates.io](https://crates.io/crat
 :::
 
 :::warning Version 2 preview
-`2.0.0-alpha.2` is the published preview for the sharded tenant state contract
+`2.0.0-alpha.3` is the published preview for the sharded tenant state contract
 without the removed public tenant and pending maps. Follow the migration guide
 before upgrading from stable `1.0.0`.
 :::

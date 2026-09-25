@@ -8,9 +8,9 @@ sidebar_position: 4
 :::info Paquet publié
 Stable **`1.0.0`** · MSRV **Rust `1.89`** · [crates.io](https://crates.io/crates/appcore-transport/1.0.0) · [docs.rs](https://docs.rs/crate/appcore-transport/1.0.0) · [code source](https://github.com/dnettoRaw/app-core-public/tree/main/crates/appcore-transport)
 
-Prerelease facultative **`1.1.0-alpha.2`** avec client pooled et deadlines par
-exchange : [crates.io](https://crates.io/crates/appcore-transport/1.1.0-alpha.2) ·
-[docs.rs](https://docs.rs/crate/appcore-transport/1.1.0-alpha.2) ·
+Prerelease facultative **`1.1.0-alpha.3`** avec client pooled et deadlines par
+exchange : [crates.io](https://crates.io/crates/appcore-transport/1.1.0-alpha.3) ·
+[docs.rs](https://docs.rs/crate/appcore-transport/1.1.0-alpha.3) ·
 [code source public](https://github.com/dnettoRaw/app-core-public/tree/beta/crates/appcore-transport).
 :::
 

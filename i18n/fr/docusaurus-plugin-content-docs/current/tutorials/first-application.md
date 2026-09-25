@@ -15,7 +15,7 @@ Utilisez la version publiée du SDK :
 
 ```toml
 [dependencies]
-appcore-sdk = "1.0.0-rc.2"
+appcore-sdk = "1.0.0-rc.3"
 ```
 
 Utilisez une dépendance locale par `path` uniquement pendant le développement

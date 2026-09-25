@@ -7,7 +7,7 @@ sidebar_position: 27
 
 ID stable de documentation : **ACR-027**.
 
-Version publiée : [`appcore-log 1.0.0-rc.2`](https://crates.io/crates/appcore-log/1.0.0-rc.2).
+Version publiée : [`appcore-log 1.0.0-rc.3`](https://crates.io/crates/appcore-log/1.0.0-rc.3).
 
 `appcore-log` est le pipeline structuré et borné partagé par le Runtime et le
 SDK. Il sépare sévérité et verbosité V1–V9, filtre avant formatage, assainit

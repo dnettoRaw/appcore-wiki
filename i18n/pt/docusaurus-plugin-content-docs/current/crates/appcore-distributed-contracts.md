@@ -10,7 +10,7 @@ Estável **`1.0.0`** · MSRV **Rust `1.89`** · [crates.io](https://crates.io/cr
 :::
 
 :::warning Preview da versão 2
-`2.0.0-alpha.2` é a preview publicada do contrato incompatível de erros tipados
+`2.0.0-alpha.3` é a preview publicada do contrato incompatível de erros tipados
 do Peer RPC. Consumidores do `1.0.0` estável não recebem essa mudança
 implicitamente.
 :::

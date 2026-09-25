@@ -13,7 +13,7 @@ compatibilidade ou comportamento do Runtime. Todas as versões funcionais
 anteriores estão yanked.
 :::
 
-Use [`appcore-sdk 1.0.0-rc.2`](https://crates.io/crates/appcore-sdk/1.0.0-rc.2)
+Use [`appcore-sdk 1.0.0-rc.3`](https://crates.io/crates/appcore-sdk/1.0.0-rc.3)
 para contratos da aplicação, manifests canônicos, registros, logging e
 namespaces opcionais de capabilities.
 

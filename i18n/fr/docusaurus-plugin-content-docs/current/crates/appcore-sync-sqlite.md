@@ -6,9 +6,9 @@ sidebar_position: 23
 # appcore-sync-sqlite
 
 :::warning Alpha publiée
-Post-1.0 **`0.1.0-alpha.5`** ·
-[crates.io](https://crates.io/crates/appcore-sync-sqlite/0.1.0-alpha.5) ·
-[docs.rs](https://docs.rs/crate/appcore-sync-sqlite/0.1.0-alpha.5) ·
+Post-1.0 **`0.1.0-alpha.6`** ·
+[crates.io](https://crates.io/crates/appcore-sync-sqlite/0.1.0-alpha.6) ·
+[docs.rs](https://docs.rs/crate/appcore-sync-sqlite/0.1.0-alpha.6) ·
 [code source public](https://github.com/dnettoRaw/app-core-public/tree/beta/crates/appcore-sync-sqlite) ·
 non sélectionnable par le manifest V1 stable.
 :::

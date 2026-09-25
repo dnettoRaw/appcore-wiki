@@ -10,7 +10,7 @@ Estável **`1.0.0`** · MSRV **Rust `1.89`** · [crates.io](https://crates.io/cr
 :::
 
 :::warning Preview da versão 2
-`2.0.0-alpha.2` é a preview publicada do contrato de estado por tenant sem os
+`2.0.0-alpha.3` é a preview publicada do contrato de estado por tenant sem os
 maps públicos removidos de tenants e pendências. Siga o guia de migração antes
 de atualizar a partir do `1.0.0` estável.
 :::

@@ -9,7 +9,7 @@ Ajoutez la façade :
 
 ```toml title="Cargo.toml"
 [dependencies]
-appcore-sdk = "1.0.0-rc.2"
+appcore-sdk = "1.0.0-rc.3"
 ```
 
 Validez ensuite les manifestes locaux canoniques et utilisez le logging borné :

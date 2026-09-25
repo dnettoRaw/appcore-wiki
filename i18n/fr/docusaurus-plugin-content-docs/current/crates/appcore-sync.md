@@ -10,7 +10,7 @@ Stable **`1.0.0`** · MSRV **Rust `1.89`** · [crates.io](https://crates.io/crat
 :::
 
 :::warning Préversion 2
-`2.0.0-alpha.2` est la préversion publiée des observations de réplication
+`2.0.0-alpha.3` est la préversion publiée des observations de réplication
 faillibles et du contrat explicite de l'outbox. Les consommateurs de la version
 stable `1.0.0` doivent migrer délibérément.
 :::

@@ -6,7 +6,7 @@ sidebar_position: 21
 # appcore-update
 
 :::info Paquet publié
-Release candidate **`1.0.3-rc.1`** · MSRV **Rust `1.89`** · [crates.io](https://crates.io/crates/appcore-update/1.0.3-rc.1) · [docs.rs](https://docs.rs/crate/appcore-update/1.0.3-rc.1) · [code source](https://github.com/dnettoRaw/AppCore-Runtime/tree/beta/crates/appcore-update)
+Release candidate **`1.0.3-rc.2`** · MSRV **Rust `1.89`** · [crates.io](https://crates.io/crates/appcore-update/1.0.3-rc.2) · [docs.rs](https://docs.rs/crate/appcore-update/1.0.3-rc.2) · [code source](https://github.com/dnettoRaw/AppCore-Runtime/tree/beta/crates/appcore-update)
 :::
 
 ## Guide et exemples maintenus par le crate

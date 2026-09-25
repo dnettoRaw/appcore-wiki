@@ -4,11 +4,11 @@ title: appcore-filemaker — 0.1 beta
 
 # appcore-filemaker
 
-> **PUBLIC BETA** — `0.1.0-beta.2` is available on crates.io for evaluation.
+> **PUBLIC BETA** — `0.1.0-beta.3` is available on crates.io for evaluation.
 
-`appcore-filemaker 0.1.0-beta.2` is the official AppCore deterministic
+`appcore-filemaker 0.1.0-beta.3` is the official AppCore deterministic
 compiler for declarative documents, vector canvases, and datasets. The
-`0.1.0-beta.2` release is published on crates.io and remains outside the stable
+`0.1.0-beta.3` release is published on crates.io and remains outside the stable
 Runtime graph.
 
 New to the template format? Follow the
