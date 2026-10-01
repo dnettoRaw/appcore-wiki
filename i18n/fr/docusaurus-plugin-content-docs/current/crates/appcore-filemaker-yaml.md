@@ -176,6 +176,75 @@ reflow ; PDF et raster utilisent directement les avances des glyphes.
 - `expand` agrandit la boîte mesurée ;
 - `error` échoue si le texte ne tient pas.
 
+### Ajouts beta 5 (publiés le 2026-10-01)
+
+Les ajouts ci-dessous sont disponibles dans
+`appcore-filemaker 0.1.0-beta.5`. Ce sont des fonctions génériques de mise en
+page; chaque application fournit ses données typées et ses libellés métier.
+
+Les éléments texte et les colonnes de tableau acceptent
+`align_x: start|center|end`; `text_options.padding_inline` applique un retrait
+symétrique à chaque ligne façonnée. L'alignement utilise la largeur finale
+après césure et réduction. Les champs YAML inconnus restent rejetés.
+Les blocs texte autonomes acceptent
+`text_options.padding: { top, right, bottom, left }`; des insets absolus,
+logiques ou en pourcentage inférieur à 50 % réduisent le rectangle mesuré et
+sont appliqués par tous les exports visuels. Les côtés horizontaux utilisent
+la largeur de l'élément; haut et bas utilisent sa hauteur. La pagination du
+texte développé réserve le padding vertical sur chaque fragment.
+Chaque colonne accepte aussi `padding: { top, right, bottom, left }` en
+longueurs absolues ou logiques non négatives. Le rectangle intérieur résolu sert
+à la mesure, la pagination et au dessin dans chaque export; les colonnes `auto`
+incluent les retraits horizontaux dans leur largeur mesurée.
+Les règles conditionnelles du tableau acceptent `text_offset_y` pour déplacer
+verticalement le texte peint sans modifier le contenu mesuré, la hauteur des
+lignes ni la pagination. Utilisez une longueur absolue ou logique non nulle,
+inférieure à la taille de police effective et à la hauteur intérieure de la
+cellule. Le texte reste découpé aux limites d'origine; PDF, SVG, raster et HTML
+appliquent le même décalage.
+`text_offset_y_first_page` et `text_offset_y_continuation` le remplacent selon
+le rôle physique de la page.
+
+Les compositions d'une ligne avec un style partagé peuvent utiliser
+`text_segments` à la place de `text` ou du `binding` de l'élément :
+
+```yaml
+data_schema:
+  amount: { type: string }
+elements:
+  - id: total
+    type: text
+    x: 10mm
+    y: 20mm
+    width: 180mm
+    height: 8mm
+    text_segments:
+      - { text: 'TOTAL:', gap_after: 7pt }
+      - { binding: data.amount }
+    text_options: { overflow: error, max_lines: 1, align_x: end }
+```
+
+Chaque segment exige exactement un `text` littéral ou un `binding` résolu en
+chaîne. Les segments partagent le style de l'élément, restent horizontaux sur
+une ligne et ne se replient pas séparément ; les espaces acceptent des longueurs
+absolues ou logiques non négatives. Styles mixtes, composition BiDi et contenu
+multiligne utilisent des éléments de flux séparés.
+
+Le texte horizontal `overflow: expand` dans un flux vertical se divise
+uniquement entre lignes façonnées complètes. Une ligne plus haute que la zone
+utile échoue explicitement. Pour garder des éléments frères liés, définissez
+`keep_with_next: true` jusqu'à l'avant-dernier élément du flux vertical. Les
+lignes de tableau peuvent utiliser `keep_together_by: layout_group`: les clés
+contiguës identiques restent ensemble si elles tiennent; les groupes plus grands
+se divisent entre lignes complètes. Chaque ligne doit tenir sur une page.
+Représentez un bloc logique plus haut qu'une page par plusieurs lignes
+composantes avec la même clé; placez les valeurs totalisées sur une seule ligne
+pour éviter leur double agrégation.
+Les styles conditionnels acceptent aussi `line_height`, un ratio en millionièmes
+de 500000 à 4000000. Le template peut régler l'interligne par style de ligne;
+par exemple `style: { line_height: 1250000 }` signifie 1,25. Ce contrôle
+typographique reste générique et n'introduit aucune règle de mise en page métier.
+
 ## 6. Dessinez des vecteurs sémantiques
 
 ```yaml
@@ -334,6 +403,28 @@ explicites ou préférées. `gap` définit l'espacement normal.
 - `max_rows`, `max_row_fields`, `max_cell_bytes` peuvent seulement réduire les
   limites globales.
 - `row_height: auto` mesure les lignes ; une valeur explicite est plus prévisible.
+
+Les règles conditionnelles acceptent aussi `padding_first_page` et
+`padding_continuation` pour remplacer le retrait d'une ligne selon la page de
+destination; à défaut, le `padding` ordinaire de la règle s'applique. Il s'agit
+de contrôles de mise en page génériques et déclaratifs.
+
+Les ajouts YAML beta5 comprennent aussi `row_anchor_field` pour des
+ancres de ligne qui suivent leur page physique, `page_bodies.first` et
+`page_bodies.continuation` pour des zones de tableau distinctes, et `min_height`
+conditionnel avec des variantes première page/continuation. Ces fonctions
+n'ajoutent aucun calcul ni agencement spécifique à une application dans le
+Runtime.
+
+Limites connues de cette révision source : chaque ligne/cellule de tableau doit
+tenir sur une page ; les blocs logiques plus grands ne peuvent se poursuivre
+qu'en lignes complètes ou éléments d'un flux vertical. Les runs rich text ne
+sont pas pris en charge; des éléments séparés dans un flux sont l'alternative.
+Le type Barcode, y compris EAN13, est réservé mais les exporteurs visuels ne l'encodent
+pas. Les polices doivent être fournies et sélectionnées explicitement ; le
+Runtime ne choisit pas implicitement les polices de l'hôte. Chaque application
+garde ses données métier et son dessin YAML ; ces primitives génériques
+n'encodent pas les règles commerciales d'une application particulière.
 
 ## 10. Ajoutez rôles de page, numérotation et filigrane
 

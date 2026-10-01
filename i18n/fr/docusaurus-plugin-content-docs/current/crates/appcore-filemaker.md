@@ -4,11 +4,11 @@ title: appcore-filemaker — 0.1 beta
 
 # appcore-filemaker
 
-> **BÊTA PUBLIQUE** — `0.1.0-beta.3` est publiée sur crates.io pour évaluation.
+> **BÊTA PUBLIQUE** — `0.1.0-beta.5` est publiée sur crates.io pour évaluation.
 
-`appcore-filemaker 0.1.0-beta.3` est le compilateur déterministe officiel
+`appcore-filemaker 0.1.0-beta.5` est le compilateur déterministe officiel
 d'AppCore pour documents déclaratifs, canvases vectoriels et datasets. La
-version `0.1.0-beta.3` est publiée sur crates.io et reste hors du Runtime stable.
+version `0.1.0-beta.5` est publiée sur crates.io et reste hors du Runtime stable.
 
 Pour découvrir le format, suivez le
 [guide YAML pas à pas](./appcore-filemaker-yaml.md). Il part de l'en-tête
@@ -140,6 +140,13 @@ directement ces fragments résolus. L'usage des polices PDF inclut chaque run de
 cellule, SVG et HTML incluent les polices des styles data, et le raster trace les
 mêmes glyphes façonnés. Le preflight valide structure de table, bornes des
 cellules, diagnostics de texte et exigences de polices incorporées avant export.
+Les éléments texte peuvent composer une ligne de style partagé avec
+`text_segments`, des bindings de chaîne et des longueurs `gap_after` explicites.
+Exigez `overflow: error` et `max_lines: 1` ; toutes les parties et espaces sont
+mesurés ensemble avant alignement et partagés par PDF, SVG, raster et HTML.
+Les runs PDF éditables utilisant une face Standard 14 enregistrée sont émis
+comme opérations de texte PDF natives. Les largeurs et le crénage AFM continuent
+de déterminer le layout ; le lecteur PDF applique les avances natives de la face.
 
 Les sorties sont PDF éditable/flattened/hybride, SVG, PNG, JPEG, HTML sémantique/fixe,
 CSV streaming et masques PNG/PDF/SVG/JSON. Les modes préparés échouent

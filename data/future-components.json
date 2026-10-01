@@ -27,7 +27,7 @@
       "status": "RC",
       "category": "RC",
       "summary": "Manifest-first application facade for the three-artifact application contract.",
-      "horizon": "1.0.0-rc.3 published",
+      "horizon": "1.0.1-rc published",
       "related_existing": ["appcore-contracts", "appcore-core", "appcore-log"],
       "related_future": ["appcore-ui"]
     },
@@ -47,7 +47,7 @@
       "status": "Beta",
       "category": "Beta",
       "summary": "Deterministic compiler for declarative documents, vector canvases and bounded datasets.",
-      "horizon": "0.1.0-beta.3 public beta",
+      "horizon": "0.1.0-beta.5 public beta",
       "related_existing": ["appcore-ai"],
       "related_future": ["appcore-ui"]
     },
@@ -57,7 +57,7 @@
       "status": "Beta",
       "category": "Beta",
       "summary": "Optional bounded appcore-ai tool bridge for deterministic FileMaker sessions.",
-      "horizon": "0.1.0-beta.3 public beta",
+      "horizon": "0.1.0-beta.4 public beta",
       "related_existing": ["appcore-ai", "appcore-filemaker"],
       "related_future": []
     },
@@ -67,7 +67,7 @@
       "status": "Beta",
       "category": "Beta",
       "summary": "Bounded command-line process adapter for FileMaker compilation, diagnostics and export.",
-      "horizon": "0.1.0-beta.3 public beta",
+      "horizon": "0.1.0-beta.4 public beta",
       "related_existing": ["appcore-args", "appcore-filemaker"],
       "related_future": []
     },

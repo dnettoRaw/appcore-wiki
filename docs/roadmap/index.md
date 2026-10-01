@@ -27,16 +27,16 @@ automatic just because a crate appears in the Runtime repository.
 | Component | Status | Boundary |
 | --- | --- | --- |
 | [appcore-ai](/crates/appcore-ai) | Beta | Published `0.1.0-beta.5` for bounded model routing, local or remote inference, resource governance, provenance, security and observable execution. |
-| [appcore-filemaker](/crates/appcore-filemaker) | Beta | Published `0.1.0-beta.3` deterministic compiler for declarative documents, vector canvases, and bounded datasets. |
-| [appcore-filemaker-ai](/crates/appcore-filemaker-ai) | Beta | Published `0.1.0-beta.3` optional bounded tool bridge; AI remains outside the deterministic compiler. |
-| [appcore-filemaker-cli](/crates/appcore-filemaker-cli) | Beta | Published `0.1.0-beta.3` bounded process adapter for compilation, diagnostics, and explicit export. |
+| [appcore-filemaker](/crates/appcore-filemaker) | Beta | Published `0.1.0-beta.5` deterministic compiler for declarative documents, vector canvases, and bounded datasets. |
+| [appcore-filemaker-ai](/crates/appcore-filemaker-ai) | Beta | Published `0.1.0-beta.4` optional bounded tool bridge; AI remains outside the deterministic compiler. |
+| [appcore-filemaker-cli](/crates/appcore-filemaker-cli) | Beta | Published `0.1.0-beta.4` bounded process adapter for compilation, diagnostics, and explicit export. |
 
 ## RC
 
 | Component | Status | Boundary |
 | --- | --- | --- |
 | [appcore-log](/crates/appcore-log) | RC | Published `1.0.0-rc.3` bounded structured logging pipeline for Runtime components and SDK applications. |
-| [appcore-sdk](/crates/appcore-sdk) | RC | Published `1.0.0-rc.3` manifest-first application facade replacing the retired `appcore-bin`. |
+| [appcore-sdk](/crates/appcore-sdk) | RC | Published `1.0.1-rc` manifest-first application facade replacing the retired `appcore-bin`. |
 
 ## Alpha
 

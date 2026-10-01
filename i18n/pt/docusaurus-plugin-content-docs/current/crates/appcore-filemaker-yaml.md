@@ -185,6 +185,74 @@ Cores aceitam nomes estáveis, hexadecimal, `rgb(...)`, `rgba(...)`,
 - `expand`: aumenta a caixa medida;
 - `error`: falha se não couber.
 
+### Acréscimos beta 5 (publicados em 2026-10-01)
+
+Os acréscimos abaixo estão disponíveis em
+`appcore-filemaker 0.1.0-beta.5`. São recursos genéricos de layout; cada
+aplicação fornece seus dados tipados e rótulos de domínio.
+
+Elementos de texto e colunas de tabela podem declarar
+`align_x: start|center|end`; `text_options.padding_inline` aplica recuo
+simétrico a cada linha moldada. O alinhamento usa a largura final após wrap e
+shrink. Campos YAML desconhecidos continuam causando erro de validação.
+Blocos de texto independentes aceitam
+`text_options.padding: { top, right, bottom, left }`; insets absolutos, lógicos
+ou percentuais abaixo de 50% reduzem o retângulo medido e são aplicados por
+todos os exporters visuais. Percentuais horizontais usam a largura do elemento;
+topo e base usam sua altura. A paginação de texto expandido reserva padding
+vertical em cada fragmento.
+Cada coluna de tabela também pode declarar `padding: { top, right, bottom,
+left }` com comprimentos absolutos ou lógicos não negativos. O retângulo interno
+resolvido é usado na medição, paginação e desenho do texto em todos os exporters;
+colunas `auto` incluem os insets horizontais na largura medida.
+Regras condicionais de tabela aceitam `text_offset_y` para deslocar
+verticalmente o texto desenhado sem alterar conteúdo medido, altura das linhas
+ou paginação. Use comprimento absoluto ou lógico não zero, menor que o tamanho
+efetivo da fonte e a altura interna da célula. O texto continua recortado aos
+limites originais; PDF, SVG, raster e HTML aplicam o mesmo deslocamento.
+`text_offset_y_first_page` e `text_offset_y_continuation` podem sobrescrevê-lo
+conforme o papel físico da página.
+
+Composições de uma linha com estilo compartilhado podem usar `text_segments`
+em vez de `text` ou do `binding` do elemento:
+
+```yaml
+data_schema:
+  amount: { type: string }
+elements:
+  - id: total
+    type: text
+    x: 10mm
+    y: 20mm
+    width: 180mm
+    height: 8mm
+    text_segments:
+      - { text: 'TOTAL:', gap_after: 7pt }
+      - { binding: data.amount }
+    text_options: { overflow: error, max_lines: 1, align_x: end }
+```
+
+Cada segmento exige exatamente um `text` literal ou `binding` resolvido como
+string. Os segmentos compartilham o estilo do elemento, usam escrita horizontal
+e uma linha e não quebram separadamente; gaps aceitam comprimentos absolutos ou
+lógicos não negativos. Estilos mistos, composição BiDi e conteúdo multilinha
+usam elementos de fluxo separados.
+
+Texto horizontal com `overflow: expand` em fluxo vertical é dividido somente
+entre linhas moldadas completas. Uma linha maior que a área útil da página
+falha explicitamente. Para manter elementos irmãos relacionados, marque
+`keep_with_next: true` até o penúltimo elemento do fluxo vertical. Linhas de
+tabela podem usar `keep_together_by: layout_group`: chaves iguais e contíguas
+ficam juntas quando couberem; grupos maiores se dividem entre linhas completas.
+Cada linha individual ainda precisa caber em uma página. Represente um bloco
+lógico maior que a página em várias linhas componentes com a mesma chave;
+valores incluídos nos totais devem aparecer em apenas uma delas para evitar
+agregação duplicada.
+Estilos condicionais também aceitam `line_height` como razão em milionésimos
+de 500000 a 4000000. O template pode ajustar o entrelinha por estilo de linha;
+por exemplo, `style: { line_height: 1250000 }` significa 1,25. É um controle
+tipográfico genérico, sem política de layout da aplicação.
+
 `writing_mode` aceita `horizontal` (padrão) ou `vertical`. No modo vertical, o
 texto quebra pelo limite de altura, cada coluna é moldada de cima para baixo e
 as colunas avançam da direita para a esquerda. PDF, SVG, PNG/JPEG e HTML usam
@@ -359,6 +427,27 @@ ou preferidos nos filhos. `gap` é a distância normal entre filhos.
 - `max_rows`, `max_row_fields` e `max_cell_bytes` só podem apertar os limites
   globais, nunca aumentá-los.
 - `row_height: auto` mede cada linha; uma medida explícita é mais previsível.
+
+Regras condicionais também aceitam `padding_first_page` e
+`padding_continuation` para sobrescrever o padding da linha conforme a página
+de destino; quando ausente, usa-se o `padding` comum da regra. São controles
+de layout declarativos e genéricos.
+
+Os acréscimos YAML beta5 incluem também `row_anchor_field`
+para âncoras de linha que acompanham sua página física, `page_bodies.first` e
+`page_bodies.continuation` para regiões distintas de tabela e `min_height`
+condicional com overrides para primeira página e continuação. Esses recursos
+não introduzem cálculos ou layout específicos de uma aplicação no Runtime.
+
+Limitações conhecidas nesta revisão do código-fonte: cada linha/célula de
+tabela precisa caber em uma página; blocos lógicos maiores só fluem quando são
+compostos por linhas completas ou elementos de fluxo vertical. Runs de rich text
+não são suportados; elementos separados em fluxo são a alternativa de composição.
+Barcode, incluindo EAN13, é reservado, mas não é codificado pelos exporters visuais. As
+fontes devem ser fornecidas e selecionadas explicitamente; o Runtime não escolhe
+silenciosamente fontes do host. Cada aplicação mantém seus dados de domínio e
+desenho do documento em YAML; as primitivas genéricas não codificam regras
+comerciais de uma aplicação específica.
 
 ## 10. Adicione cabeçalho, rodapé, watermark e numeração
 

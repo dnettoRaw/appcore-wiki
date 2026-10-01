@@ -177,6 +177,72 @@ and raster use the resolved glyph advances directly.
 - `expand` enlarges the measured box;
 - `error` fails when the text does not fit.
 
+### Beta 5 additions (published 2026-10-01)
+
+These additions are available in `appcore-filemaker 0.1.0-beta.5`. They remain
+generic document-layout features; applications provide their own typed content
+and domain labels.
+
+Text elements and table columns can request `align_x: start|center|end`;
+`text_options.padding_inline` applies symmetric insets to every shaped line.
+Alignment uses final shaped line widths after wrapping and shrinking. Unknown
+YAML fields continue to fail validation.
+Standalone text blocks accept `text_options.padding: { top, right, bottom, left }`;
+nonnegative absolute, logical, or sub-50% insets reduce the measured content
+rectangle and are applied by all visual exporters. Horizontal percentages use
+the element width; top and bottom use its height. Expanded text pagination
+reserves vertical padding on every fragment.
+Each table column may also declare `padding: { top, right, bottom, left }` using
+nonnegative absolute or logical lengths. The resolved inner cell rectangle is
+used for measurement, pagination, and text drawing in every exporter; auto
+columns include horizontal insets in their measured width.
+Conditional table rules may set `text_offset_y` to move painted cell text
+vertically without changing measured content, row heights, or pagination. Use a
+nonzero absolute or logical length smaller than both the effective font size
+and inner cell height; the text remains clipped to its original content bounds.
+PDF, SVG, raster, and HTML exporters apply the same paint-only offset.
+`text_offset_y_first_page` and `text_offset_y_continuation` override it for the
+corresponding physical page role.
+
+Same-style one-line compositions may use `text_segments` instead of `text` or
+an element-level `binding`:
+
+```yaml
+data_schema:
+  amount: { type: string }
+elements:
+  - id: total
+    type: text
+    x: 10mm
+    y: 20mm
+    width: 180mm
+    height: 8mm
+    text_segments:
+      - { text: 'TOTAL:', gap_after: 7pt }
+      - { binding: data.amount }
+    text_options: { overflow: error, max_lines: 1, align_x: end }
+```
+
+Each segment requires exactly one literal `text` or a `binding` resolving to a
+string. Segments share the element style, are horizontal and single-line, and
+cannot wrap independently; gaps use nonnegative absolute or logical lengths.
+Mixed styles, bidirectional composition, and multiline content use separately
+styled flow elements instead.
+
+Horizontal text with `overflow: expand` in a vertical flow is split only at
+complete shaped-line boundaries. A line taller than the page content fails
+explicitly. For related sibling elements, set `keep_with_next: true` through
+the penultimate element in a vertical flow. Table rows can use
+`keep_together_by: layout_group`; contiguous equal keys stay together when they
+fit, while larger groups split between complete rows. An individual table row
+must still fit on a page. Represent a logical block taller than a page as
+multiple component rows under the same key; put values included in totals on
+only one component row to prevent duplicate aggregation.
+Conditional style layers also accept `line_height` as a millionth ratio from
+500000 to 4000000. Templates can set multiline leading per row style; for
+example, `style: { line_height: 1250000 }` means 1.25. This is a generic
+typographic control, not application layout policy.
+
 ## 6. Draw semantic vectors
 
 ```yaml
@@ -337,6 +403,27 @@ controls normal child spacing.
 - `max_rows`, `max_row_fields`, and `max_cell_bytes` may only tighten global
   limits.
 - `row_height: auto` measures rows; an explicit size is more predictable.
+
+Conditional style rules also accept `padding_first_page` and
+`padding_continuation` to override row insets by destination page; when unset,
+the rule's ordinary `padding` is used. These remain declarative, generic layout
+controls.
+
+The beta5 YAML additions also include `row_anchor_field` for named
+row anchors that follow their physical page, `page_bodies.first` and
+`page_bodies.continuation` for distinct table regions, and conditional row
+`min_height` with first-page/continuation overrides. These features do not add
+application-specific layout or calculations to the Runtime.
+
+Known limits in this source revision: a single table row/cell must fit within a
+page; larger logical blocks can flow only when composed of complete rows or
+vertical-flow elements. Inline rich-text runs are not supported; separately
+styled flow elements are the supported composition alternative. Barcode,
+including EAN13, is reserved but
+not encoded by the visual exporters. Fonts must be supplied and selected
+explicitly; the Runtime does not silently choose host fonts. Applications own
+their domain data and document design in YAML; these generic layout primitives
+do not encode any one application's commercial rules.
 
 ## 10. Add page roles, numbering, and a watermark
 

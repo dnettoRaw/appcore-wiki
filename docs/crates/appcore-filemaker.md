@@ -4,11 +4,11 @@ title: appcore-filemaker — 0.1 beta
 
 # appcore-filemaker
 
-> **PUBLIC BETA** — `0.1.0-beta.3` is available on crates.io for evaluation.
+> **PUBLIC BETA** — `0.1.0-beta.5` is available on crates.io for evaluation.
 
-`appcore-filemaker 0.1.0-beta.3` is the official AppCore deterministic
+`appcore-filemaker 0.1.0-beta.5` is the official AppCore deterministic
 compiler for declarative documents, vector canvases, and datasets. The
-`0.1.0-beta.3` release is published on crates.io and remains outside the stable
+`0.1.0-beta.5` release is published on crates.io and remains outside the stable
 Runtime graph.
 
 New to the template format? Follow the
@@ -129,6 +129,13 @@ resolved fragments directly. PDF font usage includes every cell run, SVG and
 HTML include data-style fonts, and raster output outlines the same shaped
 glyphs. Preflight validates table structure, cell bounds, text diagnostics,
 and embedded-font requirements before export.
+Text elements may compose one same-style line declaratively with ordered
+`text_segments`, string bindings, and explicit `gap_after` lengths. Require
+`overflow: error` and `max_lines: 1`; all pieces and gaps are measured together
+before alignment. The shared layout is consumed by PDF, SVG, raster, and HTML.
+Editable PDF runs using a registered Standard 14 face are emitted as native
+PDF text-show operations. AFM widths and kerning continue to determine layout;
+the PDF reader applies the face's native string advances while painting.
 
 Implemented outputs are editable/flattened/hybrid PDF, SVG, PNG, JPEG, semantic/fixed
 HTML, streaming CSV, and PNG/PDF/SVG/JSON debug masks. Prepared modes and nodes
