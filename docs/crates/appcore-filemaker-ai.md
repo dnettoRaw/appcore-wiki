@@ -4,9 +4,9 @@ title: appcore-filemaker-ai — 0.1 beta
 
 # appcore-filemaker-ai
 
-> **PUBLIC BETA** — `0.1.0-beta.4` is available on crates.io for evaluation.
+> **PUBLIC BETA** — `0.1.0-beta.5` is available on crates.io for evaluation.
 
-`appcore-filemaker-ai 0.1.0-beta.4` is the optional bounded bridge from
+`appcore-filemaker-ai 0.1.0-beta.5` is the optional bounded bridge from
 `appcore-ai` tool calls to deterministic FileMaker sessions. It is published
 on crates.io as a beta prerelease.
 
@@ -65,3 +65,7 @@ and orchestration remain outside the deterministic compiler.
 Crate-owned documentation: [guide](https://github.com/dnettoRaw/AppCore-Runtime/blob/beta/crates/appcore-filemaker-ai/wiki/guide.en.md),
 [basic example](https://github.com/dnettoRaw/AppCore-Runtime/blob/beta/crates/appcore-filemaker-ai/wiki/examples/basic.en.md), and
 [intermediate example](https://github.com/dnettoRaw/AppCore-Runtime/blob/beta/crates/appcore-filemaker-ai/wiki/examples/intermediate.en.md).
+
+## Published package
+
+[`appcore-filemaker-ai 0.1.0-beta.5`](https://crates.io/crates/appcore-filemaker-ai/0.1.0-beta.5) · [docs.rs](https://docs.rs/appcore-filemaker-ai/0.1.0-beta.5) · [source](https://github.com/dnettoRaw/app-core-public/tree/beta/crates/appcore-filemaker-ai).

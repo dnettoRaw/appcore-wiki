@@ -130,3 +130,11 @@ moins, un p99 codec réduit de 93 % et un buffer borné réduit de 14 % entre
 64 Kio et 4 Mio. Le cas 1 Kio progresse de 38 %/65 %/18 %; le RSS maximal de la
 suite est 306 448 Kio. `/v1/peer/*` analyse uniquement V1 et n'infère jamais V2.
 Le codec binaire reste en développement sans preuve Linux/Windows.
+
+## Release publiée
+
+`1.0.5-rc` — publié sur crates.io ; les versions précédentes restent immuables.
+
+## Paquet publié
+
+[`appcore-peer-rpc 1.0.5-rc`](https://crates.io/crates/appcore-peer-rpc/1.0.5-rc) · [docs.rs](https://docs.rs/appcore-peer-rpc/1.0.5-rc) · [source](https://github.com/dnettoRaw/app-core-public/tree/beta/crates/appcore-peer-rpc).

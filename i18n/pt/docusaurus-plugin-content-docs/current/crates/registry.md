@@ -47,3 +47,5 @@ mantém o ID e recebe um destino histórico.
 
 A fonte desses mapeamentos é a tabela `stableCrateIds` em
 `docusaurus.config.js`. A tabela visível deve ser revisada junto dela.
+
+| ACR-029 | `appcore-transfer` | Integration | [Open](/pt/crates/appcore-transfer) |

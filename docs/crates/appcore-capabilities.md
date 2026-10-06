@@ -52,3 +52,7 @@ metadata for a transient call. `resolve()` retains its owned result, and custom
 selectors retain their complete owned candidate contract.
 
 **Maturity:** stable routing profile.
+
+## Published package
+
+[`appcore-capabilities 1.0.4-rc.2`](https://crates.io/crates/appcore-capabilities/1.0.4-rc.2) · [docs.rs](https://docs.rs/appcore-capabilities/1.0.4-rc.2) · [source](https://github.com/dnettoRaw/app-core-public/tree/beta/crates/appcore-capabilities).

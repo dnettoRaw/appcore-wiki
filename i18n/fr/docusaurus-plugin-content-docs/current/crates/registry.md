@@ -47,3 +47,5 @@ son ID et reçoit une destination historique.
 
 La source de ces associations est la table `stableCrateIds` dans
 `docusaurus.config.js`. La table visible doit être révisée avec elle.
+
+| ACR-029 | `appcore-transfer` | Integration | [Open](/fr/crates/appcore-transfer) |

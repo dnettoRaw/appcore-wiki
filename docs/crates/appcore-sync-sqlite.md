@@ -76,3 +76,7 @@ workload from 578,081,344 to 8,251,670 (-98.57%) and peak live-heap delta from
 The provider uses the coordinated `appcore-sync` and `appcore-storage`
 `2.0.0-alpha.1` contracts. Stable `1.0.0` applications do not select it
 implicitly; adoption is an explicit prerelease choice.
+
+## Published package
+
+[`appcore-sync-sqlite 0.1.0-alpha.7`](https://crates.io/crates/appcore-sync-sqlite/0.1.0-alpha.7) · [docs.rs](https://docs.rs/appcore-sync-sqlite/0.1.0-alpha.7) · [source](https://github.com/dnettoRaw/app-core-public/tree/beta/crates/appcore-sync-sqlite).

@@ -47,3 +47,5 @@ receives a historical destination.
 
 The source of truth for these mappings is the `stableCrateIds` table in
 `docusaurus.config.js`. The visible table is reviewed with it.
+
+| ACR-029 | `appcore-transfer` | Integration | [Open](/crates/appcore-transfer) |

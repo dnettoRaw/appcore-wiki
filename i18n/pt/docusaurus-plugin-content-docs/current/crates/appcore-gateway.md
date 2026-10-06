@@ -256,3 +256,7 @@ medições são evidência local do repositório, não certificação de tráfeg
 collector em produção.
 
 **Maturidade:** perfil estável de peer transport para a superfície distribuída V1.
+
+## Pacote publicado
+
+[`appcore-gateway 2.0.0-alpha.4`](https://crates.io/crates/appcore-gateway/2.0.0-alpha.4) · [docs.rs](https://docs.rs/appcore-gateway/2.0.0-alpha.4) · [source](https://github.com/dnettoRaw/app-core-public/tree/beta/crates/appcore-gateway).

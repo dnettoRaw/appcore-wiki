@@ -4,11 +4,11 @@ title: appcore-filemaker — 0.1 beta
 
 # appcore-filemaker
 
-> **BETA PÚBLICA** — `0.1.0-beta.5` está disponível no crates.io para avaliação.
+> **BETA PÚBLICA** — `0.1.0-beta.6` está disponível no crates.io para avaliação.
 
-`appcore-filemaker 0.1.0-beta.5` é o compilador determinístico oficial do
+`appcore-filemaker 0.1.0-beta.6` é o compilador determinístico oficial do
 AppCore para documentos declarativos, canvases vetoriais e datasets. A versão
-`0.1.0-beta.5` está publicada no crates.io e permanece fora do Runtime estável.
+`0.1.0-beta.6` está publicada no crates.io e permanece fora do Runtime estável.
 
 Se você está começando no formato, siga o
 [guia YAML passo a passo](./appcore-filemaker-yaml.md). Ele parte do cabeçalho
@@ -249,3 +249,71 @@ incluída, sem depender de fontes do host. O código Rust não embute YAML nem J
 Documentação mantida pelo crate: [guia](https://github.com/dnettoRaw/AppCore-Runtime/blob/beta/crates/appcore-filemaker/wiki/guide.pt.md),
 [exemplo básico](https://github.com/dnettoRaw/AppCore-Runtime/blob/beta/crates/appcore-filemaker/wiki/examples/basic.pt.md) e
 [exemplo intermediário](https://github.com/dnettoRaw/AppCore-Runtime/blob/beta/crates/appcore-filemaker/wiki/examples/intermediate.pt.md).
+
+## EAN e QR Code nativos
+
+Adições disponíveis em `0.1.0-beta.6`: `type: barcode` seleciona EAN-8 para
+exatamente oito dígitos ASCII ou EAN-13 para treze, via `text` ou `binding`.
+Ambos verificam o dígito fornecido, preservam zeros iniciais e rejeitam outros
+comprimentos; sem completar ou corrigir. `barcode::Ean8`, `Ean13` e `ean_shape`
+expõem a codificação. EAN-8 tem 67 módulos e sete módulos livres de cada lado;
+EAN-13 tem 95, com onze à esquerda e sete à direita. Dígitos legíveis usam um
+texto separado. Suplementos de dois/cinco dígitos, UPC e GTIN-14 não têm suporte
+nesta API.
+
+`type: qr` recebe texto UTF-8 literal ou vinculado. `qrcode::QrCode::encode`
+produz Model 2 normal com correção média, byte mode e ECI UTF-8 explícito 26.
+Escolhe a menor versão que comporta o conteúdo. Payloads devem ter 1–1024 bytes
+UTF-8. Não acessa URLs nem interpreta o conteúdo. Entrada vazia/grande demais e
+geometria insuficiente falham antes do export; erros e Debug omitem o payload.
+Há quatro módulos livres em cada lado. O símbolo quadrado fica centralizado em
+caixas retangulares, sem deformação. Layout contabiliza os comandos vetoriais
+no limite cumulativo `max_path_commands`, incluindo símbolos repetidos.
+
+Ambos viram paths vetoriais no layout, compartilhados por PDF, SVG, PNG/JPEG e
+HTML fixo/semântico. Um `ResolvedElement` não preparado com kind `Qr` ou
+`Barcode` ainda não tem exporter direto. Preserve fundo claro livre, tamanho de
+impressão e DPI adequados; teste a impressora/scanner real. Codificação não é
+certificação.
+
+```yaml
+filemaker: '1.0'
+model: canvas
+id: symbols
+page: { width: 300pt, height: 230pt }
+elements:
+  - id: ean
+    type: barcode
+    x: 10pt
+    y: 10pt
+    width: 162pt
+    height: 40pt
+    text: '96385074'
+    style: { fill: black }
+  - id: qr
+    type: qr
+    x: 10pt
+    y: 70pt
+    width: 140pt
+    height: 140pt
+    text: 'https://example.org/local'
+    style: { fill: black }
+```
+
+`tests/barcode_workflows.rs` verifica módulos reais de EAN-8/EAN-13 em PNG e
+decodifica QR PNG/JPEG com decoder independente, incluindo Unicode e a fronteira
+de 1024 bytes. Verifica entradas inválidas, rejeição de campos desconhecidos e
+limites de paths. Mantém o fluxo multipágina de 80 linhas/240 itens em PDF/SVG/HTML.
+Isso valida export genérico, não paridade com PDF comercial externo. YAML define
+layout; adaptadores da aplicação fornecem dados tipados e chamadas de export.
+
+Referências: [orientação GS1](https://www.gs1.org/standards/barcodes/10-steps-to-barcode-your-product/english)
+e [API do encoder QR](https://docs.rs/qrcode/0.14.1/qrcode/struct.QrCode.html).
+
+## Release publicada
+
+`0.1.0-beta.6` — publicado no crates.io; versões anteriores permanecem imutáveis.
+
+## Pacote publicado
+
+[`appcore-filemaker 0.1.0-beta.6`](https://crates.io/crates/appcore-filemaker/0.1.0-beta.6) · [docs.rs](https://docs.rs/appcore-filemaker/0.1.0-beta.6) · [source](https://github.com/dnettoRaw/app-core-public/tree/beta/crates/appcore-filemaker).

@@ -107,3 +107,7 @@ boundaries reject empty IDs, control characters and IDs above 1,024 UTF-8 bytes
 before retention, so the window is bounded by bytes as well as item count.
 
 **Maturity:** stable conservative profile with strict V1 decoding.
+
+## Published package
+
+[`appcore-sync 2.0.0-alpha.4`](https://crates.io/crates/appcore-sync/2.0.0-alpha.4) · [docs.rs](https://docs.rs/appcore-sync/2.0.0-alpha.4) · [source](https://github.com/dnettoRaw/app-core-public/tree/beta/crates/appcore-sync).

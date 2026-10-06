@@ -29,6 +29,7 @@ const stableCrateIds = {
   '/crates/appcore-sync-sqlite': 'acr-026',
   '/crates/appcore-log': 'acr-027',
   '/crates/appcore-sdk': 'acr-028',
+  '/crates/appcore-transfer': 'acr-029',
 };
 
 const config = {

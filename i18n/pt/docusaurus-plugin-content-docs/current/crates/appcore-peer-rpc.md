@@ -126,3 +126,11 @@ A certificação release clean-source em `6f3bc38` mediu 25% menos bytes de body
 de 1 KiB melhorou 38%/65%/18%; o RSS máximo da suíte foi 306.448 KiB.
 `/v1/peer/*` interpreta somente V1 e nunca infere V2. O codec binário continua
 em desenvolvimento até existir evidência Linux/Windows.
+
+## Release publicada
+
+`1.0.5-rc` — publicado no crates.io; versões anteriores permanecem imutáveis.
+
+## Pacote publicado
+
+[`appcore-peer-rpc 1.0.5-rc`](https://crates.io/crates/appcore-peer-rpc/1.0.5-rc) · [docs.rs](https://docs.rs/appcore-peer-rpc/1.0.5-rc) · [source](https://github.com/dnettoRaw/app-core-public/tree/beta/crates/appcore-peer-rpc).

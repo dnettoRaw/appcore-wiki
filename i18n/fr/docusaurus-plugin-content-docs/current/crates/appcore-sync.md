@@ -114,3 +114,7 @@ IDs vides, les caractères de contrôle et les IDs de plus de 1 024 octets UTF-8
 avant rétention ; la fenêtre est bornée en octets comme en nombre d'éléments.
 
 **Maturité :** profil conservateur stable avec décodage V1 strict.
+
+## Paquet publié
+
+[`appcore-sync 2.0.0-alpha.4`](https://crates.io/crates/appcore-sync/2.0.0-alpha.4) · [docs.rs](https://docs.rs/appcore-sync/2.0.0-alpha.4) · [source](https://github.com/dnettoRaw/app-core-public/tree/beta/crates/appcore-sync).

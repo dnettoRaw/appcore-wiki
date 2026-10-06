@@ -52,3 +52,7 @@ um peer para uma chamada transitória. `resolve()` mantém seu resultado owned,
 e selectors customizados mantêm o contrato completo de candidatos owned.
 
 **Maturidade:** perfil de roteamento estável.
+
+## Pacote publicado
+
+[`appcore-capabilities 1.0.4-rc.2`](https://crates.io/crates/appcore-capabilities/1.0.4-rc.2) · [docs.rs](https://docs.rs/appcore-capabilities/1.0.4-rc.2) · [source](https://github.com/dnettoRaw/app-core-public/tree/beta/crates/appcore-capabilities).

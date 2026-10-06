@@ -266,8 +266,10 @@ typographique reste générique et n'introduit aucune règle de mise en page mé
 | `group` | conteneur d'enfants |
 | `table` | table typée et paginée |
 
-`chart`, `qr` et `barcode` sont des noms réservés, pas des capacités V1
-implémentées. Composez les graphiques avec `rect`, `line`, `path` et `text`.
+`chart` reste réservé. La source non publiée supporte EAN-8/EAN-13 via
+`type: barcode` et QR Code UTF-8 via `type: qr`, validés et abaissés en paths
+vectoriels au layout. Voir le guide pour les budgets de payload et paths. Composez
+les graphiques avec `rect`, `line`, `path` et `text`.
 
 ```yaml
 - id: trend
@@ -420,8 +422,8 @@ Limites connues de cette révision source : chaque ligne/cellule de tableau doit
 tenir sur une page ; les blocs logiques plus grands ne peuvent se poursuivre
 qu'en lignes complètes ou éléments d'un flux vertical. Les runs rich text ne
 sont pas pris en charge; des éléments séparés dans un flux sont l'alternative.
-Le type Barcode, y compris EAN13, est réservé mais les exporteurs visuels ne l'encodent
-pas. Les polices doivent être fournies et sélectionnées explicitement ; le
+La source non publiée supporte EAN-8/EAN-13 et QR Code au layout ; les autres symbologies
+ne sont pas inférées. Les polices doivent être fournies et sélectionnées explicitement ; le
 Runtime ne choisit pas implicitement les polices de l'hôte. Chaque application
 garde ses données métier et son dessin YAML ; ces primitives génériques
 n'encodent pas les règles commerciales d'une application particulière.

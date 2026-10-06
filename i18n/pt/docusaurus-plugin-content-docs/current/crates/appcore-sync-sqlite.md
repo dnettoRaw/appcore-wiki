@@ -79,3 +79,7 @@ proporcional reduziu os bytes solicitados no workload SQLite completo de
 O provider usa os contratos coordenados `appcore-sync` e `appcore-storage`
 `2.0.0-alpha.1`. Aplicações estáveis `1.0.0` não o selecionam implicitamente;
 a adoção é uma escolha explícita de prerelease.
+
+## Pacote publicado
+
+[`appcore-sync-sqlite 0.1.0-alpha.7`](https://crates.io/crates/appcore-sync-sqlite/0.1.0-alpha.7) · [docs.rs](https://docs.rs/appcore-sync-sqlite/0.1.0-alpha.7) · [source](https://github.com/dnettoRaw/app-core-public/tree/beta/crates/appcore-sync-sqlite).

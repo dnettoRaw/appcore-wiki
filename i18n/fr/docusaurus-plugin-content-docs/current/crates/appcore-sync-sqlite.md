@@ -82,3 +82,7 @@ complet de 578 081 344 à 8 251 670 (-98,57 %) et le delta de heap vivant de
 Le provider utilise les contrats coordonnés `appcore-sync` et `appcore-storage`
 `2.0.0-alpha.1`. Les applications stables `1.0.0` ne le sélectionnent pas
 implicitement ; l'adoption est un choix explicite de prerelease.
+
+## Paquet publié
+
+[`appcore-sync-sqlite 0.1.0-alpha.7`](https://crates.io/crates/appcore-sync-sqlite/0.1.0-alpha.7) · [docs.rs](https://docs.rs/appcore-sync-sqlite/0.1.0-alpha.7) · [source](https://github.com/dnettoRaw/app-core-public/tree/beta/crates/appcore-sync-sqlite).

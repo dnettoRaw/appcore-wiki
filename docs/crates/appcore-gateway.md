@@ -253,3 +253,7 @@ These measurements are repository-local evidence, not production traffic or
 collector certification.
 
 **Maturity:** stable peer transport profile for the V1 distributed surface.
+
+## Published package
+
+[`appcore-gateway 2.0.0-alpha.4`](https://crates.io/crates/appcore-gateway/2.0.0-alpha.4) · [docs.rs](https://docs.rs/appcore-gateway/2.0.0-alpha.4) · [source](https://github.com/dnettoRaw/app-core-public/tree/beta/crates/appcore-gateway).

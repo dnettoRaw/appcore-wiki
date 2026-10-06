@@ -7,7 +7,7 @@ sidebar_position: 12
 
 Quando um runtime cresce, os limites entre crates precisam explicar a arquitetura. No AppCore eles seguem ownership, não conveniência.
 
-O catálogo atual do código-fonte contém 28 crates públicos ativos. Cada crate
+O catálogo atual do código-fonte contém 29 crates públicos ativos. Cada crate
 possui SemVer independente, mesmo quando vários números coincidem; existir no
 código-fonte não afirma, por si só, publicação no registry. A referência e os
 IDs permanentes estão no [catálogo de crates](/pt/crates/).
@@ -17,7 +17,7 @@ IDs permanentes estão no [catálogo de crates](/pt/crates/).
 | Fundações standalone | `appcore-args`, `appcore-supervisor`, `appcore-transport` | componentes reutilizáveis e versionados independentemente, sem dependências AppCore |
 | Contratos | `appcore-contracts`, `appcore-types`, `appcore-distributed-contracts`, `appcore-provider` | manifests, identidades validadas, contratos wire e composição de providers |
 | Runtime | `appcore-core`, `appcore-dnt`, `appcore-security`, `appcore-storage`, `appcore-sync`, `appcore-ops`, `appcore-log`, `appcore-scheduler`, `appcore-control-plane`, `appcore-capabilities`, `appcore-peer-rpc`, `appcore-api`, `appcore-update`, `appcore-ai`, `appcore-filemaker` | comportamento e infraestrutura do Runtime com fronteiras explícitas |
-| Integrações | `appcore-gateway`, `appcore-provider-vercel-neon`, `appcore-sync-sqlite` | integrações externas ou opcionais de infraestrutura |
+| Integrações | `appcore-gateway`, `appcore-provider-vercel-neon`, `appcore-sync-sqlite`, `appcore-transfer` | integrações externas ou opcionais de infraestrutura |
 | Adapters | `appcore-filemaker-ai`, `appcore-filemaker-cli` | adapters opcionais de modelo e processo ao redor do core FileMaker determinístico |
 | Facade | `appcore-sdk` | contratos de aplicação e namespaces opt-in sem composição implícita do host |
 | Ferramentas | `appcore-dev`, `runtime-console`, ferramentas de certificação | desenvolvimento, operação e evidência de release; não são crates públicos |
@@ -58,3 +58,5 @@ aleatórios não representam bem essas invariantes.
   APIs, limites, maturidade e links do registry.
 - Crates de tooling/certificação podem não ser superfície estável de aplicação.
 - Módulos internos podem mudar mesmo quando manifests e facade pública continuam compatíveis.
+
+`appcore-transfer`: Integration · 0.1.0-beta.1 — crates.io.

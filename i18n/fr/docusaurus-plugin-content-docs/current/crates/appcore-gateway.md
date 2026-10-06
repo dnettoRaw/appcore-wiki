@@ -266,3 +266,7 @@ a mesuré 1 792 ns p99 pour une route instrumentée sans worker disponible et
 certification du trafic ou du collector en production.
 
 **Maturité :** profil stable de peer transport pour la surface distribuée V1.
+
+## Paquet publié
+
+[`appcore-gateway 2.0.0-alpha.4`](https://crates.io/crates/appcore-gateway/2.0.0-alpha.4) · [docs.rs](https://docs.rs/appcore-gateway/2.0.0-alpha.4) · [source](https://github.com/dnettoRaw/app-core-public/tree/beta/crates/appcore-gateway).

@@ -108,3 +108,7 @@ e da outbox rejeitam IDs vazios, caracteres de controle e IDs acima de 1.024
 bytes UTF-8 antes da retenção; a janela fica limitada por bytes e por quantidade.
 
 **Maturidade:** perfil conservador estável com decode V1 estrito.
+
+## Pacote publicado
+
+[`appcore-sync 2.0.0-alpha.4`](https://crates.io/crates/appcore-sync/2.0.0-alpha.4) · [docs.rs](https://docs.rs/appcore-sync/2.0.0-alpha.4) · [source](https://github.com/dnettoRaw/app-core-public/tree/beta/crates/appcore-sync).

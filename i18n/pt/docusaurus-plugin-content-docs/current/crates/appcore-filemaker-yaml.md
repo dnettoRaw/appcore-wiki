@@ -282,8 +282,10 @@ Tipos implementados:
 | `group` | container de filhos |
 | `table` | tabela tipada e paginável |
 
-`chart`, `qr` e `barcode` são nomes reservados, não capacidades V1
-implementadas. Para gráficos atuais, componha `rect`, `line`, `path` e `text`.
+`chart` permanece reservado. A fonte ainda não publicada suporta EAN-8/EAN-13
+com `type: barcode` e QR Code UTF-8 com `type: qr`, validados e convertidos em
+paths vetoriais no layout. Consulte o guia para limites de payload e paths.
+Para gráficos, componha `rect`, `line`, `path` e `text`.
 
 Um path semântico:
 
@@ -443,7 +445,8 @@ Limitações conhecidas nesta revisão do código-fonte: cada linha/célula de
 tabela precisa caber em uma página; blocos lógicos maiores só fluem quando são
 compostos por linhas completas ou elementos de fluxo vertical. Runs de rich text
 não são suportados; elementos separados em fluxo são a alternativa de composição.
-Barcode, incluindo EAN13, é reservado, mas não é codificado pelos exporters visuais. As
+A fonte ainda não publicada suporta EAN-8/EAN-13 e QR Code pelo layout; outras
+simbologias não são inferidas. As
 fontes devem ser fornecidas e selecionadas explicitamente; o Runtime não escolhe
 silenciosamente fontes do host. Cada aplicação mantém seus dados de domínio e
 desenho do documento em YAML; as primitivas genéricas não codificam regras

@@ -266,8 +266,10 @@ Implemented element types:
 | `group` | child container |
 | `table` | typed paginated table |
 
-`chart`, `qr`, and `barcode` are reserved names, not implemented V1
-capabilities. Compose charts from `rect`, `line`, `path`, and `text` today.
+`chart` remains reserved. Unpublished source supports EAN-8/EAN-13 via
+`type: barcode` and UTF-8 QR Code via `type: qr`, validated and lowered to
+vector paths during layout. See the crate guide for payload and path budgets. Compose
+charts from `rect`, `line`, `path`, and `text`.
 
 ```yaml
 - id: trend
@@ -418,9 +420,9 @@ application-specific layout or calculations to the Runtime.
 Known limits in this source revision: a single table row/cell must fit within a
 page; larger logical blocks can flow only when composed of complete rows or
 vertical-flow elements. Inline rich-text runs are not supported; separately
-styled flow elements are the supported composition alternative. Barcode,
-including EAN13, is reserved but
-not encoded by the visual exporters. Fonts must be supplied and selected
+styled flow elements are the supported composition alternative. Unpublished
+source supports EAN-8/EAN-13 and QR Code through layout; other formats are not
+inferred. Fonts must be supplied and selected
 explicitly; the Runtime does not silently choose host fonts. Applications own
 their domain data and document design in YAML; these generic layout primitives
 do not encode any one application's commercial rules.

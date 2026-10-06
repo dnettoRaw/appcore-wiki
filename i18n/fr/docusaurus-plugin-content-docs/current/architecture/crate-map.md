@@ -7,7 +7,7 @@ sidebar_position: 12
 
 Quand un runtime grandit, les limites entre crates doivent expliquer l'architecture. Dans AppCore elles suivent l'ownership, pas la convenance.
 
-Le catalogue source courant contient 28 crates publics actifs. Chacun possède
+Le catalogue source courant contient 29 crates publics actifs. Chacun possède
 son propre SemVer, même lorsque plusieurs numéros coïncident ; la présence dans
 la source n’affirme pas à elle seule une publication au registry. La référence
 et les identifiants permanents sont dans le [catalogue des crates](/fr/crates/).
@@ -17,7 +17,7 @@ et les identifiants permanents sont dans le [catalogue des crates](/fr/crates/).
 | Fondations autonomes | `appcore-args`, `appcore-supervisor`, `appcore-transport` | composants réutilisables et versionnés indépendamment, sans dépendance AppCore |
 | Contrats | `appcore-contracts`, `appcore-types`, `appcore-distributed-contracts`, `appcore-provider` | manifests, identités validées, contrats wire et composition provider |
 | Runtime | `appcore-core`, `appcore-dnt`, `appcore-security`, `appcore-storage`, `appcore-sync`, `appcore-ops`, `appcore-log`, `appcore-scheduler`, `appcore-control-plane`, `appcore-capabilities`, `appcore-peer-rpc`, `appcore-api`, `appcore-update`, `appcore-ai`, `appcore-filemaker` | comportement et infrastructure Runtime avec des frontières explicites |
-| Intégrations | `appcore-gateway`, `appcore-provider-vercel-neon`, `appcore-sync-sqlite` | intégrations externes ou facultatives d’infrastructure |
+| Intégrations | `appcore-gateway`, `appcore-provider-vercel-neon`, `appcore-sync-sqlite`, `appcore-transfer` | intégrations externes ou facultatives d’infrastructure |
 | Adaptateurs | `appcore-filemaker-ai`, `appcore-filemaker-cli` | adaptateurs optionnels de modèle et de processus autour du core FileMaker déterministe |
 | Façade | `appcore-sdk` | contrats applicatifs et namespaces opt-in sans composition implicite du host |
 | Outils | `appcore-dev`, `runtime-console`, outils de certification | développement, exploitation et preuves de release ; pas des crates publics |
@@ -60,3 +60,5 @@ invariants.
   registry.
 - Les crates de tooling/certification peuvent ne pas faire partie de la surface applicative stable.
 - Les modules internes peuvent changer même lorsque manifests et facade publique restent compatibles.
+
+`appcore-transfer`: Integration · 0.1.0-beta.1 — crates.io.

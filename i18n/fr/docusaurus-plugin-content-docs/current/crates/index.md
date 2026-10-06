@@ -6,7 +6,7 @@ slug: /crates/
 
 # Catalogue des crates
 
-AppCore-Runtime contient 28 crates publics actifs. Chaque paquet possède son
+AppCore-Runtime contient 29 crates publics actifs. Chaque paquet possède son
 SemVer indépendant et une couche explicite. La release d'un crate n'oblige pas
 les paquets sans rapport à changer de version.
 
@@ -15,7 +15,7 @@ d'un crate de bas niveau seulement si son contrat est directement nécessaire.
 
 ## Liens stables de documentation
 
-Chaque crate possède un ID permanent entre ACR-001 et ACR-028. Utilisez ces URL
+Chaque crate possède un ID permanent entre ACR-001 et ACR-029. Utilisez ces URL
 dans les READMEs, issues, releases et documents externes :
 
 ```text
@@ -32,7 +32,7 @@ jamais réutilisés. Consultez le [registre complet](./registry).
 | Standalone | Bibliothèques génériques bornées sans dépendance AppCore | `appcore-args`, `appcore-supervisor`, `appcore-transport` |
 | Contrat | Manifestes, identités, formats wire et providers versionnés | `appcore-contracts`, `appcore-types`, `appcore-distributed-contracts`, `appcore-provider` |
 | Runtime | Lifecycle, sécurité, données, coordination, observabilité, AI et documents | `appcore-core`, `appcore-api`, `appcore-dnt`, `appcore-security`, `appcore-storage`, `appcore-sync`, `appcore-ops`, `appcore-log`, `appcore-scheduler`, `appcore-control-plane`, `appcore-capabilities`, `appcore-peer-rpc`, `appcore-update`, `appcore-ai`, `appcore-filemaker` |
-| Intégration | Adapters explicites d'infrastructure externe ou optionnelle | `appcore-gateway`, `appcore-provider-vercel-neon`, `appcore-sync-sqlite` |
+| Intégration | Adapters explicites d'infrastructure externe ou optionnelle | `appcore-gateway`, `appcore-provider-vercel-neon`, `appcore-sync-sqlite`, `appcore-transfer` |
 | Adapter | Interfaces développeur/modèle autour d'un core déterministe | `appcore-filemaker-ai`, `appcore-filemaker-cli` |
 | Façade | Frontière de composition destinée aux applications | `appcore-sdk` |
 
@@ -57,3 +57,5 @@ dans ce wiki public.
 
 Les pages historiques `appcore-bin`, `appcore-filemaker-yaml` et `appcore-ui`
 ne sont pas des entrées actives du catalogue.
+
+`appcore-transfer`: Integration · 0.1.0-beta.1 — crates.io.

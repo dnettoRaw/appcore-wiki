@@ -2,7 +2,7 @@
 
 Public Docusaurus documentation for AppCore Runtime.
 
-The wiki documents the current AppCore Runtime catalog of 28 active public
+The wiki documents the current AppCore Runtime catalog of 29 active public
 crates (MSRV Rust `1.89`). Every public crate owns its SemVer; the repository
 release train is `1.0.2-rc`, while `appcore-ai`, FileMaker and other explicitly
 marked components remain independent prereleases. crates.io is the authority
@@ -45,7 +45,7 @@ a translation locally.
 npm run build:all
 ```
 
-The build first runs `docs:locales`. This gate requires the same 58 Markdown
+The build first runs `docs:locales`. This gate requires the same 59 Markdown
 pages in English, Portuguese and French and compares heading structure, code
 examples, tables, links, admonitions, list coverage and a bounded word-coverage
 ratio. Run it directly while translating:

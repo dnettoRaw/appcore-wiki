@@ -53,3 +53,7 @@ les capabilities et la metadata d'un peer pour un appel transitoire.
 conservent le contrat complet des candidats owned.
 
 **Maturité :** profil de routage stable.
+
+## Paquet publié
+
+[`appcore-capabilities 1.0.4-rc.2`](https://crates.io/crates/appcore-capabilities/1.0.4-rc.2) · [docs.rs](https://docs.rs/appcore-capabilities/1.0.4-rc.2) · [source](https://github.com/dnettoRaw/app-core-public/tree/beta/crates/appcore-capabilities).

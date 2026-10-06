@@ -52,6 +52,7 @@ const stableCrates = [
   'appcore-sync-sqlite',
   'appcore-log',
   'appcore-sdk',
+  'appcore-transfer',
 ];
 
 const futureRoadmap = [
@@ -74,7 +75,7 @@ module.exports = {
     'architecture/crate-map',
     {
       type: 'category',
-      label: 'Crate reference — 28 active',
+      label: 'Crate reference — 29 active',
       collapsed: true,
       items: [
         'crates/index',

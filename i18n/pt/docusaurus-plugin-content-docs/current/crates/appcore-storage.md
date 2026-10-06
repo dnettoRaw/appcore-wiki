@@ -77,3 +77,38 @@ preflights/s sob limites fixos de sete capacidades e 32 providers.
 
 **Maturidade:** contratos estáveis; provider em arquivo certificado para um
 processo local e filesystem com locks/sync/rename adequados.
+
+## Bootstrap do candidato e arquivos atômicos individuais
+
+Adições disponíveis em `1.0.5-rc`: após bloquear e drenar writes, deployment
+pode chamar `authorize_candidate_bootstrap("candidate")` uma vez. Reservar antes
+de `seal_after_install_start`, depois consumir a autoridade com `run`. O callback
+recebe `CandidateBootstrapPermit` restrito, sem API de clone/nesting/escape.
+`open` normal continua rejeitado; sucesso, erro ou panic mantêm a barreira
+selada. Descartar autoridade não usada a revoga. Deployment escolhe candidato e
+permissões de filesystem; admissão é local ao processo, não token entre
+processos, sandbox ou mecanismo de autorização do filesystem.
+
+`AtomicFileWriter::new(absolute_path, max_bytes)?.write(bytes)` substitui um
+arquivo fora da raiz gerida. Exige diretórios pais reais existentes; rejeita
+symlinks/reparse e traversal. Budget entre 1 byte e 64 MiB; verifica tamanho
+antes do staging e sincroniza temporário exclusivo antes de rename. Unix usa
+0600 e sync do diretório pai; demais plataformas mantêm os limites de
+durabilidade do provider. Deployment protege os pais. Em concorrência vence o
+último rename bem-sucedido; não é transação. Falha de sync após rename pode
+reportar erro com os novos bytes já visíveis.
+
+Formato de backup da aplicação exige ponte de importação externa: limitar e
+autenticar/decriptar o arquivo com codec original, rejeitar versões desconhecidas
+ou paths inseguros, validar inventário e preparar arquivos opacos verificados
+num snapshot novo. Validar antes da troca de raízes, preservar raiz anterior
+para rollback e testar interrupções. Não renomear arquivo legado como snapshot
+do Runtime nem adicionar parsers legados ao AppCore.
+
+## Release publicada
+
+`1.0.5-rc` — publicado no crates.io; versões anteriores permanecem imutáveis.
+
+## Pacote publicado
+
+[`appcore-storage 1.0.5-rc`](https://crates.io/crates/appcore-storage/1.0.5-rc) · [docs.rs](https://docs.rs/appcore-storage/1.0.5-rc) · [source](https://github.com/dnettoRaw/app-core-public/tree/beta/crates/appcore-storage).
