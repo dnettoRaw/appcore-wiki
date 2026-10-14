@@ -42,8 +42,8 @@ The future roadmap tracks planned work without mixing it into the current
 Runtime reference. Current prerelease work includes
 [appcore-ai](/crates/appcore-ai),
 [appcore-filemaker](/crates/appcore-filemaker), and
-[appcore-sync-sqlite](/crates/appcore-sync-sqlite); the current design preview
-is [appcore-ui](/crates/appcore-ui).
+[appcore-sync-sqlite](/crates/appcore-sync-sqlite), and
+[appcore-ui](/crates/appcore-ui) (`0.1.0-beta.1`).
 High-priority planned areas include
 `appcore-test`, `appcore-jobs`, `appcore-search`, `appcore-automation` and
 `appcore-plugin`; see the [Future Roadmap](/roadmap/).

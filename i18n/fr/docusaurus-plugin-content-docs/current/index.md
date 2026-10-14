@@ -42,8 +42,8 @@ La roadmap future suit le travail prévu sans le mélanger à la référence
 Runtime courante. Le travail en prerelease comprend
 [appcore-ai](/fr/crates/appcore-ai),
 [appcore-filemaker](/fr/crates/appcore-filemaker) et
-[appcore-sync-sqlite](/fr/crates/appcore-sync-sqlite) ; l’aperçu en design
-courant est [appcore-ui](/fr/crates/appcore-ui). Les zones
+[appcore-sync-sqlite](/fr/crates/appcore-sync-sqlite) et
+[appcore-ui](/fr/crates/appcore-ui) (`0.1.0-beta.1`). Les zones
 planifiées en haute priorité
 incluent `appcore-test`, `appcore-jobs`, `appcore-search`,
 `appcore-automation` et `appcore-plugin` ; voir la [roadmap future](/fr/roadmap/).

@@ -7,7 +7,7 @@ sidebar_position: 12
 
 When a runtime grows, crate boundaries either explain the architecture or hide it. AppCore crates are split by ownership boundary, not by convenience.
 
-The current source catalog contains 29 active public crates. Every public crate
+The current source catalog contains 30 active public crates. Every public crate
 owns independent SemVer even when several release numbers happen to align;
 source presence does not by itself claim registry publication. The complete
 reference and permanent IDs are in the [crate catalog](/crates/).
@@ -16,7 +16,7 @@ reference and permanent IDs are in the [crate catalog](/crates/).
 | --- | --- | --- |
 | Standalone foundations | `appcore-args`, `appcore-supervisor`, `appcore-transport` | independently versioned reusable components with no AppCore dependencies |
 | Contracts | `appcore-contracts`, `appcore-types`, `appcore-distributed-contracts`, `appcore-provider` | manifests, validated identities, wire contracts, and provider composition contracts |
-| Runtime | `appcore-core`, `appcore-dnt`, `appcore-security`, `appcore-storage`, `appcore-sync`, `appcore-ops`, `appcore-log`, `appcore-scheduler`, `appcore-control-plane`, `appcore-capabilities`, `appcore-peer-rpc`, `appcore-api`, `appcore-update`, `appcore-ai`, `appcore-filemaker` | Runtime behavior and infrastructure, each with an explicit ownership boundary |
+| Runtime | `appcore-core`, `appcore-dnt`, `appcore-security`, `appcore-storage`, `appcore-sync`, `appcore-ops`, `appcore-log`, `appcore-scheduler`, `appcore-control-plane`, `appcore-capabilities`, `appcore-peer-rpc`, `appcore-api`, `appcore-update`, `appcore-ai`, `appcore-filemaker`, `appcore-ui` | Runtime behavior and infrastructure, each with an explicit ownership boundary |
 | Integrations | `appcore-gateway`, `appcore-provider-vercel-neon`, `appcore-sync-sqlite`, `appcore-transfer` | externally operated or optional infrastructure integrations |
 | Adapters | `appcore-filemaker-ai`, `appcore-filemaker-cli` | optional model and process adapters around the deterministic FileMaker core |
 | Facade | `appcore-sdk` | application contracts and opt-in namespaces without implicit host composition |

@@ -7,7 +7,7 @@ sidebar_position: 12
 
 Quando um runtime cresce, os limites entre crates precisam explicar a arquitetura. No AppCore eles seguem ownership, não conveniência.
 
-O catálogo atual do código-fonte contém 29 crates públicos ativos. Cada crate
+O catálogo atual do código-fonte contém 30 crates públicos ativos. Cada crate
 possui SemVer independente, mesmo quando vários números coincidem; existir no
 código-fonte não afirma, por si só, publicação no registry. A referência e os
 IDs permanentes estão no [catálogo de crates](/pt/crates/).
@@ -16,7 +16,7 @@ IDs permanentes estão no [catálogo de crates](/pt/crates/).
 | --- | --- | --- |
 | Fundações standalone | `appcore-args`, `appcore-supervisor`, `appcore-transport` | componentes reutilizáveis e versionados independentemente, sem dependências AppCore |
 | Contratos | `appcore-contracts`, `appcore-types`, `appcore-distributed-contracts`, `appcore-provider` | manifests, identidades validadas, contratos wire e composição de providers |
-| Runtime | `appcore-core`, `appcore-dnt`, `appcore-security`, `appcore-storage`, `appcore-sync`, `appcore-ops`, `appcore-log`, `appcore-scheduler`, `appcore-control-plane`, `appcore-capabilities`, `appcore-peer-rpc`, `appcore-api`, `appcore-update`, `appcore-ai`, `appcore-filemaker` | comportamento e infraestrutura do Runtime com fronteiras explícitas |
+| Runtime | `appcore-core`, `appcore-dnt`, `appcore-security`, `appcore-storage`, `appcore-sync`, `appcore-ops`, `appcore-log`, `appcore-scheduler`, `appcore-control-plane`, `appcore-capabilities`, `appcore-peer-rpc`, `appcore-api`, `appcore-update`, `appcore-ai`, `appcore-filemaker`, `appcore-ui` | comportamento e infraestrutura do Runtime com fronteiras explícitas |
 | Integrações | `appcore-gateway`, `appcore-provider-vercel-neon`, `appcore-sync-sqlite`, `appcore-transfer` | integrações externas ou opcionais de infraestrutura |
 | Adapters | `appcore-filemaker-ai`, `appcore-filemaker-cli` | adapters opcionais de modelo e processo ao redor do core FileMaker determinístico |
 | Facade | `appcore-sdk` | contratos de aplicação e namespaces opt-in sem composição implícita do host |
