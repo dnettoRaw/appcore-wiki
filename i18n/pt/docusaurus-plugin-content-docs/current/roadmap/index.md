@@ -27,26 +27,26 @@ Runtime.
 
 | Componente | Status | Fronteira |
 | --- | --- | --- |
-| [appcore-ai](/pt/crates/appcore-ai) | Beta | `0.1.0-beta.5` publicada para routing limitado, inferência local/remota, recursos, provenance, segurança e execução observável. |
-| [appcore-filemaker](/pt/crates/appcore-filemaker) | Beta | `0.1.0-beta.6` publicada para compilação determinística de documentos, canvases vetoriais e datasets limitados. |
-| [appcore-ui](/pt/crates/appcore-ui) | Beta | `0.1.0-beta.1` (crates.io). Fronteira de superfícies de UI para páginas HTML/TypeScript, views nativas Rust, lifecycle de janela, eventos, estado visual e futuro page builder. |
-| [appcore-filemaker-ai](/pt/crates/appcore-filemaker-ai) | Beta | Bridge opcional e limitado `0.1.0-beta.5` publicado; IA permanece fora do compiler determinístico. |
-| [appcore-filemaker-cli](/pt/crates/appcore-filemaker-cli) | Beta | Adapter de processo limitado `0.1.0-beta.5` publicado para compilação, diagnóstico e export explícito. |
+| [appcore-ai](/pt/crates/appcore-ai) | Beta | `0.1.0-beta.6` publicada para routing limitado, inferência local/remota, recursos, provenance, segurança e execução observável. |
+| [appcore-filemaker](/pt/crates/appcore-filemaker) | Beta | `0.1.0-beta.7` publicada para compilação determinística de documentos, canvases vetoriais e datasets limitados. |
+| [appcore-ui](/pt/crates/appcore-ui) | Beta | `0.1.0-beta.2` (crates.io). Fronteira de superfícies de UI para páginas HTML/TypeScript, views nativas Rust, lifecycle de janela, eventos, estado visual e futuro page builder. |
+| [appcore-filemaker-ai](/pt/crates/appcore-filemaker-ai) | Beta | Bridge opcional e limitado `0.1.0-beta.6` publicado; IA permanece fora do compiler determinístico. |
+| [appcore-filemaker-cli](/pt/crates/appcore-filemaker-cli) | Beta | Adapter de processo limitado `0.1.0-beta.6` publicado para compilação, diagnóstico e export explícito. |
 
-| [appcore-transfer](/pt/crates/appcore-transfer) | Beta | `0.1.0-beta.1` — crates.io. Transferência retomável de objetos opacos imutáveis entre múltiplos peers autorizados, com blocos verificados, quotas e concorrência limitada; separada do roteamento mesh. |
+| [appcore-transfer](/pt/crates/appcore-transfer) | Beta | `0.1.0-beta.2` — crates.io. Transferência retomável de objetos opacos imutáveis entre múltiplos peers autorizados, com blocos verificados, quotas e concorrência limitada; separada do roteamento mesh. |
 
 ## RC
 
 | Componente | Status | Fronteira |
 | --- | --- | --- |
 | [appcore-log](/pt/crates/appcore-log) | RC | Pipeline de logging estruturado e limitado `1.0.0-rc.3` publicado para componentes do Runtime e aplicações SDK. |
-| [appcore-sdk](/pt/crates/appcore-sdk) | RC | Facade de aplicação manifest-first `1.0.2-rc` publicada, substituindo o `appcore-bin` aposentado. |
+| [appcore-sdk](/pt/crates/appcore-sdk) | RC | Facade de aplicação manifest-first `1.0.2-rc.1` publicada, substituindo o `appcore-bin` aposentado. |
 
 ## Alpha
 
 | Componente | Status | Fronteira |
 | --- | --- | --- |
-| [appcore-sync-sqlite](/pt/crates/appcore-sync-sqlite) | Alpha | `0.1.0-alpha.7` publicada para persistência opcional do estado de sync do Runtime. |
+| [appcore-sync-sqlite](/pt/crates/appcore-sync-sqlite) | Alpha | `0.1.0-alpha.8` publicada para persistência opcional do estado de sync do Runtime. |
 
 ## Alta Prioridade
 

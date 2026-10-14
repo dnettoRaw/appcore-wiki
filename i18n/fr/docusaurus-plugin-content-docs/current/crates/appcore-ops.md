@@ -57,3 +57,9 @@ métier applicatives au crate.
 
 **Maturité :** primitives stables; export/collection production appartient
 au déploiement.
+
+## Prérelease indépendante — 2026-10-14
+
+`1.0.4-rc.1`: modifications propres.
+
+[crates.io](https://crates.io/crates/appcore-ops/1.0.4-rc.1) · [docs.rs](https://docs.rs/appcore-ops/1.0.4-rc.1)

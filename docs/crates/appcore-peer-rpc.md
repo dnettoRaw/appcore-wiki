@@ -134,3 +134,9 @@ binary codec remains development-only until Linux/Windows evidence is attached.
 ## Published package
 
 [`appcore-peer-rpc 1.0.5-rc`](https://crates.io/crates/appcore-peer-rpc/1.0.5-rc) · [docs.rs](https://docs.rs/appcore-peer-rpc/1.0.5-rc) · [source](https://github.com/dnettoRaw/app-core-public/tree/beta/crates/appcore-peer-rpc).
+
+## Independent prerelease — 2026-10-14
+
+`1.0.5-rc.1`: source changes.
+
+[crates.io](https://crates.io/crates/appcore-peer-rpc/1.0.5-rc.1) · [docs.rs](https://docs.rs/appcore-peer-rpc/1.0.5-rc.1)

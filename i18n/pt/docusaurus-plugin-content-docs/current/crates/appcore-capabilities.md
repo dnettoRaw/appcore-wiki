@@ -56,3 +56,9 @@ e selectors customizados mantêm o contrato completo de candidatos owned.
 ## Pacote publicado
 
 [`appcore-capabilities 1.0.4-rc.2`](https://crates.io/crates/appcore-capabilities/1.0.4-rc.2) · [docs.rs](https://docs.rs/appcore-capabilities/1.0.4-rc.2) · [source](https://github.com/dnettoRaw/app-core-public/tree/beta/crates/appcore-capabilities).
+
+## Prerelease independente — 2026-10-14
+
+`1.0.4-rc.3`: alinhamento de dependências.
+
+[crates.io](https://crates.io/crates/appcore-capabilities/1.0.4-rc.3) · [docs.rs](https://docs.rs/appcore-capabilities/1.0.4-rc.3)

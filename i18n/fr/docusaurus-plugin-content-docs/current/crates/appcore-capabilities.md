@@ -57,3 +57,9 @@ conservent le contrat complet des candidats owned.
 ## Paquet publié
 
 [`appcore-capabilities 1.0.4-rc.2`](https://crates.io/crates/appcore-capabilities/1.0.4-rc.2) · [docs.rs](https://docs.rs/appcore-capabilities/1.0.4-rc.2) · [source](https://github.com/dnettoRaw/app-core-public/tree/beta/crates/appcore-capabilities).
+
+## Prérelease indépendante — 2026-10-14
+
+`1.0.4-rc.3`: alignement des dépendances.
+
+[crates.io](https://crates.io/crates/appcore-capabilities/1.0.4-rc.3) · [docs.rs](https://docs.rs/appcore-capabilities/1.0.4-rc.3)

@@ -71,3 +71,7 @@ Update file reads reject symlinks, non-regular files, and files above the config
 - Rollback is scoped to the artifact store and activation state; it cannot undo external side effects created by the new application version.
 
 Continue with [security model](/security/security-model).
+
+## Explicit host lifecycle composition
+
+`HostUpdateFlow` composes `ActivationAdapter`, `UpdateRecoveryGate` and the existing V2 journal. Deployment owns one external lock, authenticated staging, drain deadlines, installation-bound snapshots, process start/stop and actual readiness. Prepare persists intent before callbacks; activation repeats idempotent drain/snapshot/preparation and seals writes before calling the host. Every callback must honor deployment-owned execution bounds. Pending receipt survives interrupted phases. A prepared receipt after interrupted activation does not prove that nothing became active: inspect actual host state through `recover`, or require manual review. Health failure durably requests rollback. Host commit runs before recording `committed`; ambiguous commit never reports completion. Rollback requires a re-probed observed identity before `RecordRolledBack`. Keep previous artifacts/data until real health and recoverable completion. Terminal receipt replays validate digests. Version must advance with distinct build, platform/target and hash; same-version builds are not an automatic upgrade. No Tauri, container or process manager dependency is introduced.

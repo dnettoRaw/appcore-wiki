@@ -57,3 +57,9 @@ Runtime makes no hardware-security claim.
 
 **Maturity:** release candidate contracts; production suitability depends on
 the selected secret backend and deployment controls.
+
+## Independent prerelease — 2026-10-14
+
+`1.0.3-rc.3`: source changes.
+
+[crates.io](https://crates.io/crates/appcore-security/1.0.3-rc.3) · [docs.rs](https://docs.rs/appcore-security/1.0.3-rc.3)

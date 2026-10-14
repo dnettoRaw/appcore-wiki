@@ -83,3 +83,9 @@ a adoção é uma escolha explícita de prerelease.
 ## Pacote publicado
 
 [`appcore-sync-sqlite 0.1.0-alpha.7`](https://crates.io/crates/appcore-sync-sqlite/0.1.0-alpha.7) · [docs.rs](https://docs.rs/appcore-sync-sqlite/0.1.0-alpha.7) · [source](https://github.com/dnettoRaw/app-core-public/tree/beta/crates/appcore-sync-sqlite).
+
+## Prerelease independente — 2026-10-14
+
+`0.1.0-alpha.8`: alterações próprias.
+
+[crates.io](https://crates.io/crates/appcore-sync-sqlite/0.1.0-alpha.8) · [docs.rs](https://docs.rs/appcore-sync-sqlite/0.1.0-alpha.8)

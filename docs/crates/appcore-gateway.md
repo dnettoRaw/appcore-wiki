@@ -257,3 +257,9 @@ collector certification.
 ## Published package
 
 [`appcore-gateway 2.0.0-alpha.4`](https://crates.io/crates/appcore-gateway/2.0.0-alpha.4) · [docs.rs](https://docs.rs/appcore-gateway/2.0.0-alpha.4) · [source](https://github.com/dnettoRaw/app-core-public/tree/beta/crates/appcore-gateway).
+
+## Independent prerelease — 2026-10-14
+
+`2.0.0-alpha.5`: source changes.
+
+[crates.io](https://crates.io/crates/appcore-gateway/2.0.0-alpha.5) · [docs.rs](https://docs.rs/appcore-gateway/2.0.0-alpha.5)

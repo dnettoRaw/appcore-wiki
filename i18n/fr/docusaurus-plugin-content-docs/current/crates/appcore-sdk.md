@@ -53,3 +53,9 @@ le [guide en portugais](https://github.com/dnettoRaw/app-core-public/tree/beta/a
 ou le [guide en français](https://github.com/dnettoRaw/app-core-public/tree/beta/appcore-sdk/wiki/guide.fr.md).
 Exécutez ensuite l’[exemple de base](https://github.com/dnettoRaw/app-core-public/tree/beta/appcore-sdk/wiki/examples/basic.fr.md)
 et l’[exemple intermédiaire](https://github.com/dnettoRaw/app-core-public/tree/beta/appcore-sdk/wiki/examples/intermediate.fr.md).
+
+## Prérelease indépendante — 2026-10-14
+
+`1.0.2-rc.1`: modifications propres.
+
+[crates.io](https://crates.io/crates/appcore-sdk/1.0.2-rc.1) · [docs.rs](https://docs.rs/appcore-sdk/1.0.2-rc.1)

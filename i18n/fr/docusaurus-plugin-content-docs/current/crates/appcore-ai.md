@@ -335,3 +335,9 @@ documente matrice de plateforme, coût de dépendance, fit modèle et métriques
 opérationnelles. Le [rapport performance](https://github.com/dnettoRaw/app-core-public/blob/beta/crates/appcore-ai/wiki/benchmarks.fr.md)
 et la [matrice beta](https://github.com/dnettoRaw/app-core-public/blob/beta/crates/appcore-ai/wiki/release-readiness.fr.md)
 sont versionnés avec le crate.
+
+## Prérelease indépendante — 2026-10-14
+
+`0.1.0-beta.6`: modifications propres.
+
+[crates.io](https://crates.io/crates/appcore-ai/0.1.0-beta.6) · [docs.rs](https://docs.rs/appcore-ai/0.1.0-beta.6)

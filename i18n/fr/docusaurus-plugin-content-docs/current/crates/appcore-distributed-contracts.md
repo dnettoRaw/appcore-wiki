@@ -82,3 +82,9 @@ protocole à la famille V2 explicite. Les métadonnées connues sont validées c
 une matrice unique. Un code inconnu devient `unknown` terminal sans conserver
 texte ou retry hint distant. `PeerRpcRemoteErrorV1` est un décodeur exact séparé
 du champ string V1 stable; il ne négocie ni ne crée de trafic V2.
+
+## Prérelease indépendante — 2026-10-14
+
+`2.0.0-alpha.4`: modifications propres.
+
+[crates.io](https://crates.io/crates/appcore-distributed-contracts/2.0.0-alpha.4) · [docs.rs](https://docs.rs/appcore-distributed-contracts/2.0.0-alpha.4)

@@ -56,3 +56,9 @@ selectors retain their complete owned candidate contract.
 ## Published package
 
 [`appcore-capabilities 1.0.4-rc.2`](https://crates.io/crates/appcore-capabilities/1.0.4-rc.2) · [docs.rs](https://docs.rs/appcore-capabilities/1.0.4-rc.2) · [source](https://github.com/dnettoRaw/app-core-public/tree/beta/crates/appcore-capabilities).
+
+## Independent prerelease — 2026-10-14
+
+`1.0.4-rc.3`: dependency metadata alignment.
+
+[crates.io](https://crates.io/crates/appcore-capabilities/1.0.4-rc.3) · [docs.rs](https://docs.rs/appcore-capabilities/1.0.4-rc.3)

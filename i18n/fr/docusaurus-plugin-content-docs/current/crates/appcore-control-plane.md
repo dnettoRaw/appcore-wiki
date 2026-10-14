@@ -50,3 +50,9 @@ aussi l'état décodé à 262 144 enregistrements et 64 Mio.
 
 **Maturité :** contrats et références stables; l'exploitation du service
 externe appartient au déploiement.
+
+## Prérelease indépendante — 2026-10-14
+
+`1.0.4-rc.2`: alignement des dépendances.
+
+[crates.io](https://crates.io/crates/appcore-control-plane/1.0.4-rc.2) · [docs.rs](https://docs.rs/appcore-control-plane/1.0.4-rc.2)

@@ -25,3 +25,9 @@ Nodes recebem somente endpoint Vercel e referência do auth token. Credenciais,
 schema, backup e retention Neon ficam no serviço externo.
 
 **Maturidade:** adapter suportado; certificação inclui o backend separado.
+
+## Prerelease independente — 2026-10-14
+
+`1.0.4-rc.2`: alinhamento de dependências.
+
+[crates.io](https://crates.io/crates/appcore-provider-vercel-neon/1.0.4-rc.2) · [docs.rs](https://docs.rs/appcore-provider-vercel-neon/1.0.4-rc.2)

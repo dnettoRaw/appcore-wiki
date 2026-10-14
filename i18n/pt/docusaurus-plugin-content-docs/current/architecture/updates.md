@@ -95,3 +95,7 @@ exceto quando há reutilização idempotente com bytes exatamente iguais.
   externos criados pela nova versão da aplicação.
 
 Continue com o [modelo de segurança](/pt/security/security-model).
+
+## Composição explícita do ciclo de vida do host
+
+`HostUpdateFlow` compõe `ActivationAdapter`, `UpdateRecoveryGate` e o journal V2 existente. Deployment possui lock externo único, staging autenticado, deadlines de drain, snapshots vinculados à instalação, arranque/paragem e readiness real. Prepare persiste intenção antes dos callbacks; activate repete drain/snapshot/preparação idempotentes e sela escritas antes de chamar o host. Callbacks respeitam limites de execução do deployment. Receipts pendentes sobrevivem a interrupções. Um receipt prepared após activate interrompido não prova ausência de ativação: inspecione o host por `recover` ou exija revisão manual. Falha de saúde regista rollback necessário. Commit do host precede `committed`; commit ambíguo não conclui. Rollback exige identidade real revalidada antes de `RecordRolledBack`. Retenha artefactos/dados anteriores até saúde e conclusão recuperável. Replays terminais validam digests. A versão avança com build distinto, plataforma/target e hash; builds com mesma versão não são upgrade automático. Não introduz dependência Tauri, container ou gestor de processo.

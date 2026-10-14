@@ -85,3 +85,9 @@ et comportement domaine hors de ce crate.
 
 **Maturité :** surface low-level stable; builder/plugin restent de
 compatibilité, manifest-first est préféré.
+
+## Prérelease indépendante — 2026-10-14
+
+`1.0.4-rc.1`: modifications propres.
+
+[crates.io](https://crates.io/crates/appcore-core/1.0.4-rc.1) · [docs.rs](https://docs.rs/appcore-core/1.0.4-rc.1)

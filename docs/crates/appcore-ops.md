@@ -55,3 +55,9 @@ business metrics to the Runtime crate.
 
 **Maturity:** stable operational primitives; production export/collection is
 deployment-owned.
+
+## Independent prerelease — 2026-10-14
+
+`1.0.4-rc.1`: source changes.
+
+[crates.io](https://crates.io/crates/appcore-ops/1.0.4-rc.1) · [docs.rs](https://docs.rs/appcore-ops/1.0.4-rc.1)

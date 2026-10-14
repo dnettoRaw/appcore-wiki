@@ -82,3 +82,9 @@ manualmente. Mantenha I/O adapters e comportamento de domínio fora.
 
 **Maturidade:** superfície low-level estável; builder/plugin são de
 compatibilidade e manifest-first é o caminho preferido.
+
+## Prerelease independente — 2026-10-14
+
+`1.0.4-rc.1`: alterações próprias.
+
+[crates.io](https://crates.io/crates/appcore-core/1.0.4-rc.1) · [docs.rs](https://docs.rs/appcore-core/1.0.4-rc.1)

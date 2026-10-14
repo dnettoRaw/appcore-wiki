@@ -24,7 +24,7 @@ This manual is written as a technical book. Read the chapters in order if you ar
 13. [Reference for the stable crates and published previews](/crates/)
 14. [Future roadmap](/roadmap/)
 
-Stable release: `1.0.0`. The current source catalog contains 28 active public
+Stable release: `1.0.0`. The current source catalog contains 30 active public
 crates with independent versions and explicit maturity. Minimum Rust
 toolchain: `1.89`. New application code starts with
 [`appcore-sdk`](/crates/appcore-sdk); lower-level crates remain available when
@@ -43,7 +43,7 @@ Runtime reference. Current prerelease work includes
 [appcore-ai](/crates/appcore-ai),
 [appcore-filemaker](/crates/appcore-filemaker), and
 [appcore-sync-sqlite](/crates/appcore-sync-sqlite), and
-[appcore-ui](/crates/appcore-ui) (`0.1.0-beta.1`).
+[appcore-ui](/crates/appcore-ui) (`0.1.0-beta.2`).
 High-priority planned areas include
 `appcore-test`, `appcore-jobs`, `appcore-search`, `appcore-automation` and
 `appcore-plugin`; see the [Future Roadmap](/roadmap/).

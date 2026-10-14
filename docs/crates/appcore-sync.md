@@ -111,3 +111,9 @@ before retention, so the window is bounded by bytes as well as item count.
 ## Published package
 
 [`appcore-sync 2.0.0-alpha.4`](https://crates.io/crates/appcore-sync/2.0.0-alpha.4) · [docs.rs](https://docs.rs/appcore-sync/2.0.0-alpha.4) · [source](https://github.com/dnettoRaw/app-core-public/tree/beta/crates/appcore-sync).
+
+## Independent prerelease — 2026-10-14
+
+`2.0.0-alpha.5`: source changes.
+
+[crates.io](https://crates.io/crates/appcore-sync/2.0.0-alpha.5) · [docs.rs](https://docs.rs/appcore-sync/2.0.0-alpha.5)

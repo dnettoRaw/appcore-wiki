@@ -6,12 +6,12 @@ sidebar_position: 24
 # appcore-ui
 
 :::info Public beta
-`appcore-ui 0.1.0-beta.1` is available on crates.io. Rendering currently supports macOS.
+`appcore-ui 0.1.0-beta.2` is available on crates.io. Rendering currently supports macOS.
 :::
 
 ## Independent public beta
 
-`appcore-ui 0.1.0-beta.1` renders native pages defined in Rust and local web
+`appcore-ui 0.1.0-beta.2` renders native pages defined in Rust and local web
 pages built from HTML/TypeScript. Its current
 platform backend is macOS; other platforms remain future work. The broader UI
 roadmap does not imply implemented APIs.
@@ -82,12 +82,12 @@ All four examples were rendered and interacted with in real macOS windows; closi
 
 ```toml
 [dependencies]
-appcore-ui = { version = "=0.1.0-beta.1", features = ["web-macos"] }
+appcore-ui = { version = "=0.1.0-beta.2", features = ["web-macos"] }
 ```
 
 The published package includes the compiled bridge client: running `web_bridge` does not require Node or an npm build. The npm steps in source development guides only rebuild that client. Run the Cargo examples from the extracted crate or the Runtime source workspace.
 
-[crates.io](https://crates.io/crates/appcore-ui/0.1.0-beta.1) · [API](https://docs.rs/appcore-ui/0.1.0-beta.1/appcore_ui/)
+[crates.io](https://crates.io/crates/appcore-ui/0.1.0-beta.2) · [API](https://docs.rs/appcore-ui/0.1.0-beta.2/appcore_ui/)
 
 - [Guide](https://github.com/dnettoRaw/app-core-public/blob/beta/crates/appcore-ui/wiki/guide.en.md)
 - [Basic](https://github.com/dnettoRaw/app-core-public/blob/beta/crates/appcore-ui/wiki/examples/basic.en.md)
@@ -96,3 +96,9 @@ The published package includes the compiled bridge client: running `web_bridge` 
 ## Input responsiveness
 
 The pump services pending run-loop work even under native input load, and bridge work before/after native dispatch. Native draining stops when the activation queue is full; consume `pending_activations` with `next_activation` after pumping. System tracking/callbacks can exceed the cooperative drain budget. The web view accepts the first physical click when activating an inactive window; this changes focus behavior, not authorization. Physical click checks received ten of ten actions in native and web examples, plus one click when switching windows.
+
+## Independent prerelease — 2026-10-14
+
+`0.1.0-beta.2`: dependency metadata alignment.
+
+[crates.io](https://crates.io/crates/appcore-ui/0.1.0-beta.2) · [docs.rs](https://docs.rs/appcore-ui/0.1.0-beta.2)

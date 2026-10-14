@@ -113,3 +113,9 @@ historique en snapshot Runtime ni ajouter de parseurs historiques dans AppCore.
 ## Paquet publié
 
 [`appcore-storage 1.0.5-rc`](https://crates.io/crates/appcore-storage/1.0.5-rc) · [docs.rs](https://docs.rs/appcore-storage/1.0.5-rc) · [source](https://github.com/dnettoRaw/app-core-public/tree/beta/crates/appcore-storage).
+
+## Prérelease indépendante — 2026-10-14
+
+`1.0.5-rc.1`: alignement des dépendances.
+
+[crates.io](https://crates.io/crates/appcore-storage/1.0.5-rc.1) · [docs.rs](https://docs.rs/appcore-storage/1.0.5-rc.1)

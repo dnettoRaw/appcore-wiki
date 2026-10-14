@@ -82,3 +82,9 @@ chemin legacy n'est pas conservé à côté de la correction bornée.
 :::
 
 **Maturité :** profil local stable; scheduling local au processus.
+
+## Prérelease indépendante — 2026-10-14
+
+`2.0.0-alpha.4`: alignement des dépendances.
+
+[crates.io](https://crates.io/crates/appcore-scheduler/2.0.0-alpha.4) · [docs.rs](https://docs.rs/appcore-scheduler/2.0.0-alpha.4)

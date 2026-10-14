@@ -80,3 +80,9 @@ implicitly; adoption is an explicit prerelease choice.
 ## Published package
 
 [`appcore-sync-sqlite 0.1.0-alpha.7`](https://crates.io/crates/appcore-sync-sqlite/0.1.0-alpha.7) · [docs.rs](https://docs.rs/appcore-sync-sqlite/0.1.0-alpha.7) · [source](https://github.com/dnettoRaw/app-core-public/tree/beta/crates/appcore-sync-sqlite).
+
+## Independent prerelease — 2026-10-14
+
+`0.1.0-alpha.8`: source changes.
+
+[crates.io](https://crates.io/crates/appcore-sync-sqlite/0.1.0-alpha.8) · [docs.rs](https://docs.rs/appcore-sync-sqlite/0.1.0-alpha.8)

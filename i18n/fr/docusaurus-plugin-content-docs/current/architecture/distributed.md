@@ -217,3 +217,21 @@ supportées. Exiger payloads golden équivalents, replay sans publication double
 aucune réservation pending permanente après erreur, aucun snapshot partiel,
 ressources bornées et recovery après restart. Les tests Runtime certifient les
 primitives, pas le mapping externe. Ce document ne fournit pas l'adaptateur.
+
+## Durabilité du nonce et diagnostic typé
+
+Sous Windows, la publication du nonce synchronise le fichier puis utilise `MOVEFILE_WRITE_THROUGH` ; elle ne rouvre pas le parent comme répertoire Unix. Unix conserve le sync du parent. `PeerRpcDiagnosticV2::from_wire` conserve code, phase, retry et corrélation validés, une identité de peer fiable et une action définie par le protocole. Les codes inconnus restent expurgés et terminaux. Une expiration suggère de vérifier deadline/horloge sans prouver une dérive. Une suggestion de retry ne permet jamais le replay d’un command dont l’ack est ambigu. Projection locale additive ; les champs wire V1/V2 restent inchangés.
+
+## Progrès indépendant des peers et de la file
+
+`OperationalProjectionV1` expose séparément santé locale, accès Gateway, persistance, phase d’envoi et au plus 1 024 peers. Enregistrement n’implique ni connexion ni santé ; la portée de découverte ne promet pas de roster global complet. Batches pending et nombre optionnel d’objets sont distincts. L’âge heartbeat/file vient du temps monotone local écoulé ; l’horloge murale sert uniquement aux timestamps d’affichage. `validate` refuse identités dupliquées/excessives, versions futures et checkpoints au-delà du head observé ; `lag` reste inconnu sans preuves. Authentifiez et filtrez les inputs par tenant avant export. Associez `PeerRpcDiagnosticV2` validé pour le dernier échec de transport. Aucun redémarrage de service ni supervision de processus OS.
+
+## Preuves de routing Gateway
+
+`GatewayError::diagnostic_v1` exporte catégorie contrôlée et corrélation bornée sans détail brut d’authentification/provider. Utilisez `GatewayFailureDiagnosticV1::from_selection` avant de réduire `WorkerSelectionError` en texte pour conserver worker absent, non sain et sans capacité. `WorkerUnavailable` général reste général ; aucune cause n’est déduite du texte. Retry exige des opérations idempotentes sûres et n’autorise aucun replay de command ambigu.
+
+## Liaison explicite de l’opération au token V2 pour les envelopes V1
+
+Profil d’authentification additif non publié : sélectionnez `with_v1_operation_binding_v2` sur `PeerRpcClient` et `PeerRpcHttpHost`. `operation_signing_hash_v2` lie un domaine V2 explicite, `query`/`command` et le digest complet de l’envelope V1 existante. Schéma, numéro de protocole et routes V1 restent inchangés ; le contrat de liaison du token est explicitement V2. Aucun côté ne négocie, ne déduit ni n’accepte un digest alternatif. Des profils différents échouent à l’authentification. Health/manifest et streaming V2 conservent leur authentification.
+
+Le profil V1 publié par défaut conserve seulement l’envelope pour la stabilité contractuelle et ne lie pas cryptographiquement la classe de route. Sélectionnez le profil avec opération ou streaming V2 lorsque cette frontière compte ; le dispatcher doit toujours autoriser capability et mode d’invocation. Mettez à jour les deux endpoints atomiquement ou déplacez le trafic vers un host configuré séparément. Drainez d’abord les commands ambigus. Le rollback restaure explicitement les sélections des deux côtés ; ne répétez pas un command au reçu incertain avec une nouvelle clé. Cette modification ne certifie ni ne publie une migration d’installation.

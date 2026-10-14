@@ -7,7 +7,7 @@
       "status": "Beta",
       "category": "Beta",
       "summary": "Adaptive AI runtime boundary for model routing, local or remote inference, resource governance, provenance, security and observable execution.",
-      "horizon": "0.1.0-beta.5 published",
+      "horizon": "0.1.0-beta.6 published",
       "related_existing": [
         "appcore-capabilities",
         "appcore-security",
@@ -39,7 +39,7 @@
       "status": "RC",
       "category": "RC",
       "summary": "Manifest-first application facade for the three-artifact application contract.",
-      "horizon": "1.0.2-rc published",
+      "horizon": "1.0.2-rc.1 published",
       "related_existing": [
         "appcore-contracts",
         "appcore-core",
@@ -55,7 +55,7 @@
       "status": "Alpha",
       "category": "Experimental",
       "summary": "Optional bounded SQLite persistence for Runtime replication log, outbox, checkpoints, opaque tombstones, integrity and online backup.",
-      "horizon": "0.1.0-alpha.7 published development preview",
+      "horizon": "0.1.0-alpha.8 published development preview",
       "related_existing": [
         "appcore-sync",
         "appcore-storage"
@@ -68,7 +68,7 @@
       "status": "Beta",
       "category": "Beta",
       "summary": "Deterministic compiler for declarative documents, vector canvases and bounded datasets.",
-      "horizon": "0.1.0-beta.6 public beta",
+      "horizon": "0.1.0-beta.7 public beta",
       "related_existing": [
         "appcore-ai"
       ],
@@ -82,7 +82,7 @@
       "status": "Beta",
       "category": "Beta",
       "summary": "Optional bounded appcore-ai tool bridge for deterministic FileMaker sessions.",
-      "horizon": "0.1.0-beta.5 public beta",
+      "horizon": "0.1.0-beta.6 public beta",
       "related_existing": [
         "appcore-ai",
         "appcore-filemaker"
@@ -95,7 +95,7 @@
       "status": "Beta",
       "category": "Beta",
       "summary": "Bounded command-line process adapter for FileMaker compilation, diagnostics and export.",
-      "horizon": "0.1.0-beta.5 public beta",
+      "horizon": "0.1.0-beta.6 public beta",
       "related_existing": [
         "appcore-args",
         "appcore-filemaker"
@@ -108,7 +108,7 @@
       "status": "Beta",
       "category": "Beta",
       "summary": "Independent native Rust and local HTML/TypeScript pages, bounded Runtime bridge and explicit macOS system backends; deployment owns startup and authorization.",
-      "horizon": "0.1.0-beta.1 published on crates.io",
+      "horizon": "0.1.0-beta.2 published on crates.io",
       "related_existing": [
         "appcore-sdk",
         "appcore-api",
@@ -263,7 +263,7 @@
       "status": "Beta",
       "category": "Platform Expansion",
       "summary": "Authenticated resumable transfer of immutable opaque objects from multiple peers with verified blocks, quotas and bounded concurrency; mesh routing remains separate.",
-      "horizon": "0.1.0-beta.1 published on crates.io",
+      "horizon": "0.1.0-beta.2 published on crates.io",
       "related_existing": [
         "appcore-peer-rpc",
         "appcore-gateway",

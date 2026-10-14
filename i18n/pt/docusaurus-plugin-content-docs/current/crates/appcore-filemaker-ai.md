@@ -73,3 +73,9 @@ Documentação mantida pelo crate: [guia](https://github.com/dnettoRaw/AppCore-R
 ## Pacote publicado
 
 [`appcore-filemaker-ai 0.1.0-beta.5`](https://crates.io/crates/appcore-filemaker-ai/0.1.0-beta.5) · [docs.rs](https://docs.rs/appcore-filemaker-ai/0.1.0-beta.5) · [source](https://github.com/dnettoRaw/app-core-public/tree/beta/crates/appcore-filemaker-ai).
+
+## Prerelease independente — 2026-10-14
+
+`0.1.0-beta.6`: alinhamento de dependências.
+
+[crates.io](https://crates.io/crates/appcore-filemaker-ai/0.1.0-beta.6) · [docs.rs](https://docs.rs/appcore-filemaker-ai/0.1.0-beta.6)

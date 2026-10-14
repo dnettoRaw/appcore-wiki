@@ -65,3 +65,17 @@ must supply service-manager, network, recovery and resource evidence. No
 provider inference, silent fallback or compatibility parser is implied.
 
 Continue with [storage](/architecture/storage).
+
+## Operation identity and completion recovery
+
+Unpublished source contract: key uniqueness is store-wide; `command-v2:` binds the application ID, command name and length-delimited payload with SHA-256. Node, request ID, issue time and trace are transport metadata, so retries may change them. A different application or operation using the same key fails with `IdempotencyConflict`. Payload-only fingerprints fail at controller dispatch with `NO MORE SUPPORTED PLEASE UPDATE`; they are never converted. Drain and reconcile the old installation, archive its store and explicitly select a fresh store before upgrade. Roll back with the original executable and original store; never mix them.
+
+At most 64 executing/recoverable keyed completions are admitted, each serialized result at most 1 MiB (64 MiB retained body ceiling). A receipt write failure retains the outcome in the shared controller buffer. An identical retry persists the same receipt and publishes events once in this process, without rerunning the handler, including an ambiguous write that already reached the store. `recoverable_command_completions` counts retained outcomes. A full buffer rejects before handler execution. An oversized outcome leaves a durable pending reservation requiring reconciliation.
+
+File startup and TTL compaction preserve `Pending`; only resolved receipts expire. After process loss, dispatch never guesses the external effect. A trusted application/deployment reconciles authoritative effect evidence and calls `recover_pending_command` with the original operation and its bounded result. Active, resolved, missing or mismatched reservations are rejected. Ordinary failed handlers release their reservation when store removal succeeds.
+
+Application effects, receipt persistence and event publication are separate boundaries. A crash after a receipt write but before event publication can still lose publication. The bounded EventBus and its optional operational journal are not a transactional application outbox. For durable exactly-once business recovery, commit the effect, authoritative result and stable event IDs in an application-owned transaction/outbox and deduplicate consumers. Do not delete a pending reservation or generate a new key to bypass uncertainty.
+
+## Async admission
+
+Unpublished source fix: runtime execution admission and model-load single-flight waiting suspend through executor-neutral `futures_timer::Delay`; neither uses a Condvar wait on the async router thread. Queue count/priority/selected-slot bounds remain enforced. Dropping a queued future releases both its queue entry and any selected slot. Cancellation and deadlines are rechecked at the configured poll interval (model loads: 10 ms); no mutex is held across await. The timer owns a shared helper thread, not one worker per request. Backend implementations still own cooperative cancellation and must offload their own blocking work. A single-thread regression runs pending backend load with both saturated execution and competing model-load admission.

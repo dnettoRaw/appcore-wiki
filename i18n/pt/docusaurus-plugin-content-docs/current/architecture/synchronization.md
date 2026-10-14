@@ -156,3 +156,19 @@ aplicação possui a policy de conflito de negócio.
 - Partições de rede são tratadas de forma conservadora; writes que exigem liderança não prometem disponibilidade global contínua.
 
 Próximo: [operação distribuída](/pt/architecture/distributed).
+
+## Causalidade de revisões opacas
+
+`ObjectRevisionV1`, `RevisionChainV1` e `decide_object_revision_v1` classificam `already_applied`, `ancestor_echo`, `applicable`, `concurrent_branch` e `snapshot_required`. A cadeia aceita até 1 024 revisões com identidades de 128 bytes. Autentique cada evento e vincule o tenant antes de construir evidência: a validação da cadeia é estrutural, não criptográfica. Links ausentes, ciclos, objeto incompatível e identidades de evento/revisão reutilizadas são recusados. Igualdade de conteúdo ou datas não prova ancestralidade. Uma reversão intencional usa revisão/evento novos. Avance o checkpoint de transporte separadamente ao aceitar um eco; chame `validate_checkpoint_head_v1` antes de alterar metadados.
+
+## Commits compostos e objetos recuperáveis (schema V3)
+
+`SqliteSyncStore::transaction` oferece `SqliteSyncWork` limitado para append do log, enqueue da outbox, checkpoint e `stage_object_write` numa transação SQLite imediata com até 1 024 operações. Propague todos os erros; falha/unwind do callback faz rollback. Não reentre no store nem faça rede/filesystem dentro do callback. Outbox cheia é erro nesta composição. Checkpoints exigem head observado autenticado. `conflict_store` persiste evidência limitada e resolução idempotente nos contratos Sync existentes (até 4 096 conflitos). Schemas conhecidos V1/V2 do provider migram para V3; ownership é verificado antes da migração. Schemas estrangeiros/desconhecidos atingem a barreira de versão. Preserve backup verificado anterior ao V3 para rollback; binários antigos não abrem V3. Não abra a base de uma aplicação como este provider nem infira compatibilidade entre versões diferentes de rusqlite.
+
+`ObjectWriteIntentV1` regista envelopes cifrados/opacos até 1 MiB, instalação e chave opaca do objeto junto da outbox. Até 4 096 intents; páginas admitem até 1 024 registos/16 MiB antes de ler payloads. Reaplique intents committed em FIFO com `pending_object_writes`, derive paths pela política segura da aplicação, publique atomicamente/sincronize/verifique o envelope e só depois chame `acknowledge_object_write` com o digest observado. Serialize escritas por objeto no deployment e nunca reutilize IDs concluídos. Ack regista evidência do caller, sem verificar o filesystem autonomamente. Não há atomicidade universal filesystem/SQLite. Backup online inclui conflitos/intents; o manifest conjunto de ficheiros/SQLite e a identidade de instalação pertencem ao deployment.
+
+## Retransmissão e serialização do checkpoint
+
+Correção ainda não publicada: uma repetição autenticada idêntica recebe ACK aceite sem novos registos; reutilizar um `batch_id` retido com conteúdo divergente falha com `divergent batch_id reuse`. O receiver retém no máximo 10.000 pares ID/digest. A janela é local ao processo, não evidência permanente; após reinício ou expulsão aplica-se a política existente de checkpoint para sequências antigas. Autentique e isole a origem antes de chamar o receiver. Receivers distintos devem partilhar o handle do log quando partilham checkpoints.
+
+Leitura do checkpoint, verificação da sobreposição, append e publicação de sequência/hash usam o mesmo lock do log. Lotes concorrentes não publicam um checkpoint antigo menor nem combinam sequência e hash de lotes diferentes. Erros do provider ainda podem deixar o log atualizado com checkpoint antigo; a repetição verifica a sobreposição antes de publicar o checkpoint. O sender remove o recibo da outbox só após confirmação do transporte. A perda do primeiro ACK provoca retransmissão segura e posterior drenagem. Processos externos e handles de log independentes exigem coordenação transacional do provider/deployment.

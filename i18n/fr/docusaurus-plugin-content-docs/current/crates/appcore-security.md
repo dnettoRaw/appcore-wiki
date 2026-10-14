@@ -58,3 +58,9 @@ pas la politique du deployment en fallback implicite.
 
 **Maturité :** contrats de release candidate; la production dépend du backend
 secret et des contrôles du déploiement.
+
+## Prérelease indépendante — 2026-10-14
+
+`1.0.3-rc.3`: modifications propres.
+
+[crates.io](https://crates.io/crates/appcore-security/1.0.3-rc.3) · [docs.rs](https://docs.rs/appcore-security/1.0.3-rc.3)

@@ -26,26 +26,26 @@ automatic just because a crate appears in the Runtime repository.
 
 | Component | Status | Boundary |
 | --- | --- | --- |
-| [appcore-ai](/crates/appcore-ai) | Beta | Published `0.1.0-beta.5` for bounded model routing, local or remote inference, resource governance, provenance, security and observable execution. |
-| [appcore-filemaker](/crates/appcore-filemaker) | Beta | Published `0.1.0-beta.6` deterministic compiler for declarative documents, vector canvases, and bounded datasets. |
-| [appcore-ui](/crates/appcore-ui) | Beta | `0.1.0-beta.1` (crates.io). UI surface boundary for HTML/TypeScript pages, native Rust-rendered views, window lifecycle, events, visual state and future page building. |
-| [appcore-filemaker-ai](/crates/appcore-filemaker-ai) | Beta | Published `0.1.0-beta.5` optional bounded tool bridge; AI remains outside the deterministic compiler. |
-| [appcore-filemaker-cli](/crates/appcore-filemaker-cli) | Beta | Published `0.1.0-beta.5` bounded process adapter for compilation, diagnostics, and explicit export. |
+| [appcore-ai](/crates/appcore-ai) | Beta | Published `0.1.0-beta.6` for bounded model routing, local or remote inference, resource governance, provenance, security and observable execution. |
+| [appcore-filemaker](/crates/appcore-filemaker) | Beta | Published `0.1.0-beta.7` deterministic compiler for declarative documents, vector canvases, and bounded datasets. |
+| [appcore-ui](/crates/appcore-ui) | Beta | `0.1.0-beta.2` (crates.io). UI surface boundary for HTML/TypeScript pages, native Rust-rendered views, window lifecycle, events, visual state and future page building. |
+| [appcore-filemaker-ai](/crates/appcore-filemaker-ai) | Beta | Published `0.1.0-beta.6` optional bounded tool bridge; AI remains outside the deterministic compiler. |
+| [appcore-filemaker-cli](/crates/appcore-filemaker-cli) | Beta | Published `0.1.0-beta.6` bounded process adapter for compilation, diagnostics, and explicit export. |
 
-| [appcore-transfer](/crates/appcore-transfer) | Beta | `0.1.0-beta.1` — crates.io. Resumable transfer of immutable opaque objects from multiple authorized peers, with verified blocks, quotas and bounded concurrency; separate from mesh routing. |
+| [appcore-transfer](/crates/appcore-transfer) | Beta | `0.1.0-beta.2` — crates.io. Resumable transfer of immutable opaque objects from multiple authorized peers, with verified blocks, quotas and bounded concurrency; separate from mesh routing. |
 
 ## RC
 
 | Component | Status | Boundary |
 | --- | --- | --- |
 | [appcore-log](/crates/appcore-log) | RC | Published `1.0.0-rc.3` bounded structured logging pipeline for Runtime components and SDK applications. |
-| [appcore-sdk](/crates/appcore-sdk) | RC | Published `1.0.2-rc` manifest-first application facade replacing the retired `appcore-bin`. |
+| [appcore-sdk](/crates/appcore-sdk) | RC | Published `1.0.2-rc.1` manifest-first application facade replacing the retired `appcore-bin`. |
 
 ## Alpha
 
 | Component | Status | Boundary |
 | --- | --- | --- |
-| [appcore-sync-sqlite](/crates/appcore-sync-sqlite) | Alpha | Published `0.1.0-alpha.7` optional persistence for Runtime-owned sync state. |
+| [appcore-sync-sqlite](/crates/appcore-sync-sqlite) | Alpha | Published `0.1.0-alpha.8` optional persistence for Runtime-owned sync state. |
 
 ## High Priority
 

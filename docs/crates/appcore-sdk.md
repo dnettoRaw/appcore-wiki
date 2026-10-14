@@ -48,3 +48,9 @@ the crate-owned [English guide](https://github.com/dnettoRaw/app-core-public/tre
 or [French guide](https://github.com/dnettoRaw/app-core-public/tree/beta/appcore-sdk/wiki/guide.fr.md).
 Then run the crate-owned [basic example](https://github.com/dnettoRaw/app-core-public/tree/beta/appcore-sdk/wiki/examples/basic.en.md)
 and [intermediate example](https://github.com/dnettoRaw/app-core-public/tree/beta/appcore-sdk/wiki/examples/intermediate.en.md).
+
+## Independent prerelease — 2026-10-14
+
+`1.0.2-rc.1`: source changes.
+
+[crates.io](https://crates.io/crates/appcore-sdk/1.0.2-rc.1) · [docs.rs](https://docs.rs/appcore-sdk/1.0.2-rc.1)

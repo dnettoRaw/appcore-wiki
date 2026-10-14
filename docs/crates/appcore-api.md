@@ -110,3 +110,9 @@ This API is source status only. Do not infer that it is available from the
 stable `1.0.0` package shown above. See [coordinated reload](/architecture/reload).
 
 **Maturity:** stable strict HTTP V1 surface.
+
+## Independent prerelease — 2026-10-14
+
+`1.0.4-rc.1`: dependency metadata alignment.
+
+[crates.io](https://crates.io/crates/appcore-api/1.0.4-rc.1) · [docs.rs](https://docs.rs/appcore-api/1.0.4-rc.1)

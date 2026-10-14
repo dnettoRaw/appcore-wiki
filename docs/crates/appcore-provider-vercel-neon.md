@@ -27,3 +27,9 @@ the external service.
 
 **Maturity:** supported adapter; production certification includes the
 separately operated backend.
+
+## Independent prerelease — 2026-10-14
+
+`1.0.4-rc.2`: dependency metadata alignment.
+
+[crates.io](https://crates.io/crates/appcore-provider-vercel-neon/1.0.4-rc.2) · [docs.rs](https://docs.rs/appcore-provider-vercel-neon/1.0.4-rc.2)

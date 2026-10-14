@@ -70,3 +70,9 @@ Documentation maintenue par le crate : [guide](https://github.com/dnettoRaw/AppC
 ## Paquet publié
 
 [`appcore-filemaker-cli 0.1.0-beta.5`](https://crates.io/crates/appcore-filemaker-cli/0.1.0-beta.5) · [docs.rs](https://docs.rs/appcore-filemaker-cli/0.1.0-beta.5) · [source](https://github.com/dnettoRaw/app-core-public/tree/beta/crates/appcore-filemaker-cli).
+
+## Prérelease indépendante — 2026-10-14
+
+`0.1.0-beta.6`: alignement des dépendances.
+
+[crates.io](https://crates.io/crates/appcore-filemaker-cli/0.1.0-beta.6) · [docs.rs](https://docs.rs/appcore-filemaker-cli/0.1.0-beta.6)

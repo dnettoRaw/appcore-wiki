@@ -98,3 +98,7 @@ d'installer des artefacts de build immuables. Les paths existants ne sont pas
   les effets externes créés par la nouvelle version applicative.
 
 Continuez avec le [modèle de sécurité](/fr/security/security-model).
+
+## Composition explicite du cycle de vie du host
+
+`HostUpdateFlow` compose `ActivationAdapter`, `UpdateRecoveryGate` et le journal V2 existant. Deployment possède un lock externe unique, staging authentifié, deadlines de drain, snapshots liés à l’installation, démarrage/arrêt et readiness réelle. Prepare persiste l’intention avant callbacks ; activate répète drain/snapshot/préparation idempotents et scelle les écritures avant le host. Les callbacks respectent les limites d’exécution du deployment. Les receipts pending survivent aux interruptions. Un receipt prepared après activate interrompu ne prouve pas l’absence d’activation : inspectez le host par `recover` ou exigez une revue manuelle. Échec de santé enregistre le rollback requis. Commit du host précède `committed` ; commit ambigu ne termine jamais. Rollback exige une identité réelle revérifiée avant `RecordRolledBack`. Conservez artefacts/données précédents jusqu’à santé et fin récupérable. Les replays terminaux valident les digests. La version avance avec build distinct, plateforme/target et hash ; des builds de même version ne sont pas des upgrades automatiques. Aucune dépendance Tauri, container ou gestionnaire de processus.

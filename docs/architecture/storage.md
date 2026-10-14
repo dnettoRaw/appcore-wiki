@@ -160,3 +160,11 @@ The alternative would be to require a database for every AppCore installation. T
 - Restore protects the storage root it owns. It does not roll back external side effects performed by application code.
 
 Continue with [synchronization, logs, checkpoints, and replay](/architecture/synchronization).
+
+## Windows private directories
+
+`create_update_private_directory` accepts a private leaf beneath handle-validated trusted Windows ancestors (current user, SYSTEM, Administrators or TrustedInstaller). Other replacement grants and reparse points are rejected. Keep the returned guard alive during work: it requests `FILE_LIST_DIRECTORY` and excludes delete sharing. Existing insecure leaves are rejected without repair. New private paths explicitly set both owner SID and protected DACL; Windows keyring directory flush opens with write access. Run the native directory and DPAPI tests under both limited and elevated interactive tokens before replacing local overrides.
+
+## Windows elevated-token creation and lifetime guards
+
+Only newly created private files/directories receive an explicit current-user owner and protected owner-only DACL before strict validation. Existing insecure paths remain rejected. Windows roots and active object sessions retain Security directory guards to exclude ancestor/object-directory replacement during operations. Security is a Windows-only dependency; `peer-rpc` remains optional and no Update dependency is introduced. Native tests must run with limited and elevated tokens; fixture roots use non-verbatim Windows Temp paths. A verified object path after store drop is still deployment-owned and revalidated when opened.

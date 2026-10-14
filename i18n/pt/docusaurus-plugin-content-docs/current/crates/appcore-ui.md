@@ -6,12 +6,12 @@ sidebar_position: 24
 # appcore-ui
 
 :::info Beta pública
-`appcore-ui 0.1.0-beta.1` está disponível no crates.io. O rendering atual suporta macOS.
+`appcore-ui 0.1.0-beta.2` está disponível no crates.io. O rendering atual suporta macOS.
 :::
 
 ## Beta pública independente
 
-`appcore-ui 0.1.0-beta.1` renderiza páginas nativas definidas em Rust e páginas
+`appcore-ui 0.1.0-beta.2` renderiza páginas nativas definidas em Rust e páginas
 web locais produzidas em HTML/TypeScript. Está disponível como beta pública.
 O backend atual é macOS; outras plataformas continuam trabalho futuro.
 O roadmap mais amplo de UI não representa APIs já implementadas.
@@ -83,12 +83,12 @@ Os quatro exemplos foram renderizados e usados em janelas macOS reais; fechar ca
 
 ```toml
 [dependencies]
-appcore-ui = { version = "=0.1.0-beta.1", features = ["web-macos"] }
+appcore-ui = { version = "=0.1.0-beta.2", features = ["web-macos"] }
 ```
 
 O pacote publicado inclui o cliente compilado da bridge: executar `web_bridge` não exige Node nem build npm. Os passos npm dos guias de desenvolvimento em fonte apenas recompilam esse cliente. Execute os exemplos Cargo a partir do crate extraído ou do workspace de fonte Runtime.
 
-[crates.io](https://crates.io/crates/appcore-ui/0.1.0-beta.1) · [API](https://docs.rs/appcore-ui/0.1.0-beta.1/appcore_ui/)
+[crates.io](https://crates.io/crates/appcore-ui/0.1.0-beta.2) · [API](https://docs.rs/appcore-ui/0.1.0-beta.2/appcore_ui/)
 
 - [Guide](https://github.com/dnettoRaw/app-core-public/blob/beta/crates/appcore-ui/wiki/guide.pt.md)
 - [Basic](https://github.com/dnettoRaw/app-core-public/blob/beta/crates/appcore-ui/wiki/examples/basic.pt.md)
@@ -97,3 +97,9 @@ O pacote publicado inclui o cliente compilado da bridge: executar `web_bridge` n
 ## Resposta à interação
 
 O pump serve o run loop mesmo sob carga de input e a bridge antes/depois do dispatch nativo. A drenagem para quando a fila de ativações enche; consuma `pending_activations` com `next_activation` depois do pump. Tracking/callbacks do sistema podem exceder o orçamento cooperativo. A WebView aceita o primeiro clique físico ao ativar uma janela inativa; muda o foco, não a autorização. Os testes físicos receberam dez de dez ações nos exemplos nativo e web, e um clique ao alternar janelas.
+
+## Prerelease independente — 2026-10-14
+
+`0.1.0-beta.2`: alinhamento de dependências.
+
+[crates.io](https://crates.io/crates/appcore-ui/0.1.0-beta.2) · [docs.rs](https://docs.rs/appcore-ui/0.1.0-beta.2)

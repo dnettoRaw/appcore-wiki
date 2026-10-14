@@ -80,3 +80,9 @@ adapters and domain behavior outside this crate.
 
 **Maturity:** stable low-level surface; builder/plugin APIs are compatibility
 level, while manifest-first hosting is preferred.
+
+## Independent prerelease — 2026-10-14
+
+`1.0.4-rc.1`: source changes.
+
+[crates.io](https://crates.io/crates/appcore-core/1.0.4-rc.1) · [docs.rs](https://docs.rs/appcore-core/1.0.4-rc.1)

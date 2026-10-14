@@ -134,3 +134,9 @@ em desenvolvimento até existir evidência Linux/Windows.
 ## Pacote publicado
 
 [`appcore-peer-rpc 1.0.5-rc`](https://crates.io/crates/appcore-peer-rpc/1.0.5-rc) · [docs.rs](https://docs.rs/appcore-peer-rpc/1.0.5-rc) · [source](https://github.com/dnettoRaw/app-core-public/tree/beta/crates/appcore-peer-rpc).
+
+## Prerelease independente — 2026-10-14
+
+`1.0.5-rc.1`: alterações próprias.
+
+[crates.io](https://crates.io/crates/appcore-peer-rpc/1.0.5-rc.1) · [docs.rs](https://docs.rs/appcore-peer-rpc/1.0.5-rc.1)

@@ -58,3 +58,12 @@ local limitado e emite diagnósticos redigidos para operadores.
 
 **Maturidade:** lifecycle de release candidate; supply chain remoto exige
 assinatura, provenance e trust roots.
+
+## Prerelease independente — 2026-10-14
+
+`2.0.0-alpha.2`: alterações próprias.
+
+[crates.io](https://crates.io/crates/appcore-update/2.0.0-alpha.2) · [docs.rs](https://docs.rs/appcore-update/2.0.0-alpha.2)
+
+
+O enum público exaustivo `UpdateError` adiciona `Transfer` e `Recovery` em relação à versão estável 1.0.0. Esta mudança de API Rust exige uma prerelease major explícita; manifests V1 e protocolos de descriptors de update permanecem iguais. Migração: selecionar `appcore-update = "=2.0.0-alpha.2"`, tratar as duas variantes novas, repetir testes de ativação/recuperação/rollback e preservar o binário anterior e backup verificado dos dados. Rollback: parar ativação e restaurar o binário anterior com o backup verificado do estado persistido compatível; não inferir nem converter estado não suportado. Uma dependência 1.x não seleciona a versão major automaticamente.

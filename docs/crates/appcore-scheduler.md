@@ -79,3 +79,9 @@ legacy path is not retained alongside the bounded correction.
 :::
 
 **Maturity:** stable local profile; schedule state is process-local.
+
+## Independent prerelease — 2026-10-14
+
+`2.0.0-alpha.4`: dependency metadata alignment.
+
+[crates.io](https://crates.io/crates/appcore-scheduler/2.0.0-alpha.4) · [docs.rs](https://docs.rs/appcore-scheduler/2.0.0-alpha.4)

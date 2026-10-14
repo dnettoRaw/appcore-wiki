@@ -79,3 +79,9 @@ explicit V2 family. Known metadata is validated as one matrix. Unknown codes
 normalize to terminal `unknown` without retaining the remote text or retry
 hint. `PeerRpcRemoteErrorV1` is a separate exact decoder for the stable V1
 string field; it does not negotiate or construct V2 traffic.
+
+## Independent prerelease — 2026-10-14
+
+`2.0.0-alpha.4`: source changes.
+
+[crates.io](https://crates.io/crates/appcore-distributed-contracts/2.0.0-alpha.4) · [docs.rs](https://docs.rs/appcore-distributed-contracts/2.0.0-alpha.4)

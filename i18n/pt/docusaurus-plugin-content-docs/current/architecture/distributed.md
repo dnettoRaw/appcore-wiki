@@ -206,3 +206,21 @@ suportados. Exigir payloads golden equivalentes, replay sem publicação duplica
 falhas sem reserva pending permanente, snapshots sem publicação parcial,
 recursos limitados e recovery após restart. Testes do Runtime certificam
 primitivas, não o mapeamento externo. Este documento não fornece o adaptador.
+
+## Durabilidade do nonce e diagnóstico tipado
+
+A publicação do nonce no Windows sincroniza o ficheiro e substitui com `MOVEFILE_WRITE_THROUGH`; não reabre o parent como diretório Unix. Unix conserva o sync do parent. `PeerRpcDiagnosticV2::from_wire` conserva código, fase, retry e correlação validados, identidade confiável do peer e ação definida pelo protocolo. Códigos desconhecidos continuam redigidos e terminais. Expiração sugere verificar deadline/relógio, sem provar desvio do relógio. Uma sugestão de retry não autoriza replay de command com ack ambíguo. É uma projeção local aditiva; os campos wire V1/V2 permanecem iguais.
+
+## Progresso independente de peers e fila
+
+`OperationalProjectionV1` transporta separadamente saúde local, alcance Gateway, persistência, fase de envio e até 1 024 peers. Registo não implica conexão ou saúde; o escopo de descoberta não promete roster global completo. Batches pendentes e contagem opcional de objetos são distintos. Idade de heartbeat/fila vem de tempo decorrido monotónico local; relógio de parede serve apenas para timestamps de apresentação. `validate` recusa IDs duplicados/excessivos, versões futuras e checkpoints acima do head observado; `lag` é desconhecido sem evidência. Autentique e filtre inputs por tenant antes de exportar. Associe `PeerRpcDiagnosticV2` validado para a última falha de transporte. Não reinicia serviços nem supervisiona processos do SO.
+
+## Evidência de routing Gateway
+
+`GatewayError::diagnostic_v1` exporta categoria controlada e correlação limitada sem detalhe bruto de autenticação/provider. Use `GatewayFailureDiagnosticV1::from_selection` antes de reduzir `WorkerSelectionError` a texto para conservar worker ausente, sem saúde e sem capacidade. `WorkerUnavailable` genérico continua genérico; não se infere a causa pelo texto. Retry exige operações idempotentes seguras e não autoriza replay de command ambíguo.
+
+## Vinculação explícita da operação no token V2 para envelopes V1
+
+Perfil de autenticação aditivo ainda não publicado: selecione `with_v1_operation_binding_v2` tanto em `PeerRpcClient` como em `PeerRpcHttpHost`. `operation_signing_hash_v2` vincula domínio V2 explícito, `query`/`command` e digest completo do envelope V1 existente. Schema, número de protocolo e rotas V1 não mudam; o contrato de vinculação do token é explicitamente V2. Nenhum lado negoceia, deduz ou aceita digest alternativo. Perfis diferentes falham na autenticação. Health/manifest e streaming V2 mantêm a autenticação existente.
+
+O perfil V1 publicado por omissão mantém apenas o envelope para estabilidade contratual e não vincula criptograficamente a classe da rota. Selecione o perfil com operação ou streaming V2 quando essa fronteira importar; o dispatcher deve sempre autorizar capability e modo de invocação. Atualize ambos os endpoints atomicamente ou transfira tráfego para um host configurado separadamente. Drene tentativas de commands ambíguas primeiro. O rollback exige restaurar explicitamente a seleção de ambos os lados; não repita um command com ACK incerto usando chave nova. Esta alteração não certifica nem publica uma migração da instalação.

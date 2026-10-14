@@ -201,3 +201,21 @@ publication on idempotent replay, no permanent pending reservations on failure,
 no partial snapshot publication, bounded resource use and restart recovery.
 Runtime tests certify transport primitives, not an unimplemented external
 mapping. No application adapter is supplied by this document.
+
+## Nonce durability and typed diagnostics
+
+Windows nonce publication syncs the file and replaces it with `MOVEFILE_WRITE_THROUGH`; it does not reopen the parent as a Unix directory. Unix retains parent sync. `PeerRpcDiagnosticV2::from_wire` preserves validated code, phase, retry and correlation plus a trusted peer identity and protocol-owned action. Unknown codes remain redacted and terminal. Expiry suggests checking deadline/clock but does not prove clock skew. A retry suggestion never authorizes replay of an ambiguously acknowledged command. This is an additive local projection; V1/V2 wire error fields are unchanged.
+
+## Independent peer and queue progress
+
+`OperationalProjectionV1` separately carries local health, Gateway reachability, persistence, delivery phase and at most 1,024 peer observations. Registration does not imply connection or health; discovery scope never claims a complete global roster. Pending batches and optional object counts have distinct semantics. Heartbeat/queue age must come from local monotonic elapsed time; wall-clock values are display timestamps only. `validate` rejects duplicate/oversized identities, future versions and checkpoints beyond observed head; `lag` returns unknown when evidence is missing. Authenticate/tenant-filter inputs before export. Pair this projection with validated `PeerRpcDiagnosticV2` for the last transport failure. It never restarts a service or supervises an OS process.
+
+## Gateway routing evidence
+
+`GatewayError::diagnostic_v1` exports a controlled category and bounded correlation without raw authentication/provider detail. Use `GatewayFailureDiagnosticV1::from_selection` before flattening `WorkerSelectionError` to preserve absent worker, unhealthy worker and capacity distinctions. Existing coarse `WorkerUnavailable` stays coarse; no cause is guessed from text. Retry hints require safe idempotent operations and do not authorize ambiguous command replay.
+
+## Explicit operation-token binding V2 on V1 envelopes
+
+Unpublished additive authentication profile: select `with_v1_operation_binding_v2` on both `PeerRpcClient` and `PeerRpcHttpHost`. `operation_signing_hash_v2` binds an explicit V2 domain, `query`/`command` and the complete existing V1 envelope digest. The V1 envelope schema, protocol number and routes are unchanged; the token-binding contract is explicitly V2. Neither side negotiates, infers nor accepts an alternative digest. A profile mismatch fails authentication. Health/manifest and streaming V2 retain their existing authentication.
+
+The published default envelope-only V1 profile remains available for contract stability and does not cryptographically bind the route class. Select the operation-bound profile or streaming V2 when that threat boundary matters; dispatcher capability and invocation-mode authorization is always required. Upgrade both endpoints atomically or move traffic to a separately configured host. Drain ambiguous command attempts first. Rollback requires explicit coordinated restoration of both profile selections; never retry an ambiguously acknowledged command with a fresh key. This source change does not certify or publish an installation migration.

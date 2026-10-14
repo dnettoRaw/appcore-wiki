@@ -50,3 +50,9 @@ V1 JSON boundary and also limits decoded state to 262,144 records and 64 MiB.
 
 **Maturity:** stable contracts and reference implementations; external
 service operation is deployment-owned.
+
+## Independent prerelease — 2026-10-14
+
+`1.0.4-rc.2`: dependency metadata alignment.
+
+[crates.io](https://crates.io/crates/appcore-control-plane/1.0.4-rc.2) · [docs.rs](https://docs.rs/appcore-control-plane/1.0.4-rc.2)

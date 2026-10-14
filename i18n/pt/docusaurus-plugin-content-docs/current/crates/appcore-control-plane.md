@@ -50,3 +50,9 @@ preserva a fronteira JSON V1 de 16 MiB e também limita o estado decodificado a
 
 **Maturidade:** contratos e referências estáveis; operação do serviço
 externo pertence ao deployment.
+
+## Prerelease independente — 2026-10-14
+
+`1.0.4-rc.2`: alinhamento de dependências.
+
+[crates.io](https://crates.io/crates/appcore-control-plane/1.0.4-rc.2) · [docs.rs](https://docs.rs/appcore-control-plane/1.0.4-rc.2)

@@ -45,7 +45,7 @@ atual do Runtime. O trabalho em prerelease inclui
 [appcore-ai](/pt/crates/appcore-ai),
 [appcore-filemaker](/pt/crates/appcore-filemaker) e
 [appcore-sync-sqlite](/pt/crates/appcore-sync-sqlite) e
-[appcore-ui](/pt/crates/appcore-ui) (`0.1.0-beta.1`). Áreas planejadas de
+[appcore-ui](/pt/crates/appcore-ui) (`0.1.0-beta.2`). Áreas planejadas de
 alta prioridade incluem
 `appcore-test`, `appcore-jobs`, `appcore-search`, `appcore-automation` e
 `appcore-plugin`; veja o [Roadmap futuro](/pt/roadmap/).

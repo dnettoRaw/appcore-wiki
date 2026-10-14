@@ -26,3 +26,9 @@ Windows cross-compilation is checked; native Windows recovery and physical mesh 
 ## Pacote publicado
 
 [`appcore-transfer 0.1.0-beta.1`](https://crates.io/crates/appcore-transfer/0.1.0-beta.1) · [docs.rs](https://docs.rs/appcore-transfer/0.1.0-beta.1) · [source](https://github.com/dnettoRaw/app-core-public/tree/beta/crates/appcore-transfer).
+
+## Prerelease independente — 2026-10-14
+
+`0.1.0-beta.2`: alterações próprias.
+
+[crates.io](https://crates.io/crates/appcore-transfer/0.1.0-beta.2) · [docs.rs](https://docs.rs/appcore-transfer/0.1.0-beta.2)

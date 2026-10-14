@@ -181,3 +181,11 @@ rend la coordination distribuée explicite.
 - Restore n'annule pas les actions externes exécutées par les handlers applicatifs.
 
 Suivant : [sync](/fr/architecture/synchronization).
+
+## Répertoires privés Windows
+
+`create_update_private_directory` accepte une feuille privée sous des ancêtres Windows validés par handle (utilisateur courant, SYSTEM, Administrators ou TrustedInstaller). Les droits de remplacement accordés à des tiers et les reparse points sont refusés. Conservez le guard pendant le travail : il demande `FILE_LIST_DIRECTORY` et exclut le partage delete. Les feuilles existantes non sûres sont refusées sans réparation. Les nouveaux chemins privés définissent le SID propriétaire et la DACL protégée ; le flush du keyring ouvre le répertoire avec accès en écriture. Exécutez les tests natifs de répertoire et DPAPI avec les tokens interactifs limité et élevé avant de remplacer les overrides locaux.
+
+## Création avec token élevé et guards Windows
+
+Seuls les nouveaux fichiers/répertoires privés reçoivent le propriétaire utilisateur courant explicite et une DACL protégée avant validation stricte. Les paths existants non sûrs restent refusés. Roots et sessions d’objets Windows conservent les guards Security contre remplacement d’ancêtres/répertoire d’objet pendant le travail. Security dépendance Windows seulement ; `peer-rpc` reste optionnel, aucune dépendance Update. Les tests natifs exigent les tokens limité/élevé ; les fixtures utilisent des paths Temp Windows sans préfixe verbatim. Le path vérifié après drop du store reste protégé par deployment et revérifié à l’ouverture.

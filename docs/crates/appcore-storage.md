@@ -110,3 +110,9 @@ rename an old archive into a Runtime snapshot or add legacy parsers to AppCore.
 ## Published package
 
 [`appcore-storage 1.0.5-rc`](https://crates.io/crates/appcore-storage/1.0.5-rc) · [docs.rs](https://docs.rs/appcore-storage/1.0.5-rc) · [source](https://github.com/dnettoRaw/app-core-public/tree/beta/crates/appcore-storage).
+
+## Independent prerelease — 2026-10-14
+
+`1.0.5-rc.1`: dependency metadata alignment.
+
+[crates.io](https://crates.io/crates/appcore-storage/1.0.5-rc.1) · [docs.rs](https://docs.rs/appcore-storage/1.0.5-rc.1)

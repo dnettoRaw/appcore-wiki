@@ -55,3 +55,9 @@ negócio da aplicação ao crate.
 
 **Maturidade:** primitives estáveis; export/collection de produção pertence
 ao deployment.
+
+## Prerelease independente — 2026-10-14
+
+`1.0.4-rc.1`: alterações próprias.
+
+[crates.io](https://crates.io/crates/appcore-ops/1.0.4-rc.1) · [docs.rs](https://docs.rs/appcore-ops/1.0.4-rc.1)

@@ -113,3 +113,9 @@ disponível no pacote estável `1.0.0` indicado acima. Veja
 [reload coordenado](/pt/architecture/reload).
 
 **Maturidade:** superfície HTTP V1 estrita e estável.
+
+## Prerelease independente — 2026-10-14
+
+`1.0.4-rc.1`: alinhamento de dependências.
+
+[crates.io](https://crates.io/crates/appcore-api/1.0.4-rc.1) · [docs.rs](https://docs.rs/appcore-api/1.0.4-rc.1)

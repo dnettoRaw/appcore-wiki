@@ -351,3 +351,9 @@ operational metrics.
 The exact [performance report](https://github.com/dnettoRaw/app-core-public/blob/beta/crates/appcore-ai/wiki/benchmarks.en.md)
 and [beta matrix](https://github.com/dnettoRaw/app-core-public/blob/beta/crates/appcore-ai/wiki/release-readiness.en.md)
 are versioned with the crate.
+
+## Independent prerelease — 2026-10-14
+
+`0.1.0-beta.6`: source changes.
+
+[crates.io](https://crates.io/crates/appcore-ai/0.1.0-beta.6) · [docs.rs](https://docs.rs/appcore-ai/0.1.0-beta.6)

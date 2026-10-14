@@ -115,3 +115,9 @@ comme disponible dans le paquet stable `1.0.0` indiqué ci-dessus. Voir
 [reload coordonné](/fr/architecture/reload).
 
 **Maturité :** surface HTTP V1 stricte et stable.
+
+## Prérelease indépendante — 2026-10-14
+
+`1.0.4-rc.1`: alignement des dépendances.
+
+[crates.io](https://crates.io/crates/appcore-api/1.0.4-rc.1) · [docs.rs](https://docs.rs/appcore-api/1.0.4-rc.1)

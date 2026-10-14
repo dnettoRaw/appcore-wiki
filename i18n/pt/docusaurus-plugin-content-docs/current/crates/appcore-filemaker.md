@@ -317,3 +317,11 @@ e [API do encoder QR](https://docs.rs/qrcode/0.14.1/qrcode/struct.QrCode.html).
 ## Pacote publicado
 
 [`appcore-filemaker 0.1.0-beta.6`](https://crates.io/crates/appcore-filemaker/0.1.0-beta.6) · [docs.rs](https://docs.rs/appcore-filemaker/0.1.0-beta.6) · [source](https://github.com/dnettoRaw/app-core-public/tree/beta/crates/appcore-filemaker).
+
+## Prerelease independente — 2026-10-14
+
+`0.1.0-beta.7`: alterações próprias.
+
+[crates.io](https://crates.io/crates/appcore-filemaker/0.1.0-beta.7) · [docs.rs](https://docs.rs/appcore-filemaker/0.1.0-beta.7)
+
+O frontend YAML substitui o parser sem manutenção por parsing em Rust seguro (`serde-saphyr`). Os modelos de fonte/fixtures YAML V1 e os booleanos YAML 1.2 são preservados. Campos desconhecidos, aliases recursivos e múltiplos documentos são rejeitados; os erros omitem trechos da fonte. O parser limita profundidade a 64, eventos a 1.000.000, aliases/âncoras a 50.000 e texto escalar agregado a 64 MiB, além dos limites existentes de entrada/schema. Nenhum fallback para o parser antigo é distribuído.
