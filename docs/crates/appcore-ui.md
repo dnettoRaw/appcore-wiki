@@ -1,82 +1,96 @@
 ---
-title: appcore-ui — Coming soon
+title: appcore-ui — Beta
 sidebar_position: 24
 ---
 
 # appcore-ui
 
-:::caution Coming soon
-`appcore-ui` is under development and **has not been published yet**. It is not
-currently available on crates.io or docs.rs and should not be used as a
-dependency.
+:::info Public beta
+`appcore-ui 0.1.0-beta.1` is available on crates.io. Rendering currently supports macOS.
 :::
 
-`appcore-ui` is the planned crate for declaring, generating and executing UI
-surfaces in AppCore. It is not just a component library. Its boundary is the
-runtime contract around pages, windows, views, events, actions, visual state and
-the bridge from interface intent to AppCore commands, queries and capabilities.
+## Independent public beta
 
-## Planned Surface Model
+`appcore-ui 0.1.0-beta.1` renders native pages defined in Rust and local web
+pages built from HTML/TypeScript. Its current
+platform backend is macOS; other platforms remain future work. The broader UI
+roadmap does not imply implemented APIs.
 
-The central concepts are expected to be:
+The module owns windows, rendering, actions and the Runtime bridge. Applications
+own layouts, schemas and business behavior. Deployment selects backend and
+principal/capability authorization and owns startup, event pumping and shutdown.
+The SDK prepares registrations; it does not start a hidden UI host or executor.
 
-- `UiSurface`: the runtime-owned interface surface;
-- `UiDocument`: a structured description of pages, views, bindings and actions;
-- `Window`, `Page`, `View` and `Viewport`: lifecycle and rendering boundaries;
-- event, action, state and lifecycle contracts;
-- bindings from UI actions to AppCore commands;
-- bindings from AppCore queries to visual state;
-- capability-controlled access to runtime and application behavior.
+## Native and web pages
 
-The planned flow is deliberately explicit:
+`UiNativePageV1` declares validated text/buttons with fixed frames. The optional
+`native-macos` backend calls system controls directly. Window and action queues
+are bounded; activations do not bypass Runtime authorization.
 
-```text
-UI Event -> Action -> AppCore Command
-AppCore Query -> Visual State -> UI
+`UiWebBundle` contains immutable application-built HTML, JavaScript, CSS, images
+and fonts, with explicit paths/MIME. Limits are 512 resources, 2 MiB each and
+16 MiB retained source bytes. They do not bound total platform engine memory.
+The optional `web-macos` backend uses the system web component without bundling
+an engine. It serves a random per-window local origin with CSP/nosniff,
+nonpersistent storage and no foreign navigation, frames, popups or network.
+System bindings are optional and isolated; the default crate does not include them.
+
+## Runtime bridge and recovery
+
+`attach_surface` is explicit before loading. The native caller/origin is verified;
+page JSON cannot select principal or tenant. Mandatory authorization and a declared
+catalog protect commands, queries and subscriptions. Commands preserve existing
+Runtime idempotency and event ownership. UI V1 is independent of manifests/peer
+versions; unsupported versions return `NO MORE SUPPORTED PLEASE UPDATE`.
+
+The typed TypeScript client has no additional runtime library. Requests, messages,
+subscriptions and retained queues have limits, deadlines and cooperative cancellation.
+Backpressure and event loss are visible. Offline invalidates subscriptions;
+reconnect creates a fresh window/surface and queries current state. Close rejects
+pending promises and releases the surface. Cancellation does not roll back effects.
+The deployment pump requires nonblocking authorization/backends or an explicit
+bounded blocking boundary; no worker/executor is hidden in the renderer.
+
+## Evidence and scope
+
+Real native and web windows were inspected. Native action, DOM update, rejected
+foreign navigation/inline script and clean close were verified. A SDK fixture
+executed query, command, subscription and replay: one effect, one Runtime event,
+one notification; forged authority and foreign surface IDs were rejected.
+
+An external independent source consumer reused an existing screen and CSS with
+synthetic data. Refresh executed a second query; native close exited 0 with
+`status_queries=2 pending_requests=0 retained_windows=0`. This qualifies isolated
+integration, not production login/data or a complete application migration.
+Rust/TypeScript tests cover validation, authorization, saturation, cancellation,
+deadlines, reconnect, queue loss and shutdown.
+
+Initial limits: macOS rendering, fixed native layout and ephemeral notifications.
+Page builder, AI generation, native 3D and MCU remain future directions. This beta does not qualify production application deployment. New UI schemas have no previous persisted
+version to convert; incompatible evolution requires an explicit version and
+migration/rollback review, while current manifests remain intact.
+
+## Interactive examples and native functions
+
+The native profile now includes editable text, checkbox, dropdown, slider and determinate progress, besides text/buttons. `elements::{text,button,input,toggle,select,slider,progress}` are pure Rust constructors; validate the enclosing page. `UiNativeWindow::{set_label,set_value,set_enabled,value}` update/read existing controls with typed validation and page/label budgets, without changing action bindings or granting authorization. Dropdowns admit 1–64 unique nonempty labels; user input is bounded when read, not a guarantee about all memory inside system editing controls.
+
+The gallery uses Editing → Review → Applied, revision checks, locked controls and scripted typed commands. No AI model is connected. The runner has deterministic physics, collision/score/restart/pause. The 3D example uses direct system WebGL, perspective/depth and six Lorenz trajectories, RK4 integration, 24,576 bounded point samples, orbit/zoom, trail isolation, pause and single-step controls; it is not a Rust-native 3D engine.
+
+All four examples were rendered and interacted with in real macOS windows; closing each exited 0 with zero retained windows. The component/AI proposal is a roadmap, not an implemented tool protocol.
+
+## Installation and documentation
+
+```toml
+[dependencies]
+appcore-ui = { version = "=0.1.0-beta.1", features = ["web-macos"] }
 ```
 
-## Web Surface
+[crates.io](https://crates.io/crates/appcore-ui/0.1.0-beta.1) · [API](https://docs.rs/appcore-ui/0.1.0-beta.1/appcore_ui/)
 
-The web-like path should support pages maintained or generated from HTML and
-TypeScript, similar to a Tauri-style application surface. This is the practical
-path for settings screens, admin panels, desktop-style business UI, internal
-tools, dashboards and pages generated from structured descriptions.
+- [Guide](https://github.com/dnettoRaw/app-core-public/blob/beta/crates/appcore-ui/wiki/guide.en.md)
+- [Basic](https://github.com/dnettoRaw/app-core-public/blob/beta/crates/appcore-ui/wiki/examples/basic.en.md)
+- [Intermediate](https://github.com/dnettoRaw/app-core-public/blob/beta/crates/appcore-ui/wiki/examples/intermediate.en.md)
 
-No final WebView, browser engine or bundler contract is promised yet.
+## Input responsiveness
 
-## Native Surface
-
-The native path should leave room for Rust-rendered pages backed by a graphics
-engine. This is for interfaces that need more than a document-style UI:
-
-- 2D or 3D render windows;
-- games;
-- technical tools;
-- real-time dashboards;
-- custom editors;
-- business screens with custom visual systems;
-- generated UI that should become native rather than HTML.
-
-`appcore-ui` should define the boundary around surfaces, events and state. It
-should not pretend to be a full graphics engine by itself. If rendering becomes
-large enough, a future rendering crate can own backend-specific details.
-
-## Page Builder Direction
-
-A future page builder can sit on top of `appcore-ui` with pre-coded items that
-assemble into pages. The builder should generate structured UI artifacts rather
-than hiding behavior in ad hoc templates.
-
-AI may help generate a `UiDocument`, propose layouts, or create draft pages, but
-`appcore-ai` should not own the UI system. The UI contract remains separate so a
-page can be produced by a human builder, static templates, code generation or
-AI-assisted tools.
-
-## Limits
-
-- `appcore-ui` is not published yet.
-- It must not add install instructions until release.
-- It should not promise a final WebView or graphics backend.
-- It should not mix UI generation with AI, search or agent ownership.
-- Its public API, rendering contracts, dependency boundary, version, MSRV and
-  executable examples remain provisional until release.
+The pump services pending run-loop work even under native input load, and bridge work before/after native dispatch. Native draining stops when the activation queue is full; consume `pending_activations` with `next_activation` after pumping. System tracking/callbacks can exceed the cooperative drain budget. The web view accepts the first physical click when activating an inactive window; this changes focus behavior, not authorization. Physical click checks received ten of ten actions in native and web examples, plus one click when switching windows.

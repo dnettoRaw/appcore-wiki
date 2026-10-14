@@ -53,13 +53,13 @@ const stableCrates = [
   'appcore-log',
   'appcore-sdk',
   'appcore-transfer',
+  'appcore-ui',
 ];
 
 const futureRoadmap = [
   'roadmap/index',
   'architecture/future-architecture',
   'crates/appcore-filemaker-yaml',
-  'crates/appcore-ui',
 ];
 
 module.exports = {
@@ -75,7 +75,7 @@ module.exports = {
     'architecture/crate-map',
     {
       type: 'category',
-      label: 'Crate reference — 29 active',
+      label: 'Crate reference — 30 active',
       collapsed: true,
       items: [
         'crates/index',

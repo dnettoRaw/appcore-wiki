@@ -29,8 +29,11 @@ Runtime.
 | --- | --- | --- |
 | [appcore-ai](/pt/crates/appcore-ai) | Beta | `0.1.0-beta.5` publicada para routing limitado, inferência local/remota, recursos, provenance, segurança e execução observável. |
 | [appcore-filemaker](/pt/crates/appcore-filemaker) | Beta | `0.1.0-beta.6` publicada para compilação determinística de documentos, canvases vetoriais e datasets limitados. |
+| [appcore-ui](/pt/crates/appcore-ui) | Beta | `0.1.0-beta.1` (crates.io). Fronteira de superfícies de UI para páginas HTML/TypeScript, views nativas Rust, lifecycle de janela, eventos, estado visual e futuro page builder. |
 | [appcore-filemaker-ai](/pt/crates/appcore-filemaker-ai) | Beta | Bridge opcional e limitado `0.1.0-beta.5` publicado; IA permanece fora do compiler determinístico. |
 | [appcore-filemaker-cli](/pt/crates/appcore-filemaker-cli) | Beta | Adapter de processo limitado `0.1.0-beta.5` publicado para compilação, diagnóstico e export explícito. |
+
+| [appcore-transfer](/pt/crates/appcore-transfer) | Beta | `0.1.0-beta.1` — crates.io. Transferência retomável de objetos opacos imutáveis entre múltiplos peers autorizados, com blocos verificados, quotas e concorrência limitada; separada do roteamento mesh. |
 
 ## RC
 
@@ -44,12 +47,6 @@ Runtime.
 | Componente | Status | Fronteira |
 | --- | --- | --- |
 | [appcore-sync-sqlite](/pt/crates/appcore-sync-sqlite) | Alpha | `0.1.0-alpha.7` publicada para persistência opcional do estado de sync do Runtime. |
-
-## In Design
-
-| Componente | Status | Fronteira |
-| --- | --- | --- |
-| [appcore-ui](/pt/crates/appcore-ui) | In Design | Fronteira de superfícies de UI para páginas HTML/TypeScript, views nativas Rust, lifecycle de janela, eventos, estado visual e futuro page builder. |
 
 ## Alta Prioridade
 
@@ -68,7 +65,6 @@ Runtime.
 | `appcore-media` | Planned | Áudio, vídeo, captura, playback, encode/decode e streaming para UI, IA e aplicações sem comprometer codecs. |
 | `appcore-device` | Planned | Fronteira controlada por capabilities para USB, Bluetooth, serial, HID, sensores, câmera, microfone, displays e descoberta de GPU/NPU. |
 | `appcore-mcu` | Planned | Integração leve e autenticada de microcontroladores, com mensagens e capabilities limitadas; perfil de firmware `no_std` opcional e drivers da aplicação. |
-| `appcore-transfer` | Beta | 0.1.0-beta.1 — crates.io.  Transferência retomável de objetos opacos imutáveis entre múltiplos peers autorizados, com blocos verificados, quotas e concorrência limitada; separada do roteamento mesh. |
 | `appcore-agent` | Planned | Objetivo, planejamento, ferramentas, memória e ações sobre IA, sem misturar agent com inferência. |
 | `appcore-data` | Planned | `Source -> Decode -> Validate -> Transform -> Batch/Stream -> Sink`; não é ORM nem dataframe por padrão. |
 | `appcore-cache` | Planned | Cache pequeno e limitado com TTL, eviction e métricas; não compete com Redis. |
@@ -94,8 +90,7 @@ Runtime.
 
 ## MCU e Transferência Mesh
 
-As duas capacidades estão planejadas. Os nomes dos crates são provisórios;
-nenhuma API, placa suportada, versão ou data de entrega está definida.
+MCU continua planejado; nome, API, placa suportada e data de release são provisórios. `appcore-transfer` já está publicado como `0.1.0-beta.1`. A qualificação restante em hardware e mesh não transforma o crate em componente futuro.
 
 ### Integração de Microcontroladores
 
@@ -119,28 +114,14 @@ Etapas de implementação:
 
 ### Transferência entre Múltiplos Peers
 
-`appcore-transfer` obteria blocos de um objeto imutável de vários peers
-autorizados, verificaria cada bloco e o objeto completo e retomaria após
-interrupção. Reutilizar streams Peer RPC autenticados existentes, incluindo V2
-quando aplicável, sem introduzir protocolo de transporte paralelo.
-Distribuição inspirada em torrent não promete compatibilidade BitTorrent,
-DHT pública ou descoberta anônima. Descoberta, roteamento mesh e relays
-permanecem com seus donos atuais.
+[appcore-transfer](/pt/crates/appcore-transfer) já fornece blocos imutáveis verificados, retomada durável, agendamento limitado entre fontes e integração opcional Peer RPC V2 assinada existente. Descoberta, roteamento mesh e relays permanecem com seus donos; compatibilidade BitTorrent, DHT pública e descoberta anônima estão fora do contrato.
 
-Etapas de implementação:
+Qualificação e integração com consumidores ainda pendentes:
 
-1. Revisar APIs de chunks/source/writer e definir descritor confiável e limitado;
-   provar transferência verificada entre dois nós sem carregar o objeto inteiro
-   em memória.
-2. Adicionar progresso durável versionado, cache com quota e publicação atômica;
-   testar corrupção, crashes, writers concorrentes e falta de espaço.
-3. Adicionar agendamento limitado entre fontes, seleção de peers e integração
-   com relays; testar partições e peers inválidos, medir throughput, RAM e
-   tráfego contra fonte única, incluindo redes compartilhadas.
-4. Adicionar consumidores opcionais de update/snapshots e exemplos traduzidos.
-   Sync preserva líder-seguidor; update preserva autenticidade da release,
-   compatibilidade, ativação, health gates e rollback. Hash válido sozinho não
-   prova autenticidade nem autoriza instalação.
+1. Medir throughput, RAM e tráfego em redes reais compartilhadas contra fonte única; qualificar mesh física e relays.
+2. Exercitar partições reais, perda de energia e cargas prolongadas no hardware de deployment, preservando evidência de recuperação.
+3. Validar consumidores opcionais de update/snapshots preservando autenticidade, compatibilidade, health gates e rollback.
+4. Adicionar entrega a MCU só após contrato limitado de host/device e evidência em hardware real. Hash válido do objeto não autoriza instalar firmware.
 
 ### Validação Conjunta
 
@@ -150,11 +131,7 @@ MCU. Servir blocos diretamente pelo MCU exige evidência própria de memória,
 storage, energia e conectividade. Instalação de firmware exige também contrato
 revisado de bootloader, autenticidade, compatibilidade, health e rollback.
 
-As trilhas preservam os três artefatos, composição explícita de deployment,
-providers opcionais e a parede de contratos versionados atual. Cada etapa exige
-budgets, testes de falha e documentação; APIs públicas acrescentam gates de
-consumers e SemVer. As capacidades entram no catálogo estável somente após
-existirem implementação e evidência de release.
+As trilhas preservam os três artefatos, composição explícita de deployment, providers opcionais e contratos versionados. MCU precisa de implementação e evidência de release antes de entrar no catálogo ativo. Transfer já é beta ativo; promoção a estável exige qualificação própria revisada.
 
 ## Regras de Promoção
 
@@ -164,9 +141,3 @@ existirem implementação e evidência de release.
 - Stable mais crate ausente é erro.
 - Slugs devem ser preservados quando um componente amadurece.
 - Página futura não deve incluir comandos de instalação, versões inventadas nem datas de release.
-
-## Candidato beta do transferidor
-
-O transferidor está implementado localmente como **0.1.0-beta.1**, publicado no crates.io: blocos imutáveis verificados, retomada durável, múltiplas fontes autorizadas com limites e integração Peer RPC V2 assinada existente. MCU continua planejado; qualificação em hardware e mesh física permanece pendente.
-
-[appcore-transfer](/pt/crates/appcore-transfer).

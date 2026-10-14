@@ -28,8 +28,11 @@ automatic just because a crate appears in the Runtime repository.
 | --- | --- | --- |
 | [appcore-ai](/crates/appcore-ai) | Beta | Published `0.1.0-beta.5` for bounded model routing, local or remote inference, resource governance, provenance, security and observable execution. |
 | [appcore-filemaker](/crates/appcore-filemaker) | Beta | Published `0.1.0-beta.6` deterministic compiler for declarative documents, vector canvases, and bounded datasets. |
+| [appcore-ui](/crates/appcore-ui) | Beta | `0.1.0-beta.1` (crates.io). UI surface boundary for HTML/TypeScript pages, native Rust-rendered views, window lifecycle, events, visual state and future page building. |
 | [appcore-filemaker-ai](/crates/appcore-filemaker-ai) | Beta | Published `0.1.0-beta.5` optional bounded tool bridge; AI remains outside the deterministic compiler. |
 | [appcore-filemaker-cli](/crates/appcore-filemaker-cli) | Beta | Published `0.1.0-beta.5` bounded process adapter for compilation, diagnostics, and explicit export. |
+
+| [appcore-transfer](/crates/appcore-transfer) | Beta | `0.1.0-beta.1` — crates.io. Resumable transfer of immutable opaque objects from multiple authorized peers, with verified blocks, quotas and bounded concurrency; separate from mesh routing. |
 
 ## RC
 
@@ -43,12 +46,6 @@ automatic just because a crate appears in the Runtime repository.
 | Component | Status | Boundary |
 | --- | --- | --- |
 | [appcore-sync-sqlite](/crates/appcore-sync-sqlite) | Alpha | Published `0.1.0-alpha.7` optional persistence for Runtime-owned sync state. |
-
-## In Design
-
-| Component | Status | Boundary |
-| --- | --- | --- |
-| [appcore-ui](/crates/appcore-ui) | In Design | UI surface boundary for HTML/TypeScript pages, native Rust-rendered views, window lifecycle, events, visual state and future page building. |
 
 ## High Priority
 
@@ -67,7 +64,6 @@ automatic just because a crate appears in the Runtime repository.
 | `appcore-media` | Planned | Audio, video, capture, playback, encode/decode and streaming boundary for UI, AI and applications without committing to codecs. |
 | `appcore-device` | Planned | Capability-controlled USB, Bluetooth, serial, HID, sensors, camera, microphone, display and GPU/NPU discovery boundary. |
 | `appcore-mcu` | Planned | Lightweight authenticated microcontroller integration with bounded messages and capabilities; optional `no_std` firmware profile, with application-owned drivers. |
-| `appcore-transfer` | Beta | 0.1.0-beta.1 — crates.io.  Resumable transfer of immutable opaque objects from multiple authorized peers, with verified blocks, quotas and bounded concurrency; separate from mesh routing. |
 | `appcore-agent` | Planned | Goal, planning, tools, memory and action orchestration built on top of AI instead of mixed into inference. |
 | `appcore-data` | Planned | `Source -> Decode -> Validate -> Transform -> Batch/Stream -> Sink`; not a default ORM or dataframe layer. |
 | `appcore-cache` | Planned | Small bounded cache with TTL, eviction and metrics; not a Redis competitor. |
@@ -93,8 +89,7 @@ automatic just because a crate appears in the Runtime repository.
 
 ## MCU and Mesh Transfer
 
-Both capabilities are planned. Crate names are provisional; no API, supported
-board, release version or delivery date is committed.
+MCU remains planned; its name, API, supported board and release date are provisional. `appcore-transfer` is already published as `0.1.0-beta.1`. Remaining hardware and mesh qualification does not make the crate a future component.
 
 ### Microcontroller Integration
 
@@ -118,28 +113,14 @@ Implementation stages:
 
 ### Multi-Peer Transfer
 
-`appcore-transfer` retrieves blocks of an immutable object from several
-authorized peers, verify each block and the complete object, and resume after
-interruption. Reuse existing authenticated Peer RPC streams, including V2
-where applicable, rather than introduce a parallel transport protocol.
-Torrent-inspired block distribution does not promise BitTorrent compatibility,
-a public DHT or anonymous discovery. Discovery, mesh routing and relays retain
-their existing owners.
+[appcore-transfer](/crates/appcore-transfer) already provides verified immutable blocks, durable resume, bounded multi-source scheduling and optional existing signed Peer RPC V2 integration. Discovery, mesh routing and relays retain their owners; BitTorrent compatibility, public DHT and anonymous discovery are outside its contract.
 
-Implementation stages:
+Remaining qualification and consumer work:
 
-1. Review existing chunk/source/writer APIs and define a trusted bounded object
-   descriptor; prove verified transfer between two nodes without loading the
-   whole object into memory.
-2. Add versioned durable progress, quota-controlled cache and atomic
-   publication; test corruption, crashes, concurrent writers and disk exhaustion.
-3. Add bounded multi-source scheduling, peer selection and relay integration;
-   test partitions and invalid peers, and measure throughput, RAM and traffic
-   against a single source, including shared networks.
-4. Add optional update/snapshot consumers and localized examples. Sync retains
-   leader-to-follower semantics; update retains release authenticity,
-   compatibility, activation, health gates and rollback. A valid hash alone does
-   not establish authenticity or authorize installation.
+1. Measure throughput, RAM and traffic on real shared networks against a single source; qualify physical mesh and relays.
+2. Exercise real partitions, power loss and sustained workloads on deployment hardware, retaining recovery evidence.
+3. Validate optional update/snapshot consumers while preserving authenticity, compatibility, health gates and rollback.
+4. Add MCU delivery only after a bounded host/device contract and real-device evidence. A valid object hash does not authorize firmware installation.
 
 ### Joint Validation
 
@@ -149,11 +130,7 @@ Direct MCU block serving needs separate memory, storage, energy and connectivity
 evidence. Firmware installation additionally requires a reviewed bootloader,
 authenticity, compatibility, health and rollback contract.
 
-Both tracks preserve the three-artifact model, explicit deployment composition,
-optional providers and the current versioned contract wall. Each stage requires
-resource budgets, failure tests and documentation; public APIs add consumer and
-SemVer gates. Neither capability enters the stable crate catalog before its
-implementation and release evidence exist.
+Both tracks preserve the three-artifact model, explicit deployment composition, optional providers and versioned contracts. MCU needs implementation and release evidence before entering the active catalog. Transfer is already an active beta; stable promotion requires its own reviewed qualification evidence.
 
 ## Promotion Rules
 
@@ -163,9 +140,3 @@ implementation and release evidence exist.
 - Stable plus absent crate is an error.
 - Slugs should be preserved when a component matures.
 - No future page should include install commands, invented versions or release dates.
-
-## Transfer beta candidate
-
-Transfer is now implemented locally as **0.1.0-beta.1**, published on crates.io: verified immutable blocks, durable resume, bounded authorized multi-source scheduling and existing signed Peer RPC V2 integration. MCU remains planned; native hardware and physical mesh qualification remain pending.
-
-[appcore-transfer](/crates/appcore-transfer).

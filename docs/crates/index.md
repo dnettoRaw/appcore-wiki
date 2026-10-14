@@ -6,7 +6,7 @@ slug: /crates/
 
 # Crate Catalog
 
-AppCore-Runtime contains 29 active public crates. Each package owns independent
+AppCore-Runtime contains 30 active public crates. Each package owns independent
 SemVer and one explicit layer. A release in one crate does not force unrelated
 packages to change version.
 
@@ -16,7 +16,7 @@ directly.
 
 ## Stable documentation links
 
-Every crate has a permanent ID from ACR-001 through ACR-029. Use those URLs in
+Every crate has a permanent ID from ACR-001 through ACR-030. Use those URLs in
 READMEs, issues, release notes, and external documentation:
 
 ```text
@@ -32,7 +32,7 @@ reused. See the complete [stable ID registry](./registry).
 |---|---|---|
 | Standalone | Generic bounded libraries without AppCore dependencies | `appcore-args`, `appcore-supervisor`, `appcore-transport` |
 | Contract | Versioned manifests, identities, wire formats, and provider contracts | `appcore-contracts`, `appcore-types`, `appcore-distributed-contracts`, `appcore-provider` |
-| Runtime | Modular lifecycle, security, data, coordination, observability, AI, and document behavior | `appcore-core`, `appcore-api`, `appcore-dnt`, `appcore-security`, `appcore-storage`, `appcore-sync`, `appcore-ops`, `appcore-log`, `appcore-scheduler`, `appcore-control-plane`, `appcore-capabilities`, `appcore-peer-rpc`, `appcore-update`, `appcore-ai`, `appcore-filemaker` |
+| Runtime | Modular lifecycle, security, data, coordination, observability, AI, and document behavior | `appcore-core`, `appcore-api`, `appcore-dnt`, `appcore-security`, `appcore-storage`, `appcore-sync`, `appcore-ops`, `appcore-log`, `appcore-scheduler`, `appcore-control-plane`, `appcore-capabilities`, `appcore-peer-rpc`, `appcore-update`, `appcore-ai`, `appcore-filemaker`, `appcore-ui` |
 | Integration | Explicit adapters for external or optional infrastructure | `appcore-gateway`, `appcore-provider-vercel-neon`, `appcore-sync-sqlite`, `appcore-transfer` |
 | Adapter | Optional developer/model interfaces around a deterministic core | `appcore-filemaker-ai`, `appcore-filemaker-cli` |
 | Facade | Application-facing composition boundary | `appcore-sdk` |
@@ -56,8 +56,7 @@ Crate-owned guides and localized examples live with source under
 `crates/<name>/wiki`. Runtime-wide relationships and operator guidance live in
 this public wiki.
 
-Historical pages such as `appcore-bin`, `appcore-filemaker-yaml`, and
-`appcore-ui` are not active crate entries. They remain only where architecture
+Historical pages such as `appcore-bin`, `appcore-filemaker-yaml` are not active crate entries. They remain only where architecture
 history or future work still needs them.
 
 `appcore-transfer`: Integration · 0.1.0-beta.1 — crates.io.

@@ -30,6 +30,7 @@ const stableCrateIds = {
   '/crates/appcore-log': 'acr-027',
   '/crates/appcore-sdk': 'acr-028',
   '/crates/appcore-transfer': 'acr-029',
+  '/crates/appcore-ui': 'acr-030',
 };
 
 const config = {

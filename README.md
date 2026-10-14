@@ -2,7 +2,7 @@
 
 Public Docusaurus documentation for AppCore Runtime.
 
-The wiki documents the current AppCore Runtime catalog of 29 active public
+The wiki documents the current AppCore Runtime catalog of 30 active public
 crates (MSRV Rust `1.89`). Every public crate owns its SemVer; the repository
 release train is `1.0.2-rc`, while `appcore-ai`, FileMaker and other explicitly
 marked components remain independent prereleases. crates.io is the authority

@@ -44,8 +44,8 @@ receives a historical destination.
 | ACR-026 | `appcore-sync-sqlite` | Integration prerelease | [Open](/crates/appcore-sync-sqlite) |
 | ACR-027 | `appcore-log` | Runtime | [Open](/crates/appcore-log) |
 | ACR-028 | `appcore-sdk` | Facade | [Open](/crates/appcore-sdk) |
+| ACR-029 | `appcore-transfer` | Integration | [Open](/crates/appcore-transfer) |
+| ACR-030 | `appcore-ui` | Runtime | [appcore-ui](/crates/appcore-ui) |
 
 The source of truth for these mappings is the `stableCrateIds` table in
 `docusaurus.config.js`. The visible table is reviewed with it.
-
-| ACR-029 | `appcore-transfer` | Integration | [Open](/crates/appcore-transfer) |
