@@ -85,6 +85,8 @@ All four examples were rendered and interacted with in real macOS windows; closi
 appcore-ui = { version = "=0.1.0-beta.1", features = ["web-macos"] }
 ```
 
+The published package includes the compiled bridge client: running `web_bridge` does not require Node or an npm build. The npm steps in source development guides only rebuild that client. Run the Cargo examples from the extracted crate or the Runtime source workspace.
+
 [crates.io](https://crates.io/crates/appcore-ui/0.1.0-beta.1) · [API](https://docs.rs/appcore-ui/0.1.0-beta.1/appcore_ui/)
 
 - [Guide](https://github.com/dnettoRaw/app-core-public/blob/beta/crates/appcore-ui/wiki/guide.en.md)
