@@ -5,7 +5,7 @@ title: appcore-filemaker — RC
 # appcore-filemaker
 
 :::info Release candidate
-Base publicada: [`1.0.0-rc.1`](https://crates.io/crates/appcore-filemaker/1.0.0-rc.1). A candidata **`1.0.0-rc.2` não está publicada**. Compilação do pacote, comparação de API e auditoria isolada de dependências passam, mas o gate RC obrigatório do workspace está bloqueado pelos alertas RustSec de `zip 8.6.0` via Candle opcional. A documentação abaixo está preparada, sem deployment. A migração do consumidor continua separada.
+Candidata **`1.0.0-rc.2`**, a aguardar qualificação final e publicação no registry. Selecionar o pacote exato apenas após verificação.
 :::
 
 Se você está começando no formato, siga o

@@ -1,9 +1,13 @@
 ---
-title: appcore-sdk
+title: appcore-sdk — RC
 sidebar_position: 28
 ---
 
 # appcore-sdk
+
+:::info Release candidate
+Candidate **`1.0.2-rc.3`**, en attente de qualification finale et de publication au registre. Sélectionner le package exact après vérification.
+:::
 
 ID stable de documentation : **ACR-028**.
 
@@ -59,3 +63,7 @@ et l’[exemple intermédiaire](https://github.com/dnettoRaw/app-core-public/tre
 `1.0.2-rc.1`: modifications propres.
 
 [crates.io](https://crates.io/crates/appcore-sdk/1.0.2-rc.1) · [docs.rs](https://docs.rs/appcore-sdk/1.0.2-rc.1)
+
+## 1.0.2-rc.3
+
+Les pins exacts sélectionnent la distribution de sécurité IA et la RC FileMaker qualifiées selon le cas. APIs publiques, features par défaut et entrées V1 restent inchangées. Sélectionner la release exacte et actualiser explicitement le lockfile complet ; les anciens pins restent immuables. Le backend optionnel utilise les distributions de sécurité du registre documentées sur la page AI. Ceci ne certifie pas le matériel et ne migre pas une application externe.

@@ -1,8 +1,12 @@
 ---
-title: appcore-filemaker-cli — 0.1 beta
+title: appcore-filemaker-cli — RC
 ---
 
 # appcore-filemaker-cli
+
+:::info Release candidate
+Candidata **`1.0.0-rc.2`**, a aguardar qualificação final e publicação no registry. Selecionar o pacote exato apenas após verificação.
+:::
 
 > **BETA PÚBLICA** — `0.1.0-beta.5` está disponível no crates.io para avaliação.
 
@@ -75,3 +79,7 @@ Documentação mantida pelo crate: [guia](https://github.com/dnettoRaw/AppCore-R
 `0.1.0-beta.6`: alinhamento de dependências.
 
 [crates.io](https://crates.io/crates/appcore-filemaker-cli/0.1.0-beta.6) · [docs.rs](https://docs.rs/appcore-filemaker-cli/0.1.0-beta.6)
+
+## 1.0.0-rc.2
+
+Os pins exatos selecionam a distribuição de segurança da IA e a RC FileMaker qualificadas quando aplicável. APIs públicas, features padrão e entradas V1 mantêm-se. Selecionar a release exata e atualizar explicitamente o lockfile completo; os pins antigos permanecem imutáveis. O backend opcional usa as distribuições de segurança do registry documentadas na página AI. Isto não certifica hardware nem migra aplicações externas.

@@ -1,8 +1,12 @@
 ---
-title: appcore-filemaker-ai — 0.1 beta
+title: appcore-filemaker-ai — RC
 ---
 
 # appcore-filemaker-ai
+
+:::info Release candidate
+Candidate **`1.0.0-rc.2`**, awaiting final release qualification and registry publication. Select the exact package only after verification.
+:::
 
 > **PUBLIC BETA** — `0.1.0-beta.5` is available on crates.io for evaluation.
 
@@ -75,3 +79,7 @@ Crate-owned documentation: [guide](https://github.com/dnettoRaw/AppCore-Runtime/
 `0.1.0-beta.6`: dependency metadata alignment.
 
 [crates.io](https://crates.io/crates/appcore-filemaker-ai/0.1.0-beta.6) · [docs.rs](https://docs.rs/appcore-filemaker-ai/0.1.0-beta.6)
+
+## 1.0.0-rc.2
+
+Exact dependency pins select the qualified AI security distribution and FileMaker RC where applicable. Public APIs, default features and V1 inputs are unchanged. Select the exact release and refresh the full lockfile explicitly; old exact pins remain immutable. The optional backend uses the registry security distributions documented on the AI page. This does not certify hardware or migrate an external application.
