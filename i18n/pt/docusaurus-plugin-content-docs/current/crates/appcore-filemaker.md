@@ -5,7 +5,7 @@ title: appcore-filemaker — RC
 # appcore-filemaker
 
 :::info Release candidate
-Release candidate **[`1.0.0-rc.2`](https://crates.io/crates/appcore-filemaker/1.0.0-rc.2)** publicado no crates.io em 2026-10-17. Selecionar `=1.0.0-rc.2` explicitamente. Cada crate tem versão independente; isto não certifica um deployment.
+Base publicada: [`1.0.0-rc.1`](https://crates.io/crates/appcore-filemaker/1.0.0-rc.1). A candidata **`1.0.0-rc.2` não está publicada**. Compilação do pacote, comparação de API e auditoria isolada de dependências passam, mas o gate RC obrigatório do workspace está bloqueado pelos alertas RustSec de `zip 8.6.0` via Candle opcional. A documentação abaixo está preparada, sem deployment. A migração do consumidor continua separada.
 :::
 
 Se você está começando no formato, siga o
@@ -460,7 +460,7 @@ texto nem substitui coordenadas em strings YAML no Rust.
 Migração: guarda o desenho original, move o desenho do corpo para o plano,
 remove reservas V1/por linha concorrentes, declara a âncora do fecho e seleciona
 a nova chamada. Rollback restaura o desenho e a chamada anteriores; dados e
-formatos persistidos mantêm-se. Incluído em `1.0.0-rc.2`; 
+formatos persistidos mantêm-se. Incluído em `1.0.0-rc.2`;
 a aplicação externa não foi migrada.
 
 `first_after: {element: title, gap: 8pt}` permite iniciar `first` e `single`

@@ -5,7 +5,7 @@ title: appcore-filemaker — RC
 # appcore-filemaker
 
 :::info Release candidate
-Published release candidate **[`1.0.0-rc.2`](https://crates.io/crates/appcore-filemaker/1.0.0-rc.2)** on crates.io, 2026-10-17. Select `=1.0.0-rc.2` explicitly. Versions follow each crate independently; this does not certify a deployment.
+Published baseline: [`1.0.0-rc.1`](https://crates.io/crates/appcore-filemaker/1.0.0-rc.1). Candidate **`1.0.0-rc.2` is not published**. Its package build, API checks and isolated dependency audit pass, but the required workspace RC gate is blocked by RustSec advisories for `zip 8.6.0` through optional Candle. The candidate documentation below is prepared, not deployed. External consumer migration remains separate.
 :::
 
 New to the template format? Follow the
