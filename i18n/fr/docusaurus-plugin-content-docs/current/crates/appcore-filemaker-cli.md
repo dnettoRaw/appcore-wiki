@@ -5,13 +5,10 @@ title: appcore-filemaker-cli — RC
 # appcore-filemaker-cli
 
 :::info Release candidate
-Candidate **`1.0.0-rc.2`**, en attente de qualification finale et de publication au registre. Sélectionner le package exact après vérification.
+Publié et vérifié au registre : **[`1.0.0-rc.2`](https://crates.io/crates/appcore-filemaker-cli/1.0.0-rc.2)**, 2026-10-17. Sélectionner `=1.0.0-rc.2` explicitement. Les versions restent indépendantes ; ceci est une release candidate, sans certification de déploiement ou de matériel.
 :::
 
-> **BÊTA PUBLIQUE** — `0.1.0-beta.5` est publiée sur crates.io pour évaluation.
-
-`appcore-filemaker-cli 0.1.0-beta.5` est l'adaptateur de processus borné de
-`appcore-filemaker`. Il est publié sur crates.io comme prerelease beta.
+`appcore-filemaker-cli` est l’adaptateur de processus borné de `appcore-filemaker`.
 
 La commande choisit le format d'export ; le YAML du template ne le choisit
 jamais. `check`, `validate`, `preflight` et les commandes de diagnostic sont en

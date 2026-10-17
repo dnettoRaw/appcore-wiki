@@ -5,14 +5,10 @@ title: appcore-filemaker-ai — RC
 # appcore-filemaker-ai
 
 :::info Release candidate
-Candidate **`1.0.0-rc.2`**, en attente de qualification finale et de publication au registre. Sélectionner le package exact après vérification.
+Publié et vérifié au registre : **[`1.0.0-rc.2`](https://crates.io/crates/appcore-filemaker-ai/1.0.0-rc.2)**, 2026-10-17. Sélectionner `=1.0.0-rc.2` explicitement. Les versions restent indépendantes ; ceci est une release candidate, sans certification de déploiement ou de matériel.
 :::
 
-> **BÊTA PUBLIQUE** — `0.1.0-beta.5` est publiée sur crates.io pour évaluation.
-
-`appcore-filemaker-ai 0.1.0-beta.5` est le bridge facultatif et borné entre les
-outils `appcore-ai` et les sessions FileMaker déterministes. Il est publié sur
-crates.io comme prerelease beta.
+`appcore-filemaker-ai` est le bridge facultatif et borné entre les outils `appcore-ai` et les sessions FileMaker déterministes.
 
 Le bridge déclare 20 outils exacts avec schémas fermés identiques à l'exécution,
 borne appels, arguments, patches également plafonnés par le core et octets de

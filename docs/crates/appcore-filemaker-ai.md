@@ -5,14 +5,10 @@ title: appcore-filemaker-ai — RC
 # appcore-filemaker-ai
 
 :::info Release candidate
-Candidate **`1.0.0-rc.2`**, awaiting final release qualification and registry publication. Select the exact package only after verification.
+Published and registry-verified **[`1.0.0-rc.2`](https://crates.io/crates/appcore-filemaker-ai/1.0.0-rc.2)**, 2026-10-17. Select `=1.0.0-rc.2` explicitly. Versions remain independent; this is a release candidate, not deployment or hardware certification.
 :::
 
-> **PUBLIC BETA** — `0.1.0-beta.5` is available on crates.io for evaluation.
-
-`appcore-filemaker-ai 0.1.0-beta.5` is the optional bounded bridge from
-`appcore-ai` tool calls to deterministic FileMaker sessions. It is published
-on crates.io as a beta prerelease.
+`appcore-filemaker-ai` is the optional bounded bridge from `appcore-ai` tool calls to deterministic FileMaker sessions.
 
 The bridge declares 20 exact tools with closed execution-matched schemas,
 enforces call, argument, core-capped patch, and result-byte budgets, and applies

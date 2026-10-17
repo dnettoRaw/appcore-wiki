@@ -5,8 +5,10 @@ title: appcore-filemaker — RC
 # appcore-filemaker
 
 :::info Release candidate
-Candidata **`1.0.0-rc.2`**, a aguardar qualificação final e publicação no registry. Selecionar o pacote exato apenas após verificação.
+Publicado e verificado no registry: **[`1.0.0-rc.2`](https://crates.io/crates/appcore-filemaker/1.0.0-rc.2)**, 2026-10-17. Selecionar `=1.0.0-rc.2` explicitamente. As versões mantêm-se independentes; é uma release candidate, sem certificar deployment ou hardware.
 :::
+
+A RC exata acima inclui as alterações documentadas de layout, diagnóstico e Unicode PDF. As notas anteriores de auditoria e publicação durante o desenvolvimento abaixo conservam o contexto histórico. A migração de aplicações externas continua separada. O espelho público preserva os bytes do registry; o inventário gerado é validado separadamente.
 
 Se você está começando no formato, siga o
 [guia YAML passo a passo](./appcore-filemaker-yaml.md). Ele parte do cabeçalho

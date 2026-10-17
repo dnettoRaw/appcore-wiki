@@ -6,7 +6,7 @@ sidebar_position: 23
 # appcore-ai
 
 :::info Release candidate
-Candidate **`1.0.0-rc.2`**, awaiting final release qualification and registry publication. Select the exact package only after verification.
+Published and registry-verified **[`1.0.0-rc.2`](https://crates.io/crates/appcore-ai/1.0.0-rc.2)**, 2026-10-17. Select `=1.0.0-rc.2` explicitly. Versions remain independent; this is a release candidate, not deployment or hardware certification.
 :::
 
 `appcore-ai` is the bounded, backend-neutral AI execution core for AppCore. It
@@ -364,7 +364,7 @@ The official 0.11.0 core requires ZIP 8.6.x, affected by RUSTSEC-2026-0367, RUST
 
 `backend-candle`, `training-candle`, the `NativeLinearV1` format, backend IDs and public Rust fields are unchanged. The default build still has no ML framework dependency. Applications use the existing AppCore facade and data contracts; no Candle tensor type is added to the public facade. CPU validation is not CUDA/Metal/MKL certification.
 
-Regressions cover Unicode NPZ roundtrip, legacy CP437 filename decoding and controlled errors for malformed archives through eager/lazy NPZ and PTH readers. Existing upstream CPU tests and all-feature AppCore AI tests run separately. ZIP 9 retains CP437 decoding; invalid UTF-8 bytes are not automatically rejected as filename errors.
+Regressions cover Unicode NPZ roundtrip, CP437 filename decoding and controlled errors for malformed archives through eager/lazy NPZ and PTH readers. Existing upstream CPU tests and all-feature AppCore AI tests run separately. ZIP 9 retains CP437 decoding; invalid UTF-8 bytes are not automatically rejected as filename errors.
 
 Adoption explicitly pins `appcore-ai = "=1.0.0-rc.2"` after registry qualification and refreshes the lockfile, including optional features. Confirm with `cargo tree --all-features -i zip` and `cargo audit`. Existing exact pins do not upgrade themselves. Restore a complete previous graph only after assessing its known ZIP 8 vulnerabilities. Prefer a qualified official Candle release when its registry graph supports ZIP >=9; do not silently mix core package identities.
 

@@ -6,12 +6,11 @@ sidebar_position: 28
 # appcore-sdk
 
 :::info Release candidate
-Candidata **`1.0.2-rc.3`**, a aguardar qualificação final e publicação no registry. Selecionar o pacote exato apenas após verificação.
+Publicado e verificado no registry: **[`1.0.2-rc.3`](https://crates.io/crates/appcore-sdk/1.0.2-rc.3)**, 2026-10-17. Selecionar `=1.0.2-rc.3` explicitamente. As versões mantêm-se independentes; é uma release candidate, sem certificar deployment ou hardware.
 :::
 
 ID estável da documentação: **ACR-028**.
 
-Release publicada: [`appcore-sdk 1.0.2-rc`](https://crates.io/crates/appcore-sdk/1.0.2-rc).
 
 `appcore-sdk` é a fachada para aplicações. Ele oferece uma superfície pequena e
 orientada a manifestos enquanto crates especializados continuam responsáveis

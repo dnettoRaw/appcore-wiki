@@ -6,7 +6,7 @@ sidebar_position: 23
 # appcore-ai
 
 :::info Release candidate
-Candidata **`1.0.0-rc.2`**, a aguardar qualificação final e publicação no registry. Selecionar o pacote exato apenas após verificação.
+Publicado e verificado no registry: **[`1.0.0-rc.2`](https://crates.io/crates/appcore-ai/1.0.0-rc.2)**, 2026-10-17. Selecionar `=1.0.0-rc.2` explicitamente. As versões mantêm-se independentes; é uma release candidate, sem certificar deployment ou hardware.
 :::
 
 `appcore-ai` é o core de execução de IA limitado e independente de backend. Ele
