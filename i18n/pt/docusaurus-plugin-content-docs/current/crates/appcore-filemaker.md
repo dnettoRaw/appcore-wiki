@@ -1,8 +1,12 @@
 ---
-title: appcore-filemaker — 0.1 beta
+title: appcore-filemaker — RC
 ---
 
 # appcore-filemaker
+
+:::info Release candidate
+Release candidate **[`1.0.0-rc.2`](https://crates.io/crates/appcore-filemaker/1.0.0-rc.2)** publicado no crates.io em 2026-10-17. Selecionar `=1.0.0-rc.2` explicitamente. Cada crate tem versão independente; isto não certifica um deployment.
+:::
 
 > **BETA PÚBLICA** — `0.1.0-beta.6` está disponível no crates.io para avaliação.
 
@@ -325,3 +329,311 @@ e [API do encoder QR](https://docs.rs/qrcode/0.14.1/qrcode/struct.QrCode.html).
 [crates.io](https://crates.io/crates/appcore-filemaker/0.1.0-beta.7) · [docs.rs](https://docs.rs/appcore-filemaker/0.1.0-beta.7)
 
 O frontend YAML substitui o parser sem manutenção por parsing em Rust seguro (`serde-saphyr`). Os modelos de fonte/fixtures YAML V1 e os booleanos YAML 1.2 são preservados. Campos desconhecidos, aliases recursivos e múltiplos documentos são rejeitados; os erros omitem trechos da fonte. O parser limita profundidade a 64, eventos a 1.000.000, aliases/âncoras a 50.000 e texto escalar agregado a 64 MiB, além dos limites existentes de entrada/schema. Nenhum fallback para o parser antigo é distribuído.
+
+## Auditoria de conteúdo variável (2026-10-17)
+
+Auditoria do baseline publicado (as falhas abaixo descrevem o pacote auditado): medição, expand, fluxo,
+âncoras, agrupamento, audit/preflight e overlays já existem. Contentores com
+altura intrínseca e corpo de tabela distinto na última página ainda não existem.
+Expand com max_lines pode truncar sem diagnóstico; next_page pode reiniciar
+em y=0 apesar das margens; auditoria não aplica consistentemente as exceções
+de grupos de colisão. Zero perdas de exportação não prova layout seguro.
+Corrigir esses casos antes de recomendar aceitação estrita. A primeira auditoria
+executou 55 testes existentes e renderizou controles de 1/2/5/20 páginas sem
+reordenação; isto não qualifica todo o corpus comercial. Crescimento opt-in e
+convergência limitada da última página exigem contratos/migração explícitos,
+preservando a semântica V1 publicada.
+
+
+A 1.0.0-rc.2 já diagnostica expansão limitada e mantém o aviso nos fragmentos, inclui padding dos blocos, respeita a área útil/região na continuação com transformações do pai e partilha filtros de grupos/ignore/overlay com a auditoria. Campos públicos, YAML V1, limites explícitos e bandas de página são preservados. Contentores intrínsecos do corpo têm agora a API opt-in abaixo; os corpos adaptativos de tabela têm agora um plano opt-in separado; estas correções ainda não foram publicadas.
+
+## Altura intrínseca (opt-in, 1.0.0-rc.2)
+
+Usa `LayoutEngine::resolve_intrinsic(&document)` em vez de `resolve` para
+medir os elementos com `height: auto` explícito no YAML. A chamada `resolve`,
+o parser V1, os literais das estruturas públicas e as políticas de overflow
+com altura fixa conservam o contrato. Não há dependências novas nem medição
+manual no consumidor.
+
+O texto usa o shaping e a medição existentes, com a fonte registada, estilo,
+largura, padding e entrelinha efetivos. Contentores horizontais usam a maior
+altura; os verticais somam alturas e espaçamentos. Define
+`constraints: {min_height: 14mm}` para preservar o desenho curto. Fluxos e
+âncoras recebem a caixa medida antes da resolução de colisões. O IR de entrada
+não é alterado. Conteúdo acima de `max_height` produz erro com o ID.
+
+Esta primeira opção suporta larguras definidas e fluxos do corpo distribuídos
+no início. Texto automático aceita `wrap`, `expand` ou `error`, horizontal e
+sem `max_lines`. Para `clip`, `ellipsis` ou `shrink`, usa altura fixa explícita.
+Contentores automáticos são indivisíveis e devem caber numa região útil de
+uma página. Os filhos não podem ter x/y, âncoras, região, transformações,
+alinhamento geométrico diferente de início, keep-with-next nem alturas ou
+restrições percentuais de altura. Texto filho com expansão deve usar altura
+automática. Contentores absolutos/distribuídos, escrita vertical, bandas de
+página automáticas, aspect ratio/preferred height no elemento automático e
+padding vertical percentual produzem erro explícito. Assim não se estimam
+silenciosamente dependências circulares.
+
+A passagem verifica cancelamento, limites de elementos/texto e profundidade
+máxima de 64 antes de clonar o documento ligado aos dados. A medição verifica
+cancelamento por elemento; shaping de um elemento não é preemptivo. Há custo
+adicional de cópia e medição, sem alegação de melhoria de desempenho ou RAM.
+Executa preflight de layout na cena final, incluindo elementos fixos e overlays.
+Não reutilizes chaves de cache do layout convencional para esta opção.
+
+Executa `cargo run -p appcore-filemaker --example intrinsic_height --locked`.
+`examples/intrinsic-height.yml` usa os JSON curto/longo separados, duas colunas,
+texto alinhado à direita e âncoras para deslocar título e corpo. Os resultados
+ficam em `target/filemaker-examples/`. O Rust não substitui coordenadas YAML.
+O exemplo exige diagnósticos de layout válidos antes de exportar PDF.
+
+Migração: opta pela nova chamada e declara alturas automáticas/mínimas no YAML.
+Rollback: conserva o desenho original e usa `resolve`. A API Rust é aditiva,
+sem outro parser ou versão YAML. Reservas adaptativas de primeira/páginas
+intermédias/última de tabela usam agora o plano adaptativo separado; fluxos globais arbitrários ficam fora desse contrato.
+
+Nas raízes que participam na medição intrínseca, os contentores são estruturais:
+as políticas de colisão dos descendentes ignoram explicitamente os IDs dos
+ancestrais. Colisões entre irmãos e com elementos externos continuam ativas.
+A resolução convencional e as raízes sem altura automática mantêm as políticas.
+
+A falha anterior de extração de ligaturas está corrigida na exportador 1.0.0-rc.2, com clusters completos e `/ActualText` contextual. Continua a conferir extração e renderização separadamente.
+
+## Paginação adaptativa de tabela (opt-in, 1.0.0-rc.2)
+
+`AdaptiveLayoutPlan::parse_yaml` lê um desenho YAML separado e estrito com
+`filemaker_layout: '1.0'`. Depois do compile/bind V1 existente, chama
+`LayoutEngine::resolve_adaptive(&document, &plan)`. A API é aditiva: preserva
+literais das estruturas públicas, parser V1, `resolve` e `resolve_intrinsic`.
+Não acrescenta dependências, formatos persistentes nem regras comerciais.
+
+O plano seleciona uma tabela raiz, corpos verticais `first`, `intermediate`,
+`last` e `single`, um bloco raiz final `closing`, o espaçamento e a política
+obrigatória `oversized_group: error` ou `split_rows`. Offsets e alturas são
+relativos à caixa completa da tabela, com largura constante. Os quatro corpos
+devem caber nessa caixa; a caixa deve caber na região útil da página.
+
+Os corpos declarados são ANTES da reserva do fecho. A altura visível do fecho
+usa a medição intrínseca e as restrições existentes. Altura mais espaçamento
+são subtraídos uma única vez de `single` ou `last`. O paginador existente
+subtrai depois o cabeçalho da tabela uma única vez. Fecho oculto não reserva
+altura nem espaçamento. As bandas decorativas mantêm a semântica V1 e não
+criam reservas implícitas.
+
+O grupo pendente existente permite reconhecer o grupo final. Só a sua última
+linha transporta a diferença entre capacidade normal e final. Quando a linha
+ou o grupo mudam de página, a reserva e a medição sensível à página são
+recalculadas no destino. O fragmento final é deslocado para o corpo last/single;
+as âncoras existentes posicionam o fecho depois do seu fundo. Para este problema
+restrito de tabela vertical não é preciso estimar o número de páginas nem
+iterar um ponto fixo global. Amostragem de colunas e medição de grupos ainda
+podem visitar linhas várias vezes; não há promessa de uma única leitura.
+
+Chaves contíguas iguais em `keep_together_by` permanecem juntas quando grupo e
+reserva final cabem numa página de destino. `split_rows` divide entre linhas
+quando esse requisito conjunto não cabe; `error` rejeita-o. Uma linha
+indivisível que não caiba com a reserva falha nas duas políticas. Se um grupo
+deixar a primeira página completamente vazia, há erro explícito, sem devolver
+página vazia nem reclassificar silenciosamente uma continuação. Um dataset
+vazio pode gerar cabeçalho e fecho, mas o cabeçalho deve caber.
+
+Limites desta opção: uma tabela visível raiz que começa na página física zero;
+um único bloco final do corpo ancorado por `top: table-id.bottom+gap`; essas
+raízes não podem usar transformações, regiões ou keep-with-next. O fecho pode
+ser texto ou contentor de fluxo automático. Os descendentes devem caber na
+caixa medida e na página final da tabela. Colisão incompatível ou crescimento
+de texto fixo produz erro sem cena parcial. Não combinar `table.page_bodies`,
+`reserve_after` condicional ou `total_fields` interno com este dono da reserva.
+Totais podem ser dados ligados no bloco de fecho. Várias tabelas, larguras
+finais diferentes e fluxos globais dependentes da página exigem outro contrato
+explícito, sem inferência.
+
+Continuam ativos os limites de bytes, profundidade, elementos, linhas, páginas
+e trabalho de colisão. O cancelamento é verificado antes do planeamento, na
+visita das linhas, medição e avaliação de reservas; um shaping individual não
+é preemptivo. O índice espacial é o mesmo, sem alegação de ganho de tempo ou
+RAM. Valida layout e exportação separadamente: sucesso ou zero perdas declaradas
+não provam geometria nem fidelidade da camada textual. A falha anterior de extração de ligaturas está corrigida na exportador 1.0.0-rc.2, com clusters completos e `/ActualText` contextual. Continua a conferir extração e renderização separadamente.
+
+Executa `cargo run -p appcore-filemaker --example adaptive_pagination --locked`.
+`examples/adaptive-pagination.yml`, `adaptive-pagination-plan.yml` e JSON
+tipados separados geram exemplos de 1/2/5/20 páginas em `target/filemaker-examples/`.
+O exemplo exige auditoria de layout e preflight antes de escrever cada PDF.
+A regressão de oito linhas passa de três páginas para duas, com uma única
+reserva de fecho e índices de origem ordenados e únicos. O consumidor não mede
+texto nem substitui coordenadas em strings YAML no Rust.
+
+Migração: guarda o desenho original, move o desenho do corpo para o plano,
+remove reservas V1/por linha concorrentes, declara a âncora do fecho e seleciona
+a nova chamada. Rollback restaura o desenho e a chamada anteriores; dados e
+formatos persistidos mantêm-se. Incluído em `1.0.0-rc.2`; 
+a aplicação externa não foi migrada.
+
+`first_after: {element: title, gap: 8pt}` permite iniciar `first` e `single`
+abaixo de uma caixa de layout já medida na página física zero. Conserva os
+fundos declarados e nunca sobe o início acima do offset original. Liga assim
+o cabeçalho automático de duas colunas e o título à região da tabela, sem
+aritmética de coordenadas no consumidor. A caixa completa da tabela pode
+sobrepor essas caixas anteriores, embora o corpo útil selecionado não o faça:
+declara os IDs em `collision.ignore` local, como em `examples/adaptive-header.yml`.
+Não é preciso desativar colisões globalmente. Alvo ainda não resolvido, posterior,
+noutra página ou corpo inicial esgotado produz erro explícito. Um dataset não
+vazio deve colocar linhas na primeira página; um adiamento inicial que deixe
+apenas títulos é rejeitado para não devolver um título isolado.
+
+Executa `cargo run -p appcore-filemaker --example adaptive_header --locked`
+para os cabeçalhos curto/longo. O mesmo YAML e plano usam JSON sintéticos
+separados, com auditoria de layout e preflight obrigatórios. Os exemplos de
+paginação e cabeçalho geram juntos seis documentos PDF para inspeção visual.
+
+## Evidência limitada de paginação (adição 1.0.0-rc.2)
+
+Usa `LayoutEngine::diagnose_adaptive(&document, &plan, max_decisions)` no lugar
+de `resolve_adaptive` quando precisas de uma explicação. `AdaptiveLayoutReport`
+expõe `outcome()`, `decisions()` e `into_outcome()`. Consulta ou guarda os registos
+antes de propagar o resultado: a evidência anterior permanece disponível em caso
+de erro. Cada chamada tem registos independentes. As APIs e os literais públicos
+existentes mantêm-se; a resolução normal não cria um coletor.
+
+Cada `PaginationDecision` contém o ID da tabela, página física candidata e
+ordinais das linhas de origem (base zero, intervalo inclusivo), regra real e
+alturas numéricas. `capacity` desconta o cabeçalho da tabela uma vez;
+`used_height` inclui linhas e reservas anteriores;
+`available_height = capacity - used_height`;
+`required_height = group_height + reserved_height`. `final_reservation` já está
+incluída em `reserved_height`: não a somar outra vez. Combina fecho e espaçamento
+com a diferença entre alturas do corpo normal e final, podendo exceder a altura
+do fecho isoladamente.
+
+As regras são `fit`, `move_group`, `split_rows`, `move_row`, `skip_first_page`
+e `reject`. Um avanço descreve o candidato na origem; o `fit` posterior usa
+medição e reserva do destino. A decisão sobre grupo excessivo avalia uma página
+de continuação vazia, mesmo que essa página nunca seja emitida. Os registos
+mostram execução, não são uma lista de páginas emitidas nem garantia de sucesso.
+Validação anterior à paginação pode falhar sem registos; uma validação posterior
+pode conservar decisões `fit` sem devolver cena. Dataset vazio não produz
+decisões de linhas. O enum de regras é não exaustivo.
+
+O limite explícito tem de estar entre um e `ResourceLimits.max_elements`.
+Esgotá-lo devolve `LimitExceeded` e conserva o prefixo, sem truncar silenciosamente
+nem devolver cena parcial. Não guarda texto, payloads nem valores de agrupamento,
+apenas IDs, ordinais e geometria. O coletor opcional usa secções curtas de mutex,
+preserva as características Send/Sync do motor e acrescenta custo de alocação e
+serialização. Cancelamento e limites existentes de páginas, linhas e medição
+continuam ativos.
+
+`cargo run -p appcore-filemaker --example adaptive_pagination --locked` grava
+`*-pagination.json`, `*-debug.json` e `*-mask-*.svg` por página, junto dos exemplos
+de 1/2/5/20 páginas. Reutiliza `DebugOverlay::build_bounded` (área útil, regiões,
+caixas de layout/intrínsecas/visuais e âncoras) e o exportador SVG de
+`CollisionMask`. A máscara descreve ocupação geométrica; `audit_layout` aplica
+as políticas efetivas de sobreposição. `SceneInspector::explain_layout` explica
+a geometria final; `audit_layout` identifica colisões e cortes com geometria.
+Continua a usar preflight estrito e revisão do PDF renderizado: zero perdas do
+exportador não prova um layout seguro. Rótulos do overlay podem conter expressões
+da fonte; revê-os antes de partilhar externamente.
+
+Rollback: volta a `resolve_adaptive` e deixa de guardar estes outputs.
+Sem alterações ao YAML, persistência, dependências, índice espacial ou consumidor.
+
+`header_height` mostra a reserva de cabeçalho aplicada; `body_height = capacity + header_height` mostra o corpo normal antes desse desconto.
+
+## Corpus sintético misto e gate de adoção pelo consumidor
+
+
+Executa `cargo run -p appcore-filemaker --example variable_corpus --locked`.
+Um desenho YAML e um plano adaptativo separado recebem quatro datasets JSON
+tipados e sintéticos. Os outputs `target/filemaker-examples/variable-corpus-*`
+incluem PDF, cena, preflight estrito, decisões, overlay e máscaras SVG.
+Este incremento também corrige a precedência de pintura das bandas no motor existente. Sem novas dependências, API pública, campos serializados ou versão publicada.
+
+| Páginas | Grupos | Linhas de origem |
+|---|---|---|
+| 1 | 3 | 9 |
+| 2 | 12 | 36 |
+| 5 | 40 | 120 |
+| 20 | 190 | 570 |
+
+Cada grupo contém artigo, descrição variável e comentário com remise detalhada.
+As três linhas partilham `keep_together_by`; `oversized_group: error` rejeita
+explicitamente uma descrição que exceda uma página. O teste verifica texto lógico
+no shaping e altura medida das células, além das strings de origem.
+O cabeçalho automático em duas colunas, o título dependente e o primeiro corpo
+partilham a medição nativa. Três taxas de TVA, valores anteriores, remises,
+totais líquidos/fiscais/finais, condições, assinatura e EAN-13 são dados fornecidos
+pelo consumidor sintético. O FileMaker não calcula impostos nem valida regras
+comerciais. Os totais das fixtures são coerentes, mas o corpus não é certificação fiscal.
+
+O primeiro valor anterior tem uma linha sobre a célula, com overlay local explícito.
+A marca de água em todas as páginas e o carimbo da primeira usam bandas existentes:
+essas bandas já têm contrato de pintura sem colisão e rejeitam um campo `collision`
+explícito. A deteção de colisão do corpo permanece ativa. Âncoras esparsas devem
+ser omitidas ou null quando ausentes, não strings vazias repetidas.
+As coordenadas X do corpo são relativas à origem da região útil; uma regressão
+confirma que o risco fica dentro da célula pretendida depois desse deslocamento.
+Foi uma correção de configuração da fixture, não uma falha do motor ou do shaping.
+
+Os testes verificam ordem sem perda/duplicação, texto integral nas células, grupos
+intactos, número de páginas, geometria do risco e descendentes do fecho apenas na
+última página, incluindo código e assinatura. Executam `audit_layout` e preflight
+estritos. As páginas também devem ser renderizadas e revistas: zero perdas de
+exportação não aprova o layout. A falha anterior de extração de ligaturas está corrigida na exportador 1.0.0-rc.2, com clusters completos e `/ActualText` contextual. Continua a conferir extração e renderização separadamente. Máscaras SVG mostram ocupação geométrica;
+`audit_layout` aplica as políticas de sobreposição intencional.
+
+
+A adoção exige uma nova RC exata publicada no registry; não inclui patch local nem alteração do consumidor externo.
+
+Reproduz a verificação após executar o exemplo: `python3 crates/appcore-filemaker/wiki/audit/verify-variable-corpus.py`. Exige Poppler, confere IDs ordenados de artigos/descrições/comentários, linhas de totais fornecidos, os 95 módulos EAN-13 renderizados e zonas de silêncio, e renderiza as 28 páginas. Não substitui revisão visual nem certificação de scanner.
+
+A marca de água pertence a `page.master.background`. `z_index` ordena a pintura dentro de uma camada; um valor negativo em `header` não coloca a marca atrás dos glifos do corpo. A regressão falhou primeiro com a banda de cabeçalho e verifica agora a camada de fundo e a ordem de pintura. O preflight estrito aprovava a configuração que tapava o texto.
+
+O corpus também revelou uma falha do motor: a ordenação textual colocava a camada vazia do corpo antes de `!page-background`, e nomes Unicode podiam ficar depois da banda de primeiro plano. A correção compatível dá precedência explícita às bandas: fundo, corpo, cabeçalhos/rodapés. Os nomes das camadas do corpo conservam a ordem textual, seguida de z-index e sequência. Os testes cobrem camadas vazias/personalizadas/Unicode, valores extremos de z-index e pixels raster reais. Sem substituir o índice espacial ou criar API.
+
+## Texto Unicode integral no PDF (correção 1.0.0-rc.2)
+
+A exportação Editable e Hybrid associa agora cada cluster de um glifo à sua
+sequência UTF-8 lógica completa em `ToUnicode`, em vez de só ao primeiro carácter.
+O writer PDF existente emite os destinos UTF-16, incluindo pares substitutos.
+Os limites dos clusters seguem os offsets lógicos ordenados em bytes, independentemente
+da ordem visual RTL. Fronteiras UTF-8 inválidas, offsets finais ou fora do texto
+devolvem `ExportUnsupported`, sem omitir silenciosamente o mapeamento.
+
+Um glifo pode corresponder a `fi` e ao carácter literal `ﬁ`, ou a texto composto
+e decomposto. Um mapa por fonte não representa todas essas ocorrências.
+Runs ambíguos ou com vários glifos por cluster conservam o texto lógico original
+em spans PDF `/ActualText`. Não se associa o texto completo de um cluster a cada
+um dos seus glifos. Não é aplicada normalização Unicode.
+Os leitores que extraem esses casos contextuais devem respeitar `/ActualText`.
+
+Mantêm-se PDF 1.7, fontes, IDs, avanços e geometria. Sem novas dependências,
+campos públicos, opções YAML ou APIs. As fontes Standard 14 WinAnsi conservam
+o percurso existente. Flattened continua a produzir contornos sem texto pesquisável.
+A correção atua no mapeamento da exportação, mantendo layout, shaping, políticas
+de corte e posicionamento bidi. Extratores RTL podem devolver ordem visual com
+controlos de direção; o exemplo verifica a sequência integral não acentuada nas
+formas lógica ou visual.
+
+As strings dos CMaps partilham o orçamento explícito
+`ResourceLimits.max_output_bytes`, verificado antes de alocar. O índice temporário
+de clusters é linear no número limitado de glifos; ordenação e pesquisa acrescentam
+trabalho sem repetir shaping. Continuam ativos os limites de cena, texto e output.
+Não há promessa de RSS constante ou ganho de velocidade.
+
+Executa `cargo run -p appcore-filemaker --example pdf_unicode --locked` para criar
+amostras Editable, Hybrid e Flattened. Incluem `fi/fl/ffi/ffl`, palavras correntes,
+ligaturas literais, acentos compostos/decompostos, um cluster isolado com vários
+glifos e recurso de fonte próprio, e clusters árabes.
+
+Depois executa
+`python3 crates/appcore-filemaker/wiki/audit/verify-pdf-unicode.py`.
+Exige Poppler, renderiza cada modo, confere os escalares latinos exatos sem
+normalização NFC/NFKC, verifica o exemplo RTL e a ausência de texto no Flattened,
+e compara os pixels Hybrid/Flattened. Auditoria, preflight, extração e revisão
+visual continuam a ser verificações distintas.
+
+O verificador do corpus misto confere agora todo o texto dos elementos e das
+células, além dos IDs e totais. PDFs existentes precisam de nova exportação.
+O consumidor fixado no registry só recebe esta correção numa nova RC exata
+publicada e qualificada. Sem publicação de pacotes, deploy da wiki ou migração
+do consumidor externo. O rollback seleciona a release qualificada anterior do
+exportador explicitamente.

@@ -1,8 +1,12 @@
 ---
-title: appcore-filemaker — 0.1 beta
+title: appcore-filemaker — RC
 ---
 
 # appcore-filemaker
+
+:::info Release candidate
+Release candidate **[`1.0.0-rc.2`](https://crates.io/crates/appcore-filemaker/1.0.0-rc.2)** publié sur crates.io le 2026-10-17. Sélectionner `=1.0.0-rc.2` explicitement. Chaque crate possède une version indépendante ; ceci ne certifie pas un déploiement.
+:::
 
 > **BÊTA PUBLIQUE** — `0.1.0-beta.6` est publiée sur crates.io pour évaluation.
 
@@ -336,3 +340,315 @@ et [API de l'encodeur QR](https://docs.rs/qrcode/0.14.1/qrcode/struct.QrCode.htm
 [crates.io](https://crates.io/crates/appcore-filemaker/0.1.0-beta.7) · [docs.rs](https://docs.rs/appcore-filemaker/0.1.0-beta.7)
 
 Le frontend YAML remplace le parser non maintenu par un parsing en Rust sûr (`serde-saphyr`). Les modèles source/fixtures YAML V1 et les booléens YAML 1.2 sont préservés. Champs inconnus, aliases récursifs et documents multiples sont rejetés ; les erreurs omettent les extraits source. Limites : profondeur 64, 1 000 000 événements, 50 000 aliases/ancres et 64 MiB de texte scalaire agrégé, en plus des limites entrée/schema existantes. Aucun fallback vers l’ancien parser distribué.
+
+## Audit du contenu variable (2026-10-17)
+
+Audit du baseline publié (les défauts ci-dessous décrivent le paquet audité) : mesure, expand, flux, ancres,
+groupes, audit/preflight et overlays existent déjà. La hauteur intrinsèque des
+conteneurs et un corps de tableau distinct pour la dernière page n’existent pas.
+Expand avec max_lines peut tronquer sans diagnostic ; next_page peut repartir
+à y=0 malgré les marges ; l’audit n’applique pas toujours les exceptions de
+groupes. Zéro perte d’export ne prouve pas la sûreté du layout. Corriger avant
+de recommander une acceptation stricte. Le premier audit a exécuté 55 tests
+existants et rendu des contrôles de 1/2/5/20 pages sans réorganisation ; cela
+ne qualifie pas tout le corpus commercial. Dimensionnement opt-in et convergence
+bornée de dernière page exigent contrats/migration explicites, en préservant V1.
+
+
+Le code 1.0.0-rc.2 diagnostique désormais expand avec limite et conserve cet avertissement sur les fragments, inclut le padding des groupes, respecte le corps/région de continuation avec transformations du parent et partage les filtres de groupes/ignore/overlay avec l’audit. Champs publics, YAML V1, limites explicites et bandes sont préservés. Les conteneurs intrinsèques du corps ont désormais l’API opt-in ci-dessous ; les corps adaptatifs de table ont désormais un plan opt-in séparé ; ces corrections sont incluses dans 1.0.0-rc.2.
+
+## Hauteur intrinsèque (opt-in, 1.0.0-rc.2)
+
+Utiliser `LayoutEngine::resolve_intrinsic(&document)` au lieu de `resolve`
+pour mesurer les éléments déclarant explicitement `height: auto` en YAML.
+`resolve`, le parseur V1, les littéraux des structures publiques et les
+politiques de dépassement à hauteur fixe conservent leur contrat. Aucune
+nouvelle dépendance ni mesure manuelle côté application.
+
+Le texte réutilise le shaping et la mesure existants avec la police enregistrée,
+le style, la largeur, les marges internes et les avances de lignes effectifs.
+Un flux horizontal prend la hauteur maximale ; un flux vertical additionne
+les hauteurs et espacements. `constraints: {min_height: 14mm}` préserve le
+format court. Flux et ancres reçoivent la boîte mesurée avant les collisions.
+Le document d'entrée reste intact. Un contenu dépassant `max_height` échoue
+avec son identifiant au lieu d'être coupé.
+
+Cette première option accepte des largeurs définies et des flux du corps avec
+distribution au début. Le texte automatique accepte `wrap`, `expand` ou
+`error`, horizontal et sans `max_lines`. Déclarer une hauteur fixe pour `clip`,
+`ellipsis` ou `shrink`. Les groupes automatiques sont indivisibles et doivent
+tenir sur une page utile. Leurs enfants ne peuvent déclarer x/y, ancres,
+région, transformations, alignement géométrique autre que début,
+keep-with-next ou hauteur/contraintes de hauteur en pourcentage. Un texte
+extensible enfant doit utiliser la hauteur automatique. Groupes absolus ou
+distribués, écriture verticale, bandes de page automatiques, aspect ratio ou
+preferred height sur un élément automatique et padding vertical en pourcentage
+échouent explicitement, sans estimation circulaire implicite.
+
+Le parcours vérifie l'annulation, les limites d'éléments/texte et une profondeur
+maximale de 64 avant de cloner le document lié aux données. La mesure vérifie
+l'annulation par élément ; le shaping d'un élément n'est pas préemptif. Copie
+et mesure ajoutent du travail et de la mémoire, sans gain de performance promis.
+Exécuter le preflight de layout sur la scène finale, y compris éléments fixes
+et overlays. Ne pas réutiliser les clés de cache du layout ordinaire.
+
+Exécuter `cargo run -p appcore-filemaker --example intrinsic_height --locked`.
+`examples/intrinsic-height.yml` utilise des JSON court/long séparés, deux
+colonnes, un texte aligné à droite et des ancres déplaçant titre et corps.
+Résultats dans `target/filemaker-examples/`. Rust ne remplace aucune coordonnée
+YAML. L'exemple exige des diagnostics de layout valides avant l'export PDF.
+
+Migration : sélectionner la nouvelle méthode et déclarer les hauteurs auto et
+minimales en YAML. Retour arrière : conserver le dessin original et `resolve`.
+L'API Rust est additive, sans autre parseur/version YAML. Les réserves variables
+de première/pages intermédiaires/dernière page de table utilisent désormais le plan adaptatif séparé ; les flux globaux arbitraires restent hors de ce contrat.
+
+Dans une racine participant à la mesure intrinsèque, les groupes sont
+structurels : les politiques de collision des descendants ignorent explicitement
+les identifiants des ancêtres. Les collisions entre frères et avec les éléments
+externes restent actives. La résolution ordinaire et les racines sans hauteur
+automatique conservent leurs politiques.
+
+Le défaut d’extraction des ligatures est corrigé dans la version 1.0.0-rc.2 : clusters complets et `/ActualText` contextuel conservent le texte logique. Vérifier séparément extraction et rendu.
+
+## Pagination adaptative de table (opt-in, 1.0.0-rc.2)
+
+`AdaptiveLayoutPlan::parse_yaml` lit un dessin YAML séparé et strict avec
+`filemaker_layout: '1.0'`. Après le compile/bind V1 existant, appeler
+`LayoutEngine::resolve_adaptive(&document, &plan)`. Cette API additive conserve
+les littéraux des structures publiques, le parseur V1, `resolve` et
+`resolve_intrinsic`. Aucune dépendance, règle métier ou format persistant ajouté.
+
+Le plan sélectionne une table racine, les corps verticaux `first`,
+`intermediate`, `last` et `single`, un bloc racine final `closing`, son espacement
+et la politique obligatoire `oversized_group: error` ou `split_rows`. Offsets
+et hauteurs sont relatifs à la boîte complète, à largeur constante. Tous les
+corps doivent tenir dans cette boîte, elle-même dans la région utile de page.
+
+Les corps déclarés précèdent la réserve de clôture. Sa hauteur visible réutilise
+la mesure intrinsèque et les contraintes existantes. Hauteur et espacement
+sont soustraits une seule fois de `single` ou `last`. Le paginateur existant
+soustrait ensuite l'en-tête une seule fois. Une clôture masquée ne réserve ni
+hauteur ni espacement. Les bandes décoratives conservent leur sémantique V1,
+sans réserve implicite.
+
+Le groupe en attente existant permet de reconnaître le groupe final. Seule sa
+dernière ligne porte la différence entre capacité ordinaire et finale. Un
+changement de page recalcule réserve et mesure sensible à la page au départ
+suivant. Le fragment final est translaté vers le corps last/single ; les ancres
+placent la clôture après son bord inférieur. Ce problème vertical restreint
+ne nécessite ni estimation du nombre de pages ni point fixe global. Mesure de
+groupes et échantillonnage des colonnes peuvent toujours revisiter les lignes ;
+aucune garantie d'une seule lecture des données.
+
+Les clés contiguës égales de `keep_together_by` restent ensemble quand groupe
+et réserve finale tiennent sur une page de destination. `split_rows` sépare
+les lignes si cette contrainte combinée dépasse la capacité ; `error` rejette.
+Une ligne indivisible avec réserve trop haute échoue dans les deux cas. Un
+groupe laissant la première page entièrement vide produit une erreur explicite,
+sans page vide ni requalification implicite d'une continuation. Des données
+vides peuvent produire en-tête et clôture si l'en-tête tient.
+
+Limites explicites : une table racine visible commençant à la page physique
+zéro ; un unique bloc final du corps ancré par `top: table-id.bottom+gap` ;
+aucune transformation, région ou keep-with-next sur ces racines. La clôture
+peut être un texte ou groupe de flux à hauteur automatique. Ses descendants
+doivent tenir dans sa boîte mesurée sur la dernière page de table. Collision
+incompatible ou croissance d'un texte fixe : erreur sans scène partielle.
+Ne pas combiner `table.page_bodies`, `reserve_after` conditionnel ou
+`total_fields` intégré avec ce propriétaire de réserve. Les totaux peuvent
+être des données liées dans la clôture. Plusieurs tables, des largeurs finales
+différentes ou un flux global dépendant des pages nécessitent un contrat
+explicite ultérieur, sans inférence.
+
+Les limites de taille, profondeur, éléments, lignes, pages et collisions restent
+actives. Annulation vérifiée avant planification, pendant visite, mesure et
+évaluation des réserves ; un shaping individuel n'est pas préemptif. L'index
+spatial reste inchangé, sans gain de temps ou mémoire promis. Valider layout
+et export séparément : réussite ou zéro perte déclarée ne prouve ni géométrie
+ni fidélité du texte. Le défaut d’extraction des ligatures est corrigé dans la version 1.0.0-rc.2 : clusters complets et `/ActualText` contextuel conservent le texte logique. Vérifier séparément extraction et rendu.
+
+Exécuter `cargo run -p appcore-filemaker --example adaptive_pagination --locked`.
+`examples/adaptive-pagination.yml`, `adaptive-pagination-plan.yml` et les JSON
+typés séparés génèrent 1/2/5/20 pages dans `target/filemaker-examples/`.
+L'exemple exige audit de layout et preflight avant chaque PDF. La régression
+de huit lignes passe de trois pages à deux avec une seule réserve finale ;
+indices source uniques et ordonnés. Rust ne mesure pas le texte côté
+application et ne remplace aucune coordonnée YAML.
+
+Migration : garder le dessin original, déplacer les corps dans le plan,
+retirer les réserves V1/par ligne concurrentes, déclarer l'ancre de clôture et
+choisir la nouvelle méthode. Retour arrière : dessin et méthode d'origine ;
+données et formats persistants inchangés. Inclus dans `1.0.0-rc.2` ; 
+l'application externe n'a pas migré.
+
+`first_after: {element: title, gap: 8pt}` place facultativement le début de
+`first` et `single` sous une boîte de layout déjà mesurée à la page physique
+zéro. Leurs bords inférieurs déclarés sont conservés ; le début ne remonte
+jamais au-dessus de l'offset initial. Ceci relie en-tête automatique à deux
+colonnes et titre à la première région, sans calcul de coordonnées côté
+application. La boîte complète de table peut recouvrir les boîtes précédentes
+alors que le corps utile sélectionné les évite : déclarer leurs identifiants
+dans `collision.ignore` local, comme dans `examples/adaptive-header.yml`.
+Aucune désactivation globale des collisions. Cible non résolue, ultérieure,
+sur une autre page ou corps initial épuisé : erreur explicite. Un jeu non vide
+doit placer des lignes sur la première page ; un report initial ne laissant
+que des titres est rejeté pour éviter un titre isolé.
+
+Exécuter `cargo run -p appcore-filemaker --example adaptive_header --locked`
+pour les en-têtes court/long. Le YAML et le plan communs utilisent des JSON
+synthétiques séparés, avec audit de layout et preflight obligatoires. Les deux
+exemples produisent ensemble six documents PDF pour vérification visuelle.
+
+## Preuves de pagination bornées (ajout 1.0.0-rc.2)
+
+Utiliser `LayoutEngine::diagnose_adaptive(&document, &plan, max_decisions)` à la
+place de `resolve_adaptive` pour obtenir une explication. `AdaptiveLayoutReport`
+expose `outcome()`, `decisions()` et `into_outcome()`. Consulter ou enregistrer les
+décisions avant de propager le résultat : les preuves précédentes restent
+disponibles en cas d’échec. Chaque appel possède ses propres enregistrements.
+Les API et littéraux publics existants sont conservés ; la résolution normale
+ne crée aucun collecteur.
+
+Chaque `PaginationDecision` contient l’ID du tableau, la page physique candidate,
+les ordinaux des lignes source (base zéro, intervalle inclusif), la règle réelle
+et les hauteurs numériques. `capacity` déduit l’en-tête du tableau une seule fois ;
+`used_height` inclut les lignes et réserves précédentes ;
+`available_height = capacity - used_height` ;
+`required_height = group_height + reserved_height`. `final_reservation` est déjà
+incluse dans `reserved_height`, sans addition supplémentaire. Elle combine bloc
+final et espacement avec la différence entre hauteurs de corps normal et final,
+et ne représente donc pas seulement la hauteur du bloc final.
+
+Règles : `fit`, `move_group`, `split_rows`, `move_row`, `skip_first_page`, `reject`.
+Un déplacement décrit le candidat source ; le `fit` suivant utilise les mesures
+et réserves de destination. Une décision de groupe trop grand évalue une page
+de continuation vide, même si elle n’est jamais émise. Ces preuves d’exécution
+ne constituent ni une liste de pages émises ni une garantie de succès.
+La validation préalable peut échouer sans décisions ; la validation finale peut
+conserver des décisions `fit` sans retourner de scène. Un dataset vide ne génère
+pas de décisions de lignes. L’enum des règles est non exhaustif.
+
+La limite explicite doit être comprise entre un et `ResourceLimits.max_elements`.
+Son épuisement retourne `LimitExceeded` avec le préfixe conservé, sans troncature
+silencieuse ni scène partielle. Aucun texte, payload ou valeur de regroupement
+n’est enregistré : seulement IDs, ordinaux et géométrie. Le collecteur optionnel
+utilise de courtes sections mutex et conserve les caractéristiques Send/Sync du
+moteur ; il ajoute un coût d’allocation et de sérialisation. Annulation et limites
+existantes de pages, lignes et mesures restent actives.
+
+`cargo run -p appcore-filemaker --example adaptive_pagination --locked` écrit
+`*-pagination.json`, `*-debug.json` et les `*-mask-*.svg` par page, avec les exemples
+de 1/2/5/20 pages. Réutilise `DebugOverlay::build_bounded` (zone utile, régions,
+boîtes de layout/intrinsèques/visuelles et ancres) et l’exporteur SVG existant de
+`CollisionMask`. Le masque représente l’occupation géométrique ; `audit_layout`
+applique les politiques effectives de chevauchement.
+`SceneInspector::explain_layout` explique la géométrie finale ; `audit_layout`
+identifie collisions et coupures avec leur géométrie. Continuer le preflight strict
+et la revue du PDF rendu : zéro perte d’export ne prouve pas un layout sûr.
+Les étiquettes d’overlay peuvent contenir des expressions source ; les vérifier
+avant partage externe.
+
+Rollback : revenir à `resolve_adaptive` et ne plus enregistrer ces sorties.
+Aucun changement YAML, persistance, dépendance, index spatial ou consommateur.
+
+`header_height` indique la réserve d’en-tête appliquée ; `body_height = capacity + header_height` expose le corps normal avant cette déduction.
+
+## Corpus synthétique mixte et gate d’adoption du consommateur
+
+
+Exécuter `cargo run -p appcore-filemaker --example variable_corpus --locked`.
+Un dessin YAML et un plan adaptatif séparé reçoivent quatre datasets JSON typés
+synthétiques. Les sorties `target/filemaker-examples/variable-corpus-*` incluent
+PDF, scène, preflight strict, décisions, overlay et masques SVG.
+Cet incrément corrige aussi la précédence de peinture des bandes dans le moteur existant. Aucune nouvelle dépendance, API publique, propriété sérialisée ou version publiée.
+
+| Pages | Groupes | Lignes source |
+|---|---|---|
+| 1 | 3 | 9 |
+| 2 | 12 | 36 |
+| 5 | 40 | 120 |
+| 20 | 190 | 570 |
+
+Chaque groupe contient article, description variable et commentaire avec remise
+détaillée. Les trois lignes partagent `keep_together_by` ; `oversized_group: error`
+rejette explicitement une description dépassant une page. Le test vérifie le texte
+logique après shaping et la hauteur mesurée des cellules, pas seulement les sources.
+L’en-tête automatique à deux colonnes, le titre dépendant et le premier corps
+partagent la mesure native. Trois taux de TVA, valeurs antérieures, remises,
+totaux nets/fiscaux/finaux, conditions, signature et EAN-13 sont des données du
+consommateur synthétique. FileMaker ne calcule pas les impôts et ne valide aucune
+règle commerciale. Les totaux des fixtures sont cohérents, sans certification fiscale.
+
+La première valeur antérieure est barrée par une ligne avec overlay local explicite.
+Le filigrane de chaque page et le tampon initial utilisent les bandes existantes :
+leur contrat de peinture sans collision rejette déjà un champ `collision` explicite.
+La détection des collisions du corps reste active. Les ancres absentes doivent être
+omises ou null, jamais des chaînes vides répétées. Les coordonnées X du corps sont
+relatives à l’origine de la zone utile ; une régression vérifie que la barre reste
+dans la cellule visée après cette translation. Il s’agissait d’une correction de
+configuration de fixture, pas d’un défaut moteur ou de shaping.
+
+Les tests vérifient ordre sans perte ni duplication, texte intégral, groupes
+indivisibles, nombre de pages, géométrie de la barre et descendants de clôture
+uniquement sur la dernière page, code et signature compris. `audit_layout` et
+preflight strict sont exécutés. Les pages doivent aussi être rendues et inspectées :
+zéro perte d’export ne valide pas le layout. Le défaut d’extraction des ligatures est corrigé dans la version 1.0.0-rc.2 : clusters complets et `/ActualText` contextuel conservent le texte logique. Vérifier séparément extraction et rendu. Les masques SVG montrent
+l’occupation géométrique ; `audit_layout` applique les chevauchements intentionnels.
+
+
+L’adoption exige une nouvelle RC exacte publiée au registry ; aucun patch local ou changement du consommateur externe.
+
+Reproduire les vérifications après l’exemple : `python3 crates/appcore-filemaker/wiki/audit/verify-variable-corpus.py`. Nécessite Poppler, vérifie IDs ordonnés, lignes de totaux fournies, 95 modules EAN-13 rendus et zones de silence, puis rend les 28 pages. Ne remplace ni revue visuelle ni certification scanner.
+
+Le filigrane appartient à `page.master.background`. `z_index` ordonne la peinture dans une couche ; une valeur négative dans `header` ne place pas le filigrane derrière les glyphes du corps. La régression a d’abord échoué avec la bande d’en-tête, puis vérifie couche de fond et ordre de peinture. Le preflight strict acceptait la configuration masquant le texte.
+
+Le corpus a aussi révélé un défaut moteur : le tri lexical plaçait la couche vide du corps avant `!page-background`, et des noms Unicode pouvaient dépasser la bande de premier plan. La correction compatible donne une précédence explicite aux bandes : fond, corps, en-têtes/pieds. Les noms des couches du corps gardent leur ordre lexical, puis z-index et séquence. Les tests couvrent couches vides/personnalisées/Unicode, z-index extrêmes et pixels raster réels. Aucun remplacement d’index spatial ni nouvelle API.
+
+## Texte Unicode intégral dans les PDF (correction 1.0.0-rc.2)
+
+L’export Editable et Hybrid associe chaque cluster à un seul glyphe à sa séquence
+UTF-8 logique complète dans `ToUnicode`, au lieu du premier caractère seulement.
+Le writer PDF existant produit les destinations UTF-16, paires de substitution
+comprises. Les limites suivent les offsets logiques triés en octets, indépendamment
+de l’ordre visuel RTL. Les frontières UTF-8 invalides et offsets terminaux ou hors
+texte retournent `ExportUnsupported`, sans omission silencieuse de mappage.
+
+Un glyphe peut représenter `fi` et le caractère littéral `ﬁ`, ou du texte composé
+et décomposé. Un seul mappage par police ne représente pas toutes les occurrences.
+Les runs ambigus ou clusters à plusieurs glyphes conservent le texte logique
+original dans des spans PDF `/ActualText`. Le texte entier d’un cluster n’est pas
+répété pour chacun de ses glyphes. Aucune normalisation Unicode n’est appliquée.
+Les lecteurs de ces cas contextuels doivent respecter `/ActualText`.
+
+PDF 1.7, polices, IDs, avances et géométrie sont conservés. Aucune nouvelle
+dépendance, propriété publique, option YAML ou API. Standard 14 WinAnsi garde
+son parcours existant. Flattened produit toujours des contours sans texte
+recherchable. La correction concerne le mappage d’export et conserve layout,
+shaping, politiques de coupure et positionnement bidi. Les extracteurs RTL peuvent
+retourner l’ordre visuel avec contrôles directionnels ; l’exemple vérifie sa
+séquence complète sans diacritiques en ordre logique ou visuel.
+
+Les chaînes des CMaps partagent le budget explicite
+`ResourceLimits.max_output_bytes`, vérifié avant allocation. L’index temporaire
+des clusters est linéaire dans le nombre borné de glyphes ; tri et recherche
+ajoutent du travail sans refaire le shaping. Les limites de scène, texte et sortie
+restent actives, sans promesse de RSS constant ou de gain de vitesse.
+
+Exécuter `cargo run -p appcore-filemaker --example pdf_unicode --locked` pour créer
+les échantillons Editable, Hybrid et Flattened : `fi/fl/ffi/ffl`, mots courants,
+ligatures littérales, accents composés/décomposés, cluster isolé à plusieurs glyphes
+avec sa propre ressource de police et clusters arabes.
+
+Puis exécuter
+`python3 crates/appcore-filemaker/wiki/audit/verify-pdf-unicode.py`.
+Nécessite Poppler, rend chaque mode, compare les scalaires latins exacts sans
+normalisation NFC/NFKC, vérifie l’exemple RTL et l’absence de texte Flattened,
+puis compare les pixels Hybrid/Flattened. Audit, preflight, extraction et revue
+visuelle restent des vérifications distinctes.
+
+Le vérificateur du corpus mixte contrôle maintenant tous les textes des éléments
+et cellules, en plus des IDs et totaux. Les PDF existants doivent être réexportés.
+Un consommateur registry reçoit cette correction via une nouvelle RC exacte publiée
+et qualifiée. Aucune publication de paquet, déploiement wiki ou migration externe.
+Le rollback sélectionne explicitement la release qualifiée précédente de l’exporteur.
