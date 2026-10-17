@@ -8,12 +8,6 @@ title: appcore-filemaker — RC
 Release candidate **[`1.0.0-rc.2`](https://crates.io/crates/appcore-filemaker/1.0.0-rc.2)** publié sur crates.io le 2026-10-17. Sélectionner `=1.0.0-rc.2` explicitement. Chaque crate possède une version indépendante ; ceci ne certifie pas un déploiement.
 :::
 
-> **BÊTA PUBLIQUE** — `0.1.0-beta.6` est publiée sur crates.io pour évaluation.
-
-`appcore-filemaker 0.1.0-beta.6` est le compilateur déterministe officiel
-d'AppCore pour documents déclaratifs, canvases vectoriels et datasets. La
-version `0.1.0-beta.6` est publiée sur crates.io et reste hors du Runtime stable.
-
 Pour découvrir le format, suivez le
 [guide YAML pas à pas](./appcore-filemaker-yaml.md). Il part de l'en-tête
 minimal puis couvre données, styles, vecteurs, tables, rôles de page, images,
