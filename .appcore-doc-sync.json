@@ -1,9 +1,9 @@
 {
   "schemaVersion": 1,
-  "acceptedAt": "2026-11-09T11:02:49.534Z",
-  "runtimeCommit": "b0f54669e579933554a24ae35bd7fb59753d47c6",
+  "acceptedAt": "2026-11-09T11:17:58.149Z",
+  "runtimeCommit": "c0b4156e807dc0d8103ac8721b182b3cd5991c2e",
   "runtimeRemote": "git@github.com:dnettoRaw/AppCore-Runtime.git",
-  "relevantDigest": "0b09158922dab71084898f1325fd603edfdfdd45569069da37a952ead81fd78c",
+  "relevantDigest": "da3d41e62bad169cb110ecbdf8804882fed40cf1e59115579cc49a8a5ee43488",
   "publicCrateGraphDigest": "32446bb90b81857fa3519cad76865aabc287a2fb6c9d8f82dbe4a0b9e81bf943",
   "files": {
     "AGENTS.md": "424a876dfdec2ec3e904f2e98b6f0bd363410d3bb9366501c76f4e02b7e729e0",
@@ -11,7 +11,7 @@
     "AUDITORIA-MD.md": "fd8fe2098d54fe944af9150f62df3bb4a9bb92b05f0febcdb83219b3f8ec7806",
     "AUDITORIA-PRE-RC.md": "d857948561f6bc1acfe36557e7792614fd12b0e9f755b02ea0ec662aa444fa37",
     "BENCHMARKS.md": "84408310ef4691848aa32f193f262fd3b1e71646b262056468bc85b2c1f85b95",
-    "CHANGELOG.md": "b1554ab63daf31b9eb484b2177879bd9a9c61ade6882fdb978195f52acfa8eca",
+    "CHANGELOG.md": "b4da3bfd372ad9e50e5a0b6ee4700b23ab679103f8779fe0bff6bfdcdd4f2f1e",
     "CONTRIBUTING.md": "5bd3e5268b49f1817b4f92577bf31b5dccd7ef0afef18984e2a51873448c3c85",
     "Cargo.lock": "6dbfb257032801cd3f4f2e324184110d7293c7fb31d8cd032c67f1f4d357ac33",
     "Cargo.toml": "3621406f4977a2e8b5b684f4c84e6f387da72bb329633e0bd910cb3dd68f2d39",
