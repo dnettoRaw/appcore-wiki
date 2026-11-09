@@ -6,7 +6,7 @@ slug: /crates/
 
 # Crate Catalog
 
-AppCore-Runtime contains 30 active public crates. Each package owns independent
+AppCore-Runtime contains 31 active public crates. Each package owns independent
 SemVer and one explicit layer. A release in one crate does not force unrelated
 packages to change version.
 
@@ -16,7 +16,7 @@ directly.
 
 ## Stable documentation links
 
-Every crate has a permanent ID from ACR-001 through ACR-030. Use those URLs in
+Every crate has a permanent ID from ACR-001 through ACR-031. Use those URLs in
 READMEs, issues, release notes, and external documentation:
 
 ```text
@@ -60,3 +60,7 @@ Historical pages such as `appcore-bin`, `appcore-filemaker-yaml` are not active 
 history or future work still needs them.
 
 `appcore-transfer`: Integration · 0.1.0-beta.1 — crates.io.
+
+:::info Release candidate
+Independent **`1.0.X-rc.N`** candidates — published on crates.io, 2026-10-15. Select each crate’s exact candidate explicitly. This RC cohort does not replace older stable packages or certify a deployment.
+:::

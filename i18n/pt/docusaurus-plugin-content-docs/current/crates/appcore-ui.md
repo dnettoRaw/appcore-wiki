@@ -1,18 +1,18 @@
 ---
-title: appcore-ui — Beta
+title: appcore-ui — RC
 sidebar_position: 24
 ---
 
 # appcore-ui
 
-:::info Beta pública
-`appcore-ui 0.1.0-beta.2` está disponível no crates.io. O rendering atual suporta macOS.
+:::info Candidato de release
+[`appcore-ui 1.0.0-rc.2`](https://crates.io/crates/appcore-ui/1.0.0-rc.2) está disponível no crates.io. O rendering atual suporta macOS.
 :::
 
-## Beta pública independente
+## Candidato de release independente
 
-`appcore-ui 0.1.0-beta.2` renderiza páginas nativas definidas em Rust e páginas
-web locais produzidas em HTML/TypeScript. Está disponível como beta pública.
+`appcore-ui 1.0.0-rc.2` renderiza páginas nativas definidas em Rust e páginas
+web locais produzidas em HTML/TypeScript. Está disponível como candidato de release.
 O backend atual é macOS; outras plataformas continuam trabalho futuro.
 O roadmap mais amplo de UI não representa APIs já implementadas.
 
@@ -103,3 +103,15 @@ O pump serve o run loop mesmo sob carga de input e a bridge antes/depois do disp
 `0.1.0-beta.2`: alinhamento de dependências.
 
 [crates.io](https://crates.io/crates/appcore-ui/0.1.0-beta.2) · [docs.rs](https://docs.rs/appcore-ui/0.1.0-beta.2)
+
+## Disponibilidade HA negociada — 1.0.0-rc.2
+
+Esta coorte RC alinha os tipos distribuídos partilhados entre Sync, Peer RPC, control
+plane, Gateway, Transfer, SQLite e SDK. `peer.availability.v1` seleciona resultados
+autenticados e estruturados sem mudar os formatos V1. Busy não executa a closure nem
+confirma trabalho. Rejeição, pendência, transporte e confirmação durável são distintos;
+os retries preservam a identidade idempotente. A composição comprova a conclusão da
+closure, o fencing e a confirmação exigida da réplica. Não implica migração de
+instalações, deployment ou certificação de falha física de energia.
+
+Consulte o [guia de disponibilidade](https://github.com/dnettoRaw/app-core-public/blob/beta/crates/appcore-peer-rpc/wiki/guide.pt.md).

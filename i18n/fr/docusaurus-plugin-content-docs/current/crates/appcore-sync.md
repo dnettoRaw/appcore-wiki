@@ -17,7 +17,7 @@ stable `1.0.0` doivent migrer délibérément.
 
 ## Guide et exemples maintenus par le crate
 
-Le dépôt Runtime maintient le [guide détaillé](https://github.com/dnettoRaw/AppCore-Runtime/blob/v1.0.0/crates/appcore-sync/wiki/guide.fr.md), [exemple débutant](https://github.com/dnettoRaw/AppCore-Runtime/blob/v1.0.0/crates/appcore-sync/wiki/examples/basic.fr.md) et [exemple intermédiaire](https://github.com/dnettoRaw/AppCore-Runtime/blob/v1.0.0/crates/appcore-sync/wiki/examples/intermediate.fr.md). Le wiki résume la frontière publique ; les détails d’API et d’exécution restent avec le code du crate.
+Le dépôt Runtime maintient le [guide détaillé](https://github.com/dnettoRaw/app-core-public/blob/beta/crates/appcore-sync/wiki/guide.fr.md), [exemple débutant](https://github.com/dnettoRaw/app-core-public/blob/beta/crates/appcore-sync/wiki/examples/basic.fr.md) et [exemple intermédiaire](https://github.com/dnettoRaw/app-core-public/blob/beta/crates/appcore-sync/wiki/examples/intermediate.fr.md). Le wiki résume la frontière publique ; les détails d’API et d’exécution restent avec le code du crate.
 
 **Responsabilité :** réplication leader-to-follower conservatrice et helpers de
 durabilité locale.
@@ -124,3 +124,15 @@ avant rétention ; la fenêtre est bornée en octets comme en nombre d'élément
 `2.0.0-alpha.5`: modifications propres.
 
 [crates.io](https://crates.io/crates/appcore-sync/2.0.0-alpha.5) · [docs.rs](https://docs.rs/appcore-sync/2.0.0-alpha.5)
+
+## Disponibilité HA négociée — 1.0.2-rc.2
+
+Cette cohorte RC aligne les types distribués entre Sync, Peer RPC, control plane,
+Gateway, Transfer, SQLite et SDK. `peer.availability.v1` sélectionne des résultats
+authentifiés et structurés sans modifier V1. Busy n’exécute pas la closure et ne confirme
+aucun travail. Rejet, attente, transport et confirmation durable restent distincts;
+les reprises conservent la même identité idempotente. Le déploiement garantit la fin de
+la closure, le fencing exact et la confirmation du réplica. Aucune migration,
+installation ou certification de coupure électrique n’est implicite.
+
+Voir le [guide de disponibilité](https://github.com/dnettoRaw/app-core-public/blob/beta/crates/appcore-peer-rpc/wiki/guide.fr.md).

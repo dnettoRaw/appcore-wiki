@@ -6,7 +6,7 @@ sidebar_position: 28
 # appcore-sdk
 
 :::info Release candidate
-Published and registry-verified **[`1.0.2-rc.3`](https://crates.io/crates/appcore-sdk/1.0.2-rc.3)**, 2026-10-17. Select `=1.0.2-rc.3` explicitly. Versions remain independent; this is a release candidate, not deployment or hardware certification.
+Published and registry-verified **[`1.0.2-rc.4`](https://crates.io/crates/appcore-sdk/1.0.2-rc.4)**, 2026-11-09. Select `=1.0.2-rc.4` explicitly. Versions remain independent; this is a release candidate, not deployment or hardware certification.
 :::
 
 Stable documentation ID: **ACR-028**.
@@ -46,11 +46,11 @@ secrets, or own process lifecycle. Deployment composition remains explicit.
 - `App::logging` configures the bounded `appcore-log` pipeline.
 
 Start with the [first application tutorial](/tutorials/first-application) and
-the crate-owned [English guide](https://github.com/dnettoRaw/app-core-public/tree/beta/appcore-sdk/wiki/guide.en.md),
-[Portuguese guide](https://github.com/dnettoRaw/app-core-public/tree/beta/appcore-sdk/wiki/guide.pt.md),
-or [French guide](https://github.com/dnettoRaw/app-core-public/tree/beta/appcore-sdk/wiki/guide.fr.md).
-Then run the crate-owned [basic example](https://github.com/dnettoRaw/app-core-public/tree/beta/appcore-sdk/wiki/examples/basic.en.md)
-and [intermediate example](https://github.com/dnettoRaw/app-core-public/tree/beta/appcore-sdk/wiki/examples/intermediate.en.md).
+the crate-owned [English guide](https://github.com/dnettoRaw/app-core-public/tree/beta/crates/appcore-sdk/wiki/guide.en.md),
+[Portuguese guide](https://github.com/dnettoRaw/app-core-public/tree/beta/crates/appcore-sdk/wiki/guide.pt.md),
+or [French guide](https://github.com/dnettoRaw/app-core-public/tree/beta/crates/appcore-sdk/wiki/guide.fr.md).
+Then run the crate-owned [basic example](https://github.com/dnettoRaw/app-core-public/tree/beta/crates/appcore-sdk/wiki/examples/basic.en.md)
+and [intermediate example](https://github.com/dnettoRaw/app-core-public/tree/beta/crates/appcore-sdk/wiki/examples/intermediate.en.md).
 
 ## Independent prerelease — 2026-10-14
 
@@ -61,3 +61,15 @@ and [intermediate example](https://github.com/dnettoRaw/app-core-public/tree/bet
 ## 1.0.2-rc.3
 
 Exact dependency pins select the qualified AI security distribution and FileMaker RC where applicable. Public APIs, default features and V1 inputs are unchanged. Select the exact release and refresh the full lockfile explicitly; old exact pins remain immutable. The optional backend uses the registry security distributions documented on the AI page. This does not certify hardware or migrate an external application.
+
+## Negotiated HA availability — 1.0.2-rc.4
+
+This RC cohort aligns shared distributed types across Sync, Peer RPC, control plane,
+Gateway, Transfer, SQLite and the SDK. `peer.availability.v1` selects authenticated
+structured outcomes without changing frozen V1 wire shapes. Busy admission never runs
+the business closure or confirms work. Rejection, pending execution, transport failure
+and durable completion remain distinct; retries preserve the same idempotency identity.
+The deployment owns business completion, exact write fencing and required replica proof.
+No installation migration, deployment or physical power-loss certification is implied.
+
+See the [crate-owned availability guide](https://github.com/dnettoRaw/app-core-public/blob/beta/crates/appcore-peer-rpc/wiki/guide.en.md).

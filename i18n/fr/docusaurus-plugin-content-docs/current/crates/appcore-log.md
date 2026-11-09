@@ -7,7 +7,7 @@ sidebar_position: 27
 
 ID stable de documentation : **ACR-027**.
 
-Version publiée : [`appcore-log 1.0.0-rc.3`](https://crates.io/crates/appcore-log/1.0.0-rc.3).
+Version publiée : [`appcore-log 1.0.0-rc.4`](https://crates.io/crates/appcore-log/1.0.0-rc.4).
 
 `appcore-log` est le pipeline structuré et borné partagé par le Runtime et le
 SDK. Il sépare sévérité et verbosité V1–V9, filtre avant formatage, assainit
@@ -41,8 +41,8 @@ Le répertoire des fichiers actifs doit déjà exister. Les répertoires d'archi
 du débit contre la durabilité de chaque événement.
 
 Pour le setup complet, les limites, les exemples et les commandes de benchmark,
-consultez le [guide en anglais](https://github.com/dnettoRaw/app-core-public/tree/beta/appcore-log/wiki/guide.en.md),
-le [guide en portugais](https://github.com/dnettoRaw/app-core-public/tree/beta/appcore-log/wiki/guide.pt.md)
-ou le [guide en français](https://github.com/dnettoRaw/app-core-public/tree/beta/appcore-log/wiki/guide.fr.md).
-Le code source conserve aussi l’[exemple de base](https://github.com/dnettoRaw/app-core-public/tree/beta/appcore-log/wiki/examples/basic.fr.md)
-et l’[exemple intermédiaire](https://github.com/dnettoRaw/app-core-public/tree/beta/appcore-log/wiki/examples/intermediate.fr.md).
+consultez le [guide en anglais](https://github.com/dnettoRaw/app-core-public/tree/beta/crates/appcore-log/wiki/guide.en.md),
+le [guide en portugais](https://github.com/dnettoRaw/app-core-public/tree/beta/crates/appcore-log/wiki/guide.pt.md)
+ou le [guide en français](https://github.com/dnettoRaw/app-core-public/tree/beta/crates/appcore-log/wiki/guide.fr.md).
+Le code source conserve aussi l’[exemple de base](https://github.com/dnettoRaw/app-core-public/tree/beta/crates/appcore-log/wiki/examples/basic.fr.md)
+et l’[exemple intermédiaire](https://github.com/dnettoRaw/app-core-public/tree/beta/crates/appcore-log/wiki/examples/intermediate.fr.md).

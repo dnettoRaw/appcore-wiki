@@ -17,7 +17,7 @@ changement implicitement.
 
 ## Guide et exemples maintenus par le crate
 
-Le dépôt Runtime maintient le [guide détaillé](https://github.com/dnettoRaw/AppCore-Runtime/blob/v1.0.0/crates/appcore-distributed-contracts/wiki/guide.fr.md), [exemple débutant](https://github.com/dnettoRaw/AppCore-Runtime/blob/v1.0.0/crates/appcore-distributed-contracts/wiki/examples/basic.fr.md) et [exemple intermédiaire](https://github.com/dnettoRaw/AppCore-Runtime/blob/v1.0.0/crates/appcore-distributed-contracts/wiki/examples/intermediate.fr.md). Le wiki résume la frontière publique ; les détails d’API et d’exécution restent avec le code du crate.
+Le dépôt Runtime maintient le [guide détaillé](https://github.com/dnettoRaw/app-core-public/blob/beta/crates/appcore-distributed-contracts/wiki/guide.fr.md), [exemple débutant](https://github.com/dnettoRaw/app-core-public/blob/beta/crates/appcore-distributed-contracts/wiki/examples/basic.fr.md) et [exemple intermédiaire](https://github.com/dnettoRaw/app-core-public/blob/beta/crates/appcore-distributed-contracts/wiki/examples/intermediate.fr.md). Le wiki résume la frontière publique ; les détails d’API et d’exécution restent avec le code du crate.
 
 **Responsabilité :** contrats wire/provider versionnés control plane et peer
 RPC.
@@ -88,3 +88,15 @@ du champ string V1 stable; il ne négocie ni ne crée de trafic V2.
 `2.0.0-alpha.4`: modifications propres.
 
 [crates.io](https://crates.io/crates/appcore-distributed-contracts/2.0.0-alpha.4) · [docs.rs](https://docs.rs/appcore-distributed-contracts/2.0.0-alpha.4)
+
+## Disponibilité HA négociée — 1.0.2-rc.2
+
+Cette cohorte RC aligne les types distribués entre Sync, Peer RPC, control plane,
+Gateway, Transfer, SQLite et SDK. `peer.availability.v1` sélectionne des résultats
+authentifiés et structurés sans modifier V1. Busy n’exécute pas la closure et ne confirme
+aucun travail. Rejet, attente, transport et confirmation durable restent distincts;
+les reprises conservent la même identité idempotente. Le déploiement garantit la fin de
+la closure, le fencing exact et la confirmation du réplica. Aucune migration,
+installation ou certification de coupure électrique n’est implicite.
+
+Voir le [guide de disponibilité](https://github.com/dnettoRaw/app-core-public/blob/beta/crates/appcore-peer-rpc/wiki/guide.fr.md).

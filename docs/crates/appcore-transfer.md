@@ -32,3 +32,15 @@ Windows cross-compilation is checked; native Windows recovery and physical mesh 
 `0.1.0-beta.2`: source changes.
 
 [crates.io](https://crates.io/crates/appcore-transfer/0.1.0-beta.2) · [docs.rs](https://docs.rs/appcore-transfer/0.1.0-beta.2)
+
+## Negotiated HA availability — 1.0.0-rc.3
+
+This RC cohort aligns shared distributed types across Sync, Peer RPC, control plane,
+Gateway, Transfer, SQLite and the SDK. `peer.availability.v1` selects authenticated
+structured outcomes without changing frozen V1 wire shapes. Busy admission never runs
+the business closure or confirms work. Rejection, pending execution, transport failure
+and durable completion remain distinct; retries preserve the same idempotency identity.
+The deployment owns business completion, exact write fencing and required replica proof.
+No installation migration, deployment or physical power-loss certification is implied.
+
+See the [crate-owned availability guide](https://github.com/dnettoRaw/app-core-public/blob/beta/crates/appcore-peer-rpc/wiki/guide.en.md).

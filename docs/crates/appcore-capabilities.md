@@ -11,7 +11,7 @@ Stable **`1.0.0`** · MSRV **Rust `1.89`** · [crates.io](https://crates.io/crat
 
 ## Crate-owned guide and examples
 
-The Runtime repository maintains the detailed [guide](https://github.com/dnettoRaw/AppCore-Runtime/blob/v1.0.0/crates/appcore-capabilities/wiki/guide.en.md), [basic example](https://github.com/dnettoRaw/AppCore-Runtime/blob/v1.0.0/crates/appcore-capabilities/wiki/examples/basic.en.md), and [intermediate example](https://github.com/dnettoRaw/AppCore-Runtime/blob/v1.0.0/crates/appcore-capabilities/wiki/examples/intermediate.en.md). The wiki summarizes the public boundary; API and executable details live beside the crate code.
+The Runtime repository maintains the detailed [guide](https://github.com/dnettoRaw/app-core-public/blob/beta/crates/appcore-capabilities/wiki/guide.en.md), [basic example](https://github.com/dnettoRaw/app-core-public/blob/beta/crates/appcore-capabilities/wiki/examples/basic.en.md), and [intermediate example](https://github.com/dnettoRaw/app-core-public/blob/beta/crates/appcore-capabilities/wiki/examples/intermediate.en.md). The wiki summarizes the public boundary; API and executable details live beside the crate code.
 
 **Responsibility:** catalog composed capability descriptors, register local
 handlers and resolve compatible local or remote providers.
@@ -62,3 +62,15 @@ selectors retain their complete owned candidate contract.
 `1.0.4-rc.3`: dependency metadata alignment.
 
 [crates.io](https://crates.io/crates/appcore-capabilities/1.0.4-rc.3) · [docs.rs](https://docs.rs/appcore-capabilities/1.0.4-rc.3)
+
+## Negotiated HA availability — 1.0.4-rc.5
+
+This RC cohort aligns shared distributed types across Sync, Peer RPC, control plane,
+Gateway, Transfer, SQLite and the SDK. `peer.availability.v1` selects authenticated
+structured outcomes without changing frozen V1 wire shapes. Busy admission never runs
+the business closure or confirms work. Rejection, pending execution, transport failure
+and durable completion remain distinct; retries preserve the same idempotency identity.
+The deployment owns business completion, exact write fencing and required replica proof.
+No installation migration, deployment or physical power-loss certification is implied.
+
+See the [crate-owned availability guide](https://github.com/dnettoRaw/app-core-public/blob/beta/crates/appcore-peer-rpc/wiki/guide.en.md).

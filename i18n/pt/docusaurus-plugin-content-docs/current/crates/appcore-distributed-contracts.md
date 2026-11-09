@@ -17,7 +17,7 @@ implicitamente.
 
 ## Guia e exemplos mantidos pelo crate
 
-O repositório do Runtime mantém o [guia detalhado](https://github.com/dnettoRaw/AppCore-Runtime/blob/v1.0.0/crates/appcore-distributed-contracts/wiki/guide.pt.md), [exemplo básico](https://github.com/dnettoRaw/AppCore-Runtime/blob/v1.0.0/crates/appcore-distributed-contracts/wiki/examples/basic.pt.md) e [exemplo intermediário](https://github.com/dnettoRaw/AppCore-Runtime/blob/v1.0.0/crates/appcore-distributed-contracts/wiki/examples/intermediate.pt.md). O wiki resume a fronteira pública; detalhes de API e execução ficam junto ao código do crate.
+O repositório do Runtime mantém o [guia detalhado](https://github.com/dnettoRaw/app-core-public/blob/beta/crates/appcore-distributed-contracts/wiki/guide.pt.md), [exemplo básico](https://github.com/dnettoRaw/app-core-public/blob/beta/crates/appcore-distributed-contracts/wiki/examples/basic.pt.md) e [exemplo intermediário](https://github.com/dnettoRaw/app-core-public/blob/beta/crates/appcore-distributed-contracts/wiki/examples/intermediate.pt.md). O wiki resume a fronteira pública; detalhes de API e execução ficam junto ao código do crate.
 
 **Responsabilidade:** contratos wire/provider versionados de control plane e
 peer RPC.
@@ -87,3 +87,15 @@ V1 estável; ele não negocia nem cria tráfego V2.
 `2.0.0-alpha.4`: alterações próprias.
 
 [crates.io](https://crates.io/crates/appcore-distributed-contracts/2.0.0-alpha.4) · [docs.rs](https://docs.rs/appcore-distributed-contracts/2.0.0-alpha.4)
+
+## Disponibilidade HA negociada — 1.0.2-rc.2
+
+Esta coorte RC alinha os tipos distribuídos partilhados entre Sync, Peer RPC, control
+plane, Gateway, Transfer, SQLite e SDK. `peer.availability.v1` seleciona resultados
+autenticados e estruturados sem mudar os formatos V1. Busy não executa a closure nem
+confirma trabalho. Rejeição, pendência, transporte e confirmação durável são distintos;
+os retries preservam a identidade idempotente. A composição comprova a conclusão da
+closure, o fencing e a confirmação exigida da réplica. Não implica migração de
+instalações, deployment ou certificação de falha física de energia.
+
+Consulte o [guia de disponibilidade](https://github.com/dnettoRaw/app-core-public/blob/beta/crates/appcore-peer-rpc/wiki/guide.pt.md).

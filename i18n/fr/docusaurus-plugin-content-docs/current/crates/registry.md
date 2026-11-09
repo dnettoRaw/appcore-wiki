@@ -46,6 +46,7 @@ son ID et reçoit une destination historique.
 | ACR-028 | `appcore-sdk` | Façade | [Ouvrir](/fr/crates/appcore-sdk) |
 | ACR-029 | `appcore-transfer` | Integration | [Open](/fr/crates/appcore-transfer) |
 | ACR-030 | `appcore-ui` | Runtime | [appcore-ui](/fr/crates/appcore-ui) |
+| ACR-031 | `appcore-render` | Standalone | [appcore-render](/fr/crates/appcore-render) |
 
 La source de ces associations est la table `stableCrateIds` dans
 `docusaurus.config.js`. La table visible doit être révisée avec elle.

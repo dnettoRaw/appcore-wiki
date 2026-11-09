@@ -17,7 +17,7 @@ deliberadamente.
 
 ## Guia e exemplos mantidos pelo crate
 
-O repositório do Runtime mantém o [guia detalhado](https://github.com/dnettoRaw/AppCore-Runtime/blob/v1.0.0/crates/appcore-sync/wiki/guide.pt.md), [exemplo básico](https://github.com/dnettoRaw/AppCore-Runtime/blob/v1.0.0/crates/appcore-sync/wiki/examples/basic.pt.md) e [exemplo intermediário](https://github.com/dnettoRaw/AppCore-Runtime/blob/v1.0.0/crates/appcore-sync/wiki/examples/intermediate.pt.md). O wiki resume a fronteira pública; detalhes de API e execução ficam junto ao código do crate.
+O repositório do Runtime mantém o [guia detalhado](https://github.com/dnettoRaw/app-core-public/blob/beta/crates/appcore-sync/wiki/guide.pt.md), [exemplo básico](https://github.com/dnettoRaw/app-core-public/blob/beta/crates/appcore-sync/wiki/examples/basic.pt.md) e [exemplo intermediário](https://github.com/dnettoRaw/app-core-public/blob/beta/crates/appcore-sync/wiki/examples/intermediate.pt.md). O wiki resume a fronteira pública; detalhes de API e execução ficam junto ao código do crate.
 
 **Responsabilidade:** replicação conservadora leader-to-follower e helpers de
 durabilidade local.
@@ -118,3 +118,15 @@ bytes UTF-8 antes da retenção; a janela fica limitada por bytes e por quantida
 `2.0.0-alpha.5`: alterações próprias.
 
 [crates.io](https://crates.io/crates/appcore-sync/2.0.0-alpha.5) · [docs.rs](https://docs.rs/appcore-sync/2.0.0-alpha.5)
+
+## Disponibilidade HA negociada — 1.0.2-rc.2
+
+Esta coorte RC alinha os tipos distribuídos partilhados entre Sync, Peer RPC, control
+plane, Gateway, Transfer, SQLite e SDK. `peer.availability.v1` seleciona resultados
+autenticados e estruturados sem mudar os formatos V1. Busy não executa a closure nem
+confirma trabalho. Rejeição, pendência, transporte e confirmação durável são distintos;
+os retries preservam a identidade idempotente. A composição comprova a conclusão da
+closure, o fencing e a confirmação exigida da réplica. Não implica migração de
+instalações, deployment ou certificação de falha física de energia.
+
+Consulte o [guia de disponibilidade](https://github.com/dnettoRaw/app-core-public/blob/beta/crates/appcore-peer-rpc/wiki/guide.pt.md).

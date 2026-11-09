@@ -4,10 +4,10 @@
     {
       "name": "appcore-ai",
       "slug": "appcore-ai",
-      "status": "Beta",
-      "category": "Beta",
+      "status": "RC",
+      "category": "RC",
       "summary": "Adaptive AI runtime boundary for model routing, local or remote inference, resource governance, provenance, security and observable execution.",
-      "horizon": "0.1.0-beta.6 published",
+      "horizon": "1.0.0-rc.2 published on crates.io",
       "related_existing": [
         "appcore-capabilities",
         "appcore-security",
@@ -26,7 +26,7 @@
       "status": "RC",
       "category": "RC",
       "summary": "Bounded structured logging pipeline shared by Runtime components and SDK applications.",
-      "horizon": "1.0.0-rc.3 published",
+      "horizon": "1.0.0-rc.4 published on crates.io",
       "related_existing": [
         "appcore-ops",
         "appcore-sdk"
@@ -39,7 +39,7 @@
       "status": "RC",
       "category": "RC",
       "summary": "Manifest-first application facade for the three-artifact application contract.",
-      "horizon": "1.0.2-rc.1 published",
+      "horizon": "1.0.2-rc.4 published on crates.io",
       "related_existing": [
         "appcore-contracts",
         "appcore-core",
@@ -52,10 +52,10 @@
     {
       "name": "appcore-sync-sqlite",
       "slug": "appcore-sync-sqlite",
-      "status": "Alpha",
-      "category": "Experimental",
+      "status": "RC",
+      "category": "RC",
       "summary": "Optional bounded SQLite persistence for Runtime replication log, outbox, checkpoints, opaque tombstones, integrity and online backup.",
-      "horizon": "0.1.0-alpha.8 published development preview",
+      "horizon": "1.0.1-rc.2 published on crates.io",
       "related_existing": [
         "appcore-sync",
         "appcore-storage"
@@ -65,10 +65,10 @@
     {
       "name": "appcore-filemaker",
       "slug": "appcore-filemaker",
-      "status": "Beta",
-      "category": "Beta",
+      "status": "RC",
+      "category": "RC",
       "summary": "Deterministic compiler for declarative documents, vector canvases and bounded datasets.",
-      "horizon": "0.1.0-beta.7 public beta",
+      "horizon": "1.0.0-rc.2 published on crates.io",
       "related_existing": [
         "appcore-ai"
       ],
@@ -79,10 +79,10 @@
     {
       "name": "appcore-filemaker-ai",
       "slug": "appcore-filemaker-ai",
-      "status": "Beta",
-      "category": "Beta",
+      "status": "RC",
+      "category": "RC",
       "summary": "Optional bounded appcore-ai tool bridge for deterministic FileMaker sessions.",
-      "horizon": "0.1.0-beta.6 public beta",
+      "horizon": "1.0.0-rc.2 published on crates.io",
       "related_existing": [
         "appcore-ai",
         "appcore-filemaker"
@@ -92,10 +92,10 @@
     {
       "name": "appcore-filemaker-cli",
       "slug": "appcore-filemaker-cli",
-      "status": "Beta",
-      "category": "Beta",
+      "status": "RC",
+      "category": "RC",
       "summary": "Bounded command-line process adapter for FileMaker compilation, diagnostics and export.",
-      "horizon": "0.1.0-beta.6 public beta",
+      "horizon": "1.0.0-rc.2 published on crates.io",
       "related_existing": [
         "appcore-args",
         "appcore-filemaker"
@@ -105,10 +105,10 @@
     {
       "name": "appcore-ui",
       "slug": "appcore-ui",
-      "status": "Beta",
-      "category": "Beta",
+      "status": "RC",
+      "category": "RC",
       "summary": "Independent native Rust and local HTML/TypeScript pages, bounded Runtime bridge and explicit macOS system backends; deployment owns startup and authorization.",
-      "horizon": "0.1.0-beta.2 published on crates.io",
+      "horizon": "1.0.0-rc.2 published on crates.io",
       "related_existing": [
         "appcore-sdk",
         "appcore-api",
@@ -260,10 +260,10 @@
     {
       "name": "appcore-transfer",
       "slug": "appcore-transfer",
-      "status": "Beta",
-      "category": "Platform Expansion",
+      "status": "RC",
+      "category": "RC",
       "summary": "Authenticated resumable transfer of immutable opaque objects from multiple peers with verified blocks, quotas and bounded concurrency; mesh routing remains separate.",
-      "horizon": "0.1.0-beta.2 published on crates.io",
+      "horizon": "1.0.0-rc.3 published on crates.io",
       "related_existing": [
         "appcore-peer-rpc",
         "appcore-gateway",

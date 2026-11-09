@@ -224,3 +224,57 @@ A publicação do nonce no Windows sincroniza o ficheiro e substitui com `MOVEFI
 Perfil de autenticação aditivo ainda não publicado: selecione `with_v1_operation_binding_v2` tanto em `PeerRpcClient` como em `PeerRpcHttpHost`. `operation_signing_hash_v2` vincula domínio V2 explícito, `query`/`command` e digest completo do envelope V1 existente. Schema, número de protocolo e rotas V1 não mudam; o contrato de vinculação do token é explicitamente V2. Nenhum lado negoceia, deduz ou aceita digest alternativo. Perfis diferentes falham na autenticação. Health/manifest e streaming V2 mantêm a autenticação existente.
 
 O perfil V1 publicado por omissão mantém apenas o envelope para estabilidade contratual e não vincula criptograficamente a classe da rota. Selecione o perfil com operação ou streaming V2 quando essa fronteira importar; o dispatcher deve sempre autorizar capability e modo de invocação. Atualize ambos os endpoints atomicamente ou transfira tráfego para um host configurado separadamente. Drene tentativas de commands ambíguas primeiro. O rollback exige restaurar explicitamente a seleção de ambos os lados; não repita um command com ACK incerto usando chave nova. Esta alteração não certifica nem publica uma migração da instalação.
+
+## Disponibilidade HA negociada — RC 2026-11-09
+
+O perfil opcional `peer.availability.v1` é anunciado nos metadados com valor `"1"`
+quando a composição instala `PeerOperationProfileV1` por
+`PeerRpcHttpHost::with_availability_profile`. `command_with_availability` seleciona
+`/v2/peer/availability/command` apenas com essa capacidade. Sem ela, mantém o V1 e
+retorna `NegotiatedPeerOperationV1::V1`; sucesso legado não é recibo durável.
+Depois de selecionar o perfil, nenhuma falha provoca fallback. O host encaminha
+comandos V1 para o mesmo executor durável e preserva o dispatcher de queries.
+
+Categorias estáveis: `busy { retry_after_ms }`, `recovery_pending`, `standby`,
+`lease_renewal_failed`, `replica_commit_failed`, `authority_unavailable`,
+`transport_unavailable`, `authentication_failed`, `protocol_mismatch`.
+`AvailabilityErrorV1::retry` calcula decisões limitadas com jitter fornecido pelo
+chamador: backoff curto para busy; sondagem de role/readiness para recuperação,
+standby e lease; sondagem de confirmação para réplica; circuito aberto por rota para
+autoridade/transporte; parar para autenticação/protocolo. O chamador mantém orçamento,
+circuito e próxima tentativa persistida. A chamada executa uma tentativa, sem dormir
+nem manter bloqueio global; operações independentes continuam elegíveis.
+
+`PeerOperationCallErrorV1` separa falha local de transporte/autenticação/protocolo.
+O resultado remoto autenticado `PeerOperationOutcomeV1` distingue `Rejected`,
+`Pending` e `Confirmed`; só o último contém `DurableOperationReceiptV1`.
+Falha técnica ou pendência nunca permite retirar uma operação da outbox. Após perda
+de resposta, reconciliar a mesma identidade idempotente com nonce novo; não executar
+a closure novamente só porque faltou confirmação da réplica ou resposta.
+
+`PeerOperationExecutorV1` pertence à composição. Deve indexar por
+`operation_identity_hash`, rejeitar outro `operation_binding_hash` para a mesma chave,
+recuperar resultados anteriores, aplicar fencing da autoridade atual e persistir
+conclusão da closure e política/evidência durável no mesmo limite de recuperação.
+`from_completed_commit` valida apenas a estrutura dos digests: só pode ser chamado
+depois da conclusão e confirmação durável. Recibos de história canónica não provam
+efeitos de negócio. A implementação não certifica transações de providers arbitrários.
+
+A autenticação vincula perfil, comando e envelope completo. Cada resposta estruturada,
+incluindo busy, assina resultado, role/readiness e hash da tentativa. Usar claims
+distintas para pedido/resposta e validar TLS. Ingress partilha 16 slots por host e
+dispatch partilha 16 slots por processo. Sobrecarga anterior ao corpo e pedidos não
+autenticados não produzem continuação autenticada: são falhas locais de transporte ou
+autenticação. Busy após admissão autenticada não chama o executor nem produz ACK.
+
+`PeerOperationObserverV1` recebe categoria, atraso busy, duração monotónica, tentativas
+(uma por chamada), role e readiness controlados. Não recebe URL, token, paths, IDs,
+digests ou payloads; deve ser limitado e não bloqueante. O relay Gateway usa a
+capacidade de negócio do envelope interno e preserva os bytes assinados.
+O SDK disponibiliza resultados e categorias na feature `sync`, sem depender do
+cliente HTTP. Clientes, host e observadores pertencem a `appcore-peer-rpc`.
+
+A adoção exige adapter durável e wiring de deployment. A adoção exige versões explícitas; não altera instalações existentes ou o contrato
+de ACK de transporte do `FollowerSyncClient`.
+Os testes de recuperação usam evidência sincronizada e outbox real em ficheiro;
+não são certificação de falha de energia.

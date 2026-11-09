@@ -265,12 +265,12 @@ function validateFutureRoadmap(crates) {
     ['en', path.join(wikiRoot, 'docs', 'architecture', 'future-architecture.md'), 'Conceptual roadmap'],
     ['pt', path.join(wikiRoot, 'i18n', 'pt', 'docusaurus-plugin-content-docs', 'current', 'architecture', 'future-architecture.md'), 'Roadmap conceitual'],
     ['fr', path.join(wikiRoot, 'i18n', 'fr', 'docusaurus-plugin-content-docs', 'current', 'architecture', 'future-architecture.md'), 'Roadmap conceptuelle'],
-    ['en', path.join(wikiRoot, 'docs', 'crates', 'appcore-ai.md'), 'published on crates.io'],
-    ['pt', path.join(wikiRoot, 'i18n', 'pt', 'docusaurus-plugin-content-docs', 'current', 'crates', 'appcore-ai.md'), 'publicado no crates.io'],
-    ['fr', path.join(wikiRoot, 'i18n', 'fr', 'docusaurus-plugin-content-docs', 'current', 'crates', 'appcore-ai.md'), 'publié sur crates.io'],
-    ['en', path.join(wikiRoot, 'docs', 'crates', 'appcore-ui.md'), 'has not been published yet'],
-    ['pt', path.join(wikiRoot, 'i18n', 'pt', 'docusaurus-plugin-content-docs', 'current', 'crates', 'appcore-ui.md'), 'ainda não foi publicado'],
-    ['fr', path.join(wikiRoot, 'i18n', 'fr', 'docusaurus-plugin-content-docs', 'current', 'crates', 'appcore-ui.md'), "n'est pas encore publié"],
+    ['en', path.join(wikiRoot, 'docs', 'crates', 'appcore-ai.md'), 'crates.io/crates/appcore-ai/1.0.0-rc.2'],
+    ['pt', path.join(wikiRoot, 'i18n', 'pt', 'docusaurus-plugin-content-docs', 'current', 'crates', 'appcore-ai.md'), 'crates.io/crates/appcore-ai/1.0.0-rc.2'],
+    ['fr', path.join(wikiRoot, 'i18n', 'fr', 'docusaurus-plugin-content-docs', 'current', 'crates', 'appcore-ai.md'), 'crates.io/crates/appcore-ai/1.0.0-rc.2'],
+    ['en', path.join(wikiRoot, 'docs', 'crates', 'appcore-ui.md'), 'crates.io/crates/appcore-ui/1.0.0-rc.2'],
+    ['pt', path.join(wikiRoot, 'i18n', 'pt', 'docusaurus-plugin-content-docs', 'current', 'crates', 'appcore-ui.md'), 'crates.io/crates/appcore-ui/1.0.0-rc.2'],
+    ['fr', path.join(wikiRoot, 'i18n', 'fr', 'docusaurus-plugin-content-docs', 'current', 'crates', 'appcore-ui.md'), "crates.io/crates/appcore-ui/1.0.0-rc.2"],
   ];
 
   const roadmapPages = [

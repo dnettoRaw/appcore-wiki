@@ -7,7 +7,7 @@ sidebar_position: 27
 
 ID estável da documentação: **ACR-027**.
 
-Release publicada: [`appcore-log 1.0.0-rc.3`](https://crates.io/crates/appcore-log/1.0.0-rc.3).
+Release publicada: [`appcore-log 1.0.0-rc.4`](https://crates.io/crates/appcore-log/1.0.0-rc.4).
 
 `appcore-log` é o pipeline estruturado e limitado compartilhado pelo Runtime e
 pelo SDK. Ele separa severidade de verbosidade V1–V9, filtra antes de formatar,
@@ -39,8 +39,8 @@ histórico `YYYY/MM` são criados quando a rotação precisa deles.
 `sync_each_write` troca throughput por durabilidade de cada evento.
 
 Para setup completo, limites, exemplos e comandos de benchmark, consulte o
-[guia em inglês](https://github.com/dnettoRaw/app-core-public/tree/beta/appcore-log/wiki/guide.en.md),
-[guia em português](https://github.com/dnettoRaw/app-core-public/tree/beta/appcore-log/wiki/guide.pt.md)
-ou [guia em francês](https://github.com/dnettoRaw/app-core-public/tree/beta/appcore-log/wiki/guide.fr.md).
-O código-fonte também mantém o [exemplo básico](https://github.com/dnettoRaw/app-core-public/tree/beta/appcore-log/wiki/examples/basic.pt.md)
-e o [exemplo intermediário](https://github.com/dnettoRaw/app-core-public/tree/beta/appcore-log/wiki/examples/intermediate.pt.md).
+[guia em inglês](https://github.com/dnettoRaw/app-core-public/tree/beta/crates/appcore-log/wiki/guide.en.md),
+[guia em português](https://github.com/dnettoRaw/app-core-public/tree/beta/crates/appcore-log/wiki/guide.pt.md)
+ou [guia em francês](https://github.com/dnettoRaw/app-core-public/tree/beta/crates/appcore-log/wiki/guide.fr.md).
+O código-fonte também mantém o [exemplo básico](https://github.com/dnettoRaw/app-core-public/tree/beta/crates/appcore-log/wiki/examples/basic.pt.md)
+e o [exemplo intermediário](https://github.com/dnettoRaw/app-core-public/tree/beta/crates/appcore-log/wiki/examples/intermediate.pt.md).

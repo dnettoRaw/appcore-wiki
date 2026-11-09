@@ -7,7 +7,7 @@ sidebar_position: 27
 
 Stable documentation ID: **ACR-027**.
 
-Published release: [`appcore-log 1.0.0-rc.3`](https://crates.io/crates/appcore-log/1.0.0-rc.3).
+Published release: [`appcore-log 1.0.0-rc.4`](https://crates.io/crates/appcore-log/1.0.0-rc.4).
 
 `appcore-log` is the bounded structured logging pipeline shared by Runtime
 components and the SDK. It separates severity from V1–V9 verbosity, filters
@@ -39,8 +39,8 @@ are created when rotation needs them. `sync_each_write` trades throughput for
 per-event storage durability.
 
 For complete setup, limits, examples, and benchmark commands, use the
-crate-owned [English guide](https://github.com/dnettoRaw/app-core-public/tree/beta/appcore-log/wiki/guide.en.md),
-[Portuguese guide](https://github.com/dnettoRaw/app-core-public/tree/beta/appcore-log/wiki/guide.pt.md),
-or [French guide](https://github.com/dnettoRaw/app-core-public/tree/beta/appcore-log/wiki/guide.fr.md).
-The source also keeps the runnable [basic example](https://github.com/dnettoRaw/app-core-public/tree/beta/appcore-log/wiki/examples/basic.en.md)
-and [intermediate example](https://github.com/dnettoRaw/app-core-public/tree/beta/appcore-log/wiki/examples/intermediate.en.md).
+crate-owned [English guide](https://github.com/dnettoRaw/app-core-public/tree/beta/crates/appcore-log/wiki/guide.en.md),
+[Portuguese guide](https://github.com/dnettoRaw/app-core-public/tree/beta/crates/appcore-log/wiki/guide.pt.md),
+or [French guide](https://github.com/dnettoRaw/app-core-public/tree/beta/crates/appcore-log/wiki/guide.fr.md).
+The source also keeps the runnable [basic example](https://github.com/dnettoRaw/app-core-public/tree/beta/crates/appcore-log/wiki/examples/basic.en.md)
+and [intermediate example](https://github.com/dnettoRaw/app-core-public/tree/beta/crates/appcore-log/wiki/examples/intermediate.en.md).

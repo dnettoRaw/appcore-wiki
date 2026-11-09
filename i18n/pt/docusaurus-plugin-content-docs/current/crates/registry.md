@@ -46,6 +46,7 @@ mantém o ID e recebe um destino histórico.
 | ACR-028 | `appcore-sdk` | Fachada | [Abrir](/pt/crates/appcore-sdk) |
 | ACR-029 | `appcore-transfer` | Integration | [Open](/pt/crates/appcore-transfer) |
 | ACR-030 | `appcore-ui` | Runtime | [appcore-ui](/pt/crates/appcore-ui) |
+| ACR-031 | `appcore-render` | Standalone | [appcore-render](/pt/crates/appcore-render) |
 
 A fonte desses mapeamentos é a tabela `stableCrateIds` em
 `docusaurus.config.js`. A tabela visível deve ser revisada junto dela.

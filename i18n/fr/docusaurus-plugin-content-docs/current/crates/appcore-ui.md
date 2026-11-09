@@ -1,18 +1,18 @@
 ---
-title: appcore-ui — Bêta
+title: appcore-ui — RC
 sidebar_position: 24
 ---
 
 # appcore-ui
 
-:::info Bêta publique
-`appcore-ui 0.1.0-beta.2` est disponible sur crates.io. Le rendu actuel prend en charge macOS.
+:::info Candidat de release
+[`appcore-ui 1.0.0-rc.2`](https://crates.io/crates/appcore-ui/1.0.0-rc.2) est disponible sur crates.io. Le rendu actuel prend en charge macOS.
 :::
 
-## Bêta publique indépendante
+## Candidat de release indépendant
 
-`appcore-ui 0.1.0-beta.2` rend des pages natives définies en Rust et des pages
-web locales produites en HTML/TypeScript. Elle est disponible en bêta publique. Le backend actuel est macOS ; les autres plateformes restent futures.
+`appcore-ui 1.0.0-rc.2` rend des pages natives définies en Rust et des pages
+web locales produites en HTML/TypeScript. Elle est disponible en candidat de release. Le backend actuel est macOS ; les autres plateformes restent futures.
 Le roadmap UI plus large ne représente pas des APIs déjà implémentées.
 
 Le module possède fenêtres, rendu, actions et bridge Runtime. Les applications
@@ -102,3 +102,15 @@ Le pump sert le run loop sous charge d’input et le bridge avant/après dispatc
 `0.1.0-beta.2`: alignement des dépendances.
 
 [crates.io](https://crates.io/crates/appcore-ui/0.1.0-beta.2) · [docs.rs](https://docs.rs/appcore-ui/0.1.0-beta.2)
+
+## Disponibilité HA négociée — 1.0.0-rc.2
+
+Cette cohorte RC aligne les types distribués entre Sync, Peer RPC, control plane,
+Gateway, Transfer, SQLite et SDK. `peer.availability.v1` sélectionne des résultats
+authentifiés et structurés sans modifier V1. Busy n’exécute pas la closure et ne confirme
+aucun travail. Rejet, attente, transport et confirmation durable restent distincts;
+les reprises conservent la même identité idempotente. Le déploiement garantit la fin de
+la closure, le fencing exact et la confirmation du réplica. Aucune migration,
+installation ou certification de coupure électrique n’est implicite.
+
+Voir le [guide de disponibilité](https://github.com/dnettoRaw/app-core-public/blob/beta/crates/appcore-peer-rpc/wiki/guide.fr.md).

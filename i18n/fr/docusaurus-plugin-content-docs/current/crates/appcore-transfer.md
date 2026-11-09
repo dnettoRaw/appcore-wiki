@@ -32,3 +32,15 @@ Windows cross-compilation is checked; native Windows recovery and physical mesh 
 `0.1.0-beta.2`: modifications propres.
 
 [crates.io](https://crates.io/crates/appcore-transfer/0.1.0-beta.2) · [docs.rs](https://docs.rs/appcore-transfer/0.1.0-beta.2)
+
+## Disponibilité HA négociée — 1.0.0-rc.3
+
+Cette cohorte RC aligne les types distribués entre Sync, Peer RPC, control plane,
+Gateway, Transfer, SQLite et SDK. `peer.availability.v1` sélectionne des résultats
+authentifiés et structurés sans modifier V1. Busy n’exécute pas la closure et ne confirme
+aucun travail. Rejet, attente, transport et confirmation durable restent distincts;
+les reprises conservent la même identité idempotente. Le déploiement garantit la fin de
+la closure, le fencing exact et la confirmation du réplica. Aucune migration,
+installation ou certification de coupure électrique n’est implicite.
+
+Voir le [guide de disponibilité](https://github.com/dnettoRaw/app-core-public/blob/beta/crates/appcore-peer-rpc/wiki/guide.fr.md).

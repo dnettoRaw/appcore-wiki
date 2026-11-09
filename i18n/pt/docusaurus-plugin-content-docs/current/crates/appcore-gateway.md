@@ -17,7 +17,7 @@ de atualizar a partir do `1.0.0` estável.
 
 ## Guia e exemplos mantidos pelo crate
 
-O repositório do Runtime mantém o [guia detalhado](https://github.com/dnettoRaw/AppCore-Runtime/blob/v1.0.0/crates/appcore-gateway/wiki/guide.pt.md), [exemplo básico](https://github.com/dnettoRaw/AppCore-Runtime/blob/v1.0.0/crates/appcore-gateway/wiki/examples/basic.pt.md) e [exemplo intermediário](https://github.com/dnettoRaw/AppCore-Runtime/blob/v1.0.0/crates/appcore-gateway/wiki/examples/intermediate.pt.md). O wiki resume a fronteira pública; detalhes de API e execução ficam junto ao código do crate.
+O repositório do Runtime mantém o [guia detalhado](https://github.com/dnettoRaw/app-core-public/blob/beta/crates/appcore-gateway/wiki/guide.pt.md), [exemplo básico](https://github.com/dnettoRaw/app-core-public/blob/beta/crates/appcore-gateway/wiki/examples/basic.pt.md) e [exemplo intermediário](https://github.com/dnettoRaw/app-core-public/blob/beta/crates/appcore-gateway/wiki/examples/intermediate.pt.md). O wiki resume a fronteira pública; detalhes de API e execução ficam junto ao código do crate.
 
 **Responsabilidade:** relay WebSocket isolado por tenant para conexoes Gateway
 entre clients externos e workers AppCore.
@@ -266,3 +266,15 @@ collector em produção.
 `2.0.0-alpha.5`: alterações próprias.
 
 [crates.io](https://crates.io/crates/appcore-gateway/2.0.0-alpha.5) · [docs.rs](https://docs.rs/appcore-gateway/2.0.0-alpha.5)
+
+## Disponibilidade HA negociada — 1.0.6-rc.3
+
+Esta coorte RC alinha os tipos distribuídos partilhados entre Sync, Peer RPC, control
+plane, Gateway, Transfer, SQLite e SDK. `peer.availability.v1` seleciona resultados
+autenticados e estruturados sem mudar os formatos V1. Busy não executa a closure nem
+confirma trabalho. Rejeição, pendência, transporte e confirmação durável são distintos;
+os retries preservam a identidade idempotente. A composição comprova a conclusão da
+closure, o fencing e a confirmação exigida da réplica. Não implica migração de
+instalações, deployment ou certificação de falha física de energia.
+
+Consulte o [guia de disponibilidade](https://github.com/dnettoRaw/app-core-public/blob/beta/crates/appcore-peer-rpc/wiki/guide.pt.md).

@@ -6,7 +6,7 @@ sidebar_position: 28
 # appcore-sdk
 
 :::info Release candidate
-Publicado e verificado no registry: **[`1.0.2-rc.3`](https://crates.io/crates/appcore-sdk/1.0.2-rc.3)**, 2026-10-17. Selecionar `=1.0.2-rc.3` explicitamente. As versões mantêm-se independentes; é uma release candidate, sem certificar deployment ou hardware.
+Publicado e verificado no registry: **[`1.0.2-rc.4`](https://crates.io/crates/appcore-sdk/1.0.2-rc.4)**, 2026-11-09. Selecionar `=1.0.2-rc.4` explicitamente. As versões mantêm-se independentes; é uma release candidate, sem certificar deployment ou hardware.
 :::
 
 ID estável da documentação: **ACR-028**.
@@ -49,11 +49,11 @@ explícita.
 - `App::logging` configura o pipeline limitado de `appcore-log`.
 
 Comece pelo [tutorial da primeira aplicação](/pt/tutorials/first-application) e
-pelo [guia em inglês](https://github.com/dnettoRaw/app-core-public/tree/beta/appcore-sdk/wiki/guide.en.md),
-[guia em português](https://github.com/dnettoRaw/app-core-public/tree/beta/appcore-sdk/wiki/guide.pt.md)
-ou [guia em francês](https://github.com/dnettoRaw/app-core-public/tree/beta/appcore-sdk/wiki/guide.fr.md).
-Depois execute o [exemplo básico](https://github.com/dnettoRaw/app-core-public/tree/beta/appcore-sdk/wiki/examples/basic.pt.md)
-e o [exemplo intermediário](https://github.com/dnettoRaw/app-core-public/tree/beta/appcore-sdk/wiki/examples/intermediate.pt.md).
+pelo [guia em inglês](https://github.com/dnettoRaw/app-core-public/tree/beta/crates/appcore-sdk/wiki/guide.en.md),
+[guia em português](https://github.com/dnettoRaw/app-core-public/tree/beta/crates/appcore-sdk/wiki/guide.pt.md)
+ou [guia em francês](https://github.com/dnettoRaw/app-core-public/tree/beta/crates/appcore-sdk/wiki/guide.fr.md).
+Depois execute o [exemplo básico](https://github.com/dnettoRaw/app-core-public/tree/beta/crates/appcore-sdk/wiki/examples/basic.pt.md)
+e o [exemplo intermediário](https://github.com/dnettoRaw/app-core-public/tree/beta/crates/appcore-sdk/wiki/examples/intermediate.pt.md).
 
 ## Prerelease independente — 2026-10-14
 
@@ -64,3 +64,15 @@ e o [exemplo intermediário](https://github.com/dnettoRaw/app-core-public/tree/b
 ## 1.0.2-rc.3
 
 Os pins exatos selecionam a distribuição de segurança da IA e a RC FileMaker qualificadas quando aplicável. APIs públicas, features padrão e entradas V1 mantêm-se. Selecionar a release exata e atualizar explicitamente o lockfile completo; os pins antigos permanecem imutáveis. O backend opcional usa as distribuições de segurança do registry documentadas na página AI. Isto não certifica hardware nem migra aplicações externas.
+
+## Disponibilidade HA negociada — 1.0.2-rc.4
+
+Esta coorte RC alinha os tipos distribuídos partilhados entre Sync, Peer RPC, control
+plane, Gateway, Transfer, SQLite e SDK. `peer.availability.v1` seleciona resultados
+autenticados e estruturados sem mudar os formatos V1. Busy não executa a closure nem
+confirma trabalho. Rejeição, pendência, transporte e confirmação durável são distintos;
+os retries preservam a identidade idempotente. A composição comprova a conclusão da
+closure, o fencing e a confirmação exigida da réplica. Não implica migração de
+instalações, deployment ou certificação de falha física de energia.
+
+Consulte o [guia de disponibilidade](https://github.com/dnettoRaw/app-core-public/blob/beta/crates/appcore-peer-rpc/wiki/guide.pt.md).

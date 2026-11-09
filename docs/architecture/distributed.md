@@ -219,3 +219,63 @@ Windows nonce publication syncs the file and replaces it with `MOVEFILE_WRITE_TH
 Unpublished additive authentication profile: select `with_v1_operation_binding_v2` on both `PeerRpcClient` and `PeerRpcHttpHost`. `operation_signing_hash_v2` binds an explicit V2 domain, `query`/`command` and the complete existing V1 envelope digest. The V1 envelope schema, protocol number and routes are unchanged; the token-binding contract is explicitly V2. Neither side negotiates, infers nor accepts an alternative digest. A profile mismatch fails authentication. Health/manifest and streaming V2 retain their existing authentication.
 
 The published default envelope-only V1 profile remains available for contract stability and does not cryptographically bind the route class. Select the operation-bound profile or streaming V2 when that threat boundary matters; dispatcher capability and invocation-mode authorization is always required. Upgrade both endpoints atomically or move traffic to a separately configured host. Drain ambiguous command attempts first. Rollback requires explicit coordinated restoration of both profile selections; never retry an ambiguously acknowledged command with a fresh key. This source change does not certify or publish an installation migration.
+
+## Negotiated HA availability — RC 2026-11-09
+
+`peer.availability.v1` is an opt-in command profile. The authenticated advertisement
+metadata contains `peer.availability.v1 = "1"` only when deployment composition installs
+`PeerOperationProfileV1` through `PeerRpcHttpHost::with_availability_profile`.
+`PeerRpcClient::command_with_availability` selects `/v2/peer/availability/command`
+only for that advertised capability. Without it, the frozen V1 path and error matrix
+apply and the SDK returns `NegotiatedPeerOperationV1::V1`; V1 success does
+not become a durable receipt. A selected profile never falls back after a failure.
+The host routes V1 commands through the same durable executor; V1 queries stay
+with the original dispatcher. Existing hosts remain unchanged until explicitly enabled.
+
+The structured categories are `busy { retry_after_ms }`, `recovery_pending`,
+`standby`, `lease_renewal_failed`, `replica_commit_failed`, `authority_unavailable`,
+`transport_unavailable`, `authentication_failed` and `protocol_mismatch`.
+`AvailabilityErrorV1::retry` returns a scheduling decision with bounded caller-supplied
+jitter: short backoff for busy, a role/readiness probe for recovery/standby/lease,
+a confirmation probe for replica failure, an open route circuit for authority/transport,
+and stop for authentication/protocol. The caller owns retry budgets and circuit state.
+It must schedule outside queue/authority/transaction locks. One structured call makes
+one attempt and never sleeps; it does not serialize independent operations.
+
+`PeerOperationCallErrorV1` is a local transport/authentication/protocol failure.
+Authenticated remote `PeerOperationOutcomeV1` is `Rejected`, `Pending` or `Confirmed`.
+Only `Confirmed` carries `DurableOperationReceiptV1`. No technical failure or pending
+result permits removing an outbox entry. A lost reply leaves the outcome uncertain:
+retry/reconcile the same idempotency identity, with a fresh authenticated attempt nonce.
+Never rerun a closure solely because replica confirmation or the response was lost.
+
+`PeerOperationExecutorV1` is a deployment-owned durable execution boundary, not an
+in-memory idempotency implementation. It must index by `operation_identity_hash`,
+reject a different `operation_binding_hash` under that same identity, recover prior
+completion before business execution, fence commits with current exact authority,
+and persist business completion and the selected replica policy/evidence together
+in its recovery boundary. `from_completed_commit` validates digest structure only;
+it must be called after the business closure completed and durability was confirmed.
+Canonical history receipts alone do not prove application effects. The Runtime
+cannot certify an arbitrary provider's transaction or storage guarantees.
+
+Requests bind the capability/profile, operation kind, complete envelope and nonce.
+Every structured reply, including busy, authenticates the complete outcome,
+role/readiness and exact request hash with a separate response token issuer.
+Use distinct request/response claims and verify server TLS identity. Body ingress
+shares the host's 16 permits; dispatch also shares the process-wide 16 permits.
+Unauthenticated requests and pre-body overload have no authenticated continuation:
+they remain local authentication/transport failures, never an inferred remote busy.
+Busy after authenticated admission does not invoke the executor or return an ACK.
+
+`PeerOperationObserverV1` receives only `AvailabilityObservationV1`: category,
+retry delay within busy, monotonic duration, attempts (one per call), controlled HA
+role and readiness. No URL, token, path, request ID, digest or payload is exported.
+The observer must be bounded and nonblocking. The Gateway capability relay routes
+the profile by the nested business capability and preserves the signed body unchanged.
+The SDK exposes outcome and availability types through its `sync` namespace.
+HTTP clients, host composition and observers remain in `appcore-peer-rpc`.
+
+Adoption requires a durable executor adapter and deployment wiring. Adoption requires explicit dependency updates. Existing installations and the V1
+`FollowerSyncClient` transport-ACK contract stay unchanged. Recovery tests cover synced
+completion evidence plus a real file outbox; they are not power-loss certification.

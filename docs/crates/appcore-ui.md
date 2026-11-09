@@ -1,17 +1,17 @@
 ---
-title: appcore-ui — Beta
+title: appcore-ui — RC
 sidebar_position: 24
 ---
 
 # appcore-ui
 
-:::info Public beta
-`appcore-ui 0.1.0-beta.2` is available on crates.io. Rendering currently supports macOS.
+:::info Release candidate
+[`appcore-ui 1.0.0-rc.2`](https://crates.io/crates/appcore-ui/1.0.0-rc.2) is available on crates.io. Rendering currently supports macOS.
 :::
 
-## Independent public beta
+## Independent release candidate
 
-`appcore-ui 0.1.0-beta.2` renders native pages defined in Rust and local web
+`appcore-ui 1.0.0-rc.2` renders native pages defined in Rust and local web
 pages built from HTML/TypeScript. Its current
 platform backend is macOS; other platforms remain future work. The broader UI
 roadmap does not imply implemented APIs.
@@ -102,3 +102,15 @@ The pump services pending run-loop work even under native input load, and bridge
 `0.1.0-beta.2`: dependency metadata alignment.
 
 [crates.io](https://crates.io/crates/appcore-ui/0.1.0-beta.2) · [docs.rs](https://docs.rs/appcore-ui/0.1.0-beta.2)
+
+## Negotiated HA availability — 1.0.0-rc.2
+
+This RC cohort aligns shared distributed types across Sync, Peer RPC, control plane,
+Gateway, Transfer, SQLite and the SDK. `peer.availability.v1` selects authenticated
+structured outcomes without changing frozen V1 wire shapes. Busy admission never runs
+the business closure or confirms work. Rejection, pending execution, transport failure
+and durable completion remain distinct; retries preserve the same idempotency identity.
+The deployment owns business completion, exact write fencing and required replica proof.
+No installation migration, deployment or physical power-loss certification is implied.
+
+See the [crate-owned availability guide](https://github.com/dnettoRaw/app-core-public/blob/beta/crates/appcore-peer-rpc/wiki/guide.en.md).
